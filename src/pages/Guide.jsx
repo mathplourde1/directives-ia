@@ -167,8 +167,9 @@ export default function Guide() {
     return html;
   }
 
-  function buildTextHTML(sels) {
-    return sels.map((s) =>
+  function buildTextHTML(sels, withHeading = false) {
+    const heading = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu</h2>` : '';
+    return heading + sels.map((s) =>
     `<p><strong><i>${s.etape}</i></strong></p><p>L'utilisation des SIAg est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p>Exigences de déclaration : ${formatExigences(s)}</p><hr />`
     ).join('');
   }
