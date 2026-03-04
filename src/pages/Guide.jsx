@@ -635,7 +635,7 @@ export default function Guide() {
 function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk }) {
   return (
     <div className="synthese-section">
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       {children}
       <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
         <button type="button" className="btn-primary" onClick={onCopyBrio}>Copier pour coller en ligne (Brio)</button>
