@@ -610,7 +610,7 @@ export default function Guide() {
 
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
-        <h2 style={{ marginTop: 0, color: '#231F20' }}>Sauvegarde et restauration</h2>
+        <h2 style={{ marginTop: 0, color: '#231F20' }} className="my-2 text-xl font-semibold text-center">Sauvegarde et restauration</h2>
         <button type="button" className="btn-primary" onClick={handleSave}>Créer un fichier de sauvegarde</button>
         <button type="button" className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
           Importer un fichier de sauvegarde
@@ -635,7 +635,7 @@ export default function Guide() {
 function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk }) {
   return (
     <div className="synthese-section">
-      <h2>{title}</h2>
+      <h2 className="my-2 text-lg font-semibold text-center">{title}</h2>
       {children}
       <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
         <button type="button" className="btn-primary" onClick={onCopyBrio}>Copier pour coller en ligne (Brio)</button>
