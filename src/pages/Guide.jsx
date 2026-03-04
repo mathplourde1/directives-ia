@@ -610,7 +610,7 @@ export default function Guide() {
 
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
-        <h3 style={{ marginTop: 0, color: '#231F20' }}>Sauvegarde et restauration</h3>
+        <h2 style={{ marginTop: 0, color: '#231F20' }}>Sauvegarde et restauration</h2>
         <button type="button" className="btn-primary" onClick={handleSave}>Créer un fichier de sauvegarde</button>
         <button type="button" className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
           Importer un fichier de sauvegarde
