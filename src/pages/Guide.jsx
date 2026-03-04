@@ -351,6 +351,8 @@ export default function Guide() {
         .synth-table { width: 100%; border-collapse: collapse; background: white; }
         .synth-table th, .synth-table td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: top; }
         .synth-table th { background-color: #F2F2F2; }
+        .synth-table td ul { list-style-type: disc; padding-left: 18px; margin: 0; }
+        .synth-table td li { display: list-item; }
         .copy-ok { color: green; font-weight: bold; margin-left: 10px; }
         .save-section { margin-top: 32px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; background: white; }
         .decl-sub { margin-left: 20px; margin-top: 6px; }
