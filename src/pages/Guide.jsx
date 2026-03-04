@@ -146,12 +146,13 @@ export default function Guide() {
   }
 
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
-  function buildTableHTML(sels) {
-    let html = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
+  function buildTableHTML(sels, withHeading = false) {
+    let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse</h2>` : '';
+    html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
-        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'IA est…</th>
-        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Suggestions et/ou justification</th>
+        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'utilisation des SIAg est…</th>
+        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Précisions</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
     sels.forEach((s) => {
