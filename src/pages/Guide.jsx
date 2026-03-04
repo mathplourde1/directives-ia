@@ -555,7 +555,7 @@ export default function Guide() {
                     <td>{s.etape}</td>
                     <td>{s.ia}</td>
                     <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
-                    <td style={{ whiteSpace: 'pre-wrap' }}>{formatExigences(s, '\n')}</td>
+                    <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
                   </tr>
               )}
               </tbody>
