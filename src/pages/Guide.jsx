@@ -363,6 +363,7 @@ export default function Guide() {
       <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Développé de manière insouciante par vibecoding par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
+        Cette aide à la tâche est conçue pour le personnel enseignant. Cochez les étapes de réalisation de votre évaluation et remplissez les champs obligatoires pour générer des sommaires que vous pourrez utiliser dans votre site de cours. 
       </div>
 
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
