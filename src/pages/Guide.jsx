@@ -588,7 +588,7 @@ export default function Guide() {
           <SyntheseSection
           title="Exigences de déclaration d'utilisation de l'IA"
           onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
-          onDownloadWord={() => downloadWord(buildDeclTableHTML(selections), 'exigences-declaration.doc')}
+          onDownloadWord={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}
           copyOk={copyMsgs['s3-brio']}>
 
             <p style={{ marginBottom: 12 }}>
