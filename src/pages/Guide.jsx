@@ -135,14 +135,14 @@ export default function Guide() {
     }
   }
 
-  // ---- Helper: format declaration exigences as HTML ----
-  function formatExigences(s, separator = '<br>') {
+  // ---- Helper: format declaration exigences as HTML bullet list ----
+  function formatExigences(s) {
     if (s.declaration === 'aucune') return 'Aucune exigence';
     const items = [];
     if (s.decl_iagraphie) items.push('Références et IAgraphie');
     if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
     if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-    return items.join(separator);
+    return `<ul style="margin:0;padding-left:18px;">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
   }
 
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
