@@ -592,24 +592,12 @@ export default function Guide() {
                 </tr>
               </thead>
               <tbody>
-                {selections.map((s, i) => {
-                let exigences = '';
-                if (s.declaration === 'aucune') {
-                  exigences = 'Aucune exigence';
-                } else {
-                  const items = [];
-                  if (s.decl_iagraphie) items.push('Références et IAgraphie');
-                  if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
-                  if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-                  exigences = items.join('\n');
-                }
-                return (
+                {selections.map((s, i) => (
                   <tr key={i}>
-                      <td>{s.etape}</td>
-                      <td style={{ whiteSpace: 'pre-wrap' }}>{exigences}</td>
-                    </tr>);
-
-              })}
+                    <td>{s.etape}</td>
+                    <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
+                  </tr>
+                ))}
               </tbody>
             </table>
           </SyntheseSection>
