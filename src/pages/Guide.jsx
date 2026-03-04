@@ -578,6 +578,7 @@ export default function Guide() {
 
             <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
           dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
+          <p style={{ fontSize: '0.85em', color: '#555', marginTop: 6 }}>Les exigences de déclaration sont incluses dans le texte ci-dessus.</p>
           </SyntheseSection>
 
           {/* Section 3: Exigences de déclaration */}
