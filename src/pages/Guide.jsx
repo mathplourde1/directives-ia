@@ -199,7 +199,7 @@ export default function Guide() {
         exigences = 'Aucune exigence';
       } else {
         const items = [];
-        if (s.decl_iagraphie) items.push('Références et IAgraphie');
+        if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bda.ulaval.ca/intelligence-artificielle/#:~:text=D%C3%A9claration%20d%27utilisation%20de%20l%27IA" target="_blank">voir les directives</a>)');
         if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
         if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
         exigences = items.join('<br>');
