@@ -546,7 +546,7 @@ export default function Guide() {
           <SyntheseSection
           title="Tableau synthèse"
           onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
-          onDownloadWord={() => downloadWord(buildTableHTML(selections), 'tableau-synthese.doc')}
+          onDownloadWord={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}
           copyOk={copyMsgs['s1-brio']}>
 
             <table className="synth-table">
