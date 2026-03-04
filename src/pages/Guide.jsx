@@ -183,19 +183,9 @@ export default function Guide() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
     sels.forEach((s) => {
-      let exigences = '';
-      if (s.declaration === 'aucune') {
-        exigences = 'Aucune exigence';
-      } else {
-        const items = [];
-        if (s.decl_iagraphie) items.push('Références et IAgraphie');
-        if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
-        if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-        exigences = items.join('<br>');
-      }
       html += `<tr>
         <td style="border:1px solid #ccc;padding:8px;">${s.etape}</td>
-        <td style="border:1px solid #ccc;padding:8px;">${exigences}</td>
+        <td style="border:1px solid #ccc;padding:8px;">${formatExigences(s)}</td>
       </tr>`;
     });
     html += '</tbody></table>';
