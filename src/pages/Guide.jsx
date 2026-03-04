@@ -1,15 +1,15 @@
 import React, { useState, useRef } from 'react';
 
 const ETAPES = [
-  "Matériel de préparation à l'évaluation (fiches d'étude, guide de révision, questions préparatoires, etc.)",
-  "Exécution de l'évaluation (examen, questionnaire, présentation, etc.)",
-  "Idéation/tempête d'idées (choix d'un sujet, formulation d'une question de recherche, préparation du plan du travail, etc.)",
-  "Recension d'informations (sources, articles, données, etc.)",
-  "Analyse des informations (comparaison des données, traduction, etc.)",
-  "Soutien à la rédaction (cohérence textuelle, transitions, etc.)",
-  "Soutien à la révision (grammaticale, syntaxique, stylistique, etc.)",
-  "Mise en forme (textuelle, graphiques, images, diagrammes, etc.)"
-];
+"Matériel de préparation à l'évaluation (fiches d'étude, guide de révision, questions préparatoires, etc.)",
+"Exécution de l'évaluation (examen, questionnaire, présentation, etc.)",
+"Idéation/tempête d'idées (choix d'un sujet, formulation d'une question de recherche, préparation du plan du travail, etc.)",
+"Recension d'informations (sources, articles, données, etc.)",
+"Analyse des informations (comparaison des données, traduction, etc.)",
+"Soutien à la rédaction (cohérence textuelle, transitions, etc.)",
+"Soutien à la révision (grammaticale, syntaxique, stylistique, etc.)",
+"Mise en forme (textuelle, graphiques, images, diagrammes, etc.)"];
+
 
 const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
 
@@ -30,7 +30,7 @@ const defaultRowState = () => ({
   decl_traces: false,
   decl_traces_text: '',
   decl_logique: false,
-  decl_logique_text: '',
+  decl_logique_text: ''
 });
 
 const defaultErrors = () => ({
@@ -39,7 +39,7 @@ const defaultErrors = () => ({
   declaration: false,
   declaration_checkbox: false,
   decl_traces_text: false,
-  decl_logique_text: false,
+  decl_logique_text: false
 });
 
 export default function Guide() {
@@ -52,32 +52,32 @@ export default function Guide() {
   const fileInputRef = useRef();
 
   function updateRow(i, field, value) {
-    setRows(prev => {
+    setRows((prev) => {
       const next = prev.map((r, idx) => idx === i ? { ...r, [field]: value } : r);
       return next;
     });
     // Clear related errors on change
-    setErrors(prev => prev.map((e, idx) => idx === i ? { ...e, [field]: false, declaration_checkbox: false } : e));
+    setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, [field]: false, declaration_checkbox: false } : e));
   }
 
   function handleCheckbox(i, checked) {
-    setRows(prev => prev.map((r, idx) => idx === i ? {
+    setRows((prev) => prev.map((r, idx) => idx === i ? {
       ...defaultRowState(),
-      checked,
+      checked
     } : r));
-    setErrors(prev => prev.map((e, idx) => idx === i ? defaultErrors() : e));
+    setErrors((prev) => prev.map((e, idx) => idx === i ? defaultErrors() : e));
   }
 
   function handleIaChange(i, value) {
     updateRow(i, 'ia', value);
     // Set gabari template only if justification is empty or still a template
-    setRows(prev => {
+    setRows((prev) => {
       const r = prev[i];
       const isTemplate = Object.values(GABARITS).includes(r.justification.trim()) || !r.justification.trim();
       const justification = isTemplate ? GABARITS[value] : r.justification;
       return prev.map((row, idx) => idx === i ? { ...row, ia: value, justification } : row);
     });
-    setErrors(prev => prev.map((e, idx) => idx === i ? { ...e, ia: false, justification: false } : e));
+    setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, ia: false, justification: false } : e));
   }
 
   function validate() {
@@ -89,15 +89,15 @@ export default function Guide() {
       if (!r.checked) return;
       anyChecked = true;
 
-      if (!r.ia) { newErrors[i].ia = true; valid = false; }
-      if (!r.justification.trim()) { newErrors[i].justification = true; valid = false; }
-      if (!r.declaration) { newErrors[i].declaration = true; valid = false; }
+      if (!r.ia) {newErrors[i].ia = true;valid = false;}
+      if (!r.justification.trim()) {newErrors[i].justification = true;valid = false;}
+      if (!r.declaration) {newErrors[i].declaration = true;valid = false;}
       if (r.declaration === 'requise') {
         if (!r.decl_iagraphie && !r.decl_traces && !r.decl_logique) {
-          newErrors[i].declaration_checkbox = true; valid = false;
+          newErrors[i].declaration_checkbox = true;valid = false;
         }
-        if (r.decl_traces && !r.decl_traces_text.trim()) { newErrors[i].decl_traces_text = true; valid = false; }
-        if (r.decl_logique && !r.decl_logique_text.trim()) { newErrors[i].decl_logique_text = true; valid = false; }
+        if (r.decl_traces && !r.decl_traces_text.trim()) {newErrors[i].decl_traces_text = true;valid = false;}
+        if (r.decl_logique && !r.decl_logique_text.trim()) {newErrors[i].decl_logique_text = true;valid = false;}
       }
     });
 
@@ -128,8 +128,8 @@ export default function Guide() {
       } else {
         await navigator.clipboard.writeText(html);
       }
-      setCopyMsgs(m => ({ ...m, [key]: true }));
-      setTimeout(() => setCopyMsgs(m => ({ ...m, [key]: false })), 1800);
+      setCopyMsgs((m) => ({ ...m, [key]: true }));
+      setTimeout(() => setCopyMsgs((m) => ({ ...m, [key]: false })), 1800);
     } catch {
       alert('Erreur lors de la copie. Essayez manuellement.');
     }
@@ -143,7 +143,7 @@ export default function Guide() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'IA est…</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Suggestions et/ou justification</th>
       </tr></thead><tbody>`;
-    sels.forEach(s => {
+    sels.forEach((s) => {
       html += `<tr>
         <td style="border:1px solid #ccc;padding:8px;">${s.etape}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.ia}</td>
@@ -155,8 +155,8 @@ export default function Guide() {
   }
 
   function buildTextHTML(sels) {
-    return sels.map(s =>
-      `<p><strong><i>${s.etape}</i></strong></p><p>L'IA est : <strong>${s.ia}</strong></p><p>${s.justification}</p><hr />`
+    return sels.map((s) =>
+    `<p><strong><i>${s.etape}</i></strong></p><p>L'IA est : <strong>${s.ia}</strong></p><p>${s.justification}</p><hr />`
     ).join('');
   }
 
@@ -167,7 +167,7 @@ export default function Guide() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
-    sels.forEach(s => {
+    sels.forEach((s) => {
       let exigences = '';
       if (s.declaration === 'aucune') {
         exigences = 'Aucune exigence';
@@ -188,7 +188,7 @@ export default function Guide() {
   }
 
   function buildDeclTextHTML(sels) {
-    return sels.map(s => {
+    return sels.map((s) => {
       let exigences = '';
       if (s.declaration === 'aucune') {
         exigences = 'Aucune exigence';
@@ -236,18 +236,18 @@ export default function Guide() {
       decl_traces: r.decl_traces,
       decl_traces_text: r.decl_traces_text,
       decl_logique: r.decl_logique,
-      decl_logique_text: r.decl_logique_text,
+      decl_logique_text: r.decl_logique_text
     }));
 
-    const escapeXml = (str) => String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&apos;');
+    const escapeXml = (str) => String(str).
+    replace(/&/g, '&amp;').
+    replace(/</g, '&lt;').
+    replace(/>/g, '&gt;').
+    replace(/"/g, '&quot;').
+    replace(/'/g, '&apos;');
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<guide-ia version="1.0">\n  <etapes>\n`;
-    rowsData.forEach(r => {
+    rowsData.forEach((r) => {
       xml += `    <etape index="${r.index}">\n`;
       xml += `      <checked>${r.checked}</checked>\n`;
       xml += `      <ia>${escapeXml(r.ia)}</ia>\n`;
@@ -283,10 +283,10 @@ export default function Guide() {
         const doc = parser.parseFromString(ev.target.result, 'application/xml');
 
         const parseError = doc.querySelector('parsererror');
-        if (parseError) { setSaveError("Le fichier XML est invalide ou corrompu."); return; }
+        if (parseError) {setSaveError("Le fichier XML est invalide ou corrompu.");return;}
 
         const root = doc.querySelector('guide-ia');
-        if (!root) { setSaveError("Ce fichier n'est pas un fichier de sauvegarde valide (balise racine manquante)."); return; }
+        if (!root) {setSaveError("Ce fichier n'est pas un fichier de sauvegarde valide (balise racine manquante).");return;}
 
         const etapeNodes = doc.querySelectorAll('etape');
         if (etapeNodes.length !== ETAPES.length) {
@@ -295,7 +295,7 @@ export default function Guide() {
         }
 
         const newRows = ETAPES.map(() => defaultRowState());
-        etapeNodes.forEach(node => {
+        etapeNodes.forEach((node) => {
           const idx = parseInt(node.getAttribute('index'));
           if (isNaN(idx) || idx < 0 || idx >= ETAPES.length) return;
           const get = (tag) => node.querySelector(tag)?.textContent ?? '';
@@ -308,7 +308,7 @@ export default function Guide() {
             decl_traces: get('decl_traces') === 'true',
             decl_traces_text: get('decl_traces_text'),
             decl_logique: get('decl_logique') === 'true',
-            decl_logique_text: get('decl_logique_text'),
+            decl_logique_text: get('decl_logique_text')
           };
         });
 
@@ -353,7 +353,7 @@ export default function Guide() {
         .radio-disabled label, .radio-disabled input { color: #999; pointer-events: none; }
       `}</style>
 
-      <h1>Guide interactif de rédaction de directives IA</h1>
+      <h1 className="text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Développé de manière insouciante par vibecoding par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
       </div>
@@ -381,142 +381,142 @@ export default function Guide() {
                       type="checkbox"
                       id={`etape_${i}`}
                       checked={r.checked}
-                      onChange={e => handleCheckbox(i, e.target.checked)}
-                    />
+                      onChange={(e) => handleCheckbox(i, e.target.checked)} />
+
                     <label htmlFor={`etape_${i}`} className="step-label"> {etape}</label>
                   </td>
 
                   {/* Col 2: IA options */}
                   <td>
                     <div className={disabled ? 'radio-disabled' : ''}>
-                      {IA_OPTIONS.map((opt, j) => (
-                        <div key={j}>
+                      {IA_OPTIONS.map((opt, j) =>
+                      <div key={j}>
                           <input
-                            type="radio"
-                            id={`radio_${i}_${j}`}
-                            name={`ia_${i}`}
-                            value={opt}
-                            checked={r.ia === opt}
-                            disabled={disabled}
-                            onChange={() => handleIaChange(i, opt)}
-                          />
+                          type="radio"
+                          id={`radio_${i}_${j}`}
+                          name={`ia_${i}`}
+                          value={opt}
+                          checked={r.ia === opt}
+                          disabled={disabled}
+                          onChange={() => handleIaChange(i, opt)} />
+
                           <label htmlFor={`radio_${i}_${j}`} style={{ marginLeft: 4 }}>{opt}</label>
                         </div>
-                      ))}
+                      )}
                     </div>
                     {err.ia && <span style={errorStyle}>⚠ Sélection requise</span>}
                   </td>
 
                   {/* Col 3: Justification */}
                   <td>
-                    {r.ia && (
-                      <textarea
-                        className="justification-field"
-                        rows={8}
-                        value={r.justification}
-                        onChange={e => updateRow(i, 'justification', e.target.value)}
-                        placeholder="Entrez la justification"
-                        style={err.justification ? { ...inputErrorBorder, width: '98%', padding: 8 } : {}}
-                      />
-                    )}
+                    {r.ia &&
+                    <textarea
+                      className="justification-field"
+                      rows={8}
+                      value={r.justification}
+                      onChange={(e) => updateRow(i, 'justification', e.target.value)}
+                      placeholder="Entrez la justification"
+                      style={err.justification ? { ...inputErrorBorder, width: '98%', padding: 8 } : {}} />
+
+                    }
                     {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
                     {err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                   </td>
 
                   {/* Col 4: Exigences de déclaration */}
                   <td>
-                    {disabled ? (
-                      <span style={{ color: '#999', fontSize: '0.9em' }}>—</span>
-                    ) : (
-                      <>
+                    {disabled ?
+                    <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
+
+                    <>
                         <div>
                           <input
-                            type="radio"
-                            id={`decl_aucune_${i}`}
-                            name={`decl_${i}`}
-                            value="aucune"
-                            checked={r.declaration === 'aucune'}
-                            onChange={() => updateRow(i, 'declaration', 'aucune')}
-                          />
+                          type="radio"
+                          id={`decl_aucune_${i}`}
+                          name={`decl_${i}`}
+                          value="aucune"
+                          checked={r.declaration === 'aucune'}
+                          onChange={() => updateRow(i, 'declaration', 'aucune')} />
+
                           <label htmlFor={`decl_aucune_${i}`} style={{ marginLeft: 4 }}>Aucune exigence</label>
                         </div>
                         <div>
                           <input
-                            type="radio"
-                            id={`decl_requise_${i}`}
-                            name={`decl_${i}`}
-                            value="requise"
-                            checked={r.declaration === 'requise'}
-                            onChange={() => updateRow(i, 'declaration', 'requise')}
-                          />
+                          type="radio"
+                          id={`decl_requise_${i}`}
+                          name={`decl_${i}`}
+                          value="requise"
+                          checked={r.declaration === 'requise'}
+                          onChange={() => updateRow(i, 'declaration', 'requise')} />
+
                           <label htmlFor={`decl_requise_${i}`} style={{ marginLeft: 4 }}>Exigence(s) requise(s)</label>
                         </div>
                         {err.declaration && <span style={errorStyle}>⚠ Sélection requise</span>}
 
-                        {r.declaration === 'requise' && (
-                          <div className="decl-sub">
+                        {r.declaration === 'requise' &&
+                      <div className="decl-sub">
                             {/* Iagraphie */}
                             <div>
                               <input
-                                type="checkbox"
-                                id={`iagraphie_${i}`}
-                                checked={r.decl_iagraphie}
-                                onChange={e => updateRow(i, 'decl_iagraphie', e.target.checked)}
-                              />
+                            type="checkbox"
+                            id={`iagraphie_${i}`}
+                            checked={r.decl_iagraphie}
+                            onChange={(e) => updateRow(i, 'decl_iagraphie', e.target.checked)} />
+
                               <label htmlFor={`iagraphie_${i}`} style={{ marginLeft: 4 }}>Références et IAgraphie</label>
                             </div>
                             {/* Traces */}
                             <div style={{ marginTop: 6 }}>
                               <input
-                                type="checkbox"
-                                id={`traces_${i}`}
-                                checked={r.decl_traces}
-                                onChange={e => updateRow(i, 'decl_traces', e.target.checked)}
-                              />
+                            type="checkbox"
+                            id={`traces_${i}`}
+                            checked={r.decl_traces}
+                            onChange={(e) => updateRow(i, 'decl_traces', e.target.checked)} />
+
                               <label htmlFor={`traces_${i}`} style={{ marginLeft: 4 }}>Conserver les traces suivantes :</label>
-                              {r.decl_traces && (
-                                <>
+                              {r.decl_traces &&
+                          <>
                                   <textarea
-                                    rows={3}
-                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_traces_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
-                                    placeholder="Instructions supplémentaires (requis)"
-                                    value={r.decl_traces_text}
-                                    onChange={e => { updateRow(i, 'decl_traces_text', e.target.value); }}
-                                  />
+                              rows={3}
+                              style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_traces_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
+                              placeholder="Instructions supplémentaires (requis)"
+                              value={r.decl_traces_text}
+                              onChange={(e) => {updateRow(i, 'decl_traces_text', e.target.value);}} />
+
                                   {err.decl_traces_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
-                              )}
+                          }
                             </div>
                             {/* Logique */}
                             <div style={{ marginTop: 6 }}>
                               <input
-                                type="checkbox"
-                                id={`logique_${i}`}
-                                checked={r.decl_logique}
-                                onChange={e => updateRow(i, 'decl_logique', e.target.checked)}
-                              />
+                            type="checkbox"
+                            id={`logique_${i}`}
+                            checked={r.decl_logique}
+                            onChange={(e) => updateRow(i, 'decl_logique', e.target.checked)} />
+
                               <label htmlFor={`logique_${i}`} style={{ marginLeft: 4 }}>Expliquer la logique d'utilisation :</label>
-                              {r.decl_logique && (
-                                <>
+                              {r.decl_logique &&
+                          <>
                                   <textarea
-                                    rows={3}
-                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_logique_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
-                                    placeholder="Instructions supplémentaires (requis)"
-                                    value={r.decl_logique_text}
-                                    onChange={e => { updateRow(i, 'decl_logique_text', e.target.value); }}
-                                  />
+                              rows={3}
+                              style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_logique_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
+                              placeholder="Instructions supplémentaires (requis)"
+                              value={r.decl_logique_text}
+                              onChange={(e) => {updateRow(i, 'decl_logique_text', e.target.value);}} />
+
                                   {err.decl_logique_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
-                              )}
+                          }
                             </div>
                             {err.declaration_checkbox && <span style={errorStyle}>⚠ Au moins une exigence doit être sélectionnée</span>}
                           </div>
-                        )}
+                      }
                       </>
-                    )}
+                    }
                   </td>
-                </tr>
-              );
+                </tr>);
+
             })}
           </tbody>
         </table>
@@ -525,16 +525,16 @@ export default function Guide() {
       </form>
 
       {/* ===== SYNTHESIS SECTIONS ===== */}
-      {submitted && (
-        <div id="synthese-container">
+      {submitted &&
+      <div id="synthese-container">
 
           {/* Section 1: Tableau synthèse */}
           <SyntheseSection
-            title="Tableau synthèse"
-            onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
-            onDownloadWord={() => downloadWord(buildTableHTML(selections), 'tableau-synthese.doc')}
-            copyOk={copyMsgs['s1-brio']}
-          >
+          title="Tableau synthèse"
+          onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
+          onDownloadWord={() => downloadWord(buildTableHTML(selections), 'tableau-synthese.doc')}
+          copyOk={copyMsgs['s1-brio']}>
+
             <table className="synth-table">
               <thead>
                 <tr>
@@ -544,35 +544,35 @@ export default function Guide() {
                 </tr>
               </thead>
               <tbody>
-                {selections.map((s, i) => (
-                  <tr key={i}>
+                {selections.map((s, i) =>
+              <tr key={i}>
                     <td>{s.etape}</td>
                     <td>{s.ia}</td>
                     <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
                   </tr>
-                ))}
+              )}
               </tbody>
             </table>
           </SyntheseSection>
 
           {/* Section 2: Synthèse texte HTML */}
           <SyntheseSection
-            title="Synthèse (aperçu HTML)"
-            onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
-            onDownloadWord={() => downloadWord(buildTextHTML(selections), 'synthese-texte.doc')}
-            copyOk={copyMsgs['s2-brio']}
-          >
+          title="Synthèse (aperçu HTML)"
+          onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
+          onDownloadWord={() => downloadWord(buildTextHTML(selections), 'synthese-texte.doc')}
+          copyOk={copyMsgs['s2-brio']}>
+
             <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
-              dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
+          dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
           </SyntheseSection>
 
           {/* Section 3: Exigences de déclaration */}
           <SyntheseSection
-            title="Exigences de déclaration d'utilisation de l'IA"
-            onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
-            onDownloadWord={() => downloadWord(buildDeclTableHTML(selections), 'exigences-declaration.doc')}
-            copyOk={copyMsgs['s3-brio']}
-          >
+          title="Exigences de déclaration d'utilisation de l'IA"
+          onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
+          onDownloadWord={() => downloadWord(buildDeclTableHTML(selections), 'exigences-declaration.doc')}
+          copyOk={copyMsgs['s3-brio']}>
+
             <p style={{ marginBottom: 12 }}>
               Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.
             </p>
@@ -585,28 +585,28 @@ export default function Guide() {
               </thead>
               <tbody>
                 {selections.map((s, i) => {
-                  let exigences = '';
-                  if (s.declaration === 'aucune') {
-                    exigences = 'Aucune exigence';
-                  } else {
-                    const items = [];
-                    if (s.decl_iagraphie) items.push('Références et IAgraphie');
-                    if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
-                    if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-                    exigences = items.join('\n');
-                  }
-                  return (
-                    <tr key={i}>
+                let exigences = '';
+                if (s.declaration === 'aucune') {
+                  exigences = 'Aucune exigence';
+                } else {
+                  const items = [];
+                  if (s.decl_iagraphie) items.push('Références et IAgraphie');
+                  if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
+                  if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
+                  exigences = items.join('\n');
+                }
+                return (
+                  <tr key={i}>
                       <td>{s.etape}</td>
                       <td style={{ whiteSpace: 'pre-wrap' }}>{exigences}</td>
-                    </tr>
-                  );
-                })}
+                    </tr>);
+
+              })}
               </tbody>
             </table>
           </SyntheseSection>
         </div>
-      )}
+      }
 
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
@@ -620,16 +620,16 @@ export default function Guide() {
           type="file"
           accept=".xml"
           style={{ display: 'none' }}
-          onChange={handleLoad}
-        />
-        {saveError && (
-          <div style={{ color: '#E41E25', marginTop: 10, padding: '8px 12px', background: '#fff4f4', border: '1px solid #E41E25', borderRadius: 5 }}>
+          onChange={handleLoad} />
+
+        {saveError &&
+        <div style={{ color: '#E41E25', marginTop: 10, padding: '8px 12px', background: '#fff4f4', border: '1px solid #E41E25', borderRadius: 5 }}>
             ⚠ {saveError}
           </div>
-        )}
+        }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk }) {
@@ -642,6 +642,6 @@ function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk }
         {copyOk && <span className="copy-ok">Copié !</span>}
         <button type="button" className="btn-secondary" onClick={onDownloadWord}>Télécharger en format Word</button>
       </div>
-    </div>
-  );
+    </div>);
+
 }
