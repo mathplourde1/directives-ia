@@ -368,7 +368,7 @@ export default function Guide() {
         .radio-disabled label, .radio-disabled input { color: #999; pointer-events: none; }
       `}</style>
 
-      <h1 className="text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
+      <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Développé de manière insouciante par vibecoding par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
       </div>
