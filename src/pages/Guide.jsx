@@ -135,6 +135,16 @@ export default function Guide() {
     }
   }
 
+  // ---- Helper: format declaration exigences as HTML ----
+  function formatExigences(s, separator = '<br>') {
+    if (s.declaration === 'aucune') return 'Aucune exigence';
+    const items = [];
+    if (s.decl_iagraphie) items.push('Références et IAgraphie');
+    if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
+    if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
+    return items.join(separator);
+  }
+
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
   function buildTableHTML(sels) {
     let html = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
@@ -142,12 +152,14 @@ export default function Guide() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'IA est…</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Suggestions et/ou justification</th>
+        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
     sels.forEach((s) => {
       html += `<tr>
         <td style="border:1px solid #ccc;padding:8px;">${s.etape}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.ia}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.justification.replace(/\n/g, '<br>')}</td>
+        <td style="border:1px solid #ccc;padding:8px;">${formatExigences(s)}</td>
       </tr>`;
     });
     html += '</tbody></table>';
@@ -156,7 +168,7 @@ export default function Guide() {
 
   function buildTextHTML(sels) {
     return sels.map((s) =>
-    `<p><strong><i>${s.etape}</i></strong></p><p>L'IA est : <strong>${s.ia}</strong></p><p>${s.justification}</p><hr />`
+    `<p><strong><i>${s.etape}</i></strong></p><p>L'IA est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p><strong>Exigences de déclaration :</strong> ${formatExigences(s)}</p><hr />`
     ).join('');
   }
 
