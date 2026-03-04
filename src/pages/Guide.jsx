@@ -551,8 +551,8 @@ export default function Guide() {
               <thead>
                 <tr>
                   <th>Étapes</th>
-                  <th>L'IA est…</th>
-                  <th>Suggestions et/ou justification</th>
+                  <th>L'utilisation des SIAg est…</th>
+                  <th>Précisions</th>
                   <th>Exigences de déclaration</th>
                 </tr>
               </thead>
