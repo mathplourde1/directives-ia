@@ -576,7 +576,7 @@ export default function Guide() {
           <SyntheseSection
           title="Synthèse en texte continu"
           onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
-          onDownloadWord={() => downloadWord(buildTextHTML(selections), 'synthese-texte.doc')}
+          onDownloadWord={() => downloadWord(buildTextHTML(selections, true), 'synthese-texte.doc')}
           copyOk={copyMsgs['s2-brio']}>
 
             <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
