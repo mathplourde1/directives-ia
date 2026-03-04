@@ -168,7 +168,7 @@ export default function Guide() {
 
   function buildTextHTML(sels) {
     return sels.map((s) =>
-    `<p><strong><i>${s.etape}</i></strong></p><p>L'utilisation des SIAg est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p><strong>Exigences de déclaration :</strong> ${formatExigences(s)}</p><hr />`
+    `<p><strong><i>${s.etape}</i></strong></p><p>L'utilisation des SIAg est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p>Exigences de déclaration : ${formatExigences(s)}</p><hr />`
     ).join('');
   }
 
