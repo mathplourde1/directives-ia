@@ -139,7 +139,7 @@ export default function Guide() {
   function formatExigences(s) {
     if (s.declaration === 'aucune') return 'Aucune exigence';
     const items = [];
-    if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bda.ulaval.ca/intelligence-artificielle/#:~:text=D%C3%A9claration%20d%27utilisation%20de%20l%27IA" target="_blank">voir les directives</a>)');
+    if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bda.ulaval.ca/intelligence-artificielle/#:~:text=D%C3%A9claration%20d%27utilisation%20de%20l%27IA" target="_blank" style="color:blue;text-decoration:underline;">voir les directives</a>)');
     if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
     if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
     return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map(i => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
