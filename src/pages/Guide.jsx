@@ -553,6 +553,7 @@ export default function Guide() {
                   <th>Étapes</th>
                   <th>L'IA est…</th>
                   <th>Suggestions et/ou justification</th>
+                  <th>Exigences de déclaration</th>
                 </tr>
               </thead>
               <tbody>
@@ -561,6 +562,7 @@ export default function Guide() {
                     <td>{s.etape}</td>
                     <td>{s.ia}</td>
                     <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
+                    <td style={{ whiteSpace: 'pre-wrap' }}>{formatExigences(s, '\n')}</td>
                   </tr>
               )}
               </tbody>
