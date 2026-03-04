@@ -160,7 +160,7 @@ export default function Guide() {
         <td style="border:1px solid #ccc;padding:8px;">${s.etape}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.ia}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.justification.replace(/\n/g, '<br>')}</td>
-        <td style="border:1px solid #ccc;padding:8px;">${s.declaration === 'aucune' ? 'Aucune exigence' : formatExigences(s)}</td>
+        <td style="border:1px solid #ccc;padding:8px;">${formatExigences(s)}</td>
       </tr>`;
     });
     html += '</tbody></table>';
