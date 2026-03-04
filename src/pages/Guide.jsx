@@ -142,7 +142,7 @@ export default function Guide() {
     if (s.decl_iagraphie) items.push('Références et IAgraphie');
     if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
     if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-    return `<ul style="margin:0;padding-left:18px;">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map(i => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
   }
 
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
