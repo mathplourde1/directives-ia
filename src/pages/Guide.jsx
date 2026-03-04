@@ -571,7 +571,7 @@ export default function Guide() {
 
           {/* Section 2: Synthèse texte HTML */}
           <SyntheseSection
-          title="Synthèse (aperçu HTML)"
+          title="Synthèse en texte continu"
           onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
           onDownloadWord={() => downloadWord(buildTextHTML(selections), 'synthese-texte.doc')}
           copyOk={copyMsgs['s2-brio']}>
