@@ -384,14 +384,20 @@ export default function Guide() {
               return (
                 <tr key={i}>
                   {/* Col 1: Étape checkbox */}
-                  <td>
-                    <input
-                      type="checkbox"
-                      id={`etape_${i}`}
-                      checked={r.checked}
-                      onChange={(e) => handleCheckbox(i, e.target.checked)} />
-
-                    <label htmlFor={`etape_${i}`} className="step-label"> {etape}</label>
+                  <td
+                    style={{ verticalAlign: 'middle', cursor: 'pointer', transition: 'background 0.15s' }}
+                    onClick={() => handleCheckbox(i, !r.checked)}
+                    onMouseEnter={e => e.currentTarget.style.background = '#eaf6fd'}
+                    onMouseLeave={e => e.currentTarget.style.background = ''}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <input
+                        type="checkbox"
+                        id={`etape_${i}`}
+                        checked={r.checked}
+                        onChange={(e) => { e.stopPropagation(); handleCheckbox(i, e.target.checked); }}
+                        style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
+                      <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>{etape}</label>
+                    </div>
                   </td>
 
                   {/* Col 2: IA options */}
