@@ -165,6 +165,18 @@ export default function Guide() {
     }
   }
 
+  // ---- Helper: identification header line for exports ----
+  function buildIdentHeader() {
+    const parts = [
+      identification.cours,
+      identification.session,
+      identification.enseignants,
+      identification.evaluation
+    ].filter(v => v && v.trim());
+    if (!parts.length) return '';
+    return `<p style="font-family:Arial,sans-serif;margin-bottom:12px;">${parts.join(' | ')}</p>`;
+  }
+
   // ---- Helper: format declaration exigences as HTML bullet list ----
   function formatExigences(s) {
     if (s.declaration === 'aucune') return 'Aucune exigence';
