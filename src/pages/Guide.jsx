@@ -7,9 +7,9 @@ const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restric
 
 const GABARITS = {
   'À déterminer': "Plus d'instructions vous seront divulguées ultérieurement.",
-  'Non autorisée': "Lors de cette étape, les outils d'IA générative ne sont pas autorisés car ...",
-  'Autorisée avec restrictions': "Lors de cette étape, les outils d'IA générative sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
-  'Autorisée sans restrictions': "Lors de cette étape, les outils d'IA générative sont autorisés car ...",
+  'Non autorisée': "Lors de cette étape, les systèmes d'IA générative ne sont pas autorisés car ...",
+  'Autorisée avec restrictions': "Lors de cette étape, les systèmes d'IA générative sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
+  'Autorisée sans restrictions': "Lors de cette étape, les systèmes d'IA générative sont autorisés car ...",
   'Obligatoire': "Vous devez utiliser l'outil suivant lors de cette étape ..."
 };
 
