@@ -151,6 +151,7 @@ export default function Guide() {
     setSelections(sel);
     setSubmitted(true);
     setSubmitKey(k => k + 1);
+    setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => {
       document.getElementById('synthese-container')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
