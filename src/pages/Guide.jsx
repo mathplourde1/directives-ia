@@ -293,7 +293,9 @@ export default function Guide() {
     replace(/"/g, '&quot;').
     replace(/'/g, '&apos;');
 
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<guide-ia version="1.0">\n  <etapes>\n`;
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<guide-ia version="1.0">\n`;
+    xml += `  <ordre>${etapesOrder.join(',')}</ordre>\n`;
+    xml += `  <etapes>\n`;
     rowsData.forEach((r) => {
       xml += `    <etape index="${r.index}">\n`;
       xml += `      <checked>${r.checked}</checked>\n`;
