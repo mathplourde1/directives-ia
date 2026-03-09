@@ -426,6 +426,7 @@ export default function Guide() {
       </div>
 
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+        <DragDropContext onDragEnd={onDragEnd}>
         <table className="main-table">
           <thead>
             <tr>
