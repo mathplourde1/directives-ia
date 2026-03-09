@@ -435,19 +435,51 @@ export default function Guide() {
               <th>Exigences de déclaration <span className="required">*</span></th>
             </tr>
           </thead>
-          <tbody>
-            {ETAPES.map((etape, i) => {
+          <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="etapes-table" renderClone={(provided, snapshot, rubric) => {
+            const pos = rubric.source.index;
+            const etapeIdx = etapesOrder[pos];
+            const etape = ETAPES[etapeIdx];
+            return (
+              <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
+                style={{ ...provided.draggableProps.style, display: 'table', width: '100%', background: '#e0f3fc', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', opacity: 0.95 }}>
+                <td style={{ padding: 10, fontWeight: 'bold' }}>{etape.libelle}</td>
+                <td colSpan={3} />
+              </tr>
+            );
+          }}>
+            {(provided) => (
+          <tbody ref={provided.innerRef} {...provided.droppableProps}>
+            {etapesOrder.map((etapeIdx, pos) => {
+              const etape = ETAPES[etapeIdx];
+              const i = etapeIdx;
               const r = rows[i];
               const err = errors[i];
               const disabled = !r.checked;
               return (
-                <tr key={etape.id}>
+                <Draggable key={etape.id} draggableId={etape.id} index={pos}>
+                  {(provided, snapshot) => (
+                <tr ref={provided.innerRef} {...provided.draggableProps}
+                  style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}>
                   {/* Col 1: Étape checkbox */}
                   <td
-                    style={{ verticalAlign: 'middle', cursor: 'pointer', transition: 'background 0.15s' }}
+                    style={{ verticalAlign: 'top', cursor: 'pointer', transition: 'background 0.15s' }}
                     onClick={() => handleCheckbox(i, !r.checked)}
-                    onMouseEnter={e => e.currentTarget.style.background = '#eaf6fd'}
+                    onMouseEnter={e => { if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd'; }}
                     onMouseLeave={e => e.currentTarget.style.background = ''}>
+                    {/* Drag handle + reorder buttons */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={e => e.stopPropagation()}>
+                      <span {...provided.dragHandleProps} title="Glisser pour réordonner"
+                        style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
+                      <button type="button" title="En haut de la liste" onClick={() => moveEtape(pos, 0)} disabled={pos === 0}
+                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', color: pos === 0 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>⏫</button>
+                      <button type="button" title="Déplacer vers le haut" onClick={() => moveEtape(pos, pos - 1)} disabled={pos === 0}
+                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', color: pos === 0 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>🔼</button>
+                      <button type="button" title="Déplacer vers le bas" onClick={() => moveEtape(pos, pos + 1)} disabled={pos === etapesOrder.length - 1}
+                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', color: pos === etapesOrder.length - 1 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>🔽</button>
+                      <button type="button" title="En bas de la liste" onClick={() => moveEtape(pos, etapesOrder.length - 1)} disabled={pos === etapesOrder.length - 1}
+                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', color: pos === etapesOrder.length - 1 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>⏬</button>
+                    </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <input
                         type="checkbox"
