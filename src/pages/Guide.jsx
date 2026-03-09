@@ -411,6 +411,12 @@ export default function Guide() {
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
         <DragDropContext onDragEnd={onDragEnd}>
         <table className="main-table">
+          <colgroup>
+            <col style={{ width: '30%' }} />
+            <col style={{ width: '20%' }} />
+            <col style={{ width: '25%' }} />
+            <col style={{ width: '25%' }} />
+          </colgroup>
           <thead>
             <tr>
               <th>Étapes</th>
