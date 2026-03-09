@@ -230,7 +230,8 @@ export default function Guide() {
         if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
         exigences = items.join('<br>');
       }
-      return `<p><strong><i>${s.etape}</i></strong></p><p>${exigences}</p><hr />`;
+      const etapeHtml = s.parenthese ? `<strong><i>${s.etape}</i></strong> (${s.parenthese})` : `<strong><i>${s.etape}</i></strong>`;
+      return `<p>${etapeHtml}</p><p>${exigences}</p><hr />`;
     }).join('');
   }
 
