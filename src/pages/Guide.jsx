@@ -240,7 +240,7 @@ export default function Guide() {
   }
 
   function buildDeclTextHTML(sels) {
-    return sels.map((s) => {
+    return buildIdentHeader() + sels.map((s) => {
       let exigences = '';
       if (s.declaration === 'aucune') {
         exigences = 'Aucune exigence';
