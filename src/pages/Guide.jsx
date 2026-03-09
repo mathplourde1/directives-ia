@@ -58,6 +58,7 @@ const defaultErrors = () => ({
 });
 
 export default function Guide() {
+  const [etapesOrder, setEtapesOrder] = useState(ETAPES.map((_, i) => i));
   const [rows, setRows] = useState(ETAPES.map(() => defaultRowState()));
   const [errors, setErrors] = useState(ETAPES.map(() => defaultErrors()));
   const [submitted, setSubmitted] = useState(false);
