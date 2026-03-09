@@ -446,7 +446,7 @@ export default function Guide() {
         .radio-disabled label, .radio-disabled input { color: #999; pointer-events: none; }
       `}</style>
 
-      <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
+      <h1 className="mb-4 text-2xl font-semibold">Rédiger et personnaliser les directives d'utilisation des SIAg pour une évaluation</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Guide interactif proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
         Ce guide interactif vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des systèmes d'IAg lors d'une évaluation. 
