@@ -51,7 +51,9 @@ const defaultErrors = () => ({
   declaration: false,
   declaration_checkbox: false,
   decl_traces_text: false,
-  decl_logique_text: false
+  decl_logique_text: false,
+  libelle_custom: false,
+  exemples: false
 });
 
 export default function Guide() {
