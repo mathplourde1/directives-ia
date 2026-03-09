@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const ETAPES = [
   { id: "recherche", libelle: "Recherche et recension", parenthese: "faire une recherche augmentée; recenser des sources, des articles ou des données; explorer des hypothèses initiales", sequence: 1 },
