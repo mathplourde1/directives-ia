@@ -55,7 +55,7 @@ export default function Guide() {
 
   // Tick every minute to keep elapsed time fresh
   useEffect(() => {
-    const id = setInterval(() => forceUpdate(n => n + 1), 60000);
+    const id = setInterval(() => forceUpdate((n) => n + 1), 60000);
     return () => clearInterval(id);
   }, []);
 
@@ -90,7 +90,7 @@ export default function Guide() {
 
   function moveEtape(fromPos, toPos) {
     if (toPos < 0 || toPos >= etapesOrder.length) return;
-    setEtapesOrder(prev => {
+    setEtapesOrder((prev) => {
       const next = [...prev];
       const [removed] = next.splice(fromPos, 1);
       next.splice(toPos, 0, removed);
@@ -137,19 +137,19 @@ export default function Guide() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!validate()) { setSubmitStatus({ ok: false }); return; }
+    if (!validate()) {setSubmitStatus({ ok: false });return;}
 
     // Build selections in the current display order
-    const sel = etapesOrder
-      .map(i => {
-        const r = rows[i];
-        if (!r.checked) return null;
-        return { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, parenthese: ETAPES[i].id === 'autres' ? r.exemples : ETAPES[i].parenthese, etapeId: ETAPES[i].id, ...r };
-      })
-      .filter(Boolean);
+    const sel = etapesOrder.
+    map((i) => {
+      const r = rows[i];
+      if (!r.checked) return null;
+      return { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, parenthese: ETAPES[i].id === 'autres' ? r.exemples : ETAPES[i].parenthese, etapeId: ETAPES[i].id, ...r };
+    }).
+    filter(Boolean);
     setSelections(sel);
     setSubmitted(true);
-    setSubmitKey(k => k + 1);
+    setSubmitKey((k) => k + 1);
     setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => {
       document.getElementById('synthese-container')?.scrollIntoView({ behavior: 'smooth' });
@@ -177,11 +177,11 @@ export default function Guide() {
   // ---- Helper: identification header line for exports ----
   function buildIdentHeader() {
     const parts = [
-      identification.cours,
-      identification.session,
-      identification.enseignants,
-      identification.evaluation
-    ].filter(v => v && v.trim());
+    identification.cours,
+    identification.session,
+    identification.enseignants,
+    identification.evaluation].
+    filter((v) => v && v.trim());
     if (!parts.length) return '';
     return `<p style="font-family:Arial,sans-serif;margin-bottom:12px;">${parts.join(' | ')}</p>`;
   }
@@ -193,7 +193,7 @@ export default function Guide() {
     if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources#declaration-de-l-utilisation-d-un-systeme-d-intelligence-artificielle-ia" target="_blank" style="color:blue;text-decoration:underline;">voir les directives</a>)');
     if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
     if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
-    return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map(i => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
+    return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map((i) => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
   }
 
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
@@ -388,7 +388,7 @@ export default function Guide() {
         const ordreNode = root.querySelector('ordre');
         if (ordreNode) {
           const parsed = ordreNode.textContent.split(',').map(Number);
-          if (parsed.length === ETAPES.length && parsed.every(n => !isNaN(n))) {
+          if (parsed.length === ETAPES.length && parsed.every((n) => !isNaN(n))) {
             setEtapesOrder(parsed);
           }
         } else {
@@ -446,7 +446,7 @@ export default function Guide() {
         .radio-disabled label, .radio-disabled input { color: #999; pointer-events: none; }
       `}</style>
 
-      <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
+      <h1 className="mb-4 text-2xl font-semibold">Rédiger et personnaliser les directives d'utilisation des SIAg pour une évaluation</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Guide interactif proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
         Ce guide interactif vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des systèmes d'IAg lors d'une évaluation. Pour ce faire :
@@ -466,29 +466,29 @@ export default function Guide() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Identifiant du cours <span className="required">*</span></label>
-            <input type="text" value={identification.cours} onChange={e => { setIdentification(p => ({...p, cours: e.target.value})); setIdentErrors(p => ({...p, cours: false})); }}
-              placeholder="ex. IFT-1001"
-              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.cours ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.cours ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            <input type="text" value={identification.cours} onChange={(e) => {setIdentification((p) => ({ ...p, cours: e.target.value }));setIdentErrors((p) => ({ ...p, cours: false }));}}
+            placeholder="ex. IFT-1001"
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.cours ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.cours ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
             {identErrors.cours && <span style={errorStyle}>⚠ Ce champ est requis</span>}
           </div>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Session</label>
-            <input type="text" value={identification.session} onChange={e => setIdentification(p => ({...p, session: e.target.value}))}
-              placeholder="ex. Hiver 2026"
-              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+            <input type="text" value={identification.session} onChange={(e) => setIdentification((p) => ({ ...p, session: e.target.value }))}
+            placeholder="ex. Hiver 2026"
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
           </div>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom de l'évaluation <span className="required">*</span></label>
-            <input type="text" value={identification.evaluation} onChange={e => { setIdentification(p => ({...p, evaluation: e.target.value})); setIdentErrors(p => ({...p, evaluation: false})); }}
-              placeholder="ex. Travail final"
-              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.evaluation ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.evaluation ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            <input type="text" value={identification.evaluation} onChange={(e) => {setIdentification((p) => ({ ...p, evaluation: e.target.value }));setIdentErrors((p) => ({ ...p, evaluation: false }));}}
+            placeholder="ex. Travail final"
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.evaluation ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.evaluation ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
             {identErrors.evaluation && <span style={errorStyle}>⚠ Ce champ est requis</span>}
           </div>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s)</label>
-            <input type="text" value={identification.enseignants} onChange={e => setIdentification(p => ({...p, enseignants: e.target.value}))}
-              placeholder="ex. Marie Tremblay"
-              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+            <input type="text" value={identification.enseignants} onChange={(e) => setIdentification((p) => ({ ...p, enseignants: e.target.value }))}
+            placeholder="ex. Marie Tremblay"
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
           </div>
         </div>
       </div>
@@ -511,63 +511,63 @@ export default function Guide() {
             </tr>
           </thead>
           <Droppable droppableId="etapes-table">
-            {(provided) => (
-          <tbody ref={provided.innerRef} {...provided.droppableProps}>
+            {(provided) =>
+              <tbody ref={provided.innerRef} {...provided.droppableProps}>
             {etapesOrder.map((etapeIdx, pos) => {
-              const etape = ETAPES[etapeIdx];
-              const i = etapeIdx;
-              const r = rows[i];
-              const err = errors[i];
-              const disabled = !r.checked;
-              return (
-                <Draggable key={etape.id} draggableId={etape.id} index={pos}>
-                  {(provided, snapshot) => (
-                <tr ref={provided.innerRef} {...provided.draggableProps}
-                  style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}>
+                  const etape = ETAPES[etapeIdx];
+                  const i = etapeIdx;
+                  const r = rows[i];
+                  const err = errors[i];
+                  const disabled = !r.checked;
+                  return (
+                    <Draggable key={etape.id} draggableId={etape.id} index={pos}>
+                  {(provided, snapshot) =>
+                      <tr ref={provided.innerRef} {...provided.draggableProps}
+                      style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}>
                   {/* Col 1: Étape checkbox */}
                   <td
-                    style={{ verticalAlign: 'top', cursor: 'pointer', transition: 'background 0.15s' }}
-                    onClick={() => handleCheckbox(i, !r.checked)}
-                    onMouseEnter={e => { if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd'; }}
-                    onMouseLeave={e => e.currentTarget.style.background = ''}>
+                          style={{ verticalAlign: 'top', cursor: 'pointer', transition: 'background 0.15s' }}
+                          onClick={() => handleCheckbox(i, !r.checked)}
+                          onMouseEnter={(e) => {if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd';}}
+                          onMouseLeave={(e) => e.currentTarget.style.background = ''}>
                     {/* Drag handle + reorder buttons */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={e => e.stopPropagation()}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={(e) => e.stopPropagation()}>
                       <span {...provided.dragHandleProps} title="Glisser pour réordonner"
-                        style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
+                            style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
                       <button type="button" title="En haut de la liste" onClick={() => moveEtape(pos, 0)} disabled={pos === 0}
-                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>⏫</button>
+                            style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>⏫</button>
                       <button type="button" title="Déplacer vers le haut" onClick={() => moveEtape(pos, pos - 1)} disabled={pos === 0}
-                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>🔼</button>
+                            style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>🔼</button>
                       <button type="button" title="Déplacer vers le bas" onClick={() => moveEtape(pos, pos + 1)} disabled={pos === etapesOrder.length - 1}
-                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>🔽</button>
+                            style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>🔽</button>
                       <button type="button" title="En bas de la liste" onClick={() => moveEtape(pos, etapesOrder.length - 1)} disabled={pos === etapesOrder.length - 1}
-                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>⏬</button>
+                            style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>⏬</button>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <input
-                        type="checkbox"
-                        id={`etape_${i}`}
-                        checked={r.checked}
-                        onChange={(e) => { e.stopPropagation(); handleCheckbox(i, e.target.checked); }}
-                        style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
+                              type="checkbox"
+                              id={`etape_${i}`}
+                              checked={r.checked}
+                              onChange={(e) => {e.stopPropagation();handleCheckbox(i, e.target.checked);}}
+                              style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
                       <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>
                         {etape.libelle}
                         {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
                       </label>
                       </div>
-                      {etape.id === 'autres' && r.checked && (
-                      <div style={{ marginTop: 8 }} onClick={e => e.stopPropagation()}>
+                      {etape.id === 'autres' && r.checked &&
+                          <div style={{ marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
                         <div style={{ marginBottom: 6 }}>
                           <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
                             Libellé <span className="required">*</span>
                           </label>
                           <input
-                            type="text"
-                            value={r.libelle_custom}
-                            onChange={e => updateRow(i, 'libelle_custom', e.target.value)}
-                            placeholder="Nom de l'étape personnalisée"
-                            style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.libelle_custom ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.libelle_custom ? '#fff4f4' : 'white' }}
-                          />
+                                type="text"
+                                value={r.libelle_custom}
+                                onChange={(e) => updateRow(i, 'libelle_custom', e.target.value)}
+                                placeholder="Nom de l'étape personnalisée"
+                                style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.libelle_custom ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.libelle_custom ? '#fff4f4' : 'white' }} />
+
                           {err.libelle_custom && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                         </div>
                         <div>
@@ -575,35 +575,35 @@ export default function Guide() {
                             Exemples <span className="required">*</span>
                           </label>
                           <textarea
-                            rows={3}
-                            value={r.exemples}
-                            onChange={e => updateRow(i, 'exemples', e.target.value)}
-                            placeholder="Décrivez des exemples d'utilisation"
-                            style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.exemples ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.exemples ? '#fff4f4' : 'white' }}
-                          />
+                                rows={3}
+                                value={r.exemples}
+                                onChange={(e) => updateRow(i, 'exemples', e.target.value)}
+                                placeholder="Décrivez des exemples d'utilisation"
+                                style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.exemples ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.exemples ? '#fff4f4' : 'white' }} />
+
                           {err.exemples && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                         </div>
                       </div>
-                      )}
+                          }
                       </td>
 
                   {/* Col 2: IA options */}
                   <td>
                     <div className={disabled ? 'radio-disabled' : ''}>
                       {IA_OPTIONS.map((opt, j) =>
-                      <div key={j}>
+                            <div key={j}>
                           <input
-                          type="radio"
-                          id={`radio_${i}_${j}`}
-                          name={`ia_${i}`}
-                          value={opt}
-                          checked={r.ia === opt}
-                          disabled={disabled}
-                          onChange={() => handleIaChange(i, opt)} />
+                                type="radio"
+                                id={`radio_${i}_${j}`}
+                                name={`ia_${i}`}
+                                value={opt}
+                                checked={r.ia === opt}
+                                disabled={disabled}
+                                onChange={() => handleIaChange(i, opt)} />
 
                           <label htmlFor={`radio_${i}_${j}`} style={{ marginLeft: 4 }}>{opt}</label>
                         </div>
-                      )}
+                            )}
                     </div>
                     {err.ia && <span style={errorStyle}>⚠ Sélection requise</span>}
                   </td>
@@ -611,14 +611,14 @@ export default function Guide() {
                   {/* Col 3: Justification */}
                   <td>
                     {r.ia &&
-                    <textarea
-                      rows={3}
-                      value={r.justification}
-                      onChange={(e) => updateRow(i, 'justification', e.target.value)}
-                      placeholder="Entrez la justification"
-                      style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.justification ? inputErrorBorder : { border: '1px solid #ccc' }) }} />
+                          <textarea
+                            rows={3}
+                            value={r.justification}
+                            onChange={(e) => updateRow(i, 'justification', e.target.value)}
+                            placeholder="Entrez la justification"
+                            style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.justification ? inputErrorBorder : { border: '1px solid #ccc' }) }} />
 
-                    }
+                          }
                     {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
                     {err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                   </td>
@@ -626,103 +626,103 @@ export default function Guide() {
                   {/* Col 4: Exigences de déclaration */}
                   <td>
                     {disabled ?
-                    <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
+                          <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
 
-                    <>
+                          <>
                         <div>
                           <input
-                          type="radio"
-                          id={`decl_aucune_${i}`}
-                          name={`decl_${i}`}
-                          value="aucune"
-                          checked={r.declaration === 'aucune'}
-                          onChange={() => updateRow(i, 'declaration', 'aucune')} />
+                                type="radio"
+                                id={`decl_aucune_${i}`}
+                                name={`decl_${i}`}
+                                value="aucune"
+                                checked={r.declaration === 'aucune'}
+                                onChange={() => updateRow(i, 'declaration', 'aucune')} />
 
                           <label htmlFor={`decl_aucune_${i}`} style={{ marginLeft: 4 }}>Aucune exigence</label>
                         </div>
                         <div>
                           <input
-                          type="radio"
-                          id={`decl_requise_${i}`}
-                          name={`decl_${i}`}
-                          value="requise"
-                          checked={r.declaration === 'requise'}
-                          onChange={() => updateRow(i, 'declaration', 'requise')} />
+                                type="radio"
+                                id={`decl_requise_${i}`}
+                                name={`decl_${i}`}
+                                value="requise"
+                                checked={r.declaration === 'requise'}
+                                onChange={() => updateRow(i, 'declaration', 'requise')} />
 
                           <label htmlFor={`decl_requise_${i}`} style={{ marginLeft: 4 }}>Exigence(s) requise(s)</label>
                         </div>
                         {err.declaration && <span style={errorStyle}>⚠ Sélection requise</span>}
 
                         {r.declaration === 'requise' &&
-                      <div className="decl-sub">
+                            <div className="decl-sub">
                             {/* Iagraphie */}
                             <div>
                               <input
-                            type="checkbox"
-                            id={`iagraphie_${i}`}
-                            checked={r.decl_iagraphie}
-                            onChange={(e) => updateRow(i, 'decl_iagraphie', e.target.checked)} />
+                                  type="checkbox"
+                                  id={`iagraphie_${i}`}
+                                  checked={r.decl_iagraphie}
+                                  onChange={(e) => updateRow(i, 'decl_iagraphie', e.target.checked)} />
 
                               <label htmlFor={`iagraphie_${i}`} style={{ marginLeft: 4 }}>Références et IAgraphie</label>
                             </div>
                             {/* Traces */}
                             <div style={{ marginTop: 6 }}>
                               <input
-                            type="checkbox"
-                            id={`traces_${i}`}
-                            checked={r.decl_traces}
-                            onChange={(e) => updateRow(i, 'decl_traces', e.target.checked)} />
+                                  type="checkbox"
+                                  id={`traces_${i}`}
+                                  checked={r.decl_traces}
+                                  onChange={(e) => updateRow(i, 'decl_traces', e.target.checked)} />
 
                               <label htmlFor={`traces_${i}`} style={{ marginLeft: 4 }}>Conserver les traces suivantes :</label>
                               {r.decl_traces &&
-                          <>
+                                <>
                                   <textarea
-                              rows={3}
-                              style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_traces_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
-                              placeholder="Instructions supplémentaires (requis)"
-                              value={r.decl_traces_text}
-                              onChange={(e) => {updateRow(i, 'decl_traces_text', e.target.value);}} />
+                                    rows={3}
+                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_traces_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
+                                    placeholder="Instructions supplémentaires (requis)"
+                                    value={r.decl_traces_text}
+                                    onChange={(e) => {updateRow(i, 'decl_traces_text', e.target.value);}} />
 
                                   {err.decl_traces_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
-                          }
+                                }
                             </div>
                             {/* Logique */}
                             <div style={{ marginTop: 6 }}>
                               <input
-                            type="checkbox"
-                            id={`logique_${i}`}
-                            checked={r.decl_logique}
-                            onChange={(e) => updateRow(i, 'decl_logique', e.target.checked)} />
+                                  type="checkbox"
+                                  id={`logique_${i}`}
+                                  checked={r.decl_logique}
+                                  onChange={(e) => updateRow(i, 'decl_logique', e.target.checked)} />
 
                               <label htmlFor={`logique_${i}`} style={{ marginLeft: 4 }}>Expliquer la logique d'utilisation :</label>
                               {r.decl_logique &&
-                          <>
+                                <>
                                   <textarea
-                              rows={3}
-                              style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_logique_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
-                              placeholder="Instructions supplémentaires (requis)"
-                              value={r.decl_logique_text}
-                              onChange={(e) => {updateRow(i, 'decl_logique_text', e.target.value);}} />
+                                    rows={3}
+                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_logique_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
+                                    placeholder="Instructions supplémentaires (requis)"
+                                    value={r.decl_logique_text}
+                                    onChange={(e) => {updateRow(i, 'decl_logique_text', e.target.value);}} />
 
                                   {err.decl_logique_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
-                          }
+                                }
                             </div>
                             {err.declaration_checkbox && <span style={errorStyle}>⚠ Au moins une exigence doit être sélectionnée</span>}
                           </div>
-                      }
+                            }
                       </>
-                    }
+                          }
                   </td>
                   </tr>
-                  )}
-                </Draggable>
-              );
-            })}
+                      }
+                </Draggable>);
+
+                })}
             {provided.placeholder}
           </tbody>
-            )}
+              }
           </Droppable>
         </table>
         </DragDropContext>
@@ -733,19 +733,19 @@ export default function Guide() {
             const diffMs = new Date() - submitStatus.time;
             const diffMin = Math.floor(diffMs / 60000);
             const diffH = Math.floor(diffMin / 60);
-            const elapsed = diffH > 0
-              ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}`
-              : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
+            const elapsed = diffH > 0 ?
+            `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` :
+            diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
             return (
               <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
                 ✔️ Sommaires générés avec succès {elapsed}.
-              </span>
-            );
-          })() : (
-            <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
+              </span>);
+
+          })() :
+          <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
               ⚠ Certains champs obligatoires ne sont pas remplis correctement.
-            </span>
-          ))}
+            </span>)
+          }
         </div>
       </form>
 
@@ -758,7 +758,7 @@ export default function Guide() {
           onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
           onDownloadWord={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}
           copyOk={copyMsgs['s1-brio']}
-          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).join(' | ') || null}>
+          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter((v) => v && v.trim()).join(' | ') || null}>
 
             <table className="synth-table">
               <thead>
@@ -772,7 +772,7 @@ export default function Guide() {
               <tbody>
                 {selections.map((s, i) =>
               <tr key={i}>
-                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{fontWeight:'normal'}}> ({s.parenthese})</span>}</td>
+                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
                     <td>{s.ia}</td>
                     <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
                     <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
@@ -800,7 +800,7 @@ export default function Guide() {
           onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
           onDownloadWord={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}
           copyOk={copyMsgs['s3-brio']}
-          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).join(' | ') || null}>
+          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter((v) => v && v.trim()).join(' | ') || null}>
 
             <p style={{ marginBottom: 12 }}>
               Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.
@@ -813,12 +813,12 @@ export default function Guide() {
                 </tr>
               </thead>
               <tbody>
-                {selections.map((s, i) => (
-                  <tr key={i}>
-                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{fontWeight:'normal'}}> ({s.parenthese})</span>}</td>
+                {selections.map((s, i) =>
+              <tr key={i}>
+                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
                     <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
                   </tr>
-                ))}
+              )}
               </tbody>
             </table>
           </SyntheseSection>
