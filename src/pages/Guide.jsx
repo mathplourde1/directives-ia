@@ -96,6 +96,11 @@ export default function Guide() {
   }
 
   function validate() {
+    // Validate identification
+    const newIdentErrors = { cours: !identification.cours.trim(), evaluation: !identification.evaluation.trim() };
+    setIdentErrors(newIdentErrors);
+    if (newIdentErrors.cours || newIdentErrors.evaluation) return false;
+
     let valid = true;
     const newErrors = ETAPES.map(() => defaultErrors());
     let anyChecked = false;
