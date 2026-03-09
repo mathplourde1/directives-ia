@@ -39,6 +39,8 @@ const defaultErrors = () => ({
 });
 
 export default function Guide() {
+  const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '' });
+  const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false });
   const [etapesOrder, setEtapesOrder] = useState(ETAPES.map((_, i) => i));
   const [rows, setRows] = useState(ETAPES.map(() => defaultRowState()));
   const [errors, setErrors] = useState(ETAPES.map(() => defaultErrors()));
