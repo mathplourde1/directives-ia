@@ -222,6 +222,7 @@ export default function Guide() {
   // ---- Build HTML for declaration table (section 3) ----
   function buildDeclTableHTML(sels, withHeading = false) {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Exigences de déclaration d'utilisation de l'IA</h2><p style="font-family:Arial,sans-serif;">Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.</p>` : '';
+    html += buildIdentHeader();
     html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
