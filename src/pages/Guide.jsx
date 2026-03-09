@@ -281,6 +281,8 @@ export default function Guide() {
       xml += `      <decl_traces_text>${escapeXml(r.decl_traces_text)}</decl_traces_text>\n`;
       xml += `      <decl_logique>${r.decl_logique}</decl_logique>\n`;
       xml += `      <decl_logique_text>${escapeXml(r.decl_logique_text)}</decl_logique_text>\n`;
+      xml += `      <libelle_custom>${escapeXml(r.libelle_custom)}</libelle_custom>\n`;
+      xml += `      <exemples>${escapeXml(r.exemples)}</exemples>\n`;
       xml += `    </etape>\n`;
     });
     xml += `  </etapes>\n</guide-ia>`;
