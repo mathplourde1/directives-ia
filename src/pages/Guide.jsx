@@ -213,7 +213,7 @@ export default function Guide() {
 
   function buildTextHTML(sels, withHeading = false) {
     const heading = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu</h2>` : '';
-    return heading + sels.map((s) => {
+    return heading + buildIdentHeader() + sels.map((s) => {
       const etapeHtml = s.parenthese ? `<strong><i>${s.etape}</i></strong> (${s.parenthese})` : `<strong><i>${s.etape}</i></strong>`;
       return `<p>${etapeHtml}</p><p>L'utilisation des SIAg est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p>Exigences de déclaration :</p>${formatExigences(s)}<hr />`;
     }).join('');
