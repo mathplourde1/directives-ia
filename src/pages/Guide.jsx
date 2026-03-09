@@ -62,6 +62,7 @@ export default function Guide() {
   const [rows, setRows] = useState(ETAPES.map(() => defaultRowState()));
   const [errors, setErrors] = useState(ETAPES.map(() => defaultErrors()));
   const [submitted, setSubmitted] = useState(false);
+  const [submitKey, setSubmitKey] = useState(0);
   const [selections, setSelections] = useState([]);
   const [copyMsgs, setCopyMsgs] = useState({});
   const [saveError, setSaveError] = useState('');
