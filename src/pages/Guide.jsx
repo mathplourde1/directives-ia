@@ -257,7 +257,9 @@ export default function Guide() {
       decl_traces: r.decl_traces,
       decl_traces_text: r.decl_traces_text,
       decl_logique: r.decl_logique,
-      decl_logique_text: r.decl_logique_text
+      decl_logique_text: r.decl_logique_text,
+      libelle_custom: r.libelle_custom,
+      exemples: r.exemples
     }));
 
     const escapeXml = (str) => String(str).
