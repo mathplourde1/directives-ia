@@ -363,10 +363,6 @@ export default function Guide() {
         if (!root) {setSaveError("Ce fichier n'est pas un fichier de sauvegarde valide (balise racine manquante).");return;}
 
         const etapeNodes = doc.querySelectorAll('etape');
-        if (etapeNodes.length !== ETAPES.length) {
-          setSaveError(`Le fichier ne correspond pas à ce formulaire (${etapeNodes.length} étapes trouvées, ${ETAPES.length} attendues).`);
-          return;
-        }
 
         const newRows = ETAPES.map(() => defaultRowState());
         etapeNodes.forEach((node) => {
