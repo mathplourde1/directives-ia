@@ -138,7 +138,7 @@ export default function Guide() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) { setSubmitStatus({ ok: false }); return; }
 
     // Build selections in the current display order
     const sel = etapesOrder
