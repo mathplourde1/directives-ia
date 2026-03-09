@@ -375,7 +375,7 @@ export default function Guide() {
               const err = errors[i];
               const disabled = !r.checked;
               return (
-                <tr key={i}>
+                <tr key={etape.id}>
                   {/* Col 1: Étape checkbox */}
                   <td
                     style={{ verticalAlign: 'middle', cursor: 'pointer', transition: 'background 0.15s' }}
@@ -389,7 +389,10 @@ export default function Guide() {
                         checked={r.checked}
                         onChange={(e) => { e.stopPropagation(); handleCheckbox(i, e.target.checked); }}
                         style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
-                      <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>{etape}</label>
+                      <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>
+                        {etape.libelle}
+                        {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
+                      </label>
                     </div>
                   </td>
 
