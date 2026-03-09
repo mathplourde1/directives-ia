@@ -40,7 +40,9 @@ const defaultRowState = () => ({
   decl_traces: false,
   decl_traces_text: '',
   decl_logique: false,
-  decl_logique_text: ''
+  decl_logique_text: '',
+  libelle_custom: '',
+  exemples: ''
 });
 
 const defaultErrors = () => ({
