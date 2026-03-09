@@ -672,7 +672,7 @@ export default function Guide() {
               <tbody>
                 {selections.map((s, i) =>
               <tr key={i}>
-                    <td>{s.etape}</td>
+                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{fontWeight:'normal'}}> ({s.parenthese})</span>}</td>
                     <td>{s.ia}</td>
                     <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
                     <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
