@@ -129,7 +129,7 @@ export default function Guide() {
       .map(i => {
         const r = rows[i];
         if (!r.checked) return null;
-        return { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, etapeId: ETAPES[i].id, ...r };
+        return { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, parenthese: ETAPES[i].id === 'autres' ? r.exemples : ETAPES[i].parenthese, etapeId: ETAPES[i].id, ...r };
       })
       .filter(Boolean);
     setSelections(sel);
