@@ -190,6 +190,7 @@ export default function Guide() {
   // ---- Build HTML for synthesis table (sections 1 & 2) ----
   function buildTableHTML(sels, withHeading = false) {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse</h2>` : '';
+    html += buildIdentHeader();
     html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
