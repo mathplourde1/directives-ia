@@ -382,6 +382,7 @@ export default function Guide() {
     <div style={{ fontFamily: 'Arial, sans-serif', background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
       <style>{`
         :root { --rouge: #E41E25; --bleu-ul: #00A4E4; --gris-pale: #F2F2F2; --gris-fonce: #231F20; --bordure: #ccc; }
+        body { font-size: smaller; }
         h1 { color: #E41E25; text-align: center; }
         table.main-table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         table.main-table th, table.main-table td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: top; }
