@@ -142,7 +142,14 @@ export default function Guide() {
     e.preventDefault();
     if (!validate()) return;
 
-    const sel = rows.map((r, i) => r.checked ? { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, etapeId: ETAPES[i].id, ...r } : null).filter(Boolean);
+    // Build selections in the current display order
+    const sel = etapesOrder
+      .map(i => {
+        const r = rows[i];
+        if (!r.checked) return null;
+        return { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, etapeId: ETAPES[i].id, ...r };
+      })
+      .filter(Boolean);
     setSelections(sel);
     setSubmitted(true);
     setTimeout(() => {
