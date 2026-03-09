@@ -461,13 +461,13 @@ export default function Guide() {
                       <span {...provided.dragHandleProps} title="Glisser pour réordonner"
                         style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
                       <button type="button" title="En haut de la liste" onClick={() => moveEtape(pos, 0)} disabled={pos === 0}
-                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', color: pos === 0 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>⏫</button>
+                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>⏫</button>
                       <button type="button" title="Déplacer vers le haut" onClick={() => moveEtape(pos, pos - 1)} disabled={pos === 0}
-                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', color: pos === 0 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>🔼</button>
+                        style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>🔼</button>
                       <button type="button" title="Déplacer vers le bas" onClick={() => moveEtape(pos, pos + 1)} disabled={pos === etapesOrder.length - 1}
-                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', color: pos === etapesOrder.length - 1 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>🔽</button>
+                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>🔽</button>
                       <button type="button" title="En bas de la liste" onClick={() => moveEtape(pos, etapesOrder.length - 1)} disabled={pos === etapesOrder.length - 1}
-                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', color: pos === etapesOrder.length - 1 ? '#ccc' : '#555', fontSize: '0.9em', padding: '1px 3px' }}>⏬</button>
+                        style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>⏬</button>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <input
