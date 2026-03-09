@@ -768,7 +768,8 @@ export default function Guide() {
           title="Exigences de déclaration d'utilisation de l'IA"
           onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
           onDownloadWord={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}
-          copyOk={copyMsgs['s3-brio']}>
+          copyOk={copyMsgs['s3-brio']}
+          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).join(' | ') || null}>
 
             <p style={{ marginBottom: 12 }}>
               Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.
