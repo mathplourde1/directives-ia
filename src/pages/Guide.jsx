@@ -416,8 +416,38 @@ export default function Guide() {
                         {etape.libelle}
                         {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
                       </label>
-                    </div>
-                  </td>
+                      </div>
+                      {etape.id === 'autres' && r.checked && (
+                      <div style={{ marginTop: 8 }} onClick={e => e.stopPropagation()}>
+                        <div style={{ marginBottom: 6 }}>
+                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
+                            Libellé <span className="required">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            value={r.libelle_custom}
+                            onChange={e => updateRow(i, 'libelle_custom', e.target.value)}
+                            placeholder="Nom de l'étape personnalisée"
+                            style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.libelle_custom ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.libelle_custom ? '#fff4f4' : 'white' }}
+                          />
+                          {err.libelle_custom && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                        </div>
+                        <div>
+                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
+                            Exemples <span className="required">*</span>
+                          </label>
+                          <textarea
+                            rows={3}
+                            value={r.exemples}
+                            onChange={e => updateRow(i, 'exemples', e.target.value)}
+                            placeholder="Décrivez des exemples d'utilisation"
+                            style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.exemples ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.exemples ? '#fff4f4' : 'white' }}
+                          />
+                          {err.exemples && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                        </div>
+                      </div>
+                      )}
+                      </td>
 
                   {/* Col 2: IA options */}
                   <td>
