@@ -49,7 +49,15 @@ export default function Guide() {
   const [selections, setSelections] = useState([]);
   const [copyMsgs, setCopyMsgs] = useState({});
   const [saveError, setSaveError] = useState('');
+  const [submitStatus, setSubmitStatus] = useState(null); // null | { ok: true, time: Date } | { ok: false }
+  const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
+
+  // Tick every minute to keep elapsed time fresh
+  useEffect(() => {
+    const id = setInterval(() => forceUpdate(n => n + 1), 60000);
+    return () => clearInterval(id);
+  }, []);
 
   function updateRow(i, field, value) {
     setRows((prev) => {
