@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import ETAPES_DATA from '../components/etapesData.js';
+import ETAPES_DATA from '@/components/etapesData.js';
 const ETAPES = ETAPES_DATA.sort((a, b) => a.sequence - b.sequence);
 
 
