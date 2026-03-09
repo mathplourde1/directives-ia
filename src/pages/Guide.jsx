@@ -662,8 +662,8 @@ export default function Guide() {
           </tbody>
             )}
           </Droppable>
-          </DragDropContext>
         </table>
+        </DragDropContext>
         <br />
         <button type="submit" className="btn-primary">Soumettre</button>
       </form>
