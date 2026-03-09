@@ -721,13 +721,6 @@ export default function Guide() {
       {/* ===== SYNTHESIS SECTIONS ===== */}
       {submitted &&
       <div id="synthese-container" key={submitKey}>
-          {/* Identification summary line */}
-          {[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).length > 0 &&
-            <p style={{ marginTop: 20, marginBottom: 0, fontFamily: 'Arial, sans-serif', fontSize: '0.95em' }}>
-              {[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).join(' | ')}
-            </p>
-          }
-
           {/* Section 1: Tableau synthèse */}
           <SyntheseSection
           title="Tableau synthèse"
