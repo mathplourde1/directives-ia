@@ -390,6 +390,13 @@ export default function Guide() {
           setEtapesOrder(ETAPES.map((_, i) => i));
         }
 
+        // Restore identification if present
+        const identNode = root.querySelector('identification');
+        if (identNode) {
+          const getI = (tag) => identNode.querySelector(tag)?.textContent ?? '';
+          setIdentification({ cours: getI('cours'), session: getI('session'), enseignants: getI('enseignants'), evaluation: getI('evaluation') });
+        }
+
         setRows(newRows);
         setErrors(ETAPES.map(() => defaultErrors()));
         setSubmitted(false);
