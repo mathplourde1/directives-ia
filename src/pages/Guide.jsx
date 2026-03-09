@@ -435,19 +435,7 @@ export default function Guide() {
               <th>Exigences de déclaration <span className="required">*</span></th>
             </tr>
           </thead>
-          <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="etapes-table" renderClone={(provided, snapshot, rubric) => {
-            const pos = rubric.source.index;
-            const etapeIdx = etapesOrder[pos];
-            const etape = ETAPES[etapeIdx];
-            return (
-              <tr ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}
-                style={{ ...provided.draggableProps.style, display: 'table', width: '100%', background: '#e0f3fc', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', opacity: 0.95 }}>
-                <td style={{ padding: 10, fontWeight: 'bold' }}>{etape.libelle}</td>
-                <td colSpan={3} />
-              </tr>
-            );
-          }}>
+          <Droppable droppableId="etapes-table">
             {(provided) => (
           <tbody ref={provided.innerRef} {...provided.droppableProps}>
             {etapesOrder.map((etapeIdx, pos) => {
