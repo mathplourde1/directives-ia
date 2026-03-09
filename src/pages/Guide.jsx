@@ -1,14 +1,7 @@
 import React, { useState, useRef } from 'react';
 
-const ETAPES = [
-"Matériel de préparation à l'évaluation (fiches d'étude, guide de révision, questions préparatoires, etc.)",
-"Exécution de l'évaluation (examen, questionnaire, présentation, etc.)",
-"Idéation/tempête d'idées (choix d'un sujet, formulation d'une question de recherche, préparation du plan du travail, etc.)",
-"Recension d'informations (sources, articles, données, etc.)",
-"Analyse des informations (comparaison des données, traduction, etc.)",
-"Soutien à la rédaction (cohérence textuelle, transitions, etc.)",
-"Soutien à la révision (grammaticale, syntaxique, stylistique, etc.)",
-"Mise en forme (textuelle, graphiques, images, diagrammes, etc.)"];
+import ETAPES_DATA from '../components/etapesData.js';
+const ETAPES = ETAPES_DATA.sort((a, b) => a.sequence - b.sequence);
 
 
 const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
