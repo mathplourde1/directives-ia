@@ -724,7 +724,26 @@ export default function Guide() {
         </table>
         </DragDropContext>
         <br />
-        <button type="submit" className="btn-primary">Soumettre</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <button type="submit" className="btn-primary">Soumettre</button>
+          {submitStatus && (submitStatus.ok ? (() => {
+            const diffMs = new Date() - submitStatus.time;
+            const diffMin = Math.floor(diffMs / 60000);
+            const diffH = Math.floor(diffMin / 60);
+            const elapsed = diffH > 0
+              ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}`
+              : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
+            return (
+              <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
+                ✔️ Sommaires générés avec succès {elapsed}.
+              </span>
+            );
+          })() : (
+            <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
+              ⚠ Certains champs obligatoires ne sont pas remplis correctement.
+            </span>
+          ))}
+        </div>
       </form>
 
       {/* ===== SYNTHESIS SECTIONS ===== */}
