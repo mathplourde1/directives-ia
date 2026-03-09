@@ -153,6 +153,7 @@ export default function Guide() {
       .filter(Boolean);
     setSelections(sel);
     setSubmitted(true);
+    setSubmitKey(k => k + 1);
     setTimeout(() => {
       document.getElementById('synthese-container')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
