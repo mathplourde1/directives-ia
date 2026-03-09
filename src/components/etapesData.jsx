@@ -13,8 +13,8 @@ const ETAPES = [
   },
   {
     id: "accessibilite",
-    libelle: "Accessibilité et traduction",
-    parenthese: "rendre accessible pour consultation un contenu en le changeant de format - texte alternatif, sous-titres automatisés, lecture orale, etc.; consulter un contenu en langue étrangère",
+    libelle: "Accès au contenu",
+    parenthese: "consulter un contenu dans un autre format - texte alternatif, sous-titres automatisés, lecture orale, etc.; consulter un contenu exprimé dans une langue étrangère",
     sequence: 3
   },
   {
