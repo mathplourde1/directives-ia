@@ -8,98 +8,74 @@ const ETAPES = [
   {
     id: "tutorat",
     libelle: "Tutorat",
-    parenthese: "se faire expliquer un concept; répondre à des questions préparatoires",
+    parenthese: "se faire expliquer un concept; répondre à des questions préparatoires; s'entrainer et réviser",
     sequence: 2
   },
   {
     id: "accessibilite",
-    libelle: "Accessibilité",
-    parenthese: "générer et consulter du contenu en le changeant de format - texte alternatif, sous-titres automatisés, lecture orale, etc.",
+    libelle: "Accessibilité et traduction",
+    parenthese: "rendre accessible pour consultation un contenu en le changeant de format - texte alternatif, sous-titres automatisés, lecture orale, etc.; consulter un contenu en langue étrangère",
     sequence: 3
   },
   {
     id: "ideation",
-    libelle: "Idéation/tempête d'idées",
-    parenthese: "générer des exemples, des plans, des cas fictifs, des pistes d'argumentation; cadrer un sujet",
+    libelle: "Idéation ou tempête d'idées",
+    parenthese: "générer des exemples, des plans, des cas fictifs ou des pistes d'argumentation; cadrer un sujet",
     sequence: 4
-  },
-  {
-    id: "capture",
-    libelle: "Capture et saisie assistée",
-    parenthese: "capturer, annoter ou étiquetter des données qualitatives ou des réunions",
-    sequence: 5
   },
   {
     id: "analyse",
     libelle: "Analyse d'informations",
-    parenthese: "traiter, gérer ou analyser des fichiers, tableaux, corpus, données ou cartes conceptuelles",
-    sequence: 6
-  },
-  {
-    id: "traduction",
-    libelle: "Traduction",
-    parenthese: "consulter un document en langue étrangère; faire traduire un extrait à insérer comme citation",
-    sequence: 7
+    parenthese: "traiter, gérer ou analyser des fichiers, tableaux, corpus, données ou cartes conceptuelles; valider d'autres contenus générés; capturer, annoter ou étiqueter des données qualitatives",
+    sequence: 5
   },
   {
     id: "redaction",
-    libelle: "Rédaction",
-    parenthese: "générer un texte entier texte; faire compléter un texte partiellement rédigé",
-    sequence: 8
+    libelle: "Rédaction ou production",
+    parenthese: "générer ou faire compléter un texte; rédiger une traduction d'un texte que j'ai rédigé; générer du code, une modélisation, un script, un scénario, une documentation ou un prototype",
+    sequence: 6
   },
   {
-    id: "production",
-    libelle: "Production",
-    parenthese: "générer du code, une modélisation, un script, un scénario, de la documentation ou un prototype",
-    sequence: 9
-  },
-  {
-    id: "validation",
-    libelle: "Validation du SIAg",
-    parenthese: "demander au SIAg de valider ses affirmations; utiliser un autre outil ou méthode pour vérifier le contenu",
-    sequence: 10
+    id: "resolution",
+    libelle: "Résolution de problèmes",
+    parenthese: "cerner le problème; expliquer une démarche; générer des hypothèses ou des solutions plausibles; déboguer du code; générer des calculs, une preuve ou une démonstration",
+    sequence: 7
   },
   {
     id: "revision",
     libelle: "Révision linguistique",
     parenthese: "effectuer une révision grammaticale, syntaxique ou stylistique",
-    sequence: 11
-  },
-  {
-    id: "resolution",
-    libelle: "Résolution de problèmes",
-    parenthese: "déboguer du code; cerner le problème; expliquer une démarche; générer des solutions plausibles; faire des calculs",
-    sequence: 12
+    sequence: 8
   },
   {
     id: "forme",
     libelle: "Mise en forme",
     parenthese: "harmoniser les styles graphiques, la présentation ou l'esthétique; assurer le respect des normes de citation, des tableaux et figures",
-    sequence: 13
+    sequence: 9
   },
   {
     id: "multi",
     libelle: "Création multimodale",
-    parenthese: "générer des images, des diagrammes, des capsules audio, des vidéos, des supports de présentation, des animations ou des expériences interactives",
-    sequence: 14
+    parenthese: "générer des images, des diagrammes, des capsules audios, des vidéos, des supports de présentation, des animations ou des expériences interactives",
+    sequence: 10
   },
   {
     id: "agentique",
     libelle: "Utilisation agentique",
     parenthese: "recourir à un agent autonome effectuant des tâches séquentielles, navigation web, exécution de code en boucle",
-    sequence: 15
+    sequence: 11
   },
   {
-    id: "situation",
-    libelle: "Situation d'évaluation",
-    parenthese: "utiliser un assistant IA en situation d'évalution synchrone ou asynchrone pour suggérer des réponses",
-    sequence: 16
+    id: "securisee",
+    libelle: "Soutien à une évaluation sécurisée",
+    parenthese: "utiliser un SIAg en situation d'évaluation synchrone - examen sur papier, clinique, pratique, oral, performance, simulation, etc.",
+    sequence: 12
   },
   {
     id: "autres",
-    libelle: "Autres - Préciser:",
+    libelle: "Autres - Préciser :",
     parenthese: "",
-    sequence: 17
+    sequence: 13
   }
 ];
 
