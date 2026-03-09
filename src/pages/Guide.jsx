@@ -599,12 +599,11 @@ export default function Guide() {
                   <td>
                     {r.ia &&
                     <textarea
-                      className="justification-field"
-                      rows={8}
+                      rows={3}
                       value={r.justification}
                       onChange={(e) => updateRow(i, 'justification', e.target.value)}
                       placeholder="Entrez la justification"
-                      style={err.justification ? { ...inputErrorBorder, width: '98%', padding: 8 } : {}} />
+                      style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.justification ? inputErrorBorder : { border: '1px solid #ccc' }) }} />
 
                     }
                     {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
