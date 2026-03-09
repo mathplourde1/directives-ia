@@ -661,7 +661,7 @@ export default function Guide() {
 
       {/* ===== SYNTHESIS SECTIONS ===== */}
       {submitted &&
-      <div id="synthese-container">
+      <div id="synthese-container" key={submitKey}>
 
           {/* Section 1: Tableau synthèse */}
           <SyntheseSection
