@@ -449,7 +449,7 @@ export default function Guide() {
       <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
         Proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
-        Cette aide à la tâche est conçue pour le personnel enseignant. Cochez les étapes de réalisation de votre évaluation et remplissez les champs obligatoires pour générer un sommaire mise en forme que vous pourrez utiliser dans votre site de cours. 
+        Cette aide à la tâche est conçue pour le personnel enseignant. Cochez les étapes de réalisation de votre évaluation et remplissez les champs obligatoires pour générer un sommaire mis en forme que vous pourrez utiliser dans votre site de cours. <br /><br />N.B.: Cette application ne conserve aucune information. Vous pouvez télécharger un fichier de sauvegarde pour repndre votre travail plus tard.
       </div>
 
       {/* Identification section */}
