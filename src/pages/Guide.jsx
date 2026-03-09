@@ -726,7 +726,8 @@ export default function Guide() {
           title="Tableau synthèse"
           onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
           onDownloadWord={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}
-          copyOk={copyMsgs['s1-brio']}>
+          copyOk={copyMsgs['s1-brio']}
+          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter(v => v && v.trim()).join(' | ') || null}>
 
             <table className="synth-table">
               <thead>
