@@ -302,6 +302,12 @@ export default function Guide() {
     replace(/'/g, '&apos;');
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<guide-ia version="1.0">\n`;
+    xml += `  <identification>\n`;
+    xml += `    <cours>${escapeXml(identification.cours)}</cours>\n`;
+    xml += `    <session>${escapeXml(identification.session)}</session>\n`;
+    xml += `    <enseignants>${escapeXml(identification.enseignants)}</enseignants>\n`;
+    xml += `    <evaluation>${escapeXml(identification.evaluation)}</evaluation>\n`;
+    xml += `  </identification>\n`;
     xml += `  <ordre>${etapesOrder.join(',')}</ordre>\n`;
     xml += `  <etapes>\n`;
     rowsData.forEach((r) => {
