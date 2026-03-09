@@ -365,6 +365,17 @@ export default function Guide() {
           };
         });
 
+        // Restore order if present
+        const ordreNode = root.querySelector('ordre');
+        if (ordreNode) {
+          const parsed = ordreNode.textContent.split(',').map(Number);
+          if (parsed.length === ETAPES.length && parsed.every(n => !isNaN(n))) {
+            setEtapesOrder(parsed);
+          }
+        } else {
+          setEtapesOrder(ETAPES.map((_, i) => i));
+        }
+
         setRows(newRows);
         setErrors(ETAPES.map(() => defaultErrors()));
         setSubmitted(false);
