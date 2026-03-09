@@ -333,7 +333,9 @@ export default function Guide() {
             decl_traces: get('decl_traces') === 'true',
             decl_traces_text: get('decl_traces_text'),
             decl_logique: get('decl_logique') === 'true',
-            decl_logique_text: get('decl_logique_text')
+            decl_logique_text: get('decl_logique_text'),
+            libelle_custom: get('libelle_custom'),
+            exemples: get('exemples')
           };
         });
 
