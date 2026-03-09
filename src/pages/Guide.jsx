@@ -816,10 +816,11 @@ export default function Guide() {
 
 }
 
-function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk }) {
+function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk, identLine }) {
   return (
     <div className="synthese-section">
       <h2 className="my-2 text-lg font-semibold text-center">{title}</h2>
+      {identLine && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{identLine}</p>}
       {children}
       <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
         <button type="button" className="btn-primary" onClick={onCopyBrio}>Copier pour coller en ligne (Brio)</button>
