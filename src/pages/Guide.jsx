@@ -208,8 +208,9 @@ export default function Guide() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
     sels.forEach((s) => {
+      const etapeHtml = s.parenthese ? `<strong>${s.etape}</strong> (${s.parenthese})` : `<strong>${s.etape}</strong>`;
       html += `<tr>
-        <td style="border:1px solid #ccc;padding:8px;">${s.etape}</td>
+        <td style="border:1px solid #ccc;padding:8px;">${etapeHtml}</td>
         <td style="border:1px solid #ccc;padding:8px;">${formatExigences(s)}</td>
       </tr>`;
     });
