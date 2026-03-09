@@ -420,6 +420,39 @@ export default function Guide() {
         Cette aide à la tâche est conçue pour le personnel enseignant. Cochez les étapes de réalisation de votre évaluation et remplissez les champs obligatoires pour générer un sommaire mise en forme que vous pourrez utiliser dans votre site de cours. 
       </div>
 
+      {/* Identification section */}
+      <div style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
+        <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 14 }}>Évaluation ciblée</h2>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+          <div>
+            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Identifiant du cours <span className="required">*</span></label>
+            <input type="text" value={identification.cours} onChange={e => { setIdentification(p => ({...p, cours: e.target.value})); setIdentErrors(p => ({...p, cours: false})); }}
+              placeholder="ex. IFT-1001"
+              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.cours ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.cours ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            {identErrors.cours && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+          </div>
+          <div>
+            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Session</label>
+            <input type="text" value={identification.session} onChange={e => setIdentification(p => ({...p, session: e.target.value}))}
+              placeholder="ex. Hiver 2026"
+              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+          </div>
+          <div>
+            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom de l'évaluation <span className="required">*</span></label>
+            <input type="text" value={identification.evaluation} onChange={e => { setIdentification(p => ({...p, evaluation: e.target.value})); setIdentErrors(p => ({...p, evaluation: false})); }}
+              placeholder="ex. Travail final"
+              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.evaluation ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.evaluation ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            {identErrors.evaluation && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+          </div>
+          <div>
+            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s)</label>
+            <input type="text" value={identification.enseignants} onChange={e => setIdentification(p => ({...p, enseignants: e.target.value}))}
+              placeholder="ex. Marie Tremblay"
+              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+          </div>
+        </div>
+      </div>
+
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
         <DragDropContext onDragEnd={onDragEnd}>
         <table className="main-table">
