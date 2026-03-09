@@ -653,10 +653,16 @@ export default function Guide() {
                       </>
                     }
                   </td>
-                </tr>);
-
+                  </tr>
+                  )}
+                </Draggable>
+              );
             })}
+            {provided.placeholder}
           </tbody>
+            )}
+          </Droppable>
+          </DragDropContext>
         </table>
         <br />
         <button type="submit" className="btn-primary">Soumettre</button>
