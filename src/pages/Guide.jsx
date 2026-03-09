@@ -96,6 +96,21 @@ export default function Guide() {
     setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, ia: false, justification: false } : e));
   }
 
+  function moveEtape(fromPos, toPos) {
+    if (toPos < 0 || toPos >= etapesOrder.length) return;
+    setEtapesOrder(prev => {
+      const next = [...prev];
+      const [removed] = next.splice(fromPos, 1);
+      next.splice(toPos, 0, removed);
+      return next;
+    });
+  }
+
+  function onDragEnd(result) {
+    if (!result.destination) return;
+    moveEtape(result.source.index, result.destination.index);
+  }
+
   function validate() {
     let valid = true;
     const newErrors = ETAPES.map(() => defaultErrors());
