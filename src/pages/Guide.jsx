@@ -125,7 +125,7 @@ export default function Guide() {
     e.preventDefault();
     if (!validate()) return;
 
-    const sel = rows.map((r, i) => r.checked ? { etape: ETAPES[i].libelle, etapeId: ETAPES[i].id, ...r } : null).filter(Boolean);
+    const sel = rows.map((r, i) => r.checked ? { etape: ETAPES[i].id === 'autres' && r.libelle_custom.trim() ? r.libelle_custom.trim() : ETAPES[i].libelle, etapeId: ETAPES[i].id, ...r } : null).filter(Boolean);
     setSelections(sel);
     setSubmitted(true);
     setTimeout(() => {
