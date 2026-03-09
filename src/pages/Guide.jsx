@@ -448,8 +448,16 @@ export default function Guide() {
 
       <h1 className="mb-4 text-2xl font-semibold">Guide interactif de rédaction de directives IA</h1>
       <div style={{ textAlign: 'center', marginBottom: 20 }}>
-        Proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
-        Cette aide à la tâche est conçue pour le personnel enseignant. Cochez les étapes de réalisation de votre évaluation et remplissez les champs obligatoires pour générer un sommaire mis en forme que vous pourrez utiliser dans votre site de cours. <br /><br />N.B.: Cette application ne conserve aucune information. Vous pouvez télécharger un fichier de sauvegarde pour reprendre votre travail plus tard.
+        Guide interactif proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
+        Ce guide interactif vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des systèmes d'IAg lors d'une évaluation. Pour ce faire :
+        <ul>
+          <li>Cochez les étapes concernées par l’évaluation.</li>
+          <li>Complétez les informations requises. Soyez concis et précis.</li>
+          <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter.  </li>
+          <li>Vous pouvez apporter des modifications </li>
+          <li>Transmettez ensuite aux personnes étudiantes une synthèse transparente qui soutient leur réussite et l'intégrité.</li>
+        </ul>
+        N.B.: Cette application ne conserve aucune information. Vous pouvez télécharger un fichier de sauvegarde pour reprendre votre travail plus tard.
       </div>
 
       {/* Identification section */}
