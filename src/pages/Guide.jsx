@@ -857,7 +857,13 @@ export default function Guide() {
       <DirectiveSelectionModal
         isOpen={modalState.open}
         onClose={() => setModalState(s => ({ ...s, open: false }))}
-        onSelectDirective={handleInsertDirective}
+        onSave={(html) => {
+          const { rowIndex } = modalState;
+          if (rowIndex === null) return;
+          setRows(prev => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html } : r));
+          setErrors(prev => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
+        }}
+        initialValue={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.justification : ''}
         currentEtapeId={modalState.rowIndex !== null ? ETAPES[modalState.rowIndex]?.id : null}
         currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null}
       />
