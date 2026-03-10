@@ -203,7 +203,7 @@ export default function Guide() {
     html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Étapes</th>
-        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'utilisation des SIAg est…</th>
+        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">L'utilisation des SIA est…</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Précisions</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Exigences de déclaration</th>
       </tr></thead><tbody>`;
@@ -224,7 +224,7 @@ export default function Guide() {
     const heading = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu</h2>` : '';
     return heading + buildIdentHeader() + sels.map((s) => {
       const etapeHtml = s.parenthese ? `<strong><i>${s.etape}</i></strong> (${s.parenthese})` : `<strong><i>${s.etape}</i></strong>`;
-      return `<p>${etapeHtml}</p><p>L'utilisation des SIAg est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p>Exigences de déclaration :</p>${formatExigences(s)}<hr />`;
+      return `<p>${etapeHtml}</p><p>L'utilisation des SIA est : <strong>${s.ia}</strong></p><p>${s.justification}</p><p>Exigences de déclaration :</p>${formatExigences(s)}<hr />`;
     }).join('');
   }
 
@@ -795,7 +795,7 @@ export default function Guide() {
           identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter((v) => v && v.trim()).join(' | ') || null}>
 
             <p style={{ marginBottom: 12 }}>
-              Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.
+              Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle.
             </p>
             <table className="synth-table">
               <thead>
