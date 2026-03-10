@@ -7,7 +7,7 @@ const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restric
 
 const GABARITS = {
   'À déterminer': "Les autorisations et les directives d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
-  'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés afin de ...",
+  'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés car ...",
   'Autorisée avec restrictions': "Lors de cette étape, les SIA sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
   'Autorisée sans restrictions': "Lors de cette étape, les SIA sont autorisés afin de ...",
   'Obligatoire': "Pour cette étape, vous devez utiliser [nommer le SIA] afin de …"
