@@ -53,6 +53,8 @@ export default function Guide() {
   const [submitStatus, setSubmitStatus] = useState(null); // null | { ok: true, time: Date } | { ok: false }
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
+  const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
+  const textAreaRefs = useRef(ETAPES.map(() => React.createRef()));
 
   // Tick every minute to keep elapsed time fresh
   useEffect(() => {
