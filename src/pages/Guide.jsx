@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import ETAPES from '@/components/etapesData';
+import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 
 
 const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
