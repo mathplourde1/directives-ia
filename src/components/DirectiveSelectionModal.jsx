@@ -84,6 +84,8 @@ export default function DirectiveSelectionModal({
           .directive-quill .ql-toolbar { flex-shrink: 0; border-radius: 6px 6px 0 0; }
           .directive-quill .ql-container { flex: 1; overflow-y: auto; font-family: Arial, sans-serif; font-size: 0.9em; border-radius: 0 0 6px 6px; }
           .directive-quill .ql-editor { min-height: 220px; }
+          .directive-quill .ql-editor a { color: #0056b3; text-decoration: underline; }
+
         `}</style>
 
         <DialogHeader style={{ flexShrink: 0 }}>
