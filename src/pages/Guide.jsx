@@ -497,7 +497,7 @@ export default function Guide() {
           <thead>
             <tr>
               <th>Étapes</th>
-              <th>L’utilisation des SIAg est… <span className="required">*</span></th>
+              <th>L’utilisation des SIA est… <span className="required">*</span></th>
               <th>Personnalisation des directives <span className="required">*</span></th>
               <th>Exigences de déclaration <span className="required">*</span></th>
             </tr>
