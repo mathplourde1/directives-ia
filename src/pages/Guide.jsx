@@ -853,6 +853,15 @@ export default function Guide() {
         </div>
       }
 
+      {/* ===== DIRECTIVE MODAL ===== */}
+      <DirectiveSelectionModal
+        isOpen={modalState.open}
+        onClose={() => setModalState(s => ({ ...s, open: false }))}
+        onSelectDirective={handleInsertDirective}
+        currentEtapeId={modalState.rowIndex !== null ? ETAPES[modalState.rowIndex]?.id : null}
+        currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null}
+      />
+
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
         <h2 style={{ marginTop: 0, color: '#231F20' }} className="my-2 text-xl font-semibold text-center">Sauvegarde et restauration</h2>
