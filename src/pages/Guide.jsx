@@ -631,14 +631,22 @@ export default function Guide() {
                   {/* Col 3: Justification */}
                   <td>
                     {r.ia &&
-                          <textarea
-                            rows={3}
-                            value={r.justification}
-                            onChange={(e) => updateRow(i, 'justification', e.target.value)}
-                            placeholder="Entrez la justification"
-                            style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.justification ? inputErrorBorder : { border: '1px solid #ccc' }) }} />
-
-                          }
+                      <>
+                        <textarea
+                          ref={textAreaRefs.current[i]}
+                          rows={3}
+                          value={r.justification}
+                          onChange={(e) => updateRow(i, 'justification', e.target.value)}
+                          placeholder="Entrez la justification"
+                          style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.justification ? inputErrorBorder : { border: '1px solid #ccc' }) }} />
+                        <button
+                          type="button"
+                          onClick={() => openDirectiveModal(i)}
+                          style={{ marginTop: 4, fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                          + Insérer un exemple
+                        </button>
+                      </>
+                    }
                     {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
                     {err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                   </td>
