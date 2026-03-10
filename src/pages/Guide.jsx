@@ -141,7 +141,8 @@ export default function Guide() {
       if (ETAPES[i].id === 'autres' && !r.libelle_custom.trim()) {newErrors[i].libelle_custom = true;valid = false;}
       if (ETAPES[i].id === 'autres' && !r.exemples.trim()) {newErrors[i].exemples = true;valid = false;}
       if (!r.ia) {newErrors[i].ia = true;valid = false;}
-      if (!r.justification.trim()) {newErrors[i].justification = true;valid = false;}
+      const justText = r.justification.replace(/<[^>]*>/g, '').trim();
+      if (!justText) {newErrors[i].justification = true;valid = false;}
       if (!r.declaration) {newErrors[i].declaration = true;valid = false;}
       if (r.declaration === 'requise') {
         if (!r.decl_iagraphie && !r.decl_traces && !r.decl_logique) {
