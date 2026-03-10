@@ -462,6 +462,7 @@ export default function Guide() {
         .synth-table td ul { list-style-type: disc; padding-left: 20px; margin: 0; }
         .synth-table td li { display: list-item; list-style-type: disc; }
         .copy-ok { color: green; font-weight: bold; margin-left: 10px; }
+        .synth-table td a, .synthese-section a { color: #0056b3; text-decoration: underline; }
         .save-section { margin-top: 32px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; background: white; }
         .decl-sub { margin-left: 20px; margin-top: 6px; }
         textarea.justification-field { border: 2px solid #E41E25; background-color: #fff4f4; padding: 8px; font-family: inherit; width: 98%; }
