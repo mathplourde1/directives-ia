@@ -6,11 +6,11 @@ import ETAPES from '@/components/etapesData';
 const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
 
 const GABARITS = {
-  'À déterminer': "Plus d'instructions vous seront divulguées ultérieurement.",
-  'Non autorisée': "Lors de cette étape, les systèmes d'IA générative ne sont pas autorisés car ...",
-  'Autorisée avec restrictions': "Lors de cette étape, les systèmes d'IA générative sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
-  'Autorisée sans restrictions': "Lors de cette étape, les systèmes d'IA générative sont autorisés car ...",
-  'Obligatoire': "Vous devez utiliser l'outil suivant lors de cette étape ..."
+  'À déterminer': "Les autorisations et les directives d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
+  'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés afin de ...",
+  'Autorisée avec restrictions': "Lors de cette étape, les SIA sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
+  'Autorisée sans restrictions': "Lors de cette étape, les SIA sont autorisés afin de ...",
+  'Obligatoire': "Pour cette étape, vous devez utiliser [nommer le SIA] afin de …"
 };
 
 const defaultRowState = () => ({
