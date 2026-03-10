@@ -62,6 +62,24 @@ export default function Guide() {
     return () => clearInterval(id);
   }, []);
 
+  function openDirectiveModal(i) {
+    const ta = textAreaRefs.current[i]?.current;
+    const cursorPos = ta ? ta.selectionStart : null;
+    setModalState({ open: true, rowIndex: i, cursorPos });
+  }
+
+  function handleInsertDirective(text) {
+    const { rowIndex, cursorPos } = modalState;
+    if (rowIndex === null) return;
+    setRows(prev => {
+      const current = prev[rowIndex].justification;
+      const pos = cursorPos !== null ? cursorPos : current.length;
+      const next = current.slice(0, pos) + text + current.slice(pos);
+      return prev.map((r, idx) => idx === rowIndex ? { ...r, justification: next } : r);
+    });
+    setErrors(prev => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
+  }
+
   function updateRow(i, field, value) {
     setRows((prev) => {
       const next = prev.map((r, idx) => idx === i ? { ...r, [field]: value } : r);
