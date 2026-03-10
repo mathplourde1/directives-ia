@@ -820,7 +820,7 @@ export default function Guide() {
               <tr key={i}>
                     <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
                     <td>{s.ia}</td>
-                    <td style={{ whiteSpace: 'pre-wrap' }}>{s.justification}</td>
+                    <td dangerouslySetInnerHTML={{ __html: s.justification }} />
                     <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
                   </tr>
               )}
