@@ -233,7 +233,7 @@ export default function Guide() {
       html += `<tr>
         <td style="border:1px solid #ccc;padding:8px;">${etapeHtml}</td>
         <td style="border:1px solid #ccc;padding:8px;">${s.ia}</td>
-        <td style="border:1px solid #ccc;padding:8px;">${s.justification.replace(/\n/g, '<br>')}</td>
+        <td style="border:1px solid #ccc;padding:8px;">${s.justification}</td>
         <td style="border:1px solid #ccc;padding:8px;">${formatExigences(s)}</td>
       </tr>`;
     });
