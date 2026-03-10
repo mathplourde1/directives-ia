@@ -8,7 +8,7 @@ const ETAPES = [
   {
     id: "tutorat",
     libelle: "Tutorat",
-    parenthese: "se faire expliquer un concept; répondre à des questions préparatoires; s'entrainer et réviser",
+    parenthese: "se faire expliquer un concept; répondre à des questions préparatoires; s'entrainer et réviser; obtenir des commentaires sur votre travail; confronter vos idées",
     sequence: 2
   },
   {
