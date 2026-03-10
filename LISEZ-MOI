@@ -1,0 +1,13 @@
+====================================
+Version 0.1 du code de l'application
+====================================
+
+||| Mathieu Plourde, 3 mars 2026 |||
+
+Fonctionne comme standalone pour un enseignant à ce point.
+
+ITEMS à venir :
+- Éditeur de texte riche avec exemples de directives
+- Export pour application étudiante
+- Page étudiante avec import
+- Page étudiante libre service
