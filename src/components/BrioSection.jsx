@@ -44,7 +44,7 @@ export default function BrioSection({ selections }) {
     <div className="synthese-section">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
         <h2 className="my-2 text-lg font-semibold">Utilisation de l'intelligence artificielle dans Brio</h2>
-        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/119270fd2_logo-brio.png" alt="Logo Brio" style={{ height: 40 }} />
+        <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/119270fd2_logo-brio.png" alt="Logo Brio" style={{ height: 30 }} />
       </div>
       {niveau &&
       <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
