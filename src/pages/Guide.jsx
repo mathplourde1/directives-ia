@@ -482,7 +482,7 @@ export default function Guide() {
       <li>Vous pouvez apporter des modifications en cliquant <b>Soumettre</b> à nouveau.</li>
       <li>Transmettez ensuite aux personnes étudiantes une synthèse transparente qui soutient leur réussite et l'intégrité.</li>
           </ul>
-        Cette application en ligne ne conserve aucune donnée. Si vous désirez reprendre votre travail plus tard, utiliser la fonction de sauvegarde en bas de la page.
+        Cette application en ligne ne conserve pas vos données. Si vous désirez reprendre votre travail plus tard, utilisez la fonction de sauvegarde en bas de la page.
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
