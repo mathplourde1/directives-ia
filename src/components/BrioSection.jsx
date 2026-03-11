@@ -46,7 +46,7 @@ export default function BrioSection({ selections }) {
       {niveau && (
         <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
           <p>
-            En considérant les étapes sélectionnées et les niveaux de permission choisis, le{' '}
+            Si vous utilisez Brio pour un cours crédité, en considérant les étapes sélectionnées et les niveaux de permission choisis, le{' '}
             <a
               href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
               target="_blank"
@@ -55,12 +55,12 @@ export default function BrioSection({ selections }) {
             >
               niveau de permission
             </a>
-            {' '}qui semble le plus logique à choisir pour l'évaluation est le suivant&nbsp;:
+            {' '}qui semble le plus logique à choisir pour l'évaluation est le suivant:
           </p>
           <p style={{ marginLeft: 20 }}>
-            <strong>— {niveau.libelle}</strong>
+            <strong>{niveau.libelle}</strong>
           </p>
-          <p style={{ marginTop: 12 }}><strong>Pourquoi cette option&nbsp;?</strong></p>
+          <p style={{ marginTop: 12 }}>Pourquoi cette option?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
         </div>
       )}
