@@ -7,7 +7,7 @@ import DeclarationFieldModal from '@/components/DeclarationFieldModal';
 
 const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
 
-const GABARITS_UNUSED = null;
+
 const GABARITS = {
   'Nonéterminer': "Les autorisations et les directives d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
   'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés car ...",
