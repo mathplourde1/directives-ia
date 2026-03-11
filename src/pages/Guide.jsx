@@ -486,7 +486,8 @@ export default function Guide() {
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
-          <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
+          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval. Elle a été développée par Mathieu Plourde, CC-By 2026 (version alpha 5)<br /><br />
+          Déclaration d'utilisation de SIA: Aidée par l'IA.
         </div>
       </div>
 
