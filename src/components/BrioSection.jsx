@@ -48,7 +48,7 @@ export default function BrioSection({ selections }) {
       </div>
       {niveau &&
       <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
-          <p>
+          <p className="mb-1">
             Si vous utilisez Brio pour un cours crédité, en considérant les étapes sélectionnées et les niveaux de permission choisis, le{' '}
             <a
             href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
