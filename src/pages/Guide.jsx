@@ -846,9 +846,7 @@ export default function Guide() {
       {submitted &&
       <div id="synthese-container" key={submitKey}>
           {/* Section Brio */}
-          <div className="synthese-section">
-            <h2 className="my-2 text-lg font-semibold text-center">Utilisation de l'intelligence artificielle dans Brio</h2>
-          </div>
+          <BrioSection selections={selections} />
           {/* Section 1: Tableau synthèse */}
           <SyntheseSection
           title="Tableau synthèse"
