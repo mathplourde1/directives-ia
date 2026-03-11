@@ -965,6 +965,25 @@ export default function Guide() {
         currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null} />
 
 
+      {/* ===== DECLARATION FIELD MODAL ===== */}
+      <DeclarationFieldModal
+        isOpen={declModalState.open}
+        onClose={() => setDeclModalState(s => ({ ...s, open: false }))}
+        onSave={(html) => {
+          const { rowIndex, fieldCode } = declModalState;
+          if (rowIndex === null) return;
+          const fieldMap = { iagraphie: 'decl_iagraphie_text', traces: 'decl_traces_text', logique: 'decl_logique_text' };
+          const field = fieldMap[fieldCode];
+          if (!field) return;
+          updateRow(rowIndex, field, html);
+        }}
+        initialValue={declModalState.rowIndex !== null && declModalState.fieldCode ? (() => {
+          const fieldMap = { iagraphie: 'decl_iagraphie_text', traces: 'decl_traces_text', logique: 'decl_logique_text' };
+          return rows[declModalState.rowIndex]?.[fieldMap[declModalState.fieldCode]] || '';
+        })() : ''}
+        fieldCode={declModalState.fieldCode}
+      />
+
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
         <h2 style={{ marginTop: 0, color: '#231F20' }} className="my-2 text-xl font-semibold text-center">Sauvegarde et restauration</h2>
