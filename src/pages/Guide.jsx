@@ -481,7 +481,11 @@ export default function Guide() {
       <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter</li>
       <li>Vous pouvez apporter des modifications</li>
       <li>Transmettez ensuite aux personnes étudiantes une synthèse transparente qui soutient leur réussite et l'intégrité.</li>
-      </ul>
+          </ul>
+        </div>
+        <div style={{ textAlign: 'left' }}>
+          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
+        </div>
       </div>
 
       {/* Identification section */}
