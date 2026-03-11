@@ -67,7 +67,7 @@ const ETAPES = [
   },
   {
     id: "securisee",
-    libelle: "Soutien à une évaluation sécurisée",
+    libelle: "Soutien à l'exécution d'une évaluation sécurisée",
     parenthese: "utiliser un SIAg en situation d'évaluation synchrone - examen sur papier, clinique, pratique, oral, performance, simulation, etc.",
     sequence: 12
   },
