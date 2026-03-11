@@ -27,12 +27,12 @@ const IA_TO_CODE = {
 };
 
 function computeNiveau(selections) {
-  const codes = selections.map(s => IA_TO_CODE[s.ia]).filter(Boolean);
+  const codes = selections.map((s) => IA_TO_CODE[s.ia]).filter(Boolean);
   if (codes.length === 0) return null;
   if (codes.includes('obl')) return 'obl';
-  if (codes.every(c => c === 'asr')) return 'asr';
-  if (codes.includes('aar') || (codes.includes('asr') && codes.includes('non'))) return 'aar';
-  if (codes.every(c => c === 'non')) return 'non';
+  if (codes.every((c) => c === 'asr')) return 'asr';
+  if (codes.includes('aar') || codes.includes('asr') && codes.includes('non')) return 'aar';
+  if (codes.every((c) => c === 'non')) return 'non';
   return 'aar';
 }
 
@@ -46,27 +46,27 @@ export default function BrioSection({ selections }) {
         <h2 className="my-2 text-lg font-semibold">Utilisation de l'intelligence artificielle dans Brio</h2>
         <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/119270fd2_logo-brio.png" alt="Logo Brio" style={{ height: 40 }} />
       </div>
-      {niveau && (
-        <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
+      {niveau &&
+      <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
           <p>
             Si vous utilisez Brio pour un cours crédité, en considérant les étapes sélectionnées et les niveaux de permission choisis, le{' '}
             <a
-              href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: '#0056b3', textDecoration: 'underline' }}
-            >
+            href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#0056b3', textDecoration: 'underline' }}>
+
               niveau de permission
             </a>
             {' '}qui semble le plus logique à choisir pour l'évaluation est le suivant:
           </p>
           <p style={{ marginLeft: 20 }}>
-            <strong>{niveau.libelle}</strong>
+            <strong className="text-base font-bold text-left">{niveau.libelle}</strong>
           </p>
           <p style={{ marginTop: 12 }}>Pourquoi cette option?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
