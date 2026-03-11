@@ -467,6 +467,9 @@ export default function Guide() {
         .decl-sub { margin-left: 20px; margin-top: 6px; }
         textarea.justification-field { border: 2px solid #E41E25; background-color: #fff4f4; padding: 8px; font-family: inherit; width: 98%; }
         .radio-disabled label, .radio-disabled input { color: #999; pointer-events: none; }
+        table.main-table td ul, .synthese-section ul { list-style-type: disc; padding-left: 20px; margin: 4px 0; }
+        table.main-table td ol, .synthese-section ol { list-style-type: decimal; padding-left: 20px; margin: 4px 0; }
+        table.main-table td li, .synthese-section li { display: list-item; }
       `}</style>
 
       <h1 className="mr-10 mb-4 ml-10 text-2xl font-semibold">Rédiger et personnaliser les directives d'utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation</h1>
