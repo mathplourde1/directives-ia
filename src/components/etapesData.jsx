@@ -60,12 +60,6 @@ const ETAPES = [
     sequence: 10
   },
   {
-    id: "agentique",
-    libelle: "Utilisation agentique",
-    parenthese: "recourir à un agent autonome effectuant des tâches séquentielles, navigation web, exécution de code en boucle",
-    sequence: 11
-  },
-  {
     id: "securisee",
     libelle: "Soutien à l'exécution d'une évaluation sécurisée",
     parenthese: "utiliser un SIAg en situation d'évaluation synchrone - examen sur papier, clinique, pratique, oral, performance, simulation, etc.",
