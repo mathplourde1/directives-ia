@@ -63,7 +63,7 @@ export default function BrioSection({ selections }) {
           <p style={{ marginLeft: 20 }}>
             <strong className="text-base font-bold text-left">{niveau.libelle}</strong>
           </p>
-          <p style={{ marginTop: 12 }}>Pourquoi cette option?</p>
+          <p style={{ marginTop: 12 }} className="mb-1">Pourquoi cette option?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
         </div>
       }
