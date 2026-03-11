@@ -895,6 +895,43 @@ export default function Guide() {
         </div>
       }
 
+      {/* ===== IA CHANGE CONFIRM DIALOG ===== */}
+      {iaChangeConfirm && (
+        <div style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
+          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div style={{
+            background: 'white', borderRadius: 10, padding: '28px 32px', maxWidth: 480, width: '90%',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.18)', fontFamily: 'Arial, sans-serif'
+          }}>
+            <p style={{ marginBottom: 20, lineHeight: 1.6, fontSize: '0.95em', color: '#231F20' }}>
+              Vous avez déjà personnalisé vos directives pour cette étape et êtes sur le point de changer le niveau de permission. Que désirez-vous faire?
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, true);
+                  setIaChangeConfirm(null);
+                }}
+                style={{ background: '#00A4E4', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.88em', flex: 1 }}>
+                Conserver le texte personnalisé et l'adapter
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, false);
+                  setIaChangeConfirm(null);
+                }}
+                style={{ background: '#6c757d', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontSize: '0.88em', flex: 1 }}>
+                Utiliser le texte par défaut du niveau choisi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ===== DIRECTIVE MODAL ===== */}
       <DirectiveSelectionModal
         isOpen={modalState.open}
