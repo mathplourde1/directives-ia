@@ -44,7 +44,7 @@ const defaultErrors = () => ({
 
 export default function Guide() {
   const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '' });
-  const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false });
+  const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false, enseignants: false });
   const [etapesOrder, setEtapesOrder] = useState(ETAPES.map((_, i) => i));
   const [rows, setRows] = useState(ETAPES.map(() => defaultRowState()));
   const [errors, setErrors] = useState(ETAPES.map(() => defaultErrors()));
@@ -143,9 +143,9 @@ export default function Guide() {
 
   function validate() {
     // Validate identification
-    const newIdentErrors = { cours: !identification.cours.trim(), evaluation: !identification.evaluation.trim() };
+    const newIdentErrors = { cours: !identification.cours.trim(), evaluation: !identification.evaluation.trim(), enseignants: !identification.enseignants.trim() };
     setIdentErrors(newIdentErrors);
-    if (newIdentErrors.cours || newIdentErrors.evaluation) return false;
+    if (newIdentErrors.cours || newIdentErrors.evaluation || newIdentErrors.enseignants) return false;
 
     let valid = true;
     const newErrors = ETAPES.map(() => defaultErrors());
@@ -215,15 +215,19 @@ export default function Guide() {
   }
 
   // ---- Helper: identification header line for exports ----
+  function buildIdentLine() {
+    const parts = [];
+    if (identification.cours?.trim()) parts.push(`Cours : ${identification.cours}`);
+    if (identification.evaluation?.trim()) parts.push(`Évaluation : ${identification.evaluation}`);
+    if (identification.session?.trim()) parts.push(`Session : ${identification.session}`);
+    if (identification.enseignants?.trim()) parts.push(`Personne(s) enseignante(s) : ${identification.enseignants}`);
+    return parts.join(' | ');
+  }
+
   function buildIdentHeader() {
-    const parts = [
-    identification.cours,
-    identification.session,
-    identification.enseignants,
-    identification.evaluation].
-    filter((v) => v && v.trim());
-    if (!parts.length) return '';
-    return `<p style="font-family:Arial,sans-serif;margin-bottom:12px;">${parts.join(' | ')}</p>`;
+    const line = buildIdentLine();
+    if (!line) return '';
+    return `<p style="font-family:Arial,sans-serif;margin-bottom:12px;">${line}</p>`;
   }
 
   // ---- Helper: format declaration exigences as HTML bullet list ----
@@ -541,10 +545,11 @@ export default function Guide() {
             {identErrors.evaluation && <span style={errorStyle}>⚠ Ce champ est requis</span>}
           </div>
           <div>
-            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s)</label>
-            <input type="text" value={identification.enseignants} onChange={(e) => setIdentification((p) => ({ ...p, enseignants: e.target.value }))}
+            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s) <span className="required">*</span></label>
+            <input type="text" value={identification.enseignants} onChange={(e) => {setIdentification((p) => ({ ...p, enseignants: e.target.value }));setIdentErrors((p) => ({ ...p, enseignants: false }));}}
             placeholder="ex. Marie Tremblay"
-            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.enseignants ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.enseignants ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            {identErrors.enseignants && <span style={errorStyle}>⚠ Ce champ est requis</span>}
           </div>
         </div>
       </div>
@@ -846,7 +851,7 @@ export default function Guide() {
           onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
           onDownloadWord={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}
           copyOk={copyMsgs['s1-brio']}
-          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter((v) => v && v.trim()).join(' | ') || null}>
+          identLine={buildIdentLine() || null}>
 
             <table className="synth-table">
               <thead>
@@ -888,7 +893,7 @@ export default function Guide() {
           onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
           onDownloadWord={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}
           copyOk={copyMsgs['s3-brio']}
-          identLine={[identification.cours, identification.session, identification.enseignants, identification.evaluation].filter((v) => v && v.trim()).join(' | ') || null}>
+          identLine={buildIdentLine() || null}>
 
             <p style={{ marginBottom: 12 }}>
               Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle.
