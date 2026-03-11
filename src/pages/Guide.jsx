@@ -476,12 +476,13 @@ export default function Guide() {
         
         Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. 
       <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }}>
-      <li>Cochez les étapes concernées par l’évaluation</li>
-      <li>Complétez les informations requises. Soyez concis et précis</li>
-      <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter</li>
-      <li>Vous pouvez apporter des modifications</li>
+      <li>Cochez les étapes concernées par l’évaluation.</li>
+      <li>Complétez les informations requises. Soyez concis et précis.</li>
+      <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter.</li>
+      <li>Vous pouvez apporter des modifications en cliquant <b>Soumettre</b> à nouveau.</li>
       <li>Transmettez ensuite aux personnes étudiantes une synthèse transparente qui soutient leur réussite et l'intégrité.</li>
           </ul>
+        Cette application en ligne ne conserve aucune donnée. Si vous désirez reprendre votre travail plus tard, utiliser la fonction de sauvegarde en bas de la page.
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
