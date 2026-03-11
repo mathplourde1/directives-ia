@@ -39,7 +39,7 @@ const QUILL_MODULES = {
     ['clean'],
   ],
 };
-const QUILL_FORMATS = ['bold', 'italic', 'link', 'list', 'bullet'];
+const QUILL_FORMATS = ['bold', 'italic', 'link', 'list', 'bullet', 'background'];
 
 export default function DirectiveSelectionModal({
   isOpen, onClose, onSave, initialValue, currentEtapeId, currentIaOption
