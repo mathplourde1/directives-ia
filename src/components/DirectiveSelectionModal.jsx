@@ -126,12 +126,24 @@ export default function DirectiveSelectionModal({
           {(currentEtape || currentNiveau) && (
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 6 }}>
               {currentEtape && (
-                <span style={{
-                  fontSize: '0.78em', padding: '3px 10px', borderRadius: 20,
-                  background: '#f0f0f0', color: '#444', border: '1px solid #ddd', fontWeight: 'bold'
-                }}>
-                  📋 {currentEtape.libelle}
-                </span>
+                <TooltipProvider delayDuration={200}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span style={{
+                        fontSize: '0.78em', padding: '3px 10px', borderRadius: 20,
+                        background: '#f0f0f0', color: '#444', border: '1px solid #ddd', fontWeight: 'bold',
+                        cursor: 'default'
+                      }}>
+                        📋 {currentEtape.libelle}
+                      </span>
+                    </TooltipTrigger>
+                    {currentEtape.parenthese && (
+                      <TooltipContent side="bottom" style={{ maxWidth: 340, fontSize: '0.85em', lineHeight: 1.6, whiteSpace: 'normal' }}>
+                        <p>{currentEtape.parenthese}</p>
+                      </TooltipContent>
+                    )}
+                  </Tooltip>
+                </TooltipProvider>
               )}
               {currentNiveau && niveauColor && (
                 <span style={{
