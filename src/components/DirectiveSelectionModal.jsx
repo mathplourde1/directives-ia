@@ -32,12 +32,34 @@ const NIVEAU_COLORS = {
 const HIERARCHY = ['non', 'aar', 'asr', 'obl'];
 
 const QUILL_MODULES = {
-  toolbar: [
-    ['bold', 'italic'],
-    [{ list: 'bullet' }],
-    ['link'],
-    ['clean'],
-  ],
+  toolbar: {
+    container: [
+      ['bold', 'italic'],
+      [{ list: 'bullet' }],
+      ['link'],
+      ['clean'],
+    ],
+    handlers: {
+      link: function(value) {
+        const quill = this.quill;
+        if (value) {
+          const url = prompt('Entrez l\'adresse URL du lien :');
+          if (url) {
+            const selection = quill.getSelection(true);
+            if (selection && selection.length > 0) {
+              quill.format('link', url);
+            } else {
+              const index = selection ? selection.index : quill.getLength() - 1;
+              quill.insertText(index, url, 'link', url);
+              quill.setSelection(index + url.length);
+            }
+          }
+        } else {
+          quill.format('link', false);
+        }
+      }
+    }
+  },
 };
 const QUILL_FORMATS = ['bold', 'italic', 'link', 'list', 'bullet', 'background'];
 
