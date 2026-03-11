@@ -184,20 +184,20 @@ export default function DirectiveSelectionModal({
                   fontWeight: 'bold', fontSize: '0.9em',
                   transition: 'background 0.15s, transform 0.15s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#0084b0'; e.currentTarget.style.transform = 'translateX(-3px)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#00A4E4'; e.currentTarget.style.transform = 'translateX(0)'; }}>
+                onMouseEnter={e => { e.currentTarget.style.background = '#0084b0'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#00A4E4'; }}>
                 Appliquer
-              </button>
-              <button
+                </button>
+                <button
                 type="button"
                 onClick={onClose}
                 style={{
                   background: '#6c757d', color: 'white', border: 'none',
                   borderRadius: 5, padding: '8px 16px', cursor: 'pointer', fontSize: '0.9em',
-                  transition: 'background 0.15s, transform 0.15s',
+                  transition: 'background 0.15s',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#545b62'; e.currentTarget.style.transform = 'translateX(-3px)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = '#6c757d'; e.currentTarget.style.transform = 'translateX(0)'; }}>
+                onMouseEnter={e => { e.currentTarget.style.background = '#545b62'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#6c757d'; }}>
                 Annuler
               </button>
             </div>
