@@ -20,6 +20,7 @@ const defaultRowState = () => ({
   justification: '',
   declaration: '', // 'aucune' | 'requise'
   decl_iagraphie: false,
+  decl_iagraphie_text: '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)',
   decl_traces: false,
   decl_traces_text: '',
   decl_logique: false,
@@ -33,6 +34,7 @@ const defaultErrors = () => ({
   justification: false,
   declaration: false,
   declaration_checkbox: false,
+  decl_iagraphie_text: false,
   decl_traces_text: false,
   decl_logique_text: false,
   libelle_custom: false,
@@ -157,6 +159,7 @@ export default function Guide() {
         if (!r.decl_iagraphie && !r.decl_traces && !r.decl_logique) {
           newErrors[i].declaration_checkbox = true;valid = false;
         }
+        if (r.decl_iagraphie && !r.decl_iagraphie_text.trim()) {newErrors[i].decl_iagraphie_text = true;valid = false;}
         if (r.decl_traces && !r.decl_traces_text.trim()) {newErrors[i].decl_traces_text = true;valid = false;}
         if (r.decl_logique && !r.decl_logique_text.trim()) {newErrors[i].decl_logique_text = true;valid = false;}
       }
@@ -219,9 +222,9 @@ export default function Guide() {
 
   // ---- Helper: format declaration exigences as HTML bullet list ----
   function formatExigences(s) {
-    if (s.declaration === 'aucune') return 'Aucune exigence';
+    if (s.declaration === 'aucune') return `<ul style="margin:0;padding-left:18px;list-style-type:disc;"><li style="display:list-item;">Aucune exigence</li></ul>`;
     const items = [];
-    if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources#declaration-de-l-utilisation-d-un-systeme-d-intelligence-artificielle-ia" target="_blank" style="color:blue;text-decoration:underline;">voir les directives</a>)');
+    if (s.decl_iagraphie) items.push(`Références et IAgraphie : ${s.decl_iagraphie_text}`);
     if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
     if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
     return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map((i) => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
@@ -286,7 +289,7 @@ export default function Guide() {
         exigences = 'Aucune exigence';
       } else {
         const items = [];
-        if (s.decl_iagraphie) items.push('Références et IAgraphie (<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources#declaration-de-l-utilisation-d-un-systeme-d-intelligence-artificielle-ia" target="_blank" style="color:blue;text-decoration:underline;">voir les directives</a>)');
+        if (s.decl_iagraphie) items.push(`Références et IAgraphie : ${s.decl_iagraphie_text}`);
         if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
         if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
         exigences = items.join('<br>');
@@ -326,6 +329,7 @@ export default function Guide() {
       justification: r.justification,
       declaration: r.declaration,
       decl_iagraphie: r.decl_iagraphie,
+      decl_iagraphie_text: r.decl_iagraphie_text,
       decl_traces: r.decl_traces,
       decl_traces_text: r.decl_traces_text,
       decl_logique: r.decl_logique,
@@ -357,6 +361,7 @@ export default function Guide() {
       xml += `      <justification>${escapeXml(r.justification)}</justification>\n`;
       xml += `      <declaration>${escapeXml(r.declaration)}</declaration>\n`;
       xml += `      <decl_iagraphie>${r.decl_iagraphie}</decl_iagraphie>\n`;
+      xml += `      <decl_iagraphie_text>${escapeXml(r.decl_iagraphie_text)}</decl_iagraphie_text>\n`;
       xml += `      <decl_traces>${r.decl_traces}</decl_traces>\n`;
       xml += `      <decl_traces_text>${escapeXml(r.decl_traces_text)}</decl_traces_text>\n`;
       xml += `      <decl_logique>${r.decl_logique}</decl_logique>\n`;
@@ -406,6 +411,7 @@ export default function Guide() {
             justification: get('justification'),
             declaration: get('declaration'),
             decl_iagraphie: get('decl_iagraphie') === 'true',
+            decl_iagraphie_text: get('decl_iagraphie_text') || '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)',
             decl_traces: get('decl_traces') === 'true',
             decl_traces_text: get('decl_traces_text'),
             decl_logique: get('decl_logique') === 'true',
@@ -734,7 +740,18 @@ export default function Guide() {
                                   onChange={(e) => updateRow(i, 'decl_iagraphie', e.target.checked)} />
 
                               <label htmlFor={`iagraphie_${i}`} style={{ marginLeft: 4 }}>Références et IAgraphie</label>
-                            </div>
+                              {r.decl_iagraphie &&
+                                <>
+                                  <textarea
+                                    rows={3}
+                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_iagraphie_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
+                                    placeholder="Instructions supplémentaires (requis)"
+                                    value={r.decl_iagraphie_text}
+                                    onChange={(e) => { updateRow(i, 'decl_iagraphie_text', e.target.value); }} />
+                                  {err.decl_iagraphie_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                                </>
+                              }
+                              </div>
                             {/* Traces */}
                             <div style={{ marginTop: 6 }}>
                               <input
