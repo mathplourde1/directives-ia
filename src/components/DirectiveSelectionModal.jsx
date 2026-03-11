@@ -204,7 +204,7 @@ export default function DirectiveSelectionModal({
             {availableNiveaux.length === 0 ? (
               <p style={{ color: '#999', fontSize: '0.9em' }}>Aucun exemple disponible pour cette étape.</p>
             ) : (
-              <ScrollArea style={{ flex: 1 }}>
+              <ScrollArea style={{ flex: 1, paddingLeft: 6 }}>
                 <Accordion
                   type="multiple"
                   value={openAccordions}
