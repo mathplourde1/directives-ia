@@ -79,9 +79,11 @@ export default function DirectiveSelectionModal({
     quill.insertText(index, text, 'user');
     quill.setSelection(index + text.length);
 
-    // Highlight the inserted range
-    setHighlightRange({ index, length: text.length });
-    setTimeout(() => setHighlightRange(null), 500);
+    // Highlight the inserted range with yellow, then fade out
+    quill.formatText(index, text.length, 'background', '#ffe066', 'api');
+    setTimeout(() => {
+      quill.formatText(index, text.length, 'background', false, 'api');
+    }, 500);
   }
 
   function handleApply() {
