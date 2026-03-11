@@ -1,0 +1,69 @@
+import React from 'react';
+
+const NIVEAUX_BRIO = {
+  obl: {
+    libelle: 'Obligatoire',
+    raison: "Au moins l'une de vos étapes indique une utilisation obligatoire. Vos personnes étudiantes ont donc obligatoirement à utiliser au moins un SIA dans le cadre de cette évaluation."
+  },
+  asr: {
+    libelle: 'Autorisée sans restrictions',
+    raison: "Sans exception, toutes vos étapes indiquent une autorisation sans restriction. Vos personnes étudiantes ont donc la liberté d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
+  },
+  aar: {
+    libelle: 'Autorisée avec restrictions',
+    raison: "Au moins une de vos étapes indique une autorisation avec restrictions (sans obligation d'utilisation d'un SIA). Vos personnes étudiantes ont donc une liberté balisée d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
+  },
+  non: {
+    libelle: 'Non autorisée',
+    raison: "Sans exception, toutes vos étapes indiquent que les SIA ne sont pas autorisés. Vos personnes étudiantes n'ont donc aucun droit d'utiliser un SIA dans le cadre de l'évaluation."
+  }
+};
+
+const IA_TO_CODE = {
+  'Obligatoire': 'obl',
+  'Autorisée sans restrictions': 'asr',
+  'Autorisée avec restrictions': 'aar',
+  'Non autorisée': 'non'
+};
+
+function computeNiveau(selections) {
+  const codes = selections.map(s => IA_TO_CODE[s.ia]).filter(Boolean);
+  if (codes.length === 0) return null;
+  if (codes.includes('obl')) return 'obl';
+  if (codes.every(c => c === 'asr')) return 'asr';
+  if (codes.includes('aar') || (codes.includes('asr') && codes.includes('non'))) return 'aar';
+  if (codes.every(c => c === 'non')) return 'non';
+  return 'aar';
+}
+
+export default function BrioSection({ selections }) {
+  const niveauCode = computeNiveau(selections);
+  const niveau = niveauCode ? NIVEAUX_BRIO[niveauCode] : null;
+
+  return (
+    <div className="synthese-section">
+      <h2 className="my-2 text-lg font-semibold text-center">Utilisation de l'intelligence artificielle dans Brio</h2>
+      {niveau && (
+        <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
+          <p>
+            En considérant les étapes sélectionnées et les niveaux de permission choisis, le{' '}
+            <a
+              href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: '#0056b3', textDecoration: 'underline' }}
+            >
+              niveau de permission
+            </a>
+            {' '}qui semble le plus logique à choisir pour l'évaluation est le suivant&nbsp;:
+          </p>
+          <p style={{ marginLeft: 20 }}>
+            <strong>— {niveau.libelle}</strong>
+          </p>
+          <p style={{ marginTop: 12 }}><strong>Pourquoi cette option&nbsp;?</strong></p>
+          <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
+        </div>
+      )}
+    </div>
+  );
+}
