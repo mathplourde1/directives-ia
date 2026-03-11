@@ -487,7 +487,7 @@ export default function Guide() {
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
           Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval. Elle a été développée par Mathieu Plourde, CC-By 2026 (version alpha 5)<br /><br />
-          Déclaration d'utilisation de SIA: Aidée par l'IA.
+          Déclaration d'utilisation de SIA: Aidée par l'IA. La logique et les contenus de cette application ont été développés par des humains, qui ont utilisé des SIA conversationnels pour aider avec la génération de texte (ChatGPT, Gemini et Microsoft Copilot). Tous les textes présentés ont été validés par l'équipe de développement. avec des
         </div>
       </div>
 
