@@ -208,6 +208,7 @@ export default function DirectiveSelectionModal({
             width: 340, flexShrink: 0, display: 'flex', flexDirection: 'column',
             borderLeft: '1px solid #e5e7eb', paddingLeft: 16, overflow: 'hidden'
           }}>
+
             <p style={{ fontSize: '0.78em', color: '#666', marginBottom: 6, flexShrink: 0 }}>
               Survolez un exemple pour le voir en entier. Cliquez pour l'insérer.
               {currentNiveau && <> <strong>★</strong> = niveau actuel.</>}
