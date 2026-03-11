@@ -9,7 +9,7 @@ const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisé
 
 
 const GABARITS = {
- 'REMOVE_THIS_LINE_d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
+'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
   'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés car ...",
   'Autorisée avec restrictions': "Lors de cette étape, les SIA sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
   'Autorisée sans restrictions': "Lors de cette étape, les SIA sont autorisés afin de ...",
