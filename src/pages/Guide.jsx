@@ -473,7 +473,7 @@ export default function Guide() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>Instructions</h2>
-        Guide interactif proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
+        
         Ce guide interactif vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA lors d'une évaluation. 
       <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }}>
       <li>Cochez les étapes concernées par l’évaluation</li>
@@ -485,6 +485,7 @@ export default function Guide() {
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
+          Guide interactif proposé par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a>, développé par Mathieu Plourde, CC-By 2026 (version alpha 4)<br /><br />
         </div>
       </div>
 
