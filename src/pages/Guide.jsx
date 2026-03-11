@@ -914,8 +914,8 @@ export default function Guide() {
           </div>
         }
       </div>
-    </div>);
-
+    </div>
+  );
 }
 
 function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk, identLine }) {
