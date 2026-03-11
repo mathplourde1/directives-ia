@@ -107,8 +107,8 @@ export default function DirectiveSelectionModal({
           .directive-quill .ql-editor a { color: #0056b3; text-decoration: underline; }
           .directive-quill .ql-editor ul { list-style-type: disc; padding-left: 20px; }
           .directive-quill .ql-editor li { display: list-item; }
-          .example-btn { transition: background 0.15s, border-color 0.15s, transform 0.15s !important; }
-          .example-btn:hover { background: #e8f4fd !important; border-color: #00A4E4 !important; transform: translateX(2px) !important; }
+          .example-btn { transition: background 0.15s, border-color 0.15s !important; }
+          .example-btn:hover { background: #e8f4fd !important; border-color: #00A4E4 !important; }
           @keyframes highlight-fade {
             0% { background-color: #ffe066; }
             100% { background-color: transparent; }
