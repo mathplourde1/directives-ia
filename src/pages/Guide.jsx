@@ -9,8 +9,6 @@ const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisé
 
 
 const GABARITS = {
-  'NON_EXISTANT_PLACEHOLDER': '',
-"Les autorisations et les directives d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
   'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés car ...",
   'Autorisée avec restrictions': "Lors de cette étape, les SIA sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
   'Autorisée sans restrictions': "Lors de cette étape, les SIA sont autorisés afin de ...",
@@ -502,7 +500,7 @@ export default function Guide() {
         
         Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. 
       <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
-      <li>Cochez les étapes concernées par l’évaluation.</li>
+      <li>Cochez les étapes concernées par l'évaluation.</li>
       <li>Complétez les informations requises. Soyez concis et précis.</li>
       <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter.</li>
       <li>Vous pouvez apporter des modifications en cliquant <b>Soumettre</b> à nouveau.</li>
@@ -563,7 +561,7 @@ export default function Guide() {
           <thead>
             <tr>
               <th>Étapes</th>
-              <th>L’utilisation des SIA est… <span className="required">*</span></th>
+              <th>L'utilisation des SIA est… <span className="required">*</span></th>
               <th>Personnalisation des directives <span className="required">*</span></th>
               <th>Exigences de déclaration <span className="required">*</span></th>
             </tr>
