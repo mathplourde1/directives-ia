@@ -98,16 +98,24 @@ export default function Guide() {
     setErrors((prev) => prev.map((e, idx) => idx === i ? defaultErrors() : e));
   }
 
-  function handleIaChange(i, value) {
-    updateRow(i, 'ia', value);
-    // Set gabari template only if justification is empty or still a template
+  function applyIaChange(i, value, keepText) {
     setRows((prev) => {
       const r = prev[i];
-      const isTemplate = Object.values(GABARITS).includes(r.justification.trim()) || !r.justification.trim();
-      const justification = isTemplate ? GABARITS[value] : r.justification;
+      const justification = keepText ? r.justification : GABARITS[value];
       return prev.map((row, idx) => idx === i ? { ...row, ia: value, justification } : row);
     });
     setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, ia: false, justification: false } : e));
+  }
+
+  function handleIaChange(i, value) {
+    const currentJust = rows[i].justification.trim();
+    const isTemplate = Object.values(GABARITS).includes(currentJust) || !currentJust;
+    if (!isTemplate) {
+      // User has customized text — ask what to do
+      setIaChangeConfirm({ rowIndex: i, newIa: value });
+      return;
+    }
+    applyIaChange(i, value, false);
   }
 
   function moveEtape(fromPos, toPos) {
