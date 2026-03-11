@@ -127,6 +127,11 @@ export default function DirectiveSelectionModal({
           .directive-quill .ql-container { flex: 1; overflow-y: auto; font-family: Arial, sans-serif; font-size: 0.9em; border-radius: 0 0 6px 6px; }
           .directive-quill .ql-editor { min-height: 220px; }
           .directive-quill .ql-editor a { color: #0056b3; text-decoration: underline; }
+          .directive-quill .ql-tooltip::before { content: "Visiter l'URL :"; }
+          .directive-quill .ql-tooltip a.ql-action::after { content: "Modifier"; }
+          .directive-quill .ql-tooltip a.ql-remove::before { content: "Supprimer"; }
+          .directive-quill .ql-tooltip.ql-editing a.ql-action::after { content: "Enregistrer"; }
+          .directive-quill .ql-tooltip[data-mode=link]::before { content: "Entrez le lien :"; }
           .directive-quill .ql-editor ul { list-style-type: disc; padding-left: 20px; }
           .directive-quill .ql-editor li { display: list-item; }
           .example-btn { transition: background 0.15s, border-color 0.15s !important; }
