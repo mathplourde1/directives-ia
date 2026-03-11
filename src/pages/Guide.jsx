@@ -486,8 +486,8 @@ export default function Guide() {
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>À propos</h2>
-          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval. Elle a été développée par Mathieu Plourde, CC-By 2026 (version alpha 5)<br /><br />
-          Déclaration d'utilisation de SIA: Aidée par l'IA. La logique et les contenus de cette application ont été développés par des humains, qui ont utilisé des SIA conversationnels pour aider avec la génération de texte (ChatGPT, Gemini et Microsoft Copilot). Tous les textes présentés ont été validés par l'équipe de développement. avec des
+          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval.<br /><br />
+          Déclaration d'utilisation de SIA: Aidée par l'IA. La logique et les contenus de cette application ont été développés par des humains, qui ont utilisé des SIA conversationnels pour aider avec la génération de texte et la reformulation (ChatGPT, Gemini et Microsoft Copilot). Tous les textes présentés ont été validés par l'équipe de développement. Le code a été développé par Mathieu Plourde avec l'aide de ChatGPT et Claude, mais plus particulièrement par Base44 pour cette version actuelle.<br /><br />Elle est développée et maintenue par Mathieu Plourde, CC-By 2026 (version alpha 5).
         </div>
       </div>
 
