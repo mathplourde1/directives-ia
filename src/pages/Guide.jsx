@@ -71,13 +71,13 @@ export default function Guide() {
   function handleInsertDirective(text) {
     const { rowIndex, cursorPos } = modalState;
     if (rowIndex === null) return;
-    setRows(prev => {
+    setRows((prev) => {
       const current = prev[rowIndex].justification;
       const pos = cursorPos !== null ? cursorPos : current.length;
       const next = current.slice(0, pos) + text + current.slice(pos);
       return prev.map((r, idx) => idx === rowIndex ? { ...r, justification: next } : r);
     });
-    setErrors(prev => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
+    setErrors((prev) => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
   }
 
   function updateRow(i, field, value) {
@@ -475,7 +475,7 @@ export default function Guide() {
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }}>Instructions</h2>
         
         Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. 
-      <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }}>
+      <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
       <li>Cochez les étapes concernées par l’évaluation.</li>
       <li>Complétez les informations requises. Soyez concis et précis.</li>
       <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter.</li>
@@ -641,40 +641,40 @@ export default function Guide() {
                   {/* Col 3: Justification */}
                   <td>
                     {r.ia &&
-                      <>
-                        {r.justification
-                          ? <div
+                          <>
+                        {r.justification ?
+                            <div
                               dangerouslySetInnerHTML={{ __html: r.justification }}
                               style={{
                                 width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
                                 fontFamily: 'inherit', fontSize: '0.9em', lineHeight: 1.5,
                                 border: err.justification ? '2px solid #E41E25' : '1px solid #ccc',
                                 background: err.justification ? '#fff4f4' : '#fafafa',
-                                borderRadius: 4, cursor: 'text',
+                                borderRadius: 4, cursor: 'text'
                               }}
-                              onClick={() => openDirectiveModal(i)}
-                            />
-                          : <div
+                              onClick={() => openDirectiveModal(i)} /> :
+
+                            <div
                               style={{
                                 width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
                                 fontFamily: 'inherit', fontSize: '0.9em', color: '#aaa',
                                 border: err.justification ? '2px solid #E41E25' : '1px solid #ccc',
                                 background: err.justification ? '#fff4f4' : '#fafafa',
-                                borderRadius: 4, cursor: 'text',
+                                borderRadius: 4, cursor: 'text'
                               }}
-                              onClick={() => openDirectiveModal(i)}
-                            >
+                              onClick={() => openDirectiveModal(i)}>
+
                               Cliquez pour rédiger…
                             </div>
-                        }
+                            }
                         <button
-                          type="button"
-                          onClick={() => openDirectiveModal(i)}
-                          style={{ marginTop: 4, fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                              type="button"
+                              onClick={() => openDirectiveModal(i)}
+                              style={{ marginTop: 4, fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
                           ✏ Modifier / insérer un exemple
                         </button>
                       </>
-                    }
+                          }
                     {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
                     {err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                   </td>
@@ -884,17 +884,17 @@ export default function Guide() {
       {/* ===== DIRECTIVE MODAL ===== */}
       <DirectiveSelectionModal
         isOpen={modalState.open}
-        onClose={() => setModalState(s => ({ ...s, open: false }))}
+        onClose={() => setModalState((s) => ({ ...s, open: false }))}
         onSave={(html) => {
           const { rowIndex } = modalState;
           if (rowIndex === null) return;
-          setRows(prev => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html } : r));
-          setErrors(prev => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
+          setRows((prev) => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html } : r));
+          setErrors((prev) => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
         }}
         initialValue={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.justification : ''}
         currentEtapeId={modalState.rowIndex !== null ? ETAPES[modalState.rowIndex]?.id : null}
-        currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null}
-      />
+        currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null} />
+
 
       {/* ===== SAVE & LOAD ===== */}
       <div className="save-section">
@@ -916,8 +916,8 @@ export default function Guide() {
           </div>
         }
       </div>
-    </div>
-  );
+    </div>);
+
 }
 
 function SyntheseSection({ title, children, onCopyBrio, onDownloadWord, copyOk, identLine }) {
