@@ -553,10 +553,10 @@ export default function Guide() {
         <DragDropContext onDragEnd={onDragEnd}>
         <table className="main-table">
           <colgroup>
-            <col style={{ width: '30%' }} />
             <col style={{ width: '20%' }} />
-            <col style={{ width: '25%' }} />
-            <col style={{ width: '25%' }} />
+            <col style={{ width: '20%' }} />
+            <col style={{ width: '30%' }} />
+            <col style={{ width: '30%' }} />
           </colgroup>
           <thead>
             <tr>
