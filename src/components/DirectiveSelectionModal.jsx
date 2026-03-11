@@ -217,7 +217,7 @@ export default function DirectiveSelectionModal({
                       </AccordionTrigger>
                       <AccordionContent style={{ padding: '4px 0 8px 0' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                          <TooltipProvider delayDuration={300}>
+                          <TooltipProvider delayDuration={200}>
                             {getDirectives(n).map((d, i) => (
                               <Tooltip key={i}>
                                 <TooltipTrigger asChild>
