@@ -5,7 +5,7 @@ import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 import DeclarationFieldModal from '@/components/DeclarationFieldModal';
 
 
-const IA_OPTIONS = ['À déterminer', 'Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
+const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
 
 const GABARITS = {
   'À déterminer': "Les autorisations et les directives d'utilisation des SIA vous seront divulguées ultérieurement, avec les consignes de l’évaluation.",
