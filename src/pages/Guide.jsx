@@ -788,13 +788,11 @@ export default function Guide() {
                               <label htmlFor={`logique_${i}`} style={{ marginLeft: 4 }}>Expliquer la logique d'utilisation :</label>
                               {r.decl_logique &&
                                 <>
-                                  <textarea
-                                    rows={3}
-                                    style={{ width: '95%', marginTop: 4, display: 'block', fontFamily: 'inherit', padding: 6, ...(err.decl_logique_text ? inputErrorBorder : { border: '1px solid #ccc' }) }}
-                                    placeholder="Instructions supplémentaires (requis)"
-                                    value={r.decl_logique_text}
-                                    onChange={(e) => {updateRow(i, 'decl_logique_text', e.target.value);}} />
-
+                                  <div
+                                    dangerouslySetInnerHTML={{ __html: r.decl_logique_text || '<span style="color:#aaa">Cliquez pour rédiger…</span>' }}
+                                    onClick={() => openDeclModal(i, 'logique')}
+                                    style={{ width: '95%', minHeight: 36, marginTop: 4, padding: '5px 7px', fontFamily: 'inherit', fontSize: '0.88em', lineHeight: 1.5, border: err.decl_logique_text ? '2px solid #E41E25' : '1px solid #ccc', background: err.decl_logique_text ? '#fff4f4' : '#fafafa', borderRadius: 4, cursor: 'text' }} />
+                                  <button type="button" onClick={() => openDeclModal(i, 'logique')} style={{ marginTop: 3, fontSize: '0.75em', padding: '2px 8px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>✏ Modifier / insérer un exemple</button>
                                   {err.decl_logique_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
                                 }
