@@ -58,6 +58,11 @@ export default function Guide() {
   const [iaChangeConfirm, setIaChangeConfirm] = useState(null); // { rowIndex, newIa }
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
+  const [declModalState, setDeclModalState] = useState({ open: false, rowIndex: null, fieldCode: null });
+
+  function openDeclModal(i, fieldCode) {
+    setDeclModalState({ open: true, rowIndex: i, fieldCode });
+  }
   const textAreaRefs = useRef(ETAPES.map(() => React.createRef()));
 
   // Tick every minute to keep elapsed time fresh
