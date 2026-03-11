@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import ETAPES from '@/components/etapesData';
 import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 import DeclarationFieldModal from '@/components/DeclarationFieldModal';
+import BrioSection from '@/components/BrioSection';
 
 
 const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
