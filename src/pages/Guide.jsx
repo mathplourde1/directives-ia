@@ -1046,7 +1046,7 @@ export default function Guide() {
             <p style={{ margin: '0 0 10px', fontWeight: 'bold' }}>📋 Instructions pour les personnes étudiantes</p>
             <p style={{ margin: '0 0 8px' }}>Pour compléter votre déclaration d'utilisation des SIA, suivez ces étapes :</p>
             <ol style={{ margin: 0, paddingLeft: 22 }}>
-              <li>Accédez à l'outil de déclaration : <a href="/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
+              <li>Accédez à l'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
               <li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li>
               <li>Remplissez les champs de déclaration pour chaque étape concernée.</li>
               <li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li>
