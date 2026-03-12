@@ -582,15 +582,20 @@ export default function Declaration() {
                   <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
                     <div style={{ flex: 1 }}>
                       <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                        Personne équipière {idx + 2}
+                        Personne équipière {idx + 2} <span style={{ color: '#E41E25' }}>*</span>
                       </label>
-                      <input type="text" value={nom} onChange={e => setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v))}
+                      <input type="text" value={nom}
+                        onChange={e => {
+                          setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v));
+                          setEquipiersErrors(prev => prev.map((v, i) => i === idx ? false : v));
+                        }}
                         placeholder="ex. Jean Dupont"
-                        style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                        style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+                      {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
                     </div>
                     {equipiers.length > 1 && (
-                      <button type="button" onClick={() => setEquipiers(prev => prev.filter((_, i) => i !== idx))}
-                        style={{ marginBottom: 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
+                      <button type="button" onClick={() => { setEquipiers(prev => prev.filter((_, i) => i !== idx)); setEquipiersErrors(prev => prev.filter((_, i) => i !== idx)); }}
+                        style={{ marginBottom: equipiersErrors[idx] ? 22 : 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
                     )}
                   </div>
                 ))}
