@@ -859,6 +859,7 @@ export default function Declaration() {
                 <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
               )}
             </div>
+            </div>
           </div>
 
           {/* Preview */}
