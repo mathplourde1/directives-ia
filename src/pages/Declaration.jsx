@@ -949,22 +949,21 @@ export default function Declaration() {
           {/* Preview */}
           {apercu && (
             <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
-              <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 12, color: '#231F20' }}>
+              <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 16, color: '#231F20' }}>
                 Aperçu de la déclaration générée
               </h2>
 
-              {/* Identity recap */}
-              <div style={{ background: '#f5f9ff', border: '1px solid #c8e0f4', borderRadius: 6, padding: '10px 16px', marginBottom: 16, fontSize: '0.92em', lineHeight: 1.8 }}>
-                {apercu.identification.cours && <div><strong>Cours :</strong> {apercu.identification.cours}</div>}
-                {apercu.identification.evaluation && <div><strong>Évaluation :</strong> {apercu.identification.evaluation}</div>}
-                {apercu.identification.session && <div><strong>Session :</strong> {apercu.identification.session}</div>}
-                {apercu.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {apercu.identification.enseignants}</div>}
-                {apercu.isEquipe && apercu.nomEquipe && <div><strong>Équipe :</strong> {apercu.nomEquipe}</div>}
-                {apercu.isEquipe
-                  ? apercu.equipiers.map((n, i) => n.trim() && <div key={i}><strong>Personne équipière {i + 1} :</strong> {n}</div>)
-                  : <div><strong>Nom :</strong> {apercu.studentNom}</div>
-                }
-                {apercu.studentGroupe && <div><strong>Groupe :</strong> {apercu.studentGroupe}</div>}
+              {/* Paragraphe d'introduction */}
+              <div style={{ fontSize: '0.93em', lineHeight: 1.7, marginBottom: 16 }}>
+                {apercu.isEquipe ? (() => {
+                  const noms = apercu.equipiers.filter(n => n.trim()).join(', ');
+                  const equipeInfo = apercu.nomEquipe ? ` (équipe ${apercu.nomEquipe})` : '';
+                  const groupeInfo = apercu.studentGroupe ? `, groupe ${apercu.studentGroupe}` : '';
+                  return <p style={{ margin: '0 0 6px' }}>Nous, <strong>{noms}</strong>{equipeInfo}{groupeInfo}, soumettons cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>;
+                })() : (
+                  <p style={{ margin: '0 0 6px' }}>Je, <strong>{apercu.studentNom}</strong>{apercu.studentGroupe ? ` (groupe ${apercu.studentGroupe})` : ''}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>
+                )}
+                <p style={{ margin: 0 }}>Conformément aux exigences de ma personne enseignante, les renseignements suivants présentent ma démarche.</p>
               </div>
 
               {/* Declaration summary table */}
@@ -975,12 +974,12 @@ export default function Declaration() {
                     <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '13%' }}>Utilisation SIA</th>
                     <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '24%' }}>Directives de la personne enseignante</th>
                     <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#e8f4fd', width: '24%' }}>Exigences de déclaration</th>
-                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#edfbf0', width: '24%' }}>Votre déclaration (réponses)</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#edfbf0', width: '24%' }}>Déclaration</th>
                   </tr>
                 </thead>
                 <tbody>
                   {apercu.etapes.map((etape, i) => {
-                    const s = apercu.states[i] || defaultStudentState();
+                    const st = apercu.states[i] || defaultStudentState();
                     const isAucune = etape.declaration === 'aucune';
                     return (
                       <tr key={i}>
@@ -989,11 +988,9 @@ export default function Declaration() {
                           {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.87em' }}>({etape.etapeInfo.parenthese})</span>}
                         </td>
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>{etape.ia}</td>
-                        {/* Directives column */}
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
                           <div style={{ fontSize: '0.88em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
                         </td>
-                        {/* Exigences column — blue tint */}
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f0f7ff' }}>
                           {isAucune
                             ? <em style={{ color: '#555' }}>Aucune exigence</em>
@@ -1004,23 +1001,22 @@ export default function Declaration() {
                               </div>
                           }
                         </td>
-                        {/* Student answers column — green tint */}
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f2fbf4' }}>
                           {isAucune
-                            ? <span style={{ color: s.aucune_conforme ? '#1a7a36' : '#c0392b', fontWeight: 'bold' }}>
-                                {s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'}
+                            ? <span style={{ color: st.aucune_conforme ? '#1a7a36' : '#c0392b', fontWeight: 'bold' }}>
+                                {st.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'}
                               </span>
                             : <div style={{ fontSize: '0.88em', lineHeight: 1.6 }}>
                                 {etape.decl_iagraphie && <div style={{ marginBottom: 6 }}>
-                                  <strong>IAgraphie :</strong> <span style={{ color: s.iagraphie_conforme ? '#1a7a36' : '#c0392b' }}>{s.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</span>
+                                  <strong>IAgraphie :</strong> <span style={{ color: st.iagraphie_conforme ? '#1a7a36' : '#c0392b' }}>{st.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</span>
                                 </div>}
                                 {etape.decl_traces && <div style={{ marginBottom: 6 }}>
-                                  <strong>Traces :</strong> {s.traces_reponse ? <span style={{ color: '#333' }}>{s.traces_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
-                                  <span style={{ marginLeft: 6, color: s.traces_conforme ? '#1a7a36' : '#c0392b' }}>{s.traces_conforme ? '✔' : '✘'}</span>
+                                  <strong>Traces :</strong> {st.traces_reponse ? <span style={{ color: '#333' }}>{st.traces_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
+                                  <span style={{ marginLeft: 6, color: st.traces_conforme ? '#1a7a36' : '#c0392b' }}>{st.traces_conforme ? '✔' : '✘'}</span>
                                 </div>}
                                 {etape.decl_logique && <div>
-                                  <strong>Logique :</strong> {s.logique_reponse ? <span style={{ color: '#333' }}>{s.logique_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
-                                  <span style={{ marginLeft: 6, color: s.logique_conforme ? '#1a7a36' : '#c0392b' }}>{s.logique_conforme ? '✔' : '✘'}</span>
+                                  <strong>Logique :</strong> {st.logique_reponse ? <span style={{ color: '#333' }}>{st.logique_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
+                                  <span style={{ marginLeft: 6, color: st.logique_conforme ? '#1a7a36' : '#c0392b' }}>{st.logique_conforme ? '✔' : '✘'}</span>
                                 </div>}
                               </div>
                           }
@@ -1031,7 +1027,7 @@ export default function Declaration() {
                 </tbody>
               </table>
 
-              {/* Commentaires + explanations in apercu */}
+              {/* Commentaires + explanations */}
               {(apercu.commentaires || (apercu.explanations && apercu.explanations.length > 0)) && (
                 <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
                   <strong>Commentaires, exceptions et précisions :</strong>
@@ -1053,6 +1049,18 @@ export default function Declaration() {
                   📎 <strong>Fichiers joints :</strong> {apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}
                 </div>
               )}
+
+              {/* Affirmations finales */}
+              <div style={{ marginTop: 18, padding: '12px 16px', border: '1px solid #ccc', background: '#f9f9f9', borderRadius: 6, fontSize: '0.92em' }}>
+                <p style={{ margin: '0 0 8px', fontWeight: 'bold' }}>La soumission de cette déclaration confirme que :</p>
+                <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
+                  <li>Les informations fournies sont complètes et fidèles à mon utilisation réelle.</li>
+                  <li>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.</li>
+                  <li>J'ai exercé mon jugement critique sur les contenus générés par les SIA, si autorisés.</li>
+                  <li>Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+                  <li>Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
+                </ul>
+              </div>
 
               {/* Timestamp */}
               <div style={{ marginTop: 16, fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
