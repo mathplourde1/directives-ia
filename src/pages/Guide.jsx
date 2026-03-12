@@ -480,7 +480,7 @@ export default function Guide() {
         .btn-primary:hover { background-color: #0084b0; }
         .btn-secondary { background-color: #6c757d; color: white; border: none; padding: 10px 20px; margin: 6px 4px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; }
         .btn-secondary:hover { background-color: #545b62; }
-        .synthese-section { margin-top: 28px; padding: 16px; border: 1px solid #ccc; border-radius: 8px; background: #fdfdff; }
+        .synthese-section { margin-top: 28px; padding: 16px; border: 1px solid #ffc103; border-radius: 8px; background: #fdfdff; }
         .synthese-section h3 { margin-top: 0; color: #231F20; }
         .synth-table { width: 100%; border-collapse: collapse; background: white; }
         .synth-table th, .synth-table td { border: 1px solid #ccc; padding: 10px; text-align: left; vertical-align: top; }
