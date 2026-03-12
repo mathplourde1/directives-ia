@@ -243,7 +243,7 @@ export default function Declaration() {
                 type="text"
                 value={studentGroupe}
                 onChange={(e) => setStudentGroupe(e.target.value)}
-                placeholder="ex. Groupe 02"
+                placeholder="ex. 65100"
                 style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
               </div>
             </div>
