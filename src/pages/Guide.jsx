@@ -1167,6 +1167,7 @@ export default function Guide() {
                   <textarea
                     value={declarationFieldDescription}
                     onChange={(e) => setDeclarationFieldDescription(e.target.value)}
+                    rows={1}
                     style={{
                       width: '100%',
                       padding: '8px 10px',
@@ -1176,7 +1177,7 @@ export default function Guide() {
                       borderRadius: 4,
                       boxSizing: 'border-box',
                       backgroundColor: 'white',
-                      minHeight: 80
+                      resize: 'none'
                     }} />
                 </div>
                 </>
