@@ -1081,21 +1081,23 @@ export default function Guide() {
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                {copyTitleOk && <span style={{ color: 'green', fontWeight: 'bold', marginRight: 10, fontSize: '0.9em' }}>Copié !</span>}
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Titre de la liste:</p>
-                <button
-                type="button"
-                className="btn-primary"
-                onClick={() => {
-                  if (navigator.clipboard) {
-                    navigator.clipboard.writeText('Déclaration d\'utilisation de systèmes d\'intelligence artificielle (SIA)');
-                    setCopyTitleOk(true);
-                    setTimeout(() => setCopyTitleOk(false), 1800);
-                  }
-                }}
-                style={{ fontSize: '0.85em', padding: '6px 12px' }}>
-                  Copier pour coller en ligne (Brio)
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText('Déclaration d\'utilisation de systèmes d\'intelligence artificielle (SIA)');
+                      setCopyTitleOk(true);
+                      setTimeout(() => setCopyTitleOk(false), 1800);
+                    }
+                  }}
+                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                    Copier pour coller en ligne (Brio)
+                  </button>
+                  {copyTitleOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
+                </div>
               </div>
               <input
               type="text"
