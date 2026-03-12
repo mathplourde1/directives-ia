@@ -327,7 +327,7 @@ export default function Declaration() {
 
           {/* Declaration table */}
           <div className="section-box" style={{ padding: 0, overflow: 'hidden' }}>
-            <table className="decl-table">
+            <table className="decl-table" style={{ fontSize: '0.93em' }}>
               <colgroup>
                 <col style={{ width: '18%' }} />
                 <col style={{ width: '18%' }} />
