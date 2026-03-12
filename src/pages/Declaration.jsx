@@ -644,11 +644,19 @@ export default function Declaration() {
                 </tbody>
               </table>
 
-              {/* Commentaires in apercu */}
-              {apercu.commentaires && (
+              {/* Commentaires + explanations in apercu */}
+              {(apercu.commentaires || (apercu.explanations && apercu.explanations.length > 0)) && (
                 <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
                   <strong>Commentaires, exceptions et précisions :</strong>
-                  <pre style={{ margin: '6px 0 0', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
+                  {apercu.commentaires && (
+                    <pre style={{ margin: '6px 0 8px', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
+                  )}
+                  {apercu.explanations && apercu.explanations.map((e, i) => (
+                    <div key={i} style={{ marginTop: 8, paddingTop: i > 0 || apercu.commentaires ? 8 : 0, borderTop: i > 0 || apercu.commentaires ? '1px solid #e5c040' : 'none' }}>
+                      <div style={{ color: '#555', fontSize: '0.9em', marginBottom: 2 }}>{e.question}</div>
+                      <div style={{ fontWeight: 'bold', lineHeight: 1.6 }}>{e.reponse}</div>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
