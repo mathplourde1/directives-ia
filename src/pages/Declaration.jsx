@@ -169,8 +169,37 @@ export default function Declaration() {
       .filter(e => e.reponse);
 
     const now = new Date();
+    const tzCodes = {
+      'America/St_Johns': 'HNT', 'America/Halifax': 'HNA', 'America/Glace_Bay': 'HNA',
+      'America/Moncton': 'HNA', 'America/Goose_Bay': 'HNA',
+      'America/Toronto': 'HNE', 'America/Montreal': 'HNE', 'America/Ottawa': 'HNE',
+      'America/Thunder_Bay': 'HNE', 'America/Nipigon': 'HNE', 'America/Iqaluit': 'HNE',
+      'America/Winnipeg': 'HNC', 'America/Regina': 'HNC', 'America/Swift_Current': 'HNC',
+      'America/Rankin_Inlet': 'HNC', 'America/Resolute': 'HNC',
+      'America/Edmonton': 'HNR', 'America/Calgary': 'HNR', 'America/Yellowknife': 'HNR',
+      'America/Vancouver': 'HNP', 'America/Whitehorse': 'HNP', 'America/Dawson': 'HNP',
+      'America/Dawson_Creek': 'HNR', 'America/Fort_Nelson': 'HNR', 'America/Creston': 'HNR',
+      'America/New_York': 'HNE', 'America/Chicago': 'HNC', 'America/Denver': 'HNR',
+      'America/Los_Angeles': 'HNP', 'America/Phoenix': 'HNR', 'America/Anchorage': 'HNAL',
+      'America/Honolulu': 'HAH', 'America/Puerto_Rico': 'HNA',
+      'Europe/Paris': 'HEC', 'Europe/London': 'GMT', 'Europe/Brussels': 'HEC',
+      'Europe/Berlin': 'HEC', 'Europe/Zurich': 'HEC', 'Europe/Madrid': 'HEC',
+      'Europe/Rome': 'HEC', 'Europe/Amsterdam': 'HEC', 'Europe/Lisbon': 'GMT',
+      'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST',
+      'Asia/Dubai': 'GST', 'Australia/Sydney': 'AEST', 'Pacific/Auckland': 'NZST',
+    };
+    const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // Also try offset-based fallback for common cases
+    const offsetMin = -now.getTimezoneOffset();
+    const offsetFallbacks = {
+      '-210': 'HNT', '-180': 'HNA', '-120': 'HAA',
+      '-300': 'HNE', '-360': 'HNC', '-420': 'HNR', '-480': 'HNP',
+      '-540': 'HNAL', '-600': 'HAH', '0': 'UTC', '60': 'HEC', '120': 'HEET',
+    };
+    const tzCode = tzCodes[userTz] || offsetFallbacks[String(offsetMin)] || 'UTC';
     const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })
-      + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
+      + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h')
+      + ' ' + tzCode;
     setApercu({
       identification: data.identification,
       studentNom, studentGroupe, isEquipe, nomEquipe,
