@@ -415,6 +415,14 @@ export default function Declaration() {
         });
       }
 
+      y += 14;
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'italic');
+      doc.setTextColor(100, 100, 100);
+      doc.text(`Générée le ${ap.timestamp}`, margin, y);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(0, 0, 0);
+
       doc.save('declaration-sia.pdf');
     });
   }
