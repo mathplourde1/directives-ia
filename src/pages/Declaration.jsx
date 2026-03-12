@@ -440,6 +440,95 @@ export default function Declaration() {
               </tbody>
             </table>
           </div>
+
+          {/* Submit button */}
+          <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
+            <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
+              ✅ Soumettre ma déclaration
+            </button>
+          </div>
+
+          {/* Preview */}
+          {apercu && (
+            <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
+              <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 12, color: '#231F20' }}>
+                Aperçu de la déclaration soumise
+              </h2>
+
+              {/* Identity recap */}
+              <div style={{ background: '#f5f9ff', border: '1px solid #c8e0f4', borderRadius: 6, padding: '10px 16px', marginBottom: 16, fontSize: '0.92em', lineHeight: 1.8 }}>
+                {apercu.identification.cours && <div><strong>Cours :</strong> {apercu.identification.cours}</div>}
+                {apercu.identification.evaluation && <div><strong>Évaluation :</strong> {apercu.identification.evaluation}</div>}
+                {apercu.identification.session && <div><strong>Session :</strong> {apercu.identification.session}</div>}
+                {apercu.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {apercu.identification.enseignants}</div>}
+                {apercu.isEquipe && apercu.nomEquipe && <div><strong>Équipe :</strong> {apercu.nomEquipe}</div>}
+                {apercu.isEquipe
+                  ? apercu.equipiers.map((n, i) => n.trim() && <div key={i}><strong>Personne équipière {i + 1} :</strong> {n}</div>)
+                  : <div><strong>Nom :</strong> {apercu.studentNom}</div>
+                }
+                {apercu.studentGroupe && <div><strong>Groupe :</strong> {apercu.studentGroupe}</div>}
+              </div>
+
+              {/* Declaration summary table */}
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em' }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '18%' }}>Étape</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '16%' }}>Utilisation SIA</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#e8f4fd', width: '33%' }}>Directives (instructions)</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#edfbf0', width: '33%' }}>Votre déclaration (réponses)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {apercu.etapes.map((etape, i) => {
+                    const s = apercu.states[i] || defaultStudentState();
+                    const isAucune = etape.declaration === 'aucune';
+                    return (
+                      <tr key={i}>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
+                          <strong>{etape.etapeInfo.libelle}</strong>
+                          {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.87em' }}>({etape.etapeInfo.parenthese})</span>}
+                        </td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>{etape.ia}</td>
+                        {/* Instructions column — blue tint */}
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f0f7ff' }}>
+                          {isAucune
+                            ? <em style={{ color: '#555' }}>Aucune exigence</em>
+                            : <div style={{ fontSize: '0.88em', lineHeight: 1.5 }}>
+                                {etape.decl_iagraphie && <div style={{ marginBottom: 6 }}><strong>IAgraphie :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_iagraphie_text }} /></div>}
+                                {etape.decl_traces && <div style={{ marginBottom: 6 }}><strong>Traces :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} /></div>}
+                                {etape.decl_logique && <div><strong>Logique :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_logique_text }} /></div>}
+                              </div>
+                          }
+                        </td>
+                        {/* Student answers column — green tint */}
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f2fbf4' }}>
+                          {isAucune
+                            ? <span style={{ color: s.aucune_conforme ? '#1a7a36' : '#c0392b', fontWeight: 'bold' }}>
+                                {s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'}
+                              </span>
+                            : <div style={{ fontSize: '0.88em', lineHeight: 1.6 }}>
+                                {etape.decl_iagraphie && <div style={{ marginBottom: 6 }}>
+                                  <strong>IAgraphie :</strong> <span style={{ color: s.iagraphie_conforme ? '#1a7a36' : '#c0392b' }}>{s.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</span>
+                                </div>}
+                                {etape.decl_traces && <div style={{ marginBottom: 6 }}>
+                                  <strong>Traces :</strong> {s.traces_reponse ? <span style={{ color: '#333' }}>{s.traces_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
+                                  <span style={{ marginLeft: 6, color: s.traces_conforme ? '#1a7a36' : '#c0392b' }}>{s.traces_conforme ? '✔' : '✘'}</span>
+                                </div>}
+                                {etape.decl_logique && <div>
+                                  <strong>Logique :</strong> {s.logique_reponse ? <span style={{ color: '#333' }}>{s.logique_reponse}</span> : <em style={{ color: '#999' }}>Aucune réponse</em>}
+                                  <span style={{ marginLeft: 6, color: s.logique_conforme ? '#1a7a36' : '#c0392b' }}>{s.logique_conforme ? '✔' : '✘'}</span>
+                                </div>}
+                              </div>
+                          }
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
         </>
       }
     </div>);
