@@ -1071,6 +1071,40 @@ export default function Guide() {
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Titre de la liste:</p>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText('Déclaration d\'utilisation de systèmes d\'intelligence artificielle (SIA)');
+                      setCopyInstructorOk(true);
+                      setTimeout(() => setCopyInstructorOk(false), 1800);
+                    }
+                  }}
+                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                  Copier pour coller en ligne (Brio)
+                </button>
+                {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
+              </div>
+              <input
+                type="text"
+                value="Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)"
+                readOnly
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  fontFamily: 'inherit',
+                  fontSize: '0.9em',
+                  border: '1px solid #ccc',
+                  borderRadius: 4,
+                  boxSizing: 'border-box',
+                  backgroundColor: '#f5f5f5'
+                }} />
+            </div>
+
+            <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <button
                   type="button"
