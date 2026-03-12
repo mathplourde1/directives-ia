@@ -560,6 +560,14 @@ export default function Declaration() {
                 {apercu.studentGroupe && <div><strong>Groupe :</strong> {apercu.studentGroupe}</div>}
               </div>
 
+              {/* Commentaires in apercu */}
+              {apercu.commentaires && (
+                <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginBottom: 16, fontSize: '0.92em' }}>
+                  <strong>Commentaires, exceptions et précisions :</strong>
+                  <pre style={{ margin: '6px 0 0', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{apercu.commentaires}</pre>
+                </div>
+              )}
+
               {/* Declaration summary table */}
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em' }}>
                 <thead>
