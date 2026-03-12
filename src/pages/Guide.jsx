@@ -1113,7 +1113,8 @@ export default function Guide() {
                   className="btn-primary"
                   onClick={() => {
                     if (navigator.clipboard) {
-                      navigator.clipboard.writeText(instructorInstructions);
+                      const plainText = instructorInstructions.replace(/<[^>]+>/g, '');
+                      navigator.clipboard.writeText(plainText);
                       setCopyInstructorOk(true);
                       setTimeout(() => setCopyInstructorOk(false), 1800);
                     }
