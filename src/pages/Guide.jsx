@@ -1071,7 +1071,7 @@ export default function Guide() {
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>Instructions personnalisées pour les instructeurs</p>
+                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <button
                   type="button"
                   className="btn-primary"
