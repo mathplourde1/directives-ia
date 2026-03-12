@@ -363,7 +363,7 @@ export default function Guide() {
     xml += `    <enseignants>${escapeXml(identification.enseignants)}</enseignants>\n`;
     xml += `    <evaluation>${escapeXml(identification.evaluation)}</evaluation>\n`;
     xml += `  </identification>\n`;
-    xml += `  <ordre>${etapesOrder.join(',')}</ordre>\n`;
+    xml += `  <ordre>${etapesOrder.map(i => ETAPES[i].id).join(',')}</ordre>\n`;
     xml += `  <etapes>\n`;
     rowsData.forEach((r) => {
       xml += `    <etape index="${r.index}">\n`;

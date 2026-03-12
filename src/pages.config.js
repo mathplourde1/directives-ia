@@ -47,14 +47,14 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Guide from './pages/Guide';
 import Declaration from './pages/Declaration';
+import Guide from './pages/Guide';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Guide": Guide,
     "Declaration": Declaration,
+    "Guide": Guide,
 }
 
 export const pagesConfig = {

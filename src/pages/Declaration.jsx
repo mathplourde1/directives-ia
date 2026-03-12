@@ -21,29 +21,43 @@ function parseXML(xmlText) {
       evaluation: getI(identNode, 'evaluation')
     };
 
-    const etapeNodes = doc.querySelectorAll('etape');
-    const etapes = [];
+    // Build order array from <ordre> element (list of ids)
+    const ordreNode = root.querySelector('ordre');
+    const ordreIds = ordreNode ? ordreNode.textContent.split(',').map(s => s.trim()).filter(Boolean) : null;
 
+    // Parse etape nodes into a map keyed by id
+    const etapeNodes = doc.querySelectorAll('etape');
+    const etapeMap = {};
     etapeNodes.forEach((node) => {
+      const id = node.getAttribute('id');
+      if (id) etapeMap[id] = node;
+    });
+
+    // Determine the ordered list of ids to process
+    const orderedIds = ordreIds || Object.keys(etapeMap);
+
+    const etapes = [];
+    orderedIds.forEach((id) => {
+      const node = etapeMap[id];
+      if (!node) return;
+
       const checked = node.querySelector('checked')?.textContent === 'true';
       if (!checked) return;
 
       const get = (tag) => node.querySelector(tag)?.textContent ?? '';
-      const index = parseInt(node.getAttribute('index'));
-      const isValidIndex = !isNaN(index) && index >= 0 && index < ETAPES.length;
 
-      // Determine etape info
+      // Determine etape info by id
       let etapeInfo;
-      if (isValidIndex && ETAPES[index].id !== 'autres') {
-        etapeInfo = { ...ETAPES[index] };
+      const found = ETAPES.find(e => e.id === id);
+      if (found && id !== 'autres') {
+        etapeInfo = { ...found };
       } else {
-        // Treat as "Autres" — use libelle_custom / exemples if available
         const libelleCustom = get('libelle_custom');
         const exemples = get('exemples');
         etapeInfo = {
           id: 'autres',
-          libelle: libelleCustom || (isValidIndex ? ETAPES[index].libelle : `Étape ${index}`),
-          parenthese: exemples || (isValidIndex ? ETAPES[index].parenthese : '')
+          libelle: libelleCustom || (found ? found.libelle : id),
+          parenthese: exemples || (found ? found.parenthese : '')
         };
       }
 
