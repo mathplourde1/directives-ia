@@ -142,6 +142,13 @@ export default function Declaration() {
           </button>
           <input ref={fileInputRef} type="file" accept=".xml" style={{ display: 'none' }} onChange={handleFile} />
 
+          <div style={{ marginTop: 12 }}>
+            <a href="#" style={{ fontSize: '0.85em', color: '#666', textDecoration: 'underline' }}
+              onClick={e => { e.preventDefault(); setData({ error: 'manual' }); }}>
+              Je n'ai pas de fichier XML — accéder au mode manuel
+            </a>
+          </div>
+
           {/* Error state */}
           {data?.error &&
         <div style={{ marginTop: 20, textAlign: 'left' }}>
