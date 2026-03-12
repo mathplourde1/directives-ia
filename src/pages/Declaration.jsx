@@ -102,6 +102,9 @@ export default function Declaration() {
   const [studentNom, setStudentNom] = useState('');
   const [studentGroupe, setStudentGroupe] = useState('');
   const [nomError, setNomError] = useState(false);
+  const [isEquipe, setIsEquipe] = useState(false);
+  const [nomEquipe, setNomEquipe] = useState('');
+  const [equipiers, setEquipiers] = useState(['']);
   const fileInputRef = useRef();
 
   function handleFile(e) {
