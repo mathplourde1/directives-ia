@@ -391,9 +391,9 @@ export default function Guide() {
     xml += `  </etapes>\n</guide-ia>`;
 
     const now = new Date();
-    const dateStr = now.getFullYear().toString()
-      + String(now.getMonth() + 1).padStart(2, '0')
-      + String(now.getDate()).padStart(2, '0');
+    const dateStr = now.getFullYear().toString() +
+    String(now.getMonth() + 1).padStart(2, '0') +
+    String(now.getDate()).padStart(2, '0');
     const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
     const coursPart = identification.cours ? slugify(identification.cours) : 'cours';
     const evalPart = identification.evaluation ? slugify(identification.evaluation) : 'evaluation';
@@ -1035,7 +1035,7 @@ export default function Guide() {
       <div style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #ccc', borderRadius: 8, background: 'white' }}>
         <button
           type="button"
-          onClick={() => setDeclarationActive(v => !v)}
+          onClick={() => setDeclarationActive((v) => !v)}
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 10,
             padding: '7px 16px', borderRadius: 999, border: 'none', cursor: 'pointer',
@@ -1056,132 +1056,132 @@ export default function Guide() {
           Je désire que mes personnes étudiantes utilisent mes directives pour générer une déclaration
         </button>
 
-        {declarationActive && (
-          <>
-            <div style={{ marginTop: 14, padding: '14px 18px', background: '#f0f8ff', border: '1px solid #b3d9f4', borderRadius: 6, fontSize: '0.93em', lineHeight: 1.7 }}>
-              <p style={{ margin: '0 0 10px', fontWeight: 'bold' }}>📋 Instructions pour les personnes étudiantes</p>
-              <p style={{ margin: '0 0 8px' }}>Pour compléter votre déclaration d'utilisation des SIA, suivez ces étapes :</p>
-              <ol style={{ margin: 0, paddingLeft: 22 }}>
-                <li>Accédez à l'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
-                <li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li>
-                <li>Remplissez les champs de déclaration pour chaque étape concernée.</li>
-                <li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li>
-                <li>Transmettez le fichier généré à votre personne enseignante selon les modalités indiquées.</li>
-              </ol>
-              <p style={{ margin: '10px 0 0', color: '#555', fontSize: '0.9em' }}>
-                ⚠ Vous devez disposer du fichier XML de sauvegarde pour utiliser cet outil. Assurez-vous de le créer et de le transmettre aux personnes étudiantes.
-              </p>
-            </div>
+        {declarationActive &&
+        <>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Titre de la liste:</p>
                 <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={() => {
-                    if (navigator.clipboard) {
-                      navigator.clipboard.writeText('Déclaration d\'utilisation de systèmes d\'intelligence artificielle (SIA)');
-                      setCopyInstructorOk(true);
-                      setTimeout(() => setCopyInstructorOk(false), 1800);
-                    }
-                  }}
-                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  if (navigator.clipboard) {
+                    navigator.clipboard.writeText('Déclaration d\'utilisation de systèmes d\'intelligence artificielle (SIA)');
+                    setCopyInstructorOk(true);
+                    setTimeout(() => setCopyInstructorOk(false), 1800);
+                  }
+                }}
+                style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                   Copier pour coller en ligne (Brio)
                 </button>
                 {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
               </div>
               <input
-                type="text"
-                value={declarationTitle}
-                onChange={(e) => setDeclarationTitle(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  fontFamily: 'inherit',
-                  fontSize: '0.9em',
-                  border: '1px solid #ccc',
-                  borderRadius: 4,
-                  boxSizing: 'border-box',
-                  backgroundColor: 'white'
-                }} />
+              type="text"
+              value={declarationTitle}
+              onChange={(e) => setDeclarationTitle(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '8px 10px',
+                fontFamily: 'inherit',
+                fontSize: '0.9em',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                boxSizing: 'border-box',
+                backgroundColor: 'white'
+              }} />
             </div>
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <button
-                  type="button"
-                  className="btn-primary"
-                  onClick={() => {
-                    if (navigator.clipboard) {
-                      const plainText = instructorInstructions.replace(/<[^>]+>/g, '');
-                      navigator.clipboard.writeText(plainText);
-                      setCopyInstructorOk(true);
-                      setTimeout(() => setCopyInstructorOk(false), 1800);
-                    }
-                  }}
-                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  if (navigator.clipboard) {
+                    const plainText = instructorInstructions.replace(/<[^>]+>/g, '');
+                    navigator.clipboard.writeText(plainText);
+                    setCopyInstructorOk(true);
+                    setTimeout(() => setCopyInstructorOk(false), 1800);
+                  }
+                }}
+                style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                   Copier pour coller en ligne (Brio)
                 </button>
                 {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
               </div>
               <ReactQuill
-                value={instructorInstructions}
-                onChange={setInstructorInstructions}
-                modules={{
-                  toolbar: [
-                    ['bold', 'italic', 'underline'],
-                    [{ list: 'ordered' }, { list: 'bullet' }],
-                    ['link']
-                  ]
-                }}
-                placeholder="Écrivez des instructions supplémentaires pour les personnes étudiantes..."
-                style={{
-                  fontSize: '0.9em',
-                  backgroundColor: 'white',
-                  borderRadius: 4,
-                  minHeight: 120
-                }}
-                theme="snow" />
+              value={instructorInstructions}
+              onChange={setInstructorInstructions}
+              modules={{
+                toolbar: [
+                ['bold', 'italic', 'underline'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                ['link']]
+
+              }}
+              placeholder="Écrivez des instructions supplémentaires pour les personnes étudiantes..."
+              style={{
+                fontSize: '0.9em',
+                backgroundColor: 'white',
+                borderRadius: 4,
+                minHeight: 120
+              }}
+              theme="snow" />
                 </div>
 
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
                     <button
-                      type="button"
-                      className="btn-primary"
-                      onClick={() => {
-                        if (navigator.clipboard) {
-                          navigator.clipboard.writeText(declarationFieldDescription);
-                          setCopyInstructorOk(true);
-                          setTimeout(() => setCopyInstructorOk(false), 1800);
-                        }
-                      }}
-                      style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  if (navigator.clipboard) {
+                    navigator.clipboard.writeText(declarationFieldDescription);
+                    setCopyInstructorOk(true);
+                    setTimeout(() => setCopyInstructorOk(false), 1800);
+                  }
+                }}
+                style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                       Copier pour coller en ligne (Brio)
                     </button>
                     {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
                   </div>
                   <textarea
-                    value={declarationFieldDescription}
-                    onChange={(e) => setDeclarationFieldDescription(e.target.value)}
-                    rows={1}
-                    style={{
-                      width: '100%',
-                      padding: '8px 10px',
-                      fontFamily: 'inherit',
-                      fontSize: '0.9em',
-                      border: '1px solid #ccc',
-                      borderRadius: 4,
-                      boxSizing: 'border-box',
-                      backgroundColor: 'white',
-                      resize: 'none'
-                    }} />
+              value={declarationFieldDescription}
+              onChange={(e) => setDeclarationFieldDescription(e.target.value)}
+              rows={1}
+              style={{
+                width: '100%',
+                padding: '8px 10px',
+                fontFamily: 'inherit',
+                fontSize: '0.9em',
+                border: '1px solid #ccc',
+                borderRadius: 4,
+                boxSizing: 'border-box',
+                backgroundColor: 'white',
+                resize: 'none'
+              }} />
                 </div>
                 </>
-                )}
+        }
                 </div>
                 </div>);
 
