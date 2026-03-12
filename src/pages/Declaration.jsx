@@ -128,6 +128,18 @@ export default function Declaration() {
     setStudentStates((prev) => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
   }
 
+  function handleSoumettre() {
+    if (!studentNom.trim()) { setNomError(true); return; }
+    setApercu({
+      identification: data.identification,
+      studentNom, studentGroupe, isEquipe, nomEquipe,
+      equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
+      etapes: data.etapes,
+      states: studentStates
+    });
+    setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+  }
+
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4 };
 
   return (
