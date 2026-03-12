@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import ETAPES from '@/components/etapesData';
 
-const ETAPE_IDS = ETAPES.map(e => e.id);
+const ETAPE_IDS = ETAPES.map((e) => e.id);
 
 function parseXML(xmlText) {
   const parser = new DOMParser();
@@ -18,17 +18,17 @@ function parseXML(xmlText) {
       cours: getI(identNode, 'cours'),
       session: getI(identNode, 'session'),
       enseignants: getI(identNode, 'enseignants'),
-      evaluation: getI(identNode, 'evaluation'),
+      evaluation: getI(identNode, 'evaluation')
     };
 
     const etapeNodes = doc.querySelectorAll('etape');
     const etapes = [];
 
-    etapeNodes.forEach(node => {
+    etapeNodes.forEach((node) => {
       const checked = node.querySelector('checked')?.textContent === 'true';
       if (!checked) return;
 
-      const get = tag => node.querySelector(tag)?.textContent ?? '';
+      const get = (tag) => node.querySelector(tag)?.textContent ?? '';
       const index = parseInt(node.getAttribute('index'));
       const isValidIndex = !isNaN(index) && index >= 0 && index < ETAPES.length;
 
@@ -43,7 +43,7 @@ function parseXML(xmlText) {
         etapeInfo = {
           id: 'autres',
           libelle: libelleCustom || (isValidIndex ? ETAPES[index].libelle : `Étape ${index}`),
-          parenthese: exemples || (isValidIndex ? ETAPES[index].parenthese : ''),
+          parenthese: exemples || (isValidIndex ? ETAPES[index].parenthese : '')
         };
       }
 
@@ -57,7 +57,7 @@ function parseXML(xmlText) {
         decl_traces: get('decl_traces') === 'true',
         decl_traces_text: get('decl_traces_text'),
         decl_logique: get('decl_logique') === 'true',
-        decl_logique_text: get('decl_logique_text'),
+        decl_logique_text: get('decl_logique_text')
       });
     });
 
@@ -78,7 +78,7 @@ function defaultStudentState() {
     traces_conforme: false,
     // logique
     logique_reponse: '',
-    logique_conforme: false,
+    logique_conforme: false
   };
 }
 
@@ -94,7 +94,7 @@ export default function Declaration() {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = ev => {
+    reader.onload = (ev) => {
       const result = parseXML(ev.target.result);
       setData(result);
       if (result.ok) {
@@ -106,7 +106,7 @@ export default function Declaration() {
   }
 
   function updateStudent(i, field, value) {
-    setStudentStates(prev => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
+    setStudentStates((prev) => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
   }
 
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4 };
@@ -129,11 +129,11 @@ export default function Declaration() {
         .raw-box { background: #fff8e1; border: 1px solid #f0c040; border-radius: 6px; padding: 14px; margin-top: 12px; font-size: 0.82em; white-space: pre-wrap; overflow-x: auto; font-family: monospace; max-height: 300px; overflow-y: auto; }
       `}</style>
 
-      <h1 className="mb-4 text-2xl font-semibold">Déclaration d'utilisation des systèmes d'intelligence artificielle (SIA)</h1>
+      <h1 className="mb-4 text-2xl font-semibold">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA) dans le cadre d'une évaluation</h1>
 
       {/* Upload zone */}
-      {!data?.ok && (
-        <div className="section-box" style={{ textAlign: 'center' }}>
+      {!data?.ok &&
+      <div className="section-box" style={{ textAlign: 'center' }}>
           <p style={{ marginBottom: 16, fontSize: '1em' }}>
             Importez le fichier de sauvegarde XML fourni par votre personne enseignante pour afficher les directives d'utilisation de l'IA pour cette évaluation.
           </p>
@@ -143,8 +143,8 @@ export default function Declaration() {
           <input ref={fileInputRef} type="file" accept=".xml" style={{ display: 'none' }} onChange={handleFile} />
 
           {/* Error state */}
-          {data?.error && (
-            <div style={{ marginTop: 20, textAlign: 'left' }}>
+          {data?.error &&
+        <div style={{ marginTop: 20, textAlign: 'left' }}>
               <div style={{ color: '#E41E25', fontWeight: 'bold', marginBottom: 8 }}>
                 ⚠ Ce fichier XML n'est pas conforme au format attendu.
               </div>
@@ -152,23 +152,23 @@ export default function Declaration() {
                 Le fichier ne peut pas être interprété automatiquement. Vous pouvez sauvegarder le contenu brut ci-dessous et remplir vos déclarations en mode <strong>manuel</strong>.
               </p>
               <button className="btn-primary" onClick={() => {
-                const blob = new Blob([data.raw], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url; a.download = 'contenu-brut.txt'; a.click();
-                URL.revokeObjectURL(url);
-              }}>
+            const blob = new Blob([data.raw], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;a.download = 'contenu-brut.txt';a.click();
+            URL.revokeObjectURL(url);
+          }}>
                 💾 Sauvegarder la version brute
               </button>
               <div className="raw-box">{data.raw}</div>
             </div>
-          )}
+        }
         </div>
-      )}
+      }
 
       {/* Main content after successful load */}
-      {data?.ok && (
-        <>
+      {data?.ok &&
+      <>
           {/* Identification */}
           <div className="section-box">
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 10 }}>Évaluation ciblée</h2>
@@ -179,7 +179,7 @@ export default function Declaration() {
               {data.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {data.identification.enseignants}</div>}
             </div>
             <div style={{ marginTop: 14 }}>
-              <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setData(null); setStudentStates([]); }}>
+              <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => {setData(null);setStudentStates([]);}}>
                 🔄 Charger un autre fichier
               </button>
             </div>
@@ -194,12 +194,12 @@ export default function Declaration() {
                   Nom complet <span style={{ color: '#E41E25' }}>*</span>
                 </label>
                 <input
-                  type="text"
-                  value={studentNom}
-                  onChange={e => { setStudentNom(e.target.value); setNomError(false); }}
-                  placeholder="ex. Marie Tremblay"
-                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }}
-                />
+                type="text"
+                value={studentNom}
+                onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
+                placeholder="ex. Marie Tremblay"
+                style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+
                 {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
               </div>
               <div>
@@ -207,12 +207,12 @@ export default function Declaration() {
                   Numéro de groupe ou de section
                 </label>
                 <input
-                  type="text"
-                  value={studentGroupe}
-                  onChange={e => setStudentGroupe(e.target.value)}
-                  placeholder="ex. Groupe 02"
-                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }}
-                />
+                type="text"
+                value={studentGroupe}
+                onChange={(e) => setStudentGroupe(e.target.value)}
+                placeholder="ex. Groupe 02"
+                style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+
               </div>
             </div>
           </div>
@@ -236,22 +236,22 @@ export default function Declaration() {
               </thead>
               <tbody>
                 {data.etapes.map((etape, i) => {
-                  const s = studentStates[i] || defaultStudentState();
-                  const hasTraces = etape.decl_traces;
-                  const hasLogique = etape.decl_logique;
-                  const hasIagraphie = etape.decl_iagraphie;
-                  const isAucune = etape.declaration === 'aucune';
+                const s = studentStates[i] || defaultStudentState();
+                const hasTraces = etape.decl_traces;
+                const hasLogique = etape.decl_logique;
+                const hasIagraphie = etape.decl_iagraphie;
+                const isAucune = etape.declaration === 'aucune';
 
-                  return (
-                    <tr key={i}>
+                return (
+                  <tr key={i}>
                       {/* Col 1: Étape */}
                       <td>
                         <strong>{etape.etapeInfo.libelle}</strong>
-                        {etape.etapeInfo.parenthese && (
-                          <span style={{ display: 'block', fontWeight: 'normal', color: '#555', fontSize: '0.88em', marginTop: 3 }}>
+                        {etape.etapeInfo.parenthese &&
+                      <span style={{ display: 'block', fontWeight: 'normal', color: '#555', fontSize: '0.88em', marginTop: 3 }}>
                             ({etape.etapeInfo.parenthese})
                           </span>
-                        )}
+                      }
                       </td>
 
                       {/* Col 2: IA level */}
@@ -264,76 +264,76 @@ export default function Declaration() {
 
                       {/* Col 4: Student declaration */}
                       <td>
-                        {isAucune && (
-                          <div className="conforme-row">
+                        {isAucune &&
+                      <div className="conforme-row">
                             <input type="checkbox" id={`aucune_${i}`} checked={s.aucune_conforme}
-                              onChange={e => updateStudent(i, 'aucune_conforme', e.target.checked)} />
+                        onChange={(e) => updateStudent(i, 'aucune_conforme', e.target.checked)} />
                             <label htmlFor={`aucune_${i}`}>Aucune exigence — je confirme avoir pris connaissance de cette directive.</label>
                           </div>
-                        )}
+                      }
 
-                        {!isAucune && (
-                          <div>
-                            {hasIagraphie && (
-                              <div style={{ marginBottom: 12 }}>
+                        {!isAucune &&
+                      <div>
+                            {hasIagraphie &&
+                        <div style={{ marginBottom: 12 }}>
                                 <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Références et IAgraphie</div>
                                 <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_iagraphie_text }} />
                                 <div className="conforme-row">
                                   <input type="checkbox" id={`iag_${i}`} checked={s.iagraphie_conforme}
-                                    onChange={e => updateStudent(i, 'iagraphie_conforme', e.target.checked)} />
+                            onChange={(e) => updateStudent(i, 'iagraphie_conforme', e.target.checked)} />
                                   <label htmlFor={`iag_${i}`}>Je confirme avoir respecté cette exigence.</label>
                                 </div>
                               </div>
-                            )}
+                        }
 
-                            {hasTraces && (
-                              <div style={{ marginBottom: 12 }}>
+                            {hasTraces &&
+                        <div style={{ marginBottom: 12 }}>
                                 <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Conserver les traces suivantes</div>
                                 <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} />
                                 <textarea
-                                  className="student-input"
-                                  rows={3}
-                                  placeholder="Décrivez les traces que vous avez conservées…"
-                                  value={s.traces_reponse}
-                                  onChange={e => updateStudent(i, 'traces_reponse', e.target.value)}
-                                />
+                            className="student-input"
+                            rows={3}
+                            placeholder="Décrivez les traces que vous avez conservées…"
+                            value={s.traces_reponse}
+                            onChange={(e) => updateStudent(i, 'traces_reponse', e.target.value)} />
+
                                 <div className="conforme-row">
                                   <input type="checkbox" id={`traces_${i}`} checked={s.traces_conforme}
-                                    onChange={e => updateStudent(i, 'traces_conforme', e.target.checked)} />
+                            onChange={(e) => updateStudent(i, 'traces_conforme', e.target.checked)} />
                                   <label htmlFor={`traces_${i}`}>Je confirme avoir conservé les traces requises.</label>
                                 </div>
                               </div>
-                            )}
+                        }
 
-                            {hasLogique && (
-                              <div style={{ marginBottom: 4 }}>
+                            {hasLogique &&
+                        <div style={{ marginBottom: 4 }}>
                                 <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Expliquer la logique d'utilisation</div>
                                 <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_logique_text }} />
                                 <textarea
-                                  className="student-input"
-                                  rows={3}
-                                  placeholder="Expliquez votre logique d'utilisation de l'IA…"
-                                  value={s.logique_reponse}
-                                  onChange={e => updateStudent(i, 'logique_reponse', e.target.value)}
-                                />
+                            className="student-input"
+                            rows={3}
+                            placeholder="Expliquez votre logique d'utilisation de l'IA…"
+                            value={s.logique_reponse}
+                            onChange={(e) => updateStudent(i, 'logique_reponse', e.target.value)} />
+
                                 <div className="conforme-row">
                                   <input type="checkbox" id={`logique_${i}`} checked={s.logique_conforme}
-                                    onChange={e => updateStudent(i, 'logique_conforme', e.target.checked)} />
+                            onChange={(e) => updateStudent(i, 'logique_conforme', e.target.checked)} />
                                   <label htmlFor={`logique_${i}`}>Je confirme avoir expliqué ma logique d'utilisation.</label>
                                 </div>
                               </div>
-                            )}
+                        }
                           </div>
-                        )}
+                      }
                       </td>
-                    </tr>
-                  );
-                })}
+                    </tr>);
+
+              })}
               </tbody>
             </table>
           </div>
         </>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
