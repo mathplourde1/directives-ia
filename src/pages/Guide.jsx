@@ -58,6 +58,8 @@ export default function Guide() {
   const [, forceUpdate] = useState(0);
   const [iaChangeConfirm, setIaChangeConfirm] = useState(null); // { rowIndex, newIa }
   const [declarationActive, setDeclarationActive] = useState(false);
+  const [instructorInstructions, setInstructorInstructions] = useState('');
+  const [copyInstructorOk, setCopyInstructorOk] = useState(false);
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
   const [declModalState, setDeclModalState] = useState({ open: false, rowIndex: null, fieldCode: null });
