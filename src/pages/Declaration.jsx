@@ -128,6 +128,9 @@ export default function Declaration() {
       setData(result);
       if (result.ok) {
         setStudentStates(result.etapes.map(() => defaultStudentState()));
+        setSessionOverride('');
+        setSessionEditMode(false);
+        setSessionError(false);
       }
     };
     reader.readAsText(file);
