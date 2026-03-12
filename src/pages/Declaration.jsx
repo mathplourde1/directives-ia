@@ -561,7 +561,34 @@ export default function Declaration() {
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 10 }}>Évaluation ciblée</h2>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '0.95em' }}>
               {data.identification.cours && <div><strong>Cours :</strong> {data.identification.cours}</div>}
-              {data.identification.session && <div><strong>Session :</strong> {data.identification.session}</div>}
+              <div>
+                <strong>Session :</strong>{' '}
+                {data.identification.session && !sessionEditMode ? (
+                  <span>
+                    {data.identification.session}{' '}
+                    <button type="button" onClick={() => { setSessionOverride(data.identification.session); setSessionEditMode(true); setSessionError(false); }}
+                      style={{ background: 'none', border: 'none', color: '#00A4E4', cursor: 'pointer', fontSize: '0.85em', textDecoration: 'underline', padding: 0 }}>
+                      Modifier
+                    </button>
+                  </span>
+                ) : (
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <input
+                      type="text"
+                      value={sessionOverride}
+                      onChange={e => { setSessionOverride(e.target.value); setSessionError(false); }}
+                      placeholder="ex. Hiver 2025"
+                      style={{ padding: '3px 6px', fontFamily: 'inherit', fontSize: '0.95em', border: sessionError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: sessionError ? '#fff4f4' : 'white', width: 160 }} />
+                    {data.identification.session && (
+                      <button type="button" onClick={() => { setSessionEditMode(false); setSessionOverride(''); setSessionError(false); }}
+                        style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '0.82em', textDecoration: 'underline', padding: 0 }}>
+                        Annuler
+                      </button>
+                    )}
+                    {sessionError && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Requis</span>}
+                  </span>
+                )}
+              </div>
               {data.identification.evaluation && <div><strong>Évaluation :</strong> {data.identification.evaluation}</div>}
               {data.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {data.identification.enseignants}</div>}
             </div>
