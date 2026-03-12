@@ -118,6 +118,7 @@ export default function Declaration() {
   const [hasFichiersJoints, setHasFichiersJoints] = useState(false);
   const [fichiersJointsConfirme, setFichiersJointsConfirme] = useState(false);
   const [, forceUpdate] = useState(0);
+  const [copyOk, setCopyOk] = useState(false);
   const fileInputRef = useRef();
   const apercuRef = useRef();
 
@@ -384,6 +385,35 @@ export default function Declaration() {
     const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:11px;color:#555;font-style:italic;margin-top:14px;">Générée le ${ap.timestamp}</p>`;
 
     return introHtml + tableHtml + commentairesHtml + fichiersHtml + affirmationsHtml + timestampHtml;
+  }
+
+  function copyDeclToClipboard(ap) {
+    const content = buildApercuHTML(ap);
+    const htmlText = `<h2 style="color:#E41E25">Déclaration d'utilisation de systèmes d'intelligence artificielle</h2>${content}`;
+    const plainText = htmlText.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, '');
+    
+    if (navigator.clipboard && window.ClipboardItem) {
+      const blob = new Blob([htmlText], { type: 'text/html' });
+      const blobText = new Blob([plainText], { type: 'text/plain' });
+      navigator.clipboard.write([new ClipboardItem({ 'text/html': blob, 'text/plain': blobText })])
+        .then(() => {
+          setCopyOk(true);
+          setTimeout(() => setCopyOk(false), 1800);
+        })
+        .catch(() => {
+          navigator.clipboard.writeText(htmlText)
+            .then(() => {
+              setCopyOk(true);
+              setTimeout(() => setCopyOk(false), 1800);
+            });
+        });
+    } else {
+      navigator.clipboard.writeText(htmlText)
+        .then(() => {
+          setCopyOk(true);
+          setTimeout(() => setCopyOk(false), 1800);
+        });
+    }
   }
 
   function downloadDeclWord(ap) {
@@ -1068,7 +1098,11 @@ export default function Declaration() {
               </div>
 
               {/* Export buttons */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12, alignItems: 'center' }}>
+                <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
+                  📋 Copier pour coller dans Word
+                </button>
+                {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
                 <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
                   📄 Télécharger en Word (.doc)
                 </button>
