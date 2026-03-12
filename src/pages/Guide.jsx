@@ -1058,6 +1058,9 @@ export default function Guide() {
 
         {declarationActive &&
         <>
+            <h2 style={{ marginTop: 20, marginBottom: 16, fontSize: '1.3em', fontWeight: 'bold', background: 'transparent' }}>Instructions pour Brio</h2>
+            <div style={{ marginBottom: 20 }}>
+            </div>
             
 
 
