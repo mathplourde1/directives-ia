@@ -342,6 +342,12 @@ export default function Declaration() {
       });
       html += '</div>';
     }
+    if (ap.hasFichiersJoints) {
+      const fjText = ap.fichiersJointsConfirme
+        ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.'
+        : '✘ Engagement non confirmé';
+      html += `<div style="margin-top:14px;padding:8px 12px;border:1px solid #b3d9f4;background:#edf7ff;font-family:Arial,sans-serif;font-size:12px;">📎 <strong>Fichiers joints :</strong> ${fjText}</div>`;
+    }
     html += `<p style="font-family:Arial,sans-serif;font-size:11px;color:#555;font-style:italic;margin-top:14px;">Générée le ${ap.timestamp}</p>`;
     return html;
   }
