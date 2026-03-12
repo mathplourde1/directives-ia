@@ -560,22 +560,15 @@ export default function Declaration() {
                 {apercu.studentGroupe && <div><strong>Groupe :</strong> {apercu.studentGroupe}</div>}
               </div>
 
-              {/* Commentaires in apercu */}
-              {apercu.commentaires && (
-                <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginBottom: 16, fontSize: '0.92em' }}>
-                  <strong>Commentaires, exceptions et précisions :</strong>
-                  <pre style={{ margin: '6px 0 0', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>{apercu.commentaires}</pre>
-                </div>
-              )}
-
               {/* Declaration summary table */}
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em' }}>
                 <thead>
                   <tr>
-                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '18%' }}>Étape</th>
-                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '16%' }}>Utilisation SIA</th>
-                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#e8f4fd', width: '33%' }}>Directives (instructions)</th>
-                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#edfbf0', width: '33%' }}>Votre déclaration (réponses)</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '15%' }}>Étape</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '13%' }}>Utilisation SIA</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', width: '24%' }}>Directives de la personne enseignante</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#e8f4fd', width: '24%' }}>Exigences de déclaration</th>
+                    <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#edfbf0', width: '24%' }}>Votre déclaration (réponses)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -589,7 +582,11 @@ export default function Declaration() {
                           {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.87em' }}>({etape.etapeInfo.parenthese})</span>}
                         </td>
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>{etape.ia}</td>
-                        {/* Instructions column — blue tint */}
+                        {/* Directives column */}
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
+                          <div style={{ fontSize: '0.88em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
+                        </td>
+                        {/* Exigences column — blue tint */}
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f0f7ff' }}>
                           {isAucune
                             ? <em style={{ color: '#555' }}>Aucune exigence</em>
