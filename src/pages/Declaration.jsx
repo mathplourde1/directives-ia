@@ -773,7 +773,7 @@ export default function Declaration() {
                       <div className="conforme-row">
                             <input type="checkbox" id={`aucune_${i}`} checked={s.aucune_conforme}
                         onChange={(e) => updateStudent(i, 'aucune_conforme', e.target.checked)} />
-                            <label htmlFor={`aucune_${i}`}>Aucune exigence — je confirme avoir pris connaissance de cette directive.</label>
+                            <label htmlFor={`aucune_${i}`}>Aucune exigence — je confirme être en conformité avec cette directive.</label>
                           </div>
                       }
 
