@@ -223,100 +223,91 @@ export default function Declaration() {
           <div className="section-box">
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 10 }}>Identification</h2>
 
-            {/* Team toggle */}
-            <div style={{ marginBottom: 14 }}>
-              <button
-                type="button"
-                onClick={() => setIsEquipe(v => !v)}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 8,
-                  padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
-                  background: isEquipe ? '#00A4E4' : '#e0e0e0', color: isEquipe ? 'white' : '#555'
-                }}>
-                <span style={{ width: 32, height: 18, borderRadius: 999, background: isEquipe ? 'rgba(255,255,255,0.4)' : '#bbb', display: 'inline-block', position: 'relative', transition: 'background 0.2s' }}>
-                  <span style={{ position: 'absolute', top: 2, left: isEquipe ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s' }} />
-                </span>
-                Ceci est un travail en équipe
-              </button>
-            </div>
-
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
-              {/* Main student name — always col 1 */}
+            {/* Team toggle row */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px', marginBottom: 14, alignItems: 'center' }}>
               <div>
-                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                  {isEquipe ? 'Personne équipière 1' : 'Nom complet'} <span style={{ color: '#E41E25' }}>*</span>
-                </label>
-                <input
-                type="text"
-                value={studentNom}
-                onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
-                placeholder="ex. Marie Tremblay"
-                style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
-                {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
+                <button
+                  type="button"
+                  onClick={() => setIsEquipe(v => !v)}
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
+                    background: isEquipe ? '#00A4E4' : '#e0e0e0', color: isEquipe ? 'white' : '#555'
+                  }}>
+                  <span style={{ width: 32, height: 18, borderRadius: 999, background: isEquipe ? 'rgba(255,255,255,0.4)' : '#bbb', display: 'inline-block', position: 'relative', transition: 'background 0.2s' }}>
+                    <span style={{ position: 'absolute', top: 2, left: isEquipe ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s' }} />
+                  </span>
+                  Ceci est un travail en équipe
+                </button>
               </div>
-
-              {/* Groupe — col 2, only show when not equipe or equipe but still useful */}
-              {!isEquipe && (
+              {isEquipe && (
                 <div>
-                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                    Numéro de groupe ou de section
-                  </label>
-                  <input
-                  type="text"
-                  value={studentGroupe}
-                  onChange={(e) => setStudentGroupe(e.target.value)}
-                  placeholder="ex. 65100"
-                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom ou numéro d'équipe</label>
+                  <input type="text" value={nomEquipe} onChange={e => setNomEquipe(e.target.value)}
+                    placeholder="ex. Équipe A ou Équipe 03"
+                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
                 </div>
               )}
+            </div>
 
-              {/* Team fields */}
-              {isEquipe && (
-                <>
-                  {equipiers.map((nom, idx) => (
-                    <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
-                      <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                          Personne équipière {idx + 2}
-                        </label>
-                        <input type="text" value={nom} onChange={e => setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v))}
-                          placeholder="ex. Jean Dupont"
-                          style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
-                      </div>
-                      {equipiers.length > 1 && (
-                        <button type="button" onClick={() => setEquipiers(prev => prev.filter((_, i) => i !== idx))}
-                          style={{ marginBottom: 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
-                      )}
-                    </div>
-                  ))}
-
-                  {/* Nom équipe + groupe on same row */}
-                  <div>
-                    <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom ou numéro d'équipe</label>
-                    <input type="text" value={nomEquipe} onChange={e => setNomEquipe(e.target.value)}
-                      placeholder="ex. Équipe A ou Équipe 03"
-                      style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
-                  </div>
-                  <div>
-                    <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                      Numéro de groupe ou de section
-                    </label>
-                    <input
+            {/* Names left column, groupe right column */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+              {/* Left column: all teammate names stacked */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {/* Personne 1 (main student) */}
+                <div>
+                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
+                    {isEquipe ? 'Personne équipière 1' : 'Nom complet'} <span style={{ color: '#E41E25' }}>*</span>
+                  </label>
+                  <input
                     type="text"
-                    value={studentGroupe}
-                    onChange={(e) => setStudentGroupe(e.target.value)}
-                    placeholder="ex. 65100"
-                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
-                  </div>
+                    value={studentNom}
+                    onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
+                    placeholder="ex. Marie Tremblay"
+                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+                  {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
+                </div>
 
-                  <div style={{ gridColumn: '1 / -1' }}>
+                {/* Additional teammates */}
+                {isEquipe && equipiers.map((nom, idx) => (
+                  <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
+                    <div style={{ flex: 1 }}>
+                      <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
+                        Personne équipière {idx + 2}
+                      </label>
+                      <input type="text" value={nom} onChange={e => setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v))}
+                        placeholder="ex. Jean Dupont"
+                        style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                    </div>
+                    {equipiers.length > 1 && (
+                      <button type="button" onClick={() => setEquipiers(prev => prev.filter((_, i) => i !== idx))}
+                        style={{ marginBottom: 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
+                    )}
+                  </div>
+                ))}
+
+                {isEquipe && (
+                  <div>
                     <button type="button" onClick={() => setEquipiers(prev => [...prev, ''])}
                       style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '5px 14px', cursor: 'pointer', fontSize: '0.88em', fontFamily: 'inherit' }}>
                       + Ajouter une personne équipière
                     </button>
                   </div>
-                </>
-              )}
+                )}
+              </div>
+
+              {/* Right column: groupe */}
+              <div>
+                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
+                  Numéro de groupe ou de section
+                </label>
+                <input
+                  type="text"
+                  value={studentGroupe}
+                  onChange={(e) => setStudentGroupe(e.target.value)}
+                  placeholder="ex. 65100"
+                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+              </div>
             </div>
           </div>
 
