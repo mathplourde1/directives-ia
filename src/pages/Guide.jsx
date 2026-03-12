@@ -505,7 +505,7 @@ export default function Guide() {
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">👉 Instructions</h2>
         
-        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. 
+        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. Nous vous invitons à profiter de l'accompagnement d'une <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">personne conseillère</a> si vous avez des doutes sur le processus.
       <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
       <li>Cochez les étapes concernées par l'évaluation.</li>
       <li>Complétez les informations requises. Soyez concis et précis.</li>
