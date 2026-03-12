@@ -185,6 +185,38 @@ export default function Declaration() {
             </div>
           </div>
 
+          {/* Student identity */}
+          <div className="section-box">
+            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 10 }}>Identification de l'étudiant·e</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
+              <div>
+                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
+                  Nom complet <span style={{ color: '#E41E25' }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  value={studentNom}
+                  onChange={e => { setStudentNom(e.target.value); setNomError(false); }}
+                  placeholder="ex. Marie Tremblay"
+                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }}
+                />
+                {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
+              </div>
+              <div>
+                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
+                  Numéro de groupe ou de section
+                </label>
+                <input
+                  type="text"
+                  value={studentGroupe}
+                  onChange={e => setStudentGroupe(e.target.value)}
+                  placeholder="ex. Groupe 02"
+                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }}
+                />
+              </div>
+            </div>
+          </div>
+
           {/* Declaration table */}
           <div className="section-box" style={{ padding: 0, overflow: 'hidden' }}>
             <table className="decl-table">
