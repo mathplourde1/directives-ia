@@ -1060,7 +1060,7 @@ export default function Guide() {
 
         {declarationActive &&
         <>
-            <h2 style={{ marginTop: 20, marginBottom: 16, fontSize: '1.3em', fontWeight: 'bold', background: 'transparent' }}>Instructions pour Brio</h2>
+            <h2 style={{ marginTop: 20, marginBottom: 16, fontSize: '1.3em', fontWeight: 'bold', background: 'transparent' }} className="py-2">Instructions pour Brio</h2>
             <div style={{ marginBottom: 20 }}>
               <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="blank" className="text-blue-800 underline">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.</p>
             </div>
@@ -1161,16 +1161,16 @@ export default function Guide() {
                     <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <button
-                      type="button"
-                      className="btn-primary"
-                      onClick={() => {
-                        if (navigator.clipboard) {
-                          navigator.clipboard.writeText(declarationFieldDescription);
-                          setCopyFileDescOk(true);
-                          setTimeout(() => setCopyFileDescOk(false), 1800);
-                        }
-                      }}
-                      style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(declarationFieldDescription);
+                      setCopyFileDescOk(true);
+                      setTimeout(() => setCopyFileDescOk(false), 1800);
+                    }
+                  }}
+                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                         Copier pour coller en ligne (Brio)
                       </button>
                       {copyFileDescOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
