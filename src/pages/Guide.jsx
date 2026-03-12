@@ -63,7 +63,9 @@ export default function Guide() {
   const [declarationTitle, setDeclarationTitle] = useState("Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)");
   const [instructorInstructions, setInstructorInstructions] = useState('<p><strong>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section <i>Utilisation de l\'intelligence artificielle</i> (la suivante) avant de débuter votre travail !</strong></p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank">Déclaration d\'utilisation des SIA.</a></li><li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque étape concernée.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>');
   const [declarationFieldDescription, setDeclarationFieldDescription] = useState('Fichier à utiliser dans l\'outil de déclaration.');
-  const [copyInstructorOk, setCopyInstructorOk] = useState(false);
+  const [copyTitleOk, setCopyTitleOk] = useState(false);
+  const [copyDescriptionOk, setCopyDescriptionOk] = useState(false);
+  const [copyFileDescOk, setCopyFileDescOk] = useState(false);
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
   const [declModalState, setDeclModalState] = useState({ open: false, rowIndex: null, fieldCode: null });
