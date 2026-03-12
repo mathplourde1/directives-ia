@@ -1123,21 +1123,24 @@ export default function Guide() {
                 </button>
                 {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
               </div>
-              <textarea
+              <ReactQuill
                 value={instructorInstructions}
-                onChange={(e) => setInstructorInstructions(e.target.value)}
+                onChange={setInstructorInstructions}
+                modules={{
+                  toolbar: [
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['link']
+                  ]
+                }}
                 placeholder="Écrivez des instructions supplémentaires pour les personnes étudiantes..."
                 style={{
-                  width: '100%',
-                  minHeight: 120,
-                  padding: '10px',
-                  fontFamily: 'inherit',
                   fontSize: '0.9em',
-                  border: '1px solid #ccc',
+                  backgroundColor: 'white',
                   borderRadius: 4,
-                  boxSizing: 'border-box',
-                  resize: 'vertical'
-                }} />
+                  minHeight: 120
+                }}
+                theme="snow" />
             </div>
           </>
         )}
