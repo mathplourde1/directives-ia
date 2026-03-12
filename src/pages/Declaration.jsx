@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import ETAPES from '@/components/etapesData';
 
 const ETAPE_IDS = ETAPES.map((e) => e.id);
