@@ -283,6 +283,7 @@ export default function Declaration() {
       });
       html += '</div>';
     }
+    html += `<p style="font-family:Arial,sans-serif;font-size:11px;color:#555;font-style:italic;margin-top:14px;">Générée le ${ap.timestamp}</p>`;
     return html;
   }
 
