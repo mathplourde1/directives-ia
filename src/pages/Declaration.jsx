@@ -963,7 +963,7 @@ export default function Declaration() {
             })() :
             <p style={{ margin: '0 0 6px' }}>Je, <strong>{apercu.studentNom}</strong>{apercu.studentGroupe ? ` (groupe ${apercu.studentGroupe})` : ''}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>
             }
-                <p style={{ margin: 0 }}>Conformément aux exigences de ma personne enseignante, les renseignements suivants présentent ma démarche.</p>
+                <p style={{ margin: 0 }}>Conformément aux exigences de {apercu.isEquipe ? 'notre' : 'ma'} personne enseignante, les renseignements suivants présentent {apercu.isEquipe ? 'notre' : 'ma'} démarche.</p>
               </div>
 
               {/* Declaration summary table */}
@@ -1054,11 +1054,11 @@ export default function Declaration() {
               <div style={{ marginTop: 18, padding: '12px 16px', border: '1px solid #ccc', background: '#f9f9f9', borderRadius: 6, fontSize: '0.92em' }}>
                 <p style={{ margin: '0 0 8px', fontWeight: 'bold' }}>La soumission de cette déclaration confirme que :</p>
                 <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
-                  <li>Les informations fournies sont complètes et fidèles à mon utilisation réelle.</li>
+                  <li>Les informations fournies sont complètes et fidèles à {apercu.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
                   <li>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.</li>
-                  <li>J'ai exercé mon jugement critique sur les contenus générés par les SIA, si autorisés.</li>
-                  <li>Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
-                  <li>Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
+                  <li>{apercu.isEquipe ? 'Nous avons' : 'J\'ai'} exercé {apercu.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA, si autorisés.</li>
+                  <li>Le travail soumis reflète {apercu.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+                  <li>{apercu.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
                 </ul>
               </div>
 
