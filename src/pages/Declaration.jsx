@@ -978,10 +978,12 @@ export default function Declaration() {
 
           {/* Preview */}
           {apercu &&
-        <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
-              <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 16, color: '#231F20' }}>
-                Aperçu de la déclaration générée
-              </h2>
+          <>
+          <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '11px', lineHeight: 1.2 }}>
+              {/* Document title */}
+              <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 'bold', textAlign: 'center', marginBottom: '8pt', paddingBottom: '8pt', borderBottom: '1px solid black', margin: '0 0 8pt 0', color: '#000' }}>
+                Déclaration d'utilisation de systèmes d'intelligence artificielle
+              </h1>
 
               {/* Paragraphe d'introduction */}
               <div style={{ fontSize: '0.93em', lineHeight: 1.7, marginBottom: 16 }}>
@@ -1059,59 +1061,61 @@ export default function Declaration() {
 
               {/* Commentaires + explanations */}
               {(apercu.commentaires || apercu.explanations && apercu.explanations.length > 0) &&
-          <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
-                  <strong>Commentaires, exceptions et précisions :</strong>
+              <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
+                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Commentaires, exceptions et précisions</h2>
                   {apercu.commentaires &&
-            <pre style={{ margin: '6px 0 8px', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
-            }
+              <p style={{ margin: '0 0 8pt 0', whiteSpace: 'pre-wrap' }}>{apercu.commentaires}</p>
+              }
                   {apercu.explanations && apercu.explanations.map((e, i) =>
-            <div key={i} style={{ marginTop: 8, paddingTop: i > 0 || apercu.commentaires ? 8 : 0, borderTop: i > 0 || apercu.commentaires ? '1px solid #e5c040' : 'none' }}>
-                      <div style={{ color: '#555', fontSize: '0.9em', marginBottom: 2 }}>{e.question}</div>
-                      <div style={{ fontWeight: 'bold', lineHeight: 1.6 }}>{e.reponse}</div>
+              <div key={i} style={{ marginBottom: '8pt' }}>
+                      <p style={{ margin: '0 0 4pt 0', fontSize: '10px', color: '#333' }}><strong>{e.question}</strong></p>
+                      <p style={{ margin: '0 0 8pt 0' }}>{e.reponse}</p>
                     </div>
-            )}
+              )}
                 </div>
-          }
+              }
 
               {/* Fichiers joints */}
               {apercu.hasFichiersJoints &&
-          <div style={{ background: '#edf7ff', border: '1px solid #b3d9f4', borderRadius: 6, padding: '8px 14px', marginTop: 16, fontSize: '0.92em' }}>
-                  📎 <strong>Fichiers joints :</strong> {apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}
+              <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
+                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Fichiers joints</h2>
+                  <p style={{ margin: 0 }}>{apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}</p>
                 </div>
-          }
+              }
 
               {/* Affirmations finales */}
-              <div style={{ marginTop: 18, padding: '12px 16px', border: '1px solid #ccc', background: '#f9f9f9', borderRadius: 6, fontSize: '0.92em' }}>
-                <p style={{ margin: '0 0 8px', fontWeight: 'bold' }}>La soumission de cette déclaration confirme que :</p>
-                <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
-                  <li>Les informations fournies sont complètes et fidèles à {apercu.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
-                  <li>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.</li>
-                  <li>{apercu.isEquipe ? 'Nous avons' : 'J\'ai'} exercé {apercu.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA, si autorisés.</li>
-                  <li>Le travail soumis reflète {apercu.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+              <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
+                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
+                <ul style={{ margin: '0 0 0 20px', paddingLeft: 0, lineHeight: 1.6 }}>
+                  <li style={{ marginBottom: '4pt' }}>Les informations fournies sont complètes et fidèles à {apercu.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
+                  <li style={{ marginBottom: '4pt' }}>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.</li>
+                  <li style={{ marginBottom: '4pt' }}>{apercu.isEquipe ? 'Nous avons' : 'J\'ai'} exercé {apercu.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA, si autorisés.</li>
+                  <li style={{ marginBottom: '4pt' }}>Le travail soumis reflète {apercu.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
                   <li>{apercu.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
                 </ul>
               </div>
 
               {/* Timestamp */}
-              <div style={{ marginTop: 16, fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+              <p style={{ marginTop: '16pt', fontSize: '10px', color: '#666', fontStyle: 'italic', margin: '16pt 0 0 0' }}>
                 Générée le {apercu.timestamp}
+              </p>
               </div>
 
-              {/* Export buttons */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12, alignItems: 'center' }}>
-                <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
-                  📋 Copier pour coller dans Word
-                </button>
-                {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
-                <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
-                  📄 Télécharger en Word (.doc)
-                </button>
-                <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => downloadDeclPDF(apercu)}>
-                  📋 Télécharger en PDF
-                </button>
+              {/* Export buttons outside preview */}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20, alignItems: 'center' }}>
+              <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
+                📋 Copier pour coller dans Word
+              </button>
+              {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
+              <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
+                📄 Télécharger en Word (.doc)
+              </button>
+              <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => downloadDeclPDF(apercu)}>
+                📋 Télécharger en PDF
+              </button>
               </div>
-            </div>
-        }
+              </>
+              }
         </>
       }
 
