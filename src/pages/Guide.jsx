@@ -1092,8 +1092,8 @@ export default function Guide() {
               </div>
               <input
                 type="text"
-                value="Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)"
-                readOnly
+                value={declarationTitle}
+                onChange={(e) => setDeclarationTitle(e.target.value)}
                 style={{
                   width: '100%',
                   padding: '8px 10px',
@@ -1102,7 +1102,7 @@ export default function Guide() {
                   border: '1px solid #ccc',
                   borderRadius: 4,
                   boxSizing: 'border-box',
-                  backgroundColor: '#f5f5f5'
+                  backgroundColor: 'white'
                 }} />
             </div>
 
