@@ -1,15 +1,15 @@
 ====================================
-Version 0.2 du code de l'application
+Version 0.3 du code de l'application
 ====================================
 
-||| Mathieu Plourde, 11 mars 2026 |||
+||| Mathieu Plourde, 12 mars 2026 |||
 
-Fonctionne comme standalone pour un enseignant à ce point.
+Fonctionne comme standalone pour un enseignant à ce point. Version étudiante tolérable mais besoin d'amour pour la mise en page Word et PDF.
 
 ITEMS complétés :
 - Éditeur de texte riche avec exemples de directives
 - Exigences avec RTE et exemples
-ITEMS à venir :
 - Export pour application étudiante
 - Page étudiante avec import
+ITEMS à venir :
 - Page étudiante libre service
