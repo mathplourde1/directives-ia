@@ -111,6 +111,7 @@ export default function Declaration() {
   const [fieldErrors, setFieldErrors] = useState([]); // per-etape: {traces_reponse, logique_reponse}
   const [uncheckedExplanations, setUncheckedExplanations] = useState({}); // field key → string
   const [uncheckedExpErrors, setUncheckedExpErrors] = useState({}); // field key → bool
+  const [equipiersErrors, setEquipiersErrors] = useState([]); // per-equipier: bool
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
   const apercuRef = useRef();
