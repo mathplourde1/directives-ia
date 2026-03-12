@@ -60,7 +60,7 @@ export default function Guide() {
   const [, forceUpdate] = useState(0);
   const [iaChangeConfirm, setIaChangeConfirm] = useState(null); // { rowIndex, newIa }
   const [declarationActive, setDeclarationActive] = useState(false);
-  const [instructorInstructions, setInstructorInstructions] = useState('');
+  const [instructorInstructions, setInstructorInstructions] = useState('<p>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section Utilisation de l\'intelligence artificielle (la suivante) avant de débuter votre travail !</p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank">Déclaration d\'utilisation des SIA</a></li><li>Importez le fichier de sauvegarde XML fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque étape concernée.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>');
   const [copyInstructorOk, setCopyInstructorOk] = useState(false);
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
