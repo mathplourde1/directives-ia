@@ -105,7 +105,9 @@ export default function Declaration() {
   const [isEquipe, setIsEquipe] = useState(false);
   const [nomEquipe, setNomEquipe] = useState('');
   const [equipiers, setEquipiers] = useState(['']);
+  const [apercu, setApercu] = useState(null); // null | snapshot
   const fileInputRef = useRef();
+  const apercuRef = useRef();
 
   function handleFile(e) {
     const file = e.target.files[0];
