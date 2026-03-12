@@ -158,12 +158,14 @@ export default function Declaration() {
   }
 
   function doGenerate() {
-    // Build final commentaires: base + explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
-    const expLines = unchecked
-      .map(u => uncheckedExplanations[u.field]?.trim() ? `• ${u.etape} — ${u.exigence} : ${uncheckedExplanations[u.field].trim()}` : null)
-      .filter(Boolean);
-    const finalCommentaires = [commentaires.trim(), ...expLines].filter(Boolean).join('\n\n');
+    // Store each explanation as { question, reponse } for structured display
+    const explanations = unchecked
+      .map(u => ({
+        question: `${u.etape} — ${u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée`,
+        reponse: uncheckedExplanations[u.field]?.trim() || ''
+      }))
+      .filter(e => e.reponse);
 
     setApercu({
       identification: data.identification,
@@ -171,7 +173,8 @@ export default function Declaration() {
       equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
       etapes: data.etapes,
       states: studentStates,
-      commentaires: finalCommentaires
+      commentaires: commentaires.trim(),
+      explanations
     });
     setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
