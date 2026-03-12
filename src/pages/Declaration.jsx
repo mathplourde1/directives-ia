@@ -290,16 +290,16 @@ export default function Declaration() {
       const nomsList = noms.join(', ');
       const equipeInfo = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
       const groupeInfo = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
-      introHtml = `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0 0 11px 0;">
+      introHtml = `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;">
         Nous, <strong>${nomsList}</strong>${equipeInfo}${groupeInfo}, soumettons cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
       </p>`;
     } else {
       const groupeInfo = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
-      introHtml = `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0 0 11px 0;">
+      introHtml = `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;">
         Je, <strong>${ap.studentNom}</strong>${groupeInfo}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
       </p>`;
     }
-    introHtml += `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0 0 11px 0;">Conformément aux exigences de ${ap.isEquipe ? 'notre' : 'ma'} personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche.</p>`;
+    introHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;">Conformément aux exigences de ${ap.isEquipe ? 'notre' : 'ma'} personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche.</p>`;
 
     // --- Tableau synthèse ---
     let tableHtml = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;">
@@ -348,11 +348,11 @@ export default function Declaration() {
     // --- Commentaires ---
     let commentairesHtml = '';
     if (ap.commentaires || ap.explanations && ap.explanations.length > 0) {
-      commentairesHtml = `<h2 style="font-family:Georgia,serif;font-size:18px;font-weight:bold;margin:8pt 0;color:#000;">Commentaires, exceptions et précisions</h2>`;
-      if (ap.commentaires) commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0 0 11px 0;white-space:pre-wrap">${ap.commentaires}</p>`;
+      commentairesHtml = `<h2 style="font-family:Georgia,serif;font-size:18pt;font-weight:bold;margin:8pt 0;color:#000;">Commentaires, exceptions et précisions</h2>`;
+      if (ap.commentaires) commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;white-space:pre-wrap">${ap.commentaires}</p>`;
       if (ap.explanations) ap.explanations.forEach((e) => {
-        commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:10px;margin:0 0 4pt 0;color:#333"><strong>${e.question}</strong></p>`;
-        commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0 0 11px 0">${e.reponse}</p>`;
+        commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:10pt;margin:0 0 4pt 0;color:#333"><strong>${e.question}</strong></p>`;
+        commentairesHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0">${e.reponse}</p>`;
       });
     }
 
@@ -362,12 +362,12 @@ export default function Declaration() {
       const fjText = ap.fichiersJointsConfirme ?
       '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' :
       '✘ Engagement non confirmé';
-      fichiersHtml = `<h2 style="font-family:Georgia,serif;font-size:18px;font-weight:bold;margin:8pt 0;color:#000;">Fichiers joints</h2>`;
-      fichiersHtml += `<p style="font-family:Arial,sans-serif;font-size:11px;line-height:1.2;margin:0">${fjText}</p>`;
+      fichiersHtml = `<h2 style="font-family:Georgia,serif;font-size:18pt;font-weight:bold;margin:8pt 0;color:#000;">Fichiers joints</h2>`;
+      fichiersHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0">${fjText}</p>`;
     }
 
     // --- Affirmations finales ---
-    const affirmationsHtml = `<h2 style="font-family:Georgia,serif;font-size:18px;font-weight:bold;margin:8pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
+    const affirmationsHtml = `<h2 style="font-family:Georgia,serif;font-size:18pt;font-weight:bold;margin:8pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
     const affirmationsList = [
       `Les informations fournies sont complètes et fidèles à ${ap.isEquipe ? 'notre' : 'mon'} utilisation réelle.`,
       `${ap.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.`,
@@ -375,11 +375,11 @@ export default function Declaration() {
       `Le travail soumis reflète ${ap.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.`,
       `${ap.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.`
     ];
-    const affirmationsHtml2 = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11px;line-height:1.6;">
+    const affirmationsHtml2 = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">
       ${affirmationsList.map((a) => `<li style="margin-bottom:4pt">${a}</li>`).join('')}
     </ul>`;
 
-    const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:10px;color:#666;font-style:italic;margin:16pt 0 0 0;">Générée le ${ap.timestamp}</p>`;
+    const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#666;font-style:italic;margin:16pt 0 0 0;">Générée le ${ap.timestamp}</p>`;
 
     return titleHtml + introHtml + tableHtml + commentairesHtml + fichiersHtml + affirmationsHtml + affirmationsHtml2 + timestampHtml;
   }
@@ -418,7 +418,7 @@ export default function Declaration() {
     const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset="utf-8"><title>Déclaration SIA</title>
       <style>body{font-family:Arial,sans-serif;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ccc;padding:7px;}</style>
-      </head><body><h2 style="color:#E41E25">Déclaration d'utilisation de systèmes d'intelligence artificielle</h2>${content}</body></html>`;
+      </head><body>${content}</body></html>`;
     const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');a.href = url;a.download = 'declaration-sia.doc';a.click();
