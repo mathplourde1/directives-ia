@@ -272,35 +272,46 @@ export default function Declaration() {
   }
 
   function buildApercuHTML(ap) {
-    const identLines = [];
-    if (ap.identification.cours) identLines.push(`<strong>Cours :</strong> ${ap.identification.cours}`);
-    if (ap.identification.evaluation) identLines.push(`<strong>Évaluation :</strong> ${ap.identification.evaluation}`);
-    if (ap.identification.session) identLines.push(`<strong>Session :</strong> ${ap.identification.session}`);
-    if (ap.identification.enseignants) identLines.push(`<strong>Personne(s) enseignante(s) :</strong> ${ap.identification.enseignants}`);
-    if (ap.isEquipe && ap.nomEquipe) identLines.push(`<strong>Équipe :</strong> ${ap.nomEquipe}`);
+    const s = (i) => ap.states[i] || defaultStudentState();
+
+    // --- Paragraph d'introduction ---
+    const cours = ap.identification.cours || '[cours]';
+    const evaluation = ap.identification.evaluation || '[évaluation]';
+    const session = ap.identification.session || '[session]';
+    const enseignants = ap.identification.enseignants || '[personne enseignante]';
+
+    let introHtml = '';
     if (ap.isEquipe) {
-      ap.equipiers.forEach((n, i) => { if (n.trim()) identLines.push(`<strong>Personne équipière ${i+1} :</strong> ${n}`); });
+      const noms = ap.equipiers.filter(n => n.trim());
+      const nomsList = noms.join(', ');
+      const equipeInfo = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
+      const groupeInfo = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
+      introHtml = `<p style="font-family:Arial,sans-serif;font-size:13px;line-height:1.7;">
+        Nous, <strong>${nomsList}</strong>${equipeInfo}${groupeInfo}, soumettons cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
+      </p>`;
     } else {
-      identLines.push(`<strong>Nom :</strong> ${ap.studentNom}`);
+      const groupeInfo = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
+      introHtml = `<p style="font-family:Arial,sans-serif;font-size:13px;line-height:1.7;">
+        Je, <strong>${ap.studentNom}</strong>${groupeInfo}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
+      </p>`;
     }
-    if (ap.studentGroupe) identLines.push(`<strong>Groupe :</strong> ${ap.studentGroupe}`);
+    introHtml += `<p style="font-family:Arial,sans-serif;font-size:13px;line-height:1.7;margin-top:0;">Conformément aux exigences de ma personne enseignante, les renseignements suivants présentent ma démarche.</p>`;
 
-    let html = `<p style="font-family:Arial,sans-serif;font-size:13px;">${identLines.join('<br>')}</p>`;
-
-    html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;">
+    // --- Tableau synthèse ---
+    let tableHtml = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:15%">Étape</th>
         <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:13%">Utilisation SIA</th>
         <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:24%">Directives de la personne enseignante</th>
         <th style="border:1px solid #ccc;padding:7px;background:#e8f4fd;width:24%">Exigences de déclaration</th>
-        <th style="border:1px solid #ccc;padding:7px;background:#edfbf0;width:24%">Votre déclaration (réponses)</th>
+        <th style="border:1px solid #ccc;padding:7px;background:#edfbf0;width:24%">Déclaration</th>
       </tr></thead><tbody>`;
 
     ap.etapes.forEach((etape, i) => {
-      const s = ap.states[i] || defaultStudentState();
+      const st = s(i);
       const isAucune = etape.declaration === 'aucune';
       const etapeLabel = etape.etapeInfo.parenthese
-        ? `<strong>${etape.etapeInfo.libelle}</strong> <span style="color:#555;font-size:0.88em">(${etape.etapeInfo.parenthese})</span>`
+        ? `<strong>${etape.etapeInfo.libelle}</strong><br><span style="color:#555;font-size:0.88em">(${etape.etapeInfo.parenthese})</span>`
         : `<strong>${etape.etapeInfo.libelle}</strong>`;
 
       let exigencesHtml = '';
@@ -313,14 +324,14 @@ export default function Declaration() {
 
       let reponsesHtml = '';
       if (isAucune) {
-        reponsesHtml = s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé';
+        reponsesHtml = st.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé';
       } else {
-        if (etape.decl_iagraphie) reponsesHtml += `<div><strong>IAgraphie :</strong> ${s.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</div>`;
-        if (etape.decl_traces) reponsesHtml += `<div><strong>Traces :</strong> ${s.traces_reponse || '(aucune réponse)'} ${s.traces_conforme ? '✔' : '✘'}</div>`;
-        if (etape.decl_logique) reponsesHtml += `<div><strong>Logique :</strong> ${s.logique_reponse || '(aucune réponse)'} ${s.logique_conforme ? '✔' : '✘'}</div>`;
+        if (etape.decl_iagraphie) reponsesHtml += `<div><strong>IAgraphie :</strong> ${st.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</div>`;
+        if (etape.decl_traces) reponsesHtml += `<div><strong>Traces :</strong> ${st.traces_reponse || '(aucune réponse)'} ${st.traces_conforme ? '✔' : '✘'}</div>`;
+        if (etape.decl_logique) reponsesHtml += `<div><strong>Logique :</strong> ${st.logique_reponse || '(aucune réponse)'} ${st.logique_conforme ? '✔' : '✘'}</div>`;
       }
 
-      html += `<tr>
+      tableHtml += `<tr>
         <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etapeLabel}</td>
         <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etape.ia}</td>
         <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etape.justification}</td>
@@ -328,28 +339,51 @@ export default function Declaration() {
         <td style="border:1px solid #ccc;padding:7px;vertical-align:top;background:#f2fbf4">${reponsesHtml}</td>
       </tr>`;
     });
-    html += '</tbody></table>';
+    tableHtml += '</tbody></table>';
 
+    // --- Commentaires ---
+    let commentairesHtml = '';
     if (ap.commentaires || (ap.explanations && ap.explanations.length > 0)) {
-      html += `<div style="margin-top:14px;padding:10px;border:1px solid #e5c040;background:#fffbea;font-family:Arial,sans-serif;font-size:12px;">
+      commentairesHtml = `<div style="margin-top:14px;padding:10px;border:1px solid #e5c040;background:#fffbea;font-family:Arial,sans-serif;font-size:12px;">
         <strong>Commentaires, exceptions et précisions :</strong>`;
-      if (ap.commentaires) html += `<p style="font-weight:bold;margin:6px 0 0;white-space:pre-wrap">${ap.commentaires}</p>`;
+      if (ap.commentaires) commentairesHtml += `<p style="font-weight:bold;margin:6px 0 0;white-space:pre-wrap">${ap.commentaires}</p>`;
       if (ap.explanations) ap.explanations.forEach(e => {
-        html += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e5c040">
+        commentairesHtml += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e5c040">
           <div style="color:#555;font-size:0.9em">${e.question}</div>
           <div style="font-weight:bold">${e.reponse}</div>
         </div>`;
       });
-      html += '</div>';
+      commentairesHtml += '</div>';
     }
+
+    // --- Fichiers joints ---
+    let fichiersHtml = '';
     if (ap.hasFichiersJoints) {
       const fjText = ap.fichiersJointsConfirme
         ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.'
         : '✘ Engagement non confirmé';
-      html += `<div style="margin-top:14px;padding:8px 12px;border:1px solid #b3d9f4;background:#edf7ff;font-family:Arial,sans-serif;font-size:12px;">📎 <strong>Fichiers joints :</strong> ${fjText}</div>`;
+      fichiersHtml = `<div style="margin-top:14px;padding:8px 12px;border:1px solid #b3d9f4;background:#edf7ff;font-family:Arial,sans-serif;font-size:12px;">📎 <strong>Fichiers joints :</strong> ${fjText}</div>`;
     }
-    html += `<p style="font-family:Arial,sans-serif;font-size:11px;color:#555;font-style:italic;margin-top:14px;">Générée le ${ap.timestamp}</p>`;
-    return html;
+
+    // --- Affirmations finales (gabarit) ---
+    const pronom = ap.isEquipe ? 'Notre' : 'Mon';
+    const affirmations = [
+      'Les informations fournies sont complètes et fidèles à mon utilisation réelle.',
+      `${pronom} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.`,
+      "J'ai exercé mon jugement critique sur les contenus générés par les SIA, si autorisés.",
+      'Le travail soumis reflète ma propre pensée, même lorsqu\'un SIA a été utilisé comme outil de soutien.',
+      "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
+    ];
+    const affirmationsHtml = `<div style="margin-top:18px;padding:12px 16px;border:1px solid #ccc;background:#f9f9f9;font-family:Arial,sans-serif;font-size:12px;">
+      <p style="margin:0 0 8px;font-weight:bold;">La soumission de cette déclaration confirme que :</p>
+      <ul style="margin:0;padding-left:20px;line-height:1.9;">
+        ${affirmations.map(a => `<li>${a}</li>`).join('')}
+      </ul>
+    </div>`;
+
+    const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:11px;color:#555;font-style:italic;margin-top:14px;">Générée le ${ap.timestamp}</p>`;
+
+    return introHtml + tableHtml + commentairesHtml + fichiersHtml + affirmationsHtml + timestampHtml;
   }
 
   function downloadDeclWord(ap) {
