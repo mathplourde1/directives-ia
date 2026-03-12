@@ -115,6 +115,8 @@ export default function Declaration() {
   const [sessionOverride, setSessionOverride] = useState(''); // student-entered or modified session
   const [sessionEditMode, setSessionEditMode] = useState(false); // true when editing XML session
   const [sessionError, setSessionError] = useState(false);
+  const [hasFichiersJoints, setHasFichiersJoints] = useState(false);
+  const [fichiersJointsConfirme, setFichiersJointsConfirme] = useState(false);
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
   const apercuRef = useRef();
