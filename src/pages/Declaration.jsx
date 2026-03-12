@@ -462,15 +462,17 @@ export default function Declaration() {
                         }
 
                             {hasTraces &&
-                        <div style={{ marginBottom: 12 }}>
-                                <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Conserver les traces suivantes</div>
-                                <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} />
-                                <textarea
+                            <div style={{ marginBottom: 12 }}>
+                               <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Conserver les traces suivantes</div>
+                               <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} />
+                               <textarea
                             className="student-input"
                             rows={3}
                             placeholder="Décrivez les traces que vous avez conservées…"
                             value={s.traces_reponse}
-                            onChange={(e) => updateStudent(i, 'traces_reponse', e.target.value)} />
+                            style={{ border: fieldErrors[i]?.traces_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.traces_reponse ? '#fff4f4' : undefined }}
+                            onChange={(e) => { updateStudent(i, 'traces_reponse', e.target.value); setFieldErrors(prev => prev.map((fe, fi) => fi === i ? { ...fe, traces_reponse: false } : fe)); }} />
+                               {fieldErrors[i]?.traces_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
 
                                 <div className="conforme-row">
                                   <input type="checkbox" id={`traces_${i}`} checked={s.traces_conforme}
