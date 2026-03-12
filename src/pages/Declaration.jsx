@@ -543,7 +543,7 @@ export default function Declaration() {
           {apercu && (
             <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
               <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 12, color: '#231F20' }}>
-                Aperçu de la déclaration soumise
+                Aperçu de la déclaration générée
               </h2>
 
               {/* Identity recap */}
