@@ -696,7 +696,7 @@ export default function Declaration() {
             </div>
           </div>
 
-          {/* Declaration table */}
+          {/* Declaration table + commentaires */}
           <div className="section-box" style={{ padding: 0, overflow: 'hidden' }}>
             <table className="decl-table" style={{ fontSize: '0.93em' }}>
               <colgroup>
@@ -814,10 +814,9 @@ export default function Declaration() {
               })}
               </tbody>
             </table>
-          </div>
 
-          {/* Commentaires + unchecked explanations + submit */}
-          <div className="section-box">
+            {/* Commentaires + unchecked explanations + submit */}
+            <div style={{ padding: 20 }}>
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8 }}>Commentaires, exceptions et précisions</h2>
             <textarea
               rows={4}
