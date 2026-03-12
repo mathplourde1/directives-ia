@@ -630,6 +630,37 @@ export default function Declaration() {
           )}
         </>
       }
+      {/* ===== CONFIRM DIALOG for unchecked items ===== */}
+      {confirmDialog && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'white', borderRadius: 10, padding: '28px 32px', maxWidth: 560, width: '92%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+            <h3 style={{ marginTop: 0, color: '#E41E25', fontSize: '1em' }}>⚠ Confirmations manquantes</h3>
+            <p style={{ fontSize: '0.9em', marginBottom: 10, lineHeight: 1.6 }}>
+              Les cases suivantes n'ont pas été cochées. Voulez-vous retourner dans le formulaire pour les cocher, ou générer la déclaration quand même ?
+            </p>
+            <ul style={{ listStyleType: 'disc', paddingLeft: 20, fontSize: '0.88em', marginBottom: 18, lineHeight: 1.8 }}>
+              {confirmDialog.uncheckedItems.map((u, i) => (
+                <li key={i}><strong>{u.etape}</strong> — {u.exigence}</li>
+              ))}
+            </ul>
+            <p style={{ fontSize: '0.85em', color: '#555', marginBottom: 18, lineHeight: 1.5 }}>
+              Si vous choisissez de générer quand même, un commentaire sera automatiquement ajouté dans la section Commentaires pour chaque case non cochée.
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button type="button" className="btn-primary"
+                style={{ background: '#6c757d', flex: 1 }}
+                onClick={() => setConfirmDialog(null)}>
+                ← Retourner dans le formulaire
+              </button>
+              <button type="button" className="btn-primary"
+                style={{ flex: 1 }}
+                onClick={handleGenerateAnyway}>
+                Générer quand même
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>);
 
 }
