@@ -338,7 +338,7 @@ export default function Declaration() {
                 <tr>
                   <th>Étape</th>
                   <th>L'utilisation des SIA est…</th>
-                  <th>Directives de l'enseignant·e</th>
+                  <th>Directives de la personne enseignante</th>
                   <th>Votre déclaration</th>
                 </tr>
               </thead>
@@ -444,7 +444,7 @@ export default function Declaration() {
           {/* Submit button */}
           <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
             <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
-              ✅ Soumettre ma déclaration
+              Générer la déclaration
             </button>
           </div>
 
