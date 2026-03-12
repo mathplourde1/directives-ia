@@ -167,6 +167,9 @@ export default function Declaration() {
       }))
       .filter(e => e.reponse);
 
+    const now = new Date();
+    const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })
+      + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h');
     setApercu({
       identification: data.identification,
       studentNom, studentGroupe, isEquipe, nomEquipe,
@@ -174,7 +177,8 @@ export default function Declaration() {
       etapes: data.etapes,
       states: studentStates,
       commentaires: commentaires.trim(),
-      explanations
+      explanations,
+      timestamp
     });
     setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
