@@ -164,7 +164,7 @@ export default function Declaration() {
     return items;
   }
 
-  function doGenerate() {
+  function doGenerate(effectiveSession) {
     const unchecked = buildUncheckedItems(studentStates);
     // Store each explanation as { question, reponse } for structured display
     const explanations = unchecked
