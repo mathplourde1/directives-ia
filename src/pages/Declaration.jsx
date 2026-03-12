@@ -23,7 +23,7 @@ function parseXML(xmlText) {
 
     // Build order array from <ordre> element (list of ids)
     const ordreNode = root.querySelector('ordre');
-    const ordreIds = ordreNode ? ordreNode.textContent.split(',').map(s => s.trim()).filter(Boolean) : null;
+    const ordreIds = ordreNode ? ordreNode.textContent.split(',').map((s) => s.trim()).filter(Boolean) : null;
 
     // Parse etape nodes into a map keyed by id
     const etapeNodes = doc.querySelectorAll('etape');
@@ -48,7 +48,7 @@ function parseXML(xmlText) {
 
       // Determine etape info by id
       let etapeInfo;
-      const found = ETAPES.find(e => e.id === id);
+      const found = ETAPES.find((e) => e.id === id);
       if (found && id !== 'autres') {
         etapeInfo = { ...found };
       } else {
@@ -145,7 +145,7 @@ export default function Declaration() {
 
   // Tick every minute to keep elapsed time fresh
   useEffect(() => {
-    const id = setInterval(() => forceUpdate(n => n + 1), 60000);
+    const id = setInterval(() => forceUpdate((n) => n + 1), 60000);
     return () => clearInterval(id);
   }, []);
 
@@ -169,12 +169,12 @@ export default function Declaration() {
   function doGenerate(effectiveSession) {
     const unchecked = buildUncheckedItems(studentStates);
     // Store each explanation as { question, reponse } for structured display
-    const explanations = unchecked
-      .map(u => ({
-        question: `${u.etape} — ${u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée`,
-        reponse: uncheckedExplanations[u.field]?.trim() || ''
-      }))
-      .filter(e => e.reponse);
+    const explanations = unchecked.
+    map((u) => ({
+      question: `${u.etape} — ${u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée`,
+      reponse: uncheckedExplanations[u.field]?.trim() || ''
+    })).
+    filter((e) => e.reponse);
 
     const now = new Date();
     const tzCodes = {
@@ -194,7 +194,7 @@ export default function Declaration() {
       'Europe/Berlin': 'HEC', 'Europe/Zurich': 'HEC', 'Europe/Madrid': 'HEC',
       'Europe/Rome': 'HEC', 'Europe/Amsterdam': 'HEC', 'Europe/Lisbon': 'GMT',
       'Asia/Tokyo': 'JST', 'Asia/Shanghai': 'CST', 'Asia/Kolkata': 'IST',
-      'Asia/Dubai': 'GST', 'Australia/Sydney': 'AEST', 'Pacific/Auckland': 'NZST',
+      'Asia/Dubai': 'GST', 'Australia/Sydney': 'AEST', 'Pacific/Auckland': 'NZST'
     };
     const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     // Also try offset-based fallback for common cases
@@ -202,12 +202,12 @@ export default function Declaration() {
     const offsetFallbacks = {
       '-210': 'HNT', '-180': 'HNA', '-120': 'HAA',
       '-300': 'HNE', '-360': 'HNC', '-420': 'HNR', '-480': 'HNP',
-      '-540': 'HNAL', '-600': 'HAH', '0': 'UTC', '60': 'HEC', '120': 'HEET',
+      '-540': 'HNAL', '-600': 'HAH', '0': 'UTC', '60': 'HEC', '120': 'HEET'
     };
     const tzCode = tzCodes[userTz] || offsetFallbacks[String(offsetMin)] || 'UTC';
-    const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' })
-      + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h')
-      + ' ' + tzCode;
+    const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) +
+    ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h') +
+    ' ' + tzCode;
     setApercu({
       identification: { ...data.identification, session: effectiveSession },
       studentNom, studentGroupe, isEquipe, nomEquipe,
@@ -226,19 +226,19 @@ export default function Declaration() {
 
   function handleSoumettre() {
     // Validate session
-    const effectiveSession = data.identification.session && !sessionEditMode
-      ? data.identification.session
-      : sessionOverride.trim();
-    if (!effectiveSession) { setSessionError(true); setSubmitStatus({ ok: false }); return; }
+    const effectiveSession = data.identification.session && !sessionEditMode ?
+    data.identification.session :
+    sessionOverride.trim();
+    if (!effectiveSession) {setSessionError(true);setSubmitStatus({ ok: false });return;}
 
     // Validate nom
-    if (!studentNom.trim()) { setNomError(true); setSubmitStatus({ ok: false }); return; }
+    if (!studentNom.trim()) {setNomError(true);setSubmitStatus({ ok: false });return;}
 
     // Validate all teammate names if team mode is on
     if (isEquipe) {
-      const errs = equipiers.map(n => !n.trim());
+      const errs = equipiers.map((n) => !n.trim());
       setEquipiersErrors(errs);
-      if (errs.some(Boolean)) { setSubmitStatus({ ok: false }); return; }
+      if (errs.some(Boolean)) {setSubmitStatus({ ok: false });return;}
     }
 
     // Validate text fields (traces & logique must have text)
@@ -249,25 +249,25 @@ export default function Declaration() {
         logique_reponse: etape.decl_logique && !s.logique_reponse.trim()
       };
     });
-    const hasFieldErrors = newFieldErrors.some(e => e.traces_reponse || e.logique_reponse);
+    const hasFieldErrors = newFieldErrors.some((e) => e.traces_reponse || e.logique_reponse);
     setFieldErrors(newFieldErrors);
-    if (hasFieldErrors) { setSubmitStatus({ ok: false }); return; }
+    if (hasFieldErrors) {setSubmitStatus({ ok: false });return;}
 
     // Validate fichiers joints confirmation
-    if (hasFichiersJoints && !fichiersJointsConfirme) { setSubmitStatus({ ok: false }); return; }
+    if (hasFichiersJoints && !fichiersJointsConfirme) {setSubmitStatus({ ok: false });return;}
 
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
     const newExpErrors = {};
-    unchecked.forEach(u => {
+    unchecked.forEach((u) => {
       if (!uncheckedExplanations[u.field]?.trim()) newExpErrors[u.field] = true;
     });
     setUncheckedExpErrors(newExpErrors);
-    if (Object.keys(newExpErrors).length > 0) { setSubmitStatus({ ok: false }); return; }
+    if (Object.keys(newExpErrors).length > 0) {setSubmitStatus({ ok: false });return;}
 
-    const effSession = data.identification.session && !sessionEditMode
-      ? data.identification.session
-      : sessionOverride.trim();
+    const effSession = data.identification.session && !sessionEditMode ?
+    data.identification.session :
+    sessionOverride.trim();
     doGenerate(effSession);
   }
 
@@ -282,7 +282,7 @@ export default function Declaration() {
 
     let introHtml = '';
     if (ap.isEquipe) {
-      const noms = ap.equipiers.filter(n => n.trim());
+      const noms = ap.equipiers.filter((n) => n.trim());
       const nomsList = noms.join(', ');
       const equipeInfo = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
       const groupeInfo = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
@@ -310,13 +310,13 @@ export default function Declaration() {
     ap.etapes.forEach((etape, i) => {
       const st = s(i);
       const isAucune = etape.declaration === 'aucune';
-      const etapeLabel = etape.etapeInfo.parenthese
-        ? `<strong>${etape.etapeInfo.libelle}</strong><br><span style="color:#555;font-size:0.88em">(${etape.etapeInfo.parenthese})</span>`
-        : `<strong>${etape.etapeInfo.libelle}</strong>`;
+      const etapeLabel = etape.etapeInfo.parenthese ?
+      `<strong>${etape.etapeInfo.libelle}</strong><br><span style="color:#555;font-size:0.88em">(${etape.etapeInfo.parenthese})</span>` :
+      `<strong>${etape.etapeInfo.libelle}</strong>`;
 
       let exigencesHtml = '';
-      if (isAucune) { exigencesHtml = '<em>Aucune exigence</em>'; }
-      else {
+      if (isAucune) {exigencesHtml = '<em>Aucune exigence</em>';} else
+      {
         if (etape.decl_iagraphie) exigencesHtml += `<div><strong>IAgraphie :</strong> ${etape.decl_iagraphie_text}</div>`;
         if (etape.decl_traces) exigencesHtml += `<div><strong>Traces :</strong> ${etape.decl_traces_text}</div>`;
         if (etape.decl_logique) exigencesHtml += `<div><strong>Logique :</strong> ${etape.decl_logique_text}</div>`;
@@ -343,11 +343,11 @@ export default function Declaration() {
 
     // --- Commentaires ---
     let commentairesHtml = '';
-    if (ap.commentaires || (ap.explanations && ap.explanations.length > 0)) {
+    if (ap.commentaires || ap.explanations && ap.explanations.length > 0) {
       commentairesHtml = `<div style="margin-top:14px;padding:10px;border:1px solid #e5c040;background:#fffbea;font-family:Arial,sans-serif;font-size:12px;">
         <strong>Commentaires, exceptions et précisions :</strong>`;
       if (ap.commentaires) commentairesHtml += `<p style="font-weight:bold;margin:6px 0 0;white-space:pre-wrap">${ap.commentaires}</p>`;
-      if (ap.explanations) ap.explanations.forEach(e => {
+      if (ap.explanations) ap.explanations.forEach((e) => {
         commentairesHtml += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e5c040">
           <div style="color:#555;font-size:0.9em">${e.question}</div>
           <div style="font-weight:bold">${e.reponse}</div>
@@ -359,25 +359,25 @@ export default function Declaration() {
     // --- Fichiers joints ---
     let fichiersHtml = '';
     if (ap.hasFichiersJoints) {
-      const fjText = ap.fichiersJointsConfirme
-        ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.'
-        : '✘ Engagement non confirmé';
+      const fjText = ap.fichiersJointsConfirme ?
+      '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' :
+      '✘ Engagement non confirmé';
       fichiersHtml = `<div style="margin-top:14px;padding:8px 12px;border:1px solid #b3d9f4;background:#edf7ff;font-family:Arial,sans-serif;font-size:12px;">📎 <strong>Fichiers joints :</strong> ${fjText}</div>`;
     }
 
     // --- Affirmations finales (gabarit) ---
     const pronom = ap.isEquipe ? 'Notre' : 'Mon';
     const affirmations = [
-      'Les informations fournies sont complètes et fidèles à mon utilisation réelle.',
-      `${pronom} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.`,
-      "J'ai exercé mon jugement critique sur les contenus générés par les SIA, si autorisés.",
-      'Le travail soumis reflète ma propre pensée, même lorsqu\'un SIA a été utilisé comme outil de soutien.',
-      "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
-    ];
+    'Les informations fournies sont complètes et fidèles à mon utilisation réelle.',
+    `${pronom} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.`,
+    "J'ai exercé mon jugement critique sur les contenus générés par les SIA, si autorisés.",
+    'Le travail soumis reflète ma propre pensée, même lorsqu\'un SIA a été utilisé comme outil de soutien.',
+    "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."];
+
     const affirmationsHtml = `<div style="margin-top:18px;padding:12px 16px;border:1px solid #ccc;background:#f9f9f9;font-family:Arial,sans-serif;font-size:12px;">
       <p style="margin:0 0 8px;font-weight:bold;">La soumission de cette déclaration confirme que :</p>
       <ul style="margin:0;padding-left:20px;line-height:1.9;">
-        ${affirmations.map(a => `<li>${a}</li>`).join('')}
+        ${affirmations.map((a) => `<li>${a}</li>`).join('')}
       </ul>
     </div>`;
 
@@ -394,7 +394,7 @@ export default function Declaration() {
       </head><body><h2 style="color:#E41E25">Déclaration d'utilisation de systèmes d'intelligence artificielle</h2>${content}</body></html>`;
     const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a'); a.href = url; a.download = 'declaration-sia.doc'; a.click();
+    const a = document.createElement('a');a.href = url;a.download = 'declaration-sia.doc';a.click();
     URL.revokeObjectURL(url);
   }
 
@@ -419,7 +419,7 @@ export default function Declaration() {
       if (ap.identification.enseignants) identLines.push(`Personne(s) enseignante(s) : ${ap.identification.enseignants}`);
       if (ap.isEquipe) {
         if (ap.nomEquipe) identLines.push(`Équipe : ${ap.nomEquipe}`);
-        ap.equipiers.forEach((n, i) => { if (n.trim()) identLines.push(`Personne équipière ${i+1} : ${n}`); });
+        ap.equipiers.forEach((n, i) => {if (n.trim()) identLines.push(`Personne équipière ${i + 1} : ${n}`);});
       } else {
         identLines.push(`Nom : ${ap.studentNom}`);
       }
@@ -444,8 +444,8 @@ export default function Declaration() {
         const stripHtml = (h) => h ? h.replace(/<[^>]+>/g, '') : '';
 
         let exigences = '';
-        if (isAucune) { exigences = 'Aucune exigence'; }
-        else {
+        if (isAucune) {exigences = 'Aucune exigence';} else
+        {
           const parts = [];
           if (etape.decl_iagraphie) parts.push(`IAgraphie: ${stripHtml(etape.decl_iagraphie_text)}`);
           if (etape.decl_traces) parts.push(`Traces: ${stripHtml(etape.decl_traces_text)}`);
@@ -454,8 +454,8 @@ export default function Declaration() {
         }
 
         let reponses = '';
-        if (isAucune) { reponses = s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'; }
-        else {
+        if (isAucune) {reponses = s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé';} else
+        {
           const parts = [];
           if (etape.decl_iagraphie) parts.push(`IAgraphie: ${s.iagraphie_conforme ? '✔' : '✘'}`);
           if (etape.decl_traces) parts.push(`Traces: ${s.traces_reponse || '-'} ${s.traces_conforme ? '✔' : '✘'}`);
@@ -464,15 +464,15 @@ export default function Declaration() {
         }
 
         const cells = [
-          etape.etapeInfo.libelle,
-          etape.ia,
-          stripHtml(etape.justification),
-          exigences,
-          reponses
-        ];
+        etape.etapeInfo.libelle,
+        etape.ia,
+        stripHtml(etape.justification),
+        exigences,
+        reponses];
+
         const lineH = 11;
-        const cellLines = cells.map(c => doc.splitTextToSize(c || '', colW - 8));
-        const rowH = Math.max(...cellLines.map(l => l.length)) * lineH + 10;
+        const cellLines = cells.map((c) => doc.splitTextToSize(c || '', colW - 8));
+        const rowH = Math.max(...cellLines.map((l) => l.length)) * lineH + 10;
 
         if (y + rowH > doc.internal.pageSize.getHeight() - margin) {
           doc.addPage();
@@ -489,7 +489,7 @@ export default function Declaration() {
       });
 
       // Commentaires
-      if (ap.commentaires || (ap.explanations && ap.explanations.length > 0)) {
+      if (ap.commentaires || ap.explanations && ap.explanations.length > 0) {
         y += 12;
         doc.setFontSize(9);
         doc.setFont(undefined, 'bold');
@@ -501,7 +501,7 @@ export default function Declaration() {
           doc.text(lines, margin, y);
           y += lines.length * 11 + 6;
         }
-        if (ap.explanations) ap.explanations.forEach(e => {
+        if (ap.explanations) ap.explanations.forEach((e) => {
           doc.setFont(undefined, 'italic');
           const qLines = doc.splitTextToSize(e.question, pageW - margin * 2);
           doc.text(qLines, margin, y);
@@ -519,9 +519,9 @@ export default function Declaration() {
         doc.setFontSize(9);
         doc.setFont(undefined, 'normal');
         doc.setTextColor(0, 0, 0);
-        const fjText = ap.fichiersJointsConfirme
-          ? 'Fichiers joints : Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.'
-          : 'Fichiers joints : Engagement non confirmé';
+        const fjText = ap.fichiersJointsConfirme ?
+        'Fichiers joints : Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' :
+        'Fichiers joints : Engagement non confirmé';
         const fjLines = doc.splitTextToSize(fjText, pageW - margin * 2);
         doc.text(fjLines, margin, y);
         y += fjLines.length * 11 + 6;
@@ -573,21 +573,21 @@ export default function Declaration() {
           <input ref={fileInputRef} type="file" accept=".xml" style={{ display: 'none' }} onChange={handleFile} />
 
           <div style={{ marginTop: 12 }}>
-            <a href="#" style={{ fontSize: '0.85em', color: '#666', textDecoration: 'underline' }}
-              onClick={e => { e.preventDefault(); setData({ error: 'manual' }); }}>
-              Je n'ai pas de fichier XML — accéder au mode manuel
-            </a>
+            
+
+
+
           </div>
 
           {/* Error state */}
           {data?.error &&
         <div style={{ marginTop: 20, textAlign: 'left' }}>
-              {data.error === 'manual' ? (
-                <div style={{ color: '#555', marginBottom: 8, fontSize: '0.9em', background: '#f0f4f8', border: '1px solid #ccc', borderRadius: 6, padding: '10px 14px' }}>
+              {data.error === 'manual' ?
+          <div style={{ color: '#555', marginBottom: 8, fontSize: '0.9em', background: '#f0f4f8', border: '1px solid #ccc', borderRadius: 6, padding: '10px 14px' }}>
                   En mode manuel, remplissez le formulaire sans fichier XML. Aucune directive n'est pré-remplie.
-                </div>
-              ) : (
-                <>
+                </div> :
+
+          <>
                   <div style={{ color: '#E41E25', fontWeight: 'bold', marginBottom: 8 }}>
                     ⚠ Ce fichier XML n'est pas conforme au format attendu.
                   </div>
@@ -595,7 +595,7 @@ export default function Declaration() {
                     Le fichier ne peut pas être interprété automatiquement. Vous pouvez sauvegarder le contenu brut ci-dessous et remplir vos déclarations en mode <strong>manuel</strong>.
                   </p>
                 </>
-              )}
+          }
               {data.error !== 'manual' && <>
                 <button className="btn-primary" onClick={() => {
               const blob = new Blob([data.raw], { type: 'text/plain' });
@@ -623,31 +623,31 @@ export default function Declaration() {
               {data.identification.cours && <div><strong>Cours :</strong> {data.identification.cours}</div>}
               <div>
                 <strong>Session :</strong>{' '}
-                {data.identification.session && !sessionEditMode ? (
-                  <span>
+                {data.identification.session && !sessionEditMode ?
+              <span>
                     {data.identification.session}{' '}
-                    <button type="button" onClick={() => { setSessionOverride(data.identification.session); setSessionEditMode(true); setSessionError(false); }}
-                      style={{ background: 'none', border: 'none', color: '#00A4E4', cursor: 'pointer', fontSize: '0.85em', textDecoration: 'underline', padding: 0 }}>
+                    <button type="button" onClick={() => {setSessionOverride(data.identification.session);setSessionEditMode(true);setSessionError(false);}}
+                style={{ background: 'none', border: 'none', color: '#00A4E4', cursor: 'pointer', fontSize: '0.85em', textDecoration: 'underline', padding: 0 }}>
                       Modifier
                     </button>
-                  </span>
-                ) : (
-                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  </span> :
+
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                     <input
-                      type="text"
-                      value={sessionOverride}
-                      onChange={e => { setSessionOverride(e.target.value); setSessionError(false); }}
-                      placeholder="ex. Hiver 2025"
-                      style={{ padding: '3px 6px', fontFamily: 'inherit', fontSize: '0.95em', border: sessionError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: sessionError ? '#fff4f4' : 'white', width: 160 }} />
-                    {data.identification.session && (
-                      <button type="button" onClick={() => { setSessionEditMode(false); setSessionOverride(''); setSessionError(false); }}
-                        style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '0.82em', textDecoration: 'underline', padding: 0 }}>
+                  type="text"
+                  value={sessionOverride}
+                  onChange={(e) => {setSessionOverride(e.target.value);setSessionError(false);}}
+                  placeholder="ex. Hiver 2025"
+                  style={{ padding: '3px 6px', fontFamily: 'inherit', fontSize: '0.95em', border: sessionError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: sessionError ? '#fff4f4' : 'white', width: 160 }} />
+                    {data.identification.session &&
+                <button type="button" onClick={() => {setSessionEditMode(false);setSessionOverride('');setSessionError(false);}}
+                style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '0.82em', textDecoration: 'underline', padding: 0 }}>
                         Annuler
                       </button>
-                    )}
+                }
                     {sessionError && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Requis</span>}
                   </span>
-                )}
+              }
               </div>
               {data.identification.evaluation && <div><strong>Évaluation :</strong> {data.identification.evaluation}</div>}
               {data.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {data.identification.enseignants}</div>}
@@ -667,27 +667,27 @@ export default function Declaration() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px', marginBottom: 14, alignItems: 'center' }}>
               <div>
                 <button
-                  type="button"
-                  onClick={() => setIsEquipe(v => !v)}
-                  style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 8,
-                    padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
-                    background: isEquipe ? '#00A4E4' : '#e0e0e0', color: isEquipe ? 'white' : '#555'
-                  }}>
+                type="button"
+                onClick={() => setIsEquipe((v) => !v)}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
+                  background: isEquipe ? '#00A4E4' : '#e0e0e0', color: isEquipe ? 'white' : '#555'
+                }}>
                   <span style={{ width: 32, height: 18, borderRadius: 999, background: isEquipe ? 'rgba(255,255,255,0.4)' : '#bbb', display: 'inline-block', position: 'relative', transition: 'background 0.2s' }}>
                     <span style={{ position: 'absolute', top: 2, left: isEquipe ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s' }} />
                   </span>
                   Ceci est un travail en équipe
                 </button>
               </div>
-              {isEquipe && (
-                <div>
+              {isEquipe &&
+            <div>
                   <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom ou numéro d'équipe</label>
-                  <input type="text" value={nomEquipe} onChange={e => setNomEquipe(e.target.value)}
-                    placeholder="ex. Équipe A ou Équipe 03"
-                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                  <input type="text" value={nomEquipe} onChange={(e) => setNomEquipe(e.target.value)}
+              placeholder="ex. Équipe A ou Équipe 03"
+              style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
                 </div>
-              )}
+            }
             </div>
 
             {/* Names left column, groupe right column */}
@@ -700,45 +700,45 @@ export default function Declaration() {
                     {isEquipe ? 'Personne équipière 1' : 'Nom complet'} <span style={{ color: '#E41E25' }}>*</span>
                   </label>
                   <input
-                    type="text"
-                    value={studentNom}
-                    onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
-                    placeholder="ex. Marie Tremblay"
-                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+                  type="text"
+                  value={studentNom}
+                  onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
+                  placeholder="ex. Marie Tremblay"
+                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                   {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
                 </div>
 
                 {/* Additional teammates */}
-                {isEquipe && equipiers.map((nom, idx) => (
-                  <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
+                {isEquipe && equipiers.map((nom, idx) =>
+              <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
                     <div style={{ flex: 1 }}>
                       <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
                         Personne équipière {idx + 2} <span style={{ color: '#E41E25' }}>*</span>
                       </label>
                       <input type="text" value={nom}
-                        onChange={e => {
-                          setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v));
-                          setEquipiersErrors(prev => prev.map((v, i) => i === idx ? false : v));
-                        }}
-                        placeholder="ex. Jean Dupont"
-                        style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+                  onChange={(e) => {
+                    setEquipiers((prev) => prev.map((v, i) => i === idx ? e.target.value : v));
+                    setEquipiersErrors((prev) => prev.map((v, i) => i === idx ? false : v));
+                  }}
+                  placeholder="ex. Jean Dupont"
+                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                       {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
                     </div>
-                    {equipiers.length > 1 && (
-                      <button type="button" onClick={() => { setEquipiers(prev => prev.filter((_, i) => i !== idx)); setEquipiersErrors(prev => prev.filter((_, i) => i !== idx)); }}
-                        style={{ marginBottom: equipiersErrors[idx] ? 22 : 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
-                    )}
+                    {equipiers.length > 1 &&
+                <button type="button" onClick={() => {setEquipiers((prev) => prev.filter((_, i) => i !== idx));setEquipiersErrors((prev) => prev.filter((_, i) => i !== idx));}}
+                style={{ marginBottom: equipiersErrors[idx] ? 22 : 2, background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em' }} title="Retirer">✕</button>
+                }
                   </div>
-                ))}
+              )}
 
-                {isEquipe && (
-                  <div>
-                    <button type="button" onClick={() => setEquipiers(prev => [...prev, ''])}
-                      style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '5px 14px', cursor: 'pointer', fontSize: '0.88em', fontFamily: 'inherit' }}>
+                {isEquipe &&
+              <div>
+                    <button type="button" onClick={() => setEquipiers((prev) => [...prev, ''])}
+                style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '5px 14px', cursor: 'pointer', fontSize: '0.88em', fontFamily: 'inherit' }}>
                       + Ajouter une personne équipière
                     </button>
                   </div>
-                )}
+              }
               </div>
 
               {/* Right column: groupe */}
@@ -747,11 +747,11 @@ export default function Declaration() {
                   Numéro de groupe ou de section
                 </label>
                 <input
-                  type="text"
-                  value={studentGroupe}
-                  onChange={(e) => setStudentGroupe(e.target.value)}
-                  placeholder="ex. 65100"
-                  style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                type="text"
+                value={studentGroupe}
+                onChange={(e) => setStudentGroupe(e.target.value)}
+                placeholder="ex. 65100"
+                style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
               </div>
             </div>
           </div>
@@ -826,7 +826,7 @@ export default function Declaration() {
                         }
 
                             {hasTraces &&
-                            <div style={{ marginBottom: 12 }}>
+                        <div style={{ marginBottom: 12 }}>
                                <div style={{ fontWeight: 'bold', fontSize: '0.88em', marginBottom: 4 }}>Conserver les traces suivantes</div>
                                <div className="locked-field" style={{ fontSize: '0.85em' }} dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} />
                                <textarea
@@ -835,7 +835,7 @@ export default function Declaration() {
                             placeholder="Décrivez les traces que vous avez conservées…"
                             value={s.traces_reponse}
                             style={{ border: fieldErrors[i]?.traces_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.traces_reponse ? '#fff4f4' : undefined }}
-                            onChange={(e) => { updateStudent(i, 'traces_reponse', e.target.value); setFieldErrors(prev => prev.map((fe, fi) => fi === i ? { ...fe, traces_reponse: false } : fe)); }} />
+                            onChange={(e) => {updateStudent(i, 'traces_reponse', e.target.value);setFieldErrors((prev) => prev.map((fe, fi) => fi === i ? { ...fe, traces_reponse: false } : fe));}} />
                                {fieldErrors[i]?.traces_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
 
                                 <div className="conforme-row">
@@ -856,7 +856,7 @@ export default function Declaration() {
                             placeholder="Expliquez votre logique d'utilisation de l'IA…"
                             value={s.logique_reponse}
                             style={{ border: fieldErrors[i]?.logique_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.logique_reponse ? '#fff4f4' : undefined }}
-                            onChange={(e) => { updateStudent(i, 'logique_reponse', e.target.value); setFieldErrors(prev => prev.map((fe, fi) => fi === i ? { ...fe, logique_reponse: false } : fe)); }} />
+                            onChange={(e) => {updateStudent(i, 'logique_reponse', e.target.value);setFieldErrors((prev) => prev.map((fe, fi) => fi === i ? { ...fe, logique_reponse: false } : fe));}} />
                                 {fieldErrors[i]?.logique_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
 
                                 <div className="conforme-row">
@@ -881,34 +881,34 @@ export default function Declaration() {
             <textarea
               rows={4}
               value={commentaires}
-              onChange={e => setCommentaires(e.target.value)}
+              onChange={(e) => setCommentaires(e.target.value)}
               placeholder="Ajoutez ici tout commentaire, exception ou précision que vous souhaitez transmettre à votre personne enseignante…"
               style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
 
             {/* Dynamic fields for unchecked confirmations */}
-            {buildUncheckedItems(studentStates).map((u) => (
-              <div key={u.field} style={{ marginTop: 14 }}>
+            {buildUncheckedItems(studentStates).map((u) =>
+            <div key={u.field} style={{ marginTop: 14 }}>
                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
                   <span style={{ color: '#E41E25' }}>*</span> {u.etape} — {u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée.
                 </label>
                 <textarea
-                  rows={2}
-                  value={uncheckedExplanations[u.field] || ''}
-                  onChange={e => {
-                    setUncheckedExplanations(prev => ({ ...prev, [u.field]: e.target.value }));
-                    setUncheckedExpErrors(prev => ({ ...prev, [u.field]: false }));
-                  }}
-                  placeholder="Expliquez la raison…"
-                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.9em', border: uncheckedExpErrors[u.field] ? '2px solid #E41E25' : '1px solid #aaa', background: uncheckedExpErrors[u.field] ? '#fff4f4' : 'white', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
+                rows={2}
+                value={uncheckedExplanations[u.field] || ''}
+                onChange={(e) => {
+                  setUncheckedExplanations((prev) => ({ ...prev, [u.field]: e.target.value }));
+                  setUncheckedExpErrors((prev) => ({ ...prev, [u.field]: false }));
+                }}
+                placeholder="Expliquez la raison…"
+                style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.9em', border: uncheckedExpErrors[u.field] ? '2px solid #E41E25' : '1px solid #aaa', background: uncheckedExpErrors[u.field] ? '#fff4f4' : 'white', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
                 {uncheckedExpErrors[u.field] && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
               </div>
-            ))}
+            )}
 
             {/* Fichiers joints toggle */}
             <div style={{ marginTop: 18 }}>
               <button
                 type="button"
-                onClick={() => { setHasFichiersJoints(v => !v); setFichiersJointsConfirme(false); }}
+                onClick={() => {setHasFichiersJoints((v) => !v);setFichiersJointsConfirme(false);}}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
@@ -919,13 +919,13 @@ export default function Declaration() {
                 </span>
                 J'ai au moins un fichier joint à soumettre en soutien à cette déclaration
               </button>
-              {hasFichiersJoints && (
-                <div className="conforme-row" style={{ marginTop: 10 }}>
+              {hasFichiersJoints &&
+              <div className="conforme-row" style={{ marginTop: 10 }}>
                   <input type="checkbox" id="fichiers_joints_confirme" checked={fichiersJointsConfirme}
-                    onChange={e => setFichiersJointsConfirme(e.target.checked)} />
+                onChange={(e) => setFichiersJointsConfirme(e.target.checked)} />
                   <label htmlFor="fichiers_joints_confirme">Je m'engage à transmettre le ou les fichiers requis à ma personne enseignante.</label>
                 </div>
-              )}
+              }
             </div>
 
             {/* Submit button */}
@@ -940,15 +940,15 @@ export default function Declaration() {
                 const elapsed = diffH > 0 ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
                 return <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès {elapsed}.</span>;
               })() :
-                <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
-              )}
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>)
+              }
             </div>
             </div>
           </div>
 
           {/* Preview */}
-          {apercu && (
-            <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
+          {apercu &&
+        <div ref={apercuRef} className="section-box" style={{ borderTop: '4px solid #00A4E4' }}>
               <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 16, color: '#231F20' }}>
                 Aperçu de la déclaration générée
               </h2>
@@ -956,13 +956,13 @@ export default function Declaration() {
               {/* Paragraphe d'introduction */}
               <div style={{ fontSize: '0.93em', lineHeight: 1.7, marginBottom: 16 }}>
                 {apercu.isEquipe ? (() => {
-                  const noms = apercu.equipiers.filter(n => n.trim()).join(', ');
-                  const equipeInfo = apercu.nomEquipe ? ` (équipe ${apercu.nomEquipe})` : '';
-                  const groupeInfo = apercu.studentGroupe ? `, groupe ${apercu.studentGroupe}` : '';
-                  return <p style={{ margin: '0 0 6px' }}>Nous, <strong>{noms}</strong>{equipeInfo}{groupeInfo}, soumettons cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>;
-                })() : (
-                  <p style={{ margin: '0 0 6px' }}>Je, <strong>{apercu.studentNom}</strong>{apercu.studentGroupe ? ` (groupe ${apercu.studentGroupe})` : ''}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>
-                )}
+              const noms = apercu.equipiers.filter((n) => n.trim()).join(', ');
+              const equipeInfo = apercu.nomEquipe ? ` (équipe ${apercu.nomEquipe})` : '';
+              const groupeInfo = apercu.studentGroupe ? `, groupe ${apercu.studentGroupe}` : '';
+              return <p style={{ margin: '0 0 6px' }}>Nous, <strong>{noms}</strong>{equipeInfo}{groupeInfo}, soumettons cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>;
+            })() :
+            <p style={{ margin: '0 0 6px' }}>Je, <strong>{apercu.studentNom}</strong>{apercu.studentGroupe ? ` (groupe ${apercu.studentGroupe})` : ''}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>
+            }
                 <p style={{ margin: 0 }}>Conformément aux exigences de ma personne enseignante, les renseignements suivants présentent ma démarche.</p>
               </div>
 
@@ -979,10 +979,10 @@ export default function Declaration() {
                 </thead>
                 <tbody>
                   {apercu.etapes.map((etape, i) => {
-                    const st = apercu.states[i] || defaultStudentState();
-                    const isAucune = etape.declaration === 'aucune';
-                    return (
-                      <tr key={i}>
+                const st = apercu.states[i] || defaultStudentState();
+                const isAucune = etape.declaration === 'aucune';
+                return (
+                  <tr key={i}>
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
                           <strong>{etape.etapeInfo.libelle}</strong>
                           {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.87em' }}>({etape.etapeInfo.parenthese})</span>}
@@ -992,21 +992,21 @@ export default function Declaration() {
                           <div style={{ fontSize: '0.88em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
                         </td>
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f0f7ff' }}>
-                          {isAucune
-                            ? <em style={{ color: '#555' }}>Aucune exigence</em>
-                            : <div style={{ fontSize: '0.88em', lineHeight: 1.5 }}>
+                          {isAucune ?
+                      <em style={{ color: '#555' }}>Aucune exigence</em> :
+                      <div style={{ fontSize: '0.88em', lineHeight: 1.5 }}>
                                 {etape.decl_iagraphie && <div style={{ marginBottom: 6 }}><strong>IAgraphie :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_iagraphie_text }} /></div>}
                                 {etape.decl_traces && <div style={{ marginBottom: 6 }}><strong>Traces :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} /></div>}
                                 {etape.decl_logique && <div><strong>Logique :</strong> <span dangerouslySetInnerHTML={{ __html: etape.decl_logique_text }} /></div>}
                               </div>
-                          }
+                      }
                         </td>
                         <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top', background: '#f2fbf4' }}>
-                          {isAucune
-                            ? <span style={{ color: st.aucune_conforme ? '#1a7a36' : '#c0392b', fontWeight: 'bold' }}>
+                          {isAucune ?
+                      <span style={{ color: st.aucune_conforme ? '#1a7a36' : '#c0392b', fontWeight: 'bold' }}>
                                 {st.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'}
-                              </span>
-                            : <div style={{ fontSize: '0.88em', lineHeight: 1.6 }}>
+                              </span> :
+                      <div style={{ fontSize: '0.88em', lineHeight: 1.6 }}>
                                 {etape.decl_iagraphie && <div style={{ marginBottom: 6 }}>
                                   <strong>IAgraphie :</strong> <span style={{ color: st.iagraphie_conforme ? '#1a7a36' : '#c0392b' }}>{st.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</span>
                                 </div>}
@@ -1019,36 +1019,36 @@ export default function Declaration() {
                                   <span style={{ marginLeft: 6, color: st.logique_conforme ? '#1a7a36' : '#c0392b' }}>{st.logique_conforme ? '✔' : '✘'}</span>
                                 </div>}
                               </div>
-                          }
+                      }
                         </td>
-                      </tr>
-                    );
-                  })}
+                      </tr>);
+
+              })}
                 </tbody>
               </table>
 
               {/* Commentaires + explanations */}
-              {(apercu.commentaires || (apercu.explanations && apercu.explanations.length > 0)) && (
-                <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
+              {(apercu.commentaires || apercu.explanations && apercu.explanations.length > 0) &&
+          <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
                   <strong>Commentaires, exceptions et précisions :</strong>
-                  {apercu.commentaires && (
-                    <pre style={{ margin: '6px 0 8px', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
-                  )}
-                  {apercu.explanations && apercu.explanations.map((e, i) => (
-                    <div key={i} style={{ marginTop: 8, paddingTop: i > 0 || apercu.commentaires ? 8 : 0, borderTop: i > 0 || apercu.commentaires ? '1px solid #e5c040' : 'none' }}>
+                  {apercu.commentaires &&
+            <pre style={{ margin: '6px 0 8px', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
+            }
+                  {apercu.explanations && apercu.explanations.map((e, i) =>
+            <div key={i} style={{ marginTop: 8, paddingTop: i > 0 || apercu.commentaires ? 8 : 0, borderTop: i > 0 || apercu.commentaires ? '1px solid #e5c040' : 'none' }}>
                       <div style={{ color: '#555', fontSize: '0.9em', marginBottom: 2 }}>{e.question}</div>
                       <div style={{ fontWeight: 'bold', lineHeight: 1.6 }}>{e.reponse}</div>
                     </div>
-                  ))}
+            )}
                 </div>
-              )}
+          }
 
               {/* Fichiers joints */}
-              {apercu.hasFichiersJoints && (
-                <div style={{ background: '#edf7ff', border: '1px solid #b3d9f4', borderRadius: 6, padding: '8px 14px', marginTop: 16, fontSize: '0.92em' }}>
+              {apercu.hasFichiersJoints &&
+          <div style={{ background: '#edf7ff', border: '1px solid #b3d9f4', borderRadius: 6, padding: '8px 14px', marginTop: 16, fontSize: '0.92em' }}>
                   📎 <strong>Fichiers joints :</strong> {apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}
                 </div>
-              )}
+          }
 
               {/* Affirmations finales */}
               <div style={{ marginTop: 18, padding: '12px 16px', border: '1px solid #ccc', background: '#f9f9f9', borderRadius: 6, fontSize: '0.92em' }}>
@@ -1077,12 +1077,12 @@ export default function Declaration() {
                 </button>
               </div>
             </div>
-          )}
+        }
         </>
       }
 
-    </div>
-  );
+    </div>);
+
 
 
 }
