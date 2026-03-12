@@ -413,8 +413,9 @@ export default function Guide() {
 
         const newRows = ETAPES.map(() => defaultRowState());
         etapeNodes.forEach((node) => {
-          const idx = parseInt(node.getAttribute('index'));
-          if (isNaN(idx) || idx < 0 || idx >= ETAPES.length) return;
+          const etapeId = node.getAttribute('id');
+          const idx = ETAPES.findIndex(e => e.id === etapeId);
+          if (idx === -1) return;
           const get = (tag) => node.querySelector(tag)?.textContent ?? '';
           newRows[idx] = {
             checked: get('checked') === 'true',
