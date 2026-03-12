@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import ETAPES from '@/components/etapesData';
 import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 import DeclarationFieldModal from '@/components/DeclarationFieldModal';
