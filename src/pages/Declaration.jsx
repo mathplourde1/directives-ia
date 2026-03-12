@@ -512,11 +512,31 @@ export default function Declaration() {
             </table>
           </div>
 
+          {/* Commentaires */}
+          <div className="section-box">
+            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8 }}>Commentaires, exceptions et précisions</h2>
+            <textarea
+              rows={4}
+              value={commentaires}
+              onChange={e => setCommentaires(e.target.value)}
+              placeholder="Ajoutez ici tout commentaire, exception ou précision que vous souhaitez transmettre à votre personne enseignante…"
+              style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
+          </div>
+
           {/* Submit button */}
-          <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
               Générer la déclaration
             </button>
+            {submitStatus && (submitStatus.ok ? (() => {
+              const diffMs = new Date() - submitStatus.time;
+              const diffMin = Math.floor(diffMs / 60000);
+              const diffH = Math.floor(diffMin / 60);
+              const elapsed = diffH > 0 ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
+              return <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès {elapsed}.</span>;
+            })() :
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
+            )}
           </div>
 
           {/* Preview */}
