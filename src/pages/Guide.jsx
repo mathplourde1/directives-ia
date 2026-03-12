@@ -1115,6 +1115,7 @@ export default function Guide() {
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                {copyDescriptionOk && <span style={{ color: 'green', fontWeight: 'bold', marginRight: 10, fontSize: '0.9em' }}>Copié !</span>}
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <button
                 type="button"
@@ -1123,14 +1124,13 @@ export default function Guide() {
                   if (navigator.clipboard) {
                     const plainText = instructorInstructions.replace(/<[^>]+>/g, '');
                     navigator.clipboard.writeText(plainText);
-                    setCopyInstructorOk(true);
-                    setTimeout(() => setCopyInstructorOk(false), 1800);
+                    setCopyDescriptionOk(true);
+                    setTimeout(() => setCopyDescriptionOk(false), 1800);
                   }
                 }}
                 style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                   Copier pour coller en ligne (Brio)
                 </button>
-                {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
               </div>
               <ReactQuill
               value={instructorInstructions}
