@@ -846,6 +846,30 @@ export default function Declaration() {
               </div>
             ))}
 
+            {/* Fichiers joints toggle */}
+            <div style={{ marginTop: 18 }}>
+              <button
+                type="button"
+                onClick={() => { setHasFichiersJoints(v => !v); setFichiersJointsConfirme(false); }}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 8,
+                  padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
+                  background: hasFichiersJoints ? '#00A4E4' : '#e0e0e0', color: hasFichiersJoints ? 'white' : '#555'
+                }}>
+                <span style={{ width: 32, height: 18, borderRadius: 999, background: hasFichiersJoints ? 'rgba(255,255,255,0.4)' : '#bbb', display: 'inline-block', position: 'relative', transition: 'background 0.2s' }}>
+                  <span style={{ position: 'absolute', top: 2, left: hasFichiersJoints ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s' }} />
+                </span>
+                J'ai au moins un fichier joint à soumettre en soutien à cette déclaration
+              </button>
+              {hasFichiersJoints && (
+                <div className="conforme-row" style={{ marginTop: 10 }}>
+                  <input type="checkbox" id="fichiers_joints_confirme" checked={fichiersJointsConfirme}
+                    onChange={e => setFichiersJointsConfirme(e.target.checked)} />
+                  <label htmlFor="fichiers_joints_confirme">Je m'engage à transmettre le ou les fichiers requis à ma personne enseignante.</label>
+                </div>
+              )}
+            </div>
+
             {/* Submit button */}
             <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
               <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
