@@ -208,6 +208,212 @@ export default function Declaration() {
     doGenerate();
   }
 
+  function buildApercuHTML(ap) {
+    const identLines = [];
+    if (ap.identification.cours) identLines.push(`<strong>Cours :</strong> ${ap.identification.cours}`);
+    if (ap.identification.evaluation) identLines.push(`<strong>Évaluation :</strong> ${ap.identification.evaluation}`);
+    if (ap.identification.session) identLines.push(`<strong>Session :</strong> ${ap.identification.session}`);
+    if (ap.identification.enseignants) identLines.push(`<strong>Personne(s) enseignante(s) :</strong> ${ap.identification.enseignants}`);
+    if (ap.isEquipe && ap.nomEquipe) identLines.push(`<strong>Équipe :</strong> ${ap.nomEquipe}`);
+    if (ap.isEquipe) {
+      ap.equipiers.forEach((n, i) => { if (n.trim()) identLines.push(`<strong>Personne équipière ${i+1} :</strong> ${n}`); });
+    } else {
+      identLines.push(`<strong>Nom :</strong> ${ap.studentNom}`);
+    }
+    if (ap.studentGroupe) identLines.push(`<strong>Groupe :</strong> ${ap.studentGroupe}`);
+
+    let html = `<p style="font-family:Arial,sans-serif;font-size:13px;">${identLines.join('<br>')}</p>`;
+
+    html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;">
+      <thead><tr>
+        <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:15%">Étape</th>
+        <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:13%">Utilisation SIA</th>
+        <th style="border:1px solid #ccc;padding:7px;background:#f2f2f2;width:24%">Directives de la personne enseignante</th>
+        <th style="border:1px solid #ccc;padding:7px;background:#e8f4fd;width:24%">Exigences de déclaration</th>
+        <th style="border:1px solid #ccc;padding:7px;background:#edfbf0;width:24%">Votre déclaration (réponses)</th>
+      </tr></thead><tbody>`;
+
+    ap.etapes.forEach((etape, i) => {
+      const s = ap.states[i] || defaultStudentState();
+      const isAucune = etape.declaration === 'aucune';
+      const etapeLabel = etape.etapeInfo.parenthese
+        ? `<strong>${etape.etapeInfo.libelle}</strong> <span style="color:#555;font-size:0.88em">(${etape.etapeInfo.parenthese})</span>`
+        : `<strong>${etape.etapeInfo.libelle}</strong>`;
+
+      let exigencesHtml = '';
+      if (isAucune) { exigencesHtml = '<em>Aucune exigence</em>'; }
+      else {
+        if (etape.decl_iagraphie) exigencesHtml += `<div><strong>IAgraphie :</strong> ${etape.decl_iagraphie_text}</div>`;
+        if (etape.decl_traces) exigencesHtml += `<div><strong>Traces :</strong> ${etape.decl_traces_text}</div>`;
+        if (etape.decl_logique) exigencesHtml += `<div><strong>Logique :</strong> ${etape.decl_logique_text}</div>`;
+      }
+
+      let reponsesHtml = '';
+      if (isAucune) {
+        reponsesHtml = s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé';
+      } else {
+        if (etape.decl_iagraphie) reponsesHtml += `<div><strong>IAgraphie :</strong> ${s.iagraphie_conforme ? '✔ Confirmé' : '✘ Non confirmé'}</div>`;
+        if (etape.decl_traces) reponsesHtml += `<div><strong>Traces :</strong> ${s.traces_reponse || '(aucune réponse)'} ${s.traces_conforme ? '✔' : '✘'}</div>`;
+        if (etape.decl_logique) reponsesHtml += `<div><strong>Logique :</strong> ${s.logique_reponse || '(aucune réponse)'} ${s.logique_conforme ? '✔' : '✘'}</div>`;
+      }
+
+      html += `<tr>
+        <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etapeLabel}</td>
+        <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etape.ia}</td>
+        <td style="border:1px solid #ccc;padding:7px;vertical-align:top">${etape.justification}</td>
+        <td style="border:1px solid #ccc;padding:7px;vertical-align:top;background:#f0f7ff">${exigencesHtml}</td>
+        <td style="border:1px solid #ccc;padding:7px;vertical-align:top;background:#f2fbf4">${reponsesHtml}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+
+    if (ap.commentaires || (ap.explanations && ap.explanations.length > 0)) {
+      html += `<div style="margin-top:14px;padding:10px;border:1px solid #e5c040;background:#fffbea;font-family:Arial,sans-serif;font-size:12px;">
+        <strong>Commentaires, exceptions et précisions :</strong>`;
+      if (ap.commentaires) html += `<p style="font-weight:bold;margin:6px 0 0;white-space:pre-wrap">${ap.commentaires}</p>`;
+      if (ap.explanations) ap.explanations.forEach(e => {
+        html += `<div style="margin-top:8px;padding-top:8px;border-top:1px solid #e5c040">
+          <div style="color:#555;font-size:0.9em">${e.question}</div>
+          <div style="font-weight:bold">${e.reponse}</div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    return html;
+  }
+
+  function downloadDeclWord(ap) {
+    const content = buildApercuHTML(ap);
+    const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset="utf-8"><title>Déclaration SIA</title>
+      <style>body{font-family:Arial,sans-serif;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ccc;padding:7px;}</style>
+      </head><body><h2 style="color:#E41E25">Déclaration d'utilisation de systèmes d'intelligence artificielle</h2>${content}</body></html>`;
+    const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'declaration-sia.doc'; a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function downloadDeclPDF(ap) {
+    import('jspdf').then(({ jsPDF }) => {
+      const doc = new jsPDF({ orientation: 'landscape', unit: 'pt', format: 'a4' });
+      const pageW = doc.internal.pageSize.getWidth();
+      const margin = 36;
+      let y = margin;
+
+      doc.setFontSize(13);
+      doc.setTextColor('#E41E25');
+      doc.text('Déclaration d\'utilisation des SIA', margin, y);
+      y += 18;
+
+      doc.setFontSize(9);
+      doc.setTextColor('#000000');
+      const identLines = [];
+      if (ap.identification.cours) identLines.push(`Cours : ${ap.identification.cours}`);
+      if (ap.identification.evaluation) identLines.push(`Évaluation : ${ap.identification.evaluation}`);
+      if (ap.identification.session) identLines.push(`Session : ${ap.identification.session}`);
+      if (ap.identification.enseignants) identLines.push(`Personne(s) enseignante(s) : ${ap.identification.enseignants}`);
+      if (ap.isEquipe) {
+        if (ap.nomEquipe) identLines.push(`Équipe : ${ap.nomEquipe}`);
+        ap.equipiers.forEach((n, i) => { if (n.trim()) identLines.push(`Personne équipière ${i+1} : ${n}`); });
+      } else {
+        identLines.push(`Nom : ${ap.studentNom}`);
+      }
+      if (ap.studentGroupe) identLines.push(`Groupe : ${ap.studentGroupe}`);
+      doc.text(identLines.join('   |   '), margin, y, { maxWidth: pageW - margin * 2 });
+      y += 22;
+
+      // Table headers
+      const colW = (pageW - margin * 2) / 5;
+      const headers = ['Étape', 'Utilisation SIA', 'Directives enseignant', 'Exigences de déclaration', 'Votre déclaration'];
+      doc.setFillColor(242, 242, 242);
+      doc.rect(margin, y, pageW - margin * 2, 16, 'F');
+      doc.setFontSize(8);
+      doc.setFont(undefined, 'bold');
+      headers.forEach((h, i) => doc.text(h, margin + colW * i + 4, y + 11));
+      doc.setFont(undefined, 'normal');
+      y += 16;
+
+      ap.etapes.forEach((etape, idx) => {
+        const s = ap.states[idx] || defaultStudentState();
+        const isAucune = etape.declaration === 'aucune';
+        const stripHtml = (h) => h ? h.replace(/<[^>]+>/g, '') : '';
+
+        let exigences = '';
+        if (isAucune) { exigences = 'Aucune exigence'; }
+        else {
+          const parts = [];
+          if (etape.decl_iagraphie) parts.push(`IAgraphie: ${stripHtml(etape.decl_iagraphie_text)}`);
+          if (etape.decl_traces) parts.push(`Traces: ${stripHtml(etape.decl_traces_text)}`);
+          if (etape.decl_logique) parts.push(`Logique: ${stripHtml(etape.decl_logique_text)}`);
+          exigences = parts.join('\n');
+        }
+
+        let reponses = '';
+        if (isAucune) { reponses = s.aucune_conforme ? '✔ Pris connaissance' : '✘ Non confirmé'; }
+        else {
+          const parts = [];
+          if (etape.decl_iagraphie) parts.push(`IAgraphie: ${s.iagraphie_conforme ? '✔' : '✘'}`);
+          if (etape.decl_traces) parts.push(`Traces: ${s.traces_reponse || '-'} ${s.traces_conforme ? '✔' : '✘'}`);
+          if (etape.decl_logique) parts.push(`Logique: ${s.logique_reponse || '-'} ${s.logique_conforme ? '✔' : '✘'}`);
+          reponses = parts.join('\n');
+        }
+
+        const cells = [
+          etape.etapeInfo.libelle,
+          etape.ia,
+          stripHtml(etape.justification),
+          exigences,
+          reponses
+        ];
+        const lineH = 11;
+        const cellLines = cells.map(c => doc.splitTextToSize(c || '', colW - 8));
+        const rowH = Math.max(...cellLines.map(l => l.length)) * lineH + 10;
+
+        if (y + rowH > doc.internal.pageSize.getHeight() - margin) {
+          doc.addPage();
+          y = margin;
+        }
+        doc.setDrawColor(200, 200, 200);
+        doc.rect(margin, y, pageW - margin * 2, rowH);
+        cellLines.forEach((lines, ci) => {
+          doc.rect(margin + colW * ci, y, colW, rowH);
+          doc.setFontSize(8);
+          doc.text(lines, margin + colW * ci + 4, y + 9);
+        });
+        y += rowH;
+      });
+
+      // Commentaires
+      if (ap.commentaires || (ap.explanations && ap.explanations.length > 0)) {
+        y += 12;
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'bold');
+        doc.text('Commentaires, exceptions et précisions :', margin, y);
+        doc.setFont(undefined, 'normal');
+        y += 12;
+        if (ap.commentaires) {
+          const lines = doc.splitTextToSize(ap.commentaires, pageW - margin * 2);
+          doc.text(lines, margin, y);
+          y += lines.length * 11 + 6;
+        }
+        if (ap.explanations) ap.explanations.forEach(e => {
+          doc.setFont(undefined, 'italic');
+          const qLines = doc.splitTextToSize(e.question, pageW - margin * 2);
+          doc.text(qLines, margin, y);
+          y += qLines.length * 10 + 2;
+          doc.setFont(undefined, 'bold');
+          const rLines = doc.splitTextToSize(e.reponse, pageW - margin * 2);
+          doc.text(rLines, margin, y);
+          doc.setFont(undefined, 'normal');
+          y += rLines.length * 11 + 6;
+        });
+      }
+
+      doc.save('declaration-sia.pdf');
+    });
+  }
+
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4 };
 
   return (
