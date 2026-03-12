@@ -527,7 +527,7 @@ export default function Declaration() {
             {buildUncheckedItems(studentStates).map((u) => (
               <div key={u.field} style={{ marginTop: 14 }}>
                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                  <span style={{ color: '#E41E25' }}>*</span> {u.etape} — {u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée
+                  <span style={{ color: '#E41E25' }}>*</span> {u.etape} — {u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée.
                 </label>
                 <textarea
                   rows={2}
