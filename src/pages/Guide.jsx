@@ -433,13 +433,14 @@ export default function Guide() {
           };
         });
 
-        // Restore order if present
+        // Restore order if present (stored as comma-separated ids)
         const ordreNode = root.querySelector('ordre');
         if (ordreNode) {
-          const parsed = ordreNode.textContent.split(',').map(Number);
-          if (parsed.length === ETAPES.length && parsed.every((n) => !isNaN(n))) {
-            setEtapesOrder(parsed);
-          }
+          const ids = ordreNode.textContent.split(',').map(s => s.trim()).filter(Boolean);
+          const parsedOrder = ids.map(id => ETAPES.findIndex(e => e.id === id)).filter(i => i !== -1);
+          // Append any ids missing from the saved order (e.g. new steps added later)
+          const missing = ETAPES.map((_, i) => i).filter(i => !parsedOrder.includes(i));
+          setEtapesOrder([...parsedOrder, ...missing]);
         } else {
           setEtapesOrder(ETAPES.map((_, i) => i));
         }
