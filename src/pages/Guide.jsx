@@ -1015,6 +1015,49 @@ export default function Guide() {
           </div>
         }
       </div>
+
+      {/* ===== DÉCLARATION ÉTUDIANTE TOGGLE ===== */}
+      <div style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #ccc', borderRadius: 8, background: 'white' }}>
+        <button
+          type="button"
+          onClick={() => setDeclarationActive(v => !v)}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10,
+            padding: '7px 16px', borderRadius: 999, border: 'none', cursor: 'pointer',
+            fontFamily: 'inherit', fontSize: '0.95em', fontWeight: 'bold', transition: 'background 0.2s',
+            background: declarationActive ? '#00A4E4' : '#e0e0e0',
+            color: declarationActive ? 'white' : '#555'
+          }}>
+          <span style={{
+            width: 34, height: 20, borderRadius: 999,
+            background: declarationActive ? 'rgba(255,255,255,0.35)' : '#bbb',
+            display: 'inline-block', position: 'relative', flexShrink: 0, transition: 'background 0.2s'
+          }}>
+            <span style={{
+              position: 'absolute', top: 3, left: declarationActive ? 16 : 3,
+              width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s'
+            }} />
+          </span>
+          Je désire que mes personnes étudiantes utilisent mes directives pour générer une déclaration
+        </button>
+
+        {declarationActive && (
+          <div style={{ marginTop: 14, padding: '14px 18px', background: '#f0f8ff', border: '1px solid #b3d9f4', borderRadius: 6, fontSize: '0.93em', lineHeight: 1.7 }}>
+            <p style={{ margin: '0 0 10px', fontWeight: 'bold' }}>📋 Instructions pour les personnes étudiantes</p>
+            <p style={{ margin: '0 0 8px' }}>Pour compléter votre déclaration d'utilisation des SIA, suivez ces étapes :</p>
+            <ol style={{ margin: 0, paddingLeft: 22 }}>
+              <li>Accédez à l'outil de déclaration : <a href="/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
+              <li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li>
+              <li>Remplissez les champs de déclaration pour chaque étape concernée.</li>
+              <li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li>
+              <li>Transmettez le fichier généré à votre personne enseignante selon les modalités indiquées.</li>
+            </ol>
+            <p style={{ margin: '10px 0 0', color: '#555', fontSize: '0.9em' }}>
+              ⚠ Vous devez disposer du fichier XML de sauvegarde pour utiliser cet outil. Assurez-vous de le créer et de le transmettre aux personnes étudiantes.
+            </p>
+          </div>
+        )}
+      </div>
     </div>);
 
 }
