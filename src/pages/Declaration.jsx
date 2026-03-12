@@ -109,7 +109,8 @@ export default function Declaration() {
   const [commentaires, setCommentaires] = useState('');
   const [submitStatus, setSubmitStatus] = useState(null); // null | {ok:true,time} | {ok:false}
   const [fieldErrors, setFieldErrors] = useState([]); // per-etape: {traces_reponse, logique_reponse}
-  const [confirmDialog, setConfirmDialog] = useState(null); // null | {uncheckedItems:[]}
+  const [uncheckedExplanations, setUncheckedExplanations] = useState({}); // field key → string
+  const [uncheckedExpErrors, setUncheckedExpErrors] = useState({}); // field key → bool
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
   const apercuRef = useRef();
