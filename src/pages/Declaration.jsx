@@ -135,7 +135,7 @@ export default function Declaration() {
       {!data?.ok &&
       <div className="section-box" style={{ textAlign: 'center' }}>
           <p style={{ marginBottom: 16, fontSize: '1em' }}>
-            Importez le fichier de sauvegarde XML fourni par votre personne enseignante pour afficher les directives d'utilisation de l'IA pour cette évaluation.
+            Importez le fichier de sauvegarde XML fourni par votre personne enseignante pour afficher les directives d'utilisation des SIA pour cette évaluation.
           </p>
           <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
             📂 Importer le fichier XML de l'enseignant·e
