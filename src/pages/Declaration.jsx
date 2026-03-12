@@ -510,7 +510,7 @@ export default function Declaration() {
             </table>
           </div>
 
-          {/* Commentaires */}
+          {/* Commentaires + unchecked explanations + submit */}
           <div className="section-box">
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8 }}>Commentaires, exceptions et précisions</h2>
             <textarea
@@ -519,22 +519,41 @@ export default function Declaration() {
               onChange={e => setCommentaires(e.target.value)}
               placeholder="Ajoutez ici tout commentaire, exception ou précision que vous souhaitez transmettre à votre personne enseignante…"
               style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
-          </div>
 
-          {/* Submit button */}
-          <div style={{ margin: '20px 0', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
-              Générer la déclaration
-            </button>
-            {submitStatus && (submitStatus.ok ? (() => {
-              const diffMs = new Date() - submitStatus.time;
-              const diffMin = Math.floor(diffMs / 60000);
-              const diffH = Math.floor(diffMin / 60);
-              const elapsed = diffH > 0 ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
-              return <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès {elapsed}.</span>;
-            })() :
-              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
-            )}
+            {/* Dynamic fields for unchecked confirmations */}
+            {buildUncheckedItems(studentStates).map((u) => (
+              <div key={u.field} style={{ marginTop: 14 }}>
+                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                  <span style={{ color: '#E41E25' }}>*</span> {u.etape} — {u.exigence} : Expliquez pourquoi cette confirmation n'a pas été cochée
+                </label>
+                <textarea
+                  rows={2}
+                  value={uncheckedExplanations[u.field] || ''}
+                  onChange={e => {
+                    setUncheckedExplanations(prev => ({ ...prev, [u.field]: e.target.value }));
+                    setUncheckedExpErrors(prev => ({ ...prev, [u.field]: false }));
+                  }}
+                  placeholder="Expliquez la raison…"
+                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.9em', border: uncheckedExpErrors[u.field] ? '2px solid #E41E25' : '1px solid #aaa', background: uncheckedExpErrors[u.field] ? '#fff4f4' : 'white', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
+                {uncheckedExpErrors[u.field] && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
+              </div>
+            ))}
+
+            {/* Submit button */}
+            <div style={{ marginTop: 18, display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
+                Générer la déclaration
+              </button>
+              {submitStatus && (submitStatus.ok ? (() => {
+                const diffMs = new Date() - submitStatus.time;
+                const diffMin = Math.floor(diffMs / 60000);
+                const diffH = Math.floor(diffMin / 60);
+                const elapsed = diffH > 0 ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
+                return <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès {elapsed}.</span>;
+              })() :
+                <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
+              )}
+            </div>
           </div>
 
           {/* Preview */}
