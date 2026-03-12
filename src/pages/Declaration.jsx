@@ -157,8 +157,14 @@ export default function Declaration() {
     return items;
   }
 
-  function doGenerate(forcedCommentaires) {
-    const finalCommentaires = forcedCommentaires !== undefined ? forcedCommentaires : commentaires;
+  function doGenerate() {
+    // Build final commentaires: base + explanations for unchecked items
+    const unchecked = buildUncheckedItems(studentStates);
+    const expLines = unchecked
+      .map(u => uncheckedExplanations[u.field]?.trim() ? `• ${u.etape} — ${u.exigence} : ${uncheckedExplanations[u.field].trim()}` : null)
+      .filter(Boolean);
+    const finalCommentaires = [commentaires.trim(), ...expLines].filter(Boolean).join('\n\n');
+
     setApercu({
       identification: data.identification,
       studentNom, studentGroupe, isEquipe, nomEquipe,
@@ -167,7 +173,6 @@ export default function Declaration() {
       states: studentStates,
       commentaires: finalCommentaires
     });
-    setCommentaires(finalCommentaires);
     setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   }
@@ -188,24 +193,16 @@ export default function Declaration() {
     setFieldErrors(newFieldErrors);
     if (hasFieldErrors) { setSubmitStatus({ ok: false }); return; }
 
-    // Check unchecked confirmations
+    // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
-    if (unchecked.length > 0) {
-      setConfirmDialog({ uncheckedItems: unchecked });
-      return;
-    }
+    const newExpErrors = {};
+    unchecked.forEach(u => {
+      if (!uncheckedExplanations[u.field]?.trim()) newExpErrors[u.field] = true;
+    });
+    setUncheckedExpErrors(newExpErrors);
+    if (Object.keys(newExpErrors).length > 0) { setSubmitStatus({ ok: false }); return; }
 
-    setSubmitStatus({ ok: true, time: new Date() });
     doGenerate();
-  }
-
-  function handleGenerateAnyway() {
-    // Add auto-comments for unchecked items
-    const unchecked = confirmDialog?.uncheckedItems || [];
-    const autoLines = unchecked.map(u => `• ${u.etape} — ${u.exigence} : Cette confirmation n'a pas été cochée : Expliquez pourquoi.`).join('\n');
-    const merged = commentaires.trim() ? commentaires + '\n\n' + autoLines : autoLines;
-    setConfirmDialog(null);
-    doGenerate(merged);
   }
 
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4 };
