@@ -152,12 +152,20 @@ export default function Declaration() {
           {/* Error state */}
           {data?.error &&
         <div style={{ marginTop: 20, textAlign: 'left' }}>
-              <div style={{ color: '#E41E25', fontWeight: 'bold', marginBottom: 8 }}>
-                ⚠ Ce fichier XML n'est pas conforme au format attendu.
-              </div>
-              <p style={{ fontSize: '0.9em', marginBottom: 8 }}>
-                Le fichier ne peut pas être interprété automatiquement. Vous pouvez sauvegarder le contenu brut ci-dessous et remplir vos déclarations en mode <strong>manuel</strong>.
-              </p>
+              {data.error === 'manual' ? (
+                <div style={{ color: '#555', marginBottom: 8, fontSize: '0.9em', background: '#f0f4f8', border: '1px solid #ccc', borderRadius: 6, padding: '10px 14px' }}>
+                  En mode manuel, remplissez le formulaire sans fichier XML. Aucune directive n'est pré-remplie.
+                </div>
+              ) : (
+                <>
+                  <div style={{ color: '#E41E25', fontWeight: 'bold', marginBottom: 8 }}>
+                    ⚠ Ce fichier XML n'est pas conforme au format attendu.
+                  </div>
+                  <p style={{ fontSize: '0.9em', marginBottom: 8 }}>
+                    Le fichier ne peut pas être interprété automatiquement. Vous pouvez sauvegarder le contenu brut ci-dessous et remplir vos déclarations en mode <strong>manuel</strong>.
+                  </p>
+                </>
+              )}
               <button className="btn-primary" onClick={() => {
             const blob = new Blob([data.raw], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
