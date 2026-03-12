@@ -869,6 +869,21 @@ export default function Declaration() {
                   ))}
                 </div>
               )}
+
+              {/* Timestamp */}
+              <div style={{ marginTop: 16, fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+                Générée le {apercu.timestamp}
+              </div>
+
+              {/* Export buttons */}
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 12 }}>
+                <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
+                  📄 Télécharger en Word (.doc)
+                </button>
+                <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => downloadDeclPDF(apercu)}>
+                  📋 Télécharger en PDF
+                </button>
+              </div>
             </div>
           )}
         </>
