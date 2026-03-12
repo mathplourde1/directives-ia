@@ -854,16 +854,6 @@ export default function Declaration() {
                 </tbody>
               </table>
 
-              {/* Export buttons */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 16 }}>
-                <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
-                  📄 Télécharger en Word (.doc)
-                </button>
-                <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => downloadDeclPDF(apercu)}>
-                  📋 Télécharger en PDF
-                </button>
-              </div>
-
               {/* Commentaires + explanations in apercu */}
               {(apercu.commentaires || (apercu.explanations && apercu.explanations.length > 0)) && (
                 <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
