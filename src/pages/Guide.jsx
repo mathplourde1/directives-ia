@@ -363,7 +363,7 @@ export default function Guide() {
     xml += `    <enseignants>${escapeXml(identification.enseignants)}</enseignants>\n`;
     xml += `    <evaluation>${escapeXml(identification.evaluation)}</evaluation>\n`;
     xml += `  </identification>\n`;
-    xml += `  <ordre>${etapesOrder.map(i => ETAPES[i].id).join(',')}</ordre>\n`;
+    xml += `  <ordre>${etapesOrder.map((i) => ETAPES[i].id).join(',')}</ordre>\n`;
     xml += `  <etapes>\n`;
     rowsData.forEach((r) => {
       xml += `    <etape id="${ETAPES[r.index].id}">\n`;
@@ -414,7 +414,7 @@ export default function Guide() {
         const newRows = ETAPES.map(() => defaultRowState());
         etapeNodes.forEach((node) => {
           const etapeId = node.getAttribute('id');
-          const idx = ETAPES.findIndex(e => e.id === etapeId);
+          const idx = ETAPES.findIndex((e) => e.id === etapeId);
           if (idx === -1) return;
           const get = (tag) => node.querySelector(tag)?.textContent ?? '';
           newRows[idx] = {
@@ -436,10 +436,10 @@ export default function Guide() {
         // Restore order if present (stored as comma-separated ids)
         const ordreNode = root.querySelector('ordre');
         if (ordreNode) {
-          const ids = ordreNode.textContent.split(',').map(s => s.trim()).filter(Boolean);
-          const parsedOrder = ids.map(id => ETAPES.findIndex(e => e.id === id)).filter(i => i !== -1);
+          const ids = ordreNode.textContent.split(',').map((s) => s.trim()).filter(Boolean);
+          const parsedOrder = ids.map((id) => ETAPES.findIndex((e) => e.id === id)).filter((i) => i !== -1);
           // Append any ids missing from the saved order (e.g. new steps added later)
-          const missing = ETAPES.map((_, i) => i).filter(i => !parsedOrder.includes(i));
+          const missing = ETAPES.map((_, i) => i).filter((i) => !parsedOrder.includes(i));
           setEtapesOrder([...parsedOrder, ...missing]);
         } else {
           setEtapesOrder(ETAPES.map((_, i) => i));
@@ -500,7 +500,7 @@ export default function Guide() {
         table.main-table td li, .synthese-section li { display: list-item; }
       `}</style>
 
-      <h1 className="mr-10 mb-4 ml-10 text-2xl font-semibold">Rédiger et personnaliser les directives d'utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation</h1>
+      <h1 className="mr-10 mb-4 ml-10 text-2xl font-semibold">Formulaire d'accompagnement interactif  de rédaction de directives d'utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation</h1>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">👉 Instructions</h2>
@@ -763,7 +763,7 @@ export default function Guide() {
                                   <button type="button" onClick={() => openDeclModal(i, 'iagraphie')} style={{ marginTop: 3, fontSize: '0.75em', padding: '2px 8px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>✏ Modifier / insérer un exemple</button>
                                   {err.decl_iagraphie_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                                 </>
-                              }
+                                }
                               </div>
                             {/* Traces */}
                             <div style={{ marginTop: 6 }}>
@@ -924,41 +924,41 @@ export default function Guide() {
       }
 
       {/* ===== IA CHANGE CONFIRM DIALOG ===== */}
-      {iaChangeConfirm && (
-        <div style={{
-          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
-          zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
-        }}>
+      {iaChangeConfirm &&
+      <div style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)',
+        zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
           <div style={{
-            background: 'white', borderRadius: 10, padding: '28px 32px', maxWidth: 480, width: '90%',
-            boxShadow: '0 8px 32px rgba(0,0,0,0.18)', fontFamily: 'Arial, sans-serif'
-          }}>
+          background: 'white', borderRadius: 10, padding: '28px 32px', maxWidth: 480, width: '90%',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.18)', fontFamily: 'Arial, sans-serif'
+        }}>
             <p style={{ marginBottom: 20, lineHeight: 1.6, fontSize: '0.95em', color: '#231F20' }}>
               Vous avez déjà personnalisé vos directives pour cette étape et êtes sur le point de changer le niveau de permission. Que désirez-vous faire?
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
               <button
-                type="button"
-                onClick={() => {
-                  applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, true);
-                  setIaChangeConfirm(null);
-                }}
-                style={{ background: '#00A4E4', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.88em', flex: 1 }}>
+              type="button"
+              onClick={() => {
+                applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, true);
+                setIaChangeConfirm(null);
+              }}
+              style={{ background: '#00A4E4', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.88em', flex: 1 }}>
                 Conserver le texte personnalisé et l'adapter
               </button>
               <button
-                type="button"
-                onClick={() => {
-                  applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, false);
-                  setIaChangeConfirm(null);
-                }}
-                style={{ background: '#6c757d', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontSize: '0.88em', flex: 1 }}>
+              type="button"
+              onClick={() => {
+                applyIaChange(iaChangeConfirm.rowIndex, iaChangeConfirm.newIa, false);
+                setIaChangeConfirm(null);
+              }}
+              style={{ background: '#6c757d', color: 'white', border: 'none', borderRadius: 5, padding: '9px 16px', cursor: 'pointer', fontSize: '0.88em', flex: 1 }}>
                 Utiliser le texte par défaut du niveau choisi
               </button>
             </div>
           </div>
         </div>
-      )}
+      }
 
       {/* ===== DIRECTIVE MODAL ===== */}
       <DirectiveSelectionModal
@@ -978,7 +978,7 @@ export default function Guide() {
       {/* ===== DECLARATION FIELD MODAL ===== */}
       <DeclarationFieldModal
         isOpen={declModalState.open}
-        onClose={() => setDeclModalState(s => ({ ...s, open: false }))}
+        onClose={() => setDeclModalState((s) => ({ ...s, open: false }))}
         onSave={(html) => {
           const { rowIndex, fieldCode } = declModalState;
           if (rowIndex === null) return;
@@ -991,8 +991,8 @@ export default function Guide() {
           const fieldMap = { iagraphie: 'decl_iagraphie_text', traces: 'decl_traces_text', logique: 'decl_logique_text' };
           return rows[declModalState.rowIndex]?.[fieldMap[declModalState.fieldCode]] || '';
         })() : ''}
-        fieldCode={declModalState.fieldCode}
-      />
+        fieldCode={declModalState.fieldCode} />
+
 
       {/* ===== SAVE & LOAD ===== */}
       <div id="sauvegarde" className="save-section">
