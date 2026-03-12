@@ -366,7 +366,7 @@ export default function Guide() {
     xml += `  <ordre>${etapesOrder.map(i => ETAPES[i].id).join(',')}</ordre>\n`;
     xml += `  <etapes>\n`;
     rowsData.forEach((r) => {
-      xml += `    <etape index="${r.index}">\n`;
+      xml += `    <etape id="${ETAPES[r.index].id}">\n`;
       xml += `      <checked>${r.checked}</checked>\n`;
       xml += `      <ia>${escapeXml(r.ia)}</ia>\n`;
       xml += `      <justification>${escapeXml(r.justification)}</justification>\n`;
