@@ -85,6 +85,9 @@ function defaultStudentState() {
 export default function Declaration() {
   const [data, setData] = useState(null); // null | { error, raw } | { ok, identification, etapes }
   const [studentStates, setStudentStates] = useState([]);
+  const [studentNom, setStudentNom] = useState('');
+  const [studentGroupe, setStudentGroupe] = useState('');
+  const [nomError, setNomError] = useState(false);
   const fileInputRef = useRef();
 
   function handleFile(e) {
