@@ -11,7 +11,7 @@ const NIVEAUX_BRIO = {
   },
   aar: {
     libelle: 'Autorisée avec restrictions',
-    raison: "Au moins une de vos étapes indique une autorisation avec restrictions (sans obligation d'utilisation d'un SIA). Vos personnes étudiantes ont donc une liberté balisée d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
+    raison: "Au moins l'une de vos étapes indique une autorisation avec restrictions (sans obligation d'utilisation d'un SIA). Vos personnes étudiantes ont donc une liberté balisée d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
   },
   non: {
     libelle: 'Non autorisée',
