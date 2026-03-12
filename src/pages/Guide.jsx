@@ -1053,20 +1053,57 @@ export default function Guide() {
         </button>
 
         {declarationActive && (
-          <div style={{ marginTop: 14, padding: '14px 18px', background: '#f0f8ff', border: '1px solid #b3d9f4', borderRadius: 6, fontSize: '0.93em', lineHeight: 1.7 }}>
-            <p style={{ margin: '0 0 10px', fontWeight: 'bold' }}>📋 Instructions pour les personnes étudiantes</p>
-            <p style={{ margin: '0 0 8px' }}>Pour compléter votre déclaration d'utilisation des SIA, suivez ces étapes :</p>
-            <ol style={{ margin: 0, paddingLeft: 22 }}>
-              <li>Accédez à l'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
-              <li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li>
-              <li>Remplissez les champs de déclaration pour chaque étape concernée.</li>
-              <li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li>
-              <li>Transmettez le fichier généré à votre personne enseignante selon les modalités indiquées.</li>
-            </ol>
-            <p style={{ margin: '10px 0 0', color: '#555', fontSize: '0.9em' }}>
-              ⚠ Vous devez disposer du fichier XML de sauvegarde pour utiliser cet outil. Assurez-vous de le créer et de le transmettre aux personnes étudiantes.
-            </p>
-          </div>
+          <>
+            <div style={{ marginTop: 14, padding: '14px 18px', background: '#f0f8ff', border: '1px solid #b3d9f4', borderRadius: 6, fontSize: '0.93em', lineHeight: 1.7 }}>
+              <p style={{ margin: '0 0 10px', fontWeight: 'bold' }}>📋 Instructions pour les personnes étudiantes</p>
+              <p style={{ margin: '0 0 8px' }}>Pour compléter votre déclaration d'utilisation des SIA, suivez ces étapes :</p>
+              <ol style={{ margin: 0, paddingLeft: 22 }}>
+                <li>Accédez à l'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank" style={{ color: '#0056b3', textDecoration: 'underline' }}>Déclaration d'utilisation des SIA</a></li>
+                <li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li>
+                <li>Remplissez les champs de déclaration pour chaque étape concernée.</li>
+                <li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li>
+                <li>Transmettez le fichier généré à votre personne enseignante selon les modalités indiquées.</li>
+              </ol>
+              <p style={{ margin: '10px 0 0', color: '#555', fontSize: '0.9em' }}>
+                ⚠ Vous devez disposer du fichier XML de sauvegarde pour utiliser cet outil. Assurez-vous de le créer et de le transmettre aux personnes étudiantes.
+              </p>
+            </div>
+
+            <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>Instructions personnalisées pour les instructeurs</p>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => {
+                    if (navigator.clipboard) {
+                      navigator.clipboard.writeText(instructorInstructions);
+                      setCopyInstructorOk(true);
+                      setTimeout(() => setCopyInstructorOk(false), 1800);
+                    }
+                  }}
+                  style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                  Copier pour coller en ligne (Brio)
+                </button>
+                {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
+              </div>
+              <textarea
+                value={instructorInstructions}
+                onChange={(e) => setInstructorInstructions(e.target.value)}
+                placeholder="Écrivez des instructions supplémentaires pour les personnes étudiantes..."
+                style={{
+                  width: '100%',
+                  minHeight: 120,
+                  padding: '10px',
+                  fontFamily: 'inherit',
+                  fontSize: '0.9em',
+                  border: '1px solid #ccc',
+                  borderRadius: 4,
+                  boxSizing: 'border-box',
+                  resize: 'vertical'
+                }} />
+            </div>
+          </>
         )}
       </div>
     </div>);
