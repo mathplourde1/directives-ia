@@ -112,6 +112,9 @@ export default function Declaration() {
   const [uncheckedExplanations, setUncheckedExplanations] = useState({}); // field key → string
   const [uncheckedExpErrors, setUncheckedExpErrors] = useState({}); // field key → bool
   const [equipiersErrors, setEquipiersErrors] = useState([]); // per-equipier: bool
+  const [sessionOverride, setSessionOverride] = useState(''); // student-entered or modified session
+  const [sessionEditMode, setSessionEditMode] = useState(false); // true when editing XML session
+  const [sessionError, setSessionError] = useState(false);
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
   const apercuRef = useRef();
