@@ -62,7 +62,7 @@ export default function Guide() {
   const [declarationActive, setDeclarationActive] = useState(false);
   const [declarationTitle, setDeclarationTitle] = useState("Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)");
   const [instructorInstructions, setInstructorInstructions] = useState('<p><strong>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section <i>Utilisation de l\'intelligence artificielle</i> (la suivante) avant de débuter votre travail !</strong></p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank">Déclaration d\'utilisation des SIA.</a></li><li>Importez le <strong>fichier de sauvegarde XML</strong> fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque étape concernée.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>');
-  const [declarationFieldDescription, setDeclarationFieldDescription] = useState('');
+  const [declarationFieldDescription, setDeclarationFieldDescription] = useState('Fichier à utiliser dans l\'outil de déclaration.');
   const [copyInstructorOk, setCopyInstructorOk] = useState(false);
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
@@ -1147,42 +1147,37 @@ export default function Guide() {
                 </div>
 
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
-                 <button
-                   type="button"
-                   className="btn-primary"
-                   onClick={() => {
-                     if (navigator.clipboard) {
-                       const plainText = declarationFieldDescription.replace(/<[^>]+>/g, '');
-                       navigator.clipboard.writeText(plainText);
-                       setCopyInstructorOk(true);
-                       setTimeout(() => setCopyInstructorOk(false), 1800);
-                     }
-                   }}
-                   style={{ fontSize: '0.85em', padding: '6px 12px' }}>
-                   Copier pour coller en ligne (Brio)
-                 </button>
-                 {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
-                </div>
-                <ReactQuill
-                 value={declarationFieldDescription}
-                 onChange={setDeclarationFieldDescription}
-                 modules={{
-                   toolbar: [
-                     ['bold', 'italic', 'underline'],
-                     [{ list: 'ordered' }, { list: 'bullet' }],
-                     ['link']
-                   ]
-                 }}
-                 placeholder="Décrivez le contenu du fichier de déclaration..."
-                 style={{
-                   fontSize: '0.9em',
-                   backgroundColor: 'white',
-                   borderRadius: 4,
-                   minHeight: 120
-                 }}
-                 theme="snow" />
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                    <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
+                    <button
+                      type="button"
+                      className="btn-primary"
+                      onClick={() => {
+                        if (navigator.clipboard) {
+                          navigator.clipboard.writeText(declarationFieldDescription);
+                          setCopyInstructorOk(true);
+                          setTimeout(() => setCopyInstructorOk(false), 1800);
+                        }
+                      }}
+                      style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                      Copier pour coller en ligne (Brio)
+                    </button>
+                    {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
+                  </div>
+                  <textarea
+                    value={declarationFieldDescription}
+                    onChange={(e) => setDeclarationFieldDescription(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '8px 10px',
+                      fontFamily: 'inherit',
+                      fontSize: '0.9em',
+                      border: '1px solid #ccc',
+                      borderRadius: 4,
+                      boxSizing: 'border-box',
+                      backgroundColor: 'white',
+                      minHeight: 80
+                    }} />
                 </div>
                 </>
                 )}
