@@ -216,6 +216,8 @@ export default function Declaration() {
       states: studentStates,
       commentaires: commentaires.trim(),
       explanations,
+      hasFichiersJoints,
+      fichiersJointsConfirme,
       timestamp
     });
     setSubmitStatus({ ok: true, time: new Date() });
