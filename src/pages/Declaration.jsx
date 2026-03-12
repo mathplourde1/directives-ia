@@ -258,7 +258,10 @@ export default function Declaration() {
     setUncheckedExpErrors(newExpErrors);
     if (Object.keys(newExpErrors).length > 0) { setSubmitStatus({ ok: false }); return; }
 
-    doGenerate();
+    const effSession = data.identification.session && !sessionEditMode
+      ? data.identification.session
+      : sessionOverride.trim();
+    doGenerate(effSession);
   }
 
   function buildApercuHTML(ap) {
