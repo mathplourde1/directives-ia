@@ -1062,7 +1062,7 @@ export default function Guide() {
         <>
             <h2 style={{ marginTop: 20, marginBottom: 16, fontSize: '1.3em', fontWeight: 'bold', background: 'transparent' }}>Instructions pour Brio</h2>
             <div style={{ marginBottom: 20 }}>
-              <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type Fichier juste au dessus de la section Utilisation de l'intelligence artificielle dans les instructions de votre évaluation. Utilisez le fichier de sauvegarde de la section précédente.</p>
+              <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="blank">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.</p>
             </div>
             
 
