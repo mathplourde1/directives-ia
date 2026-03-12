@@ -491,7 +491,9 @@ export default function Declaration() {
                             rows={3}
                             placeholder="Expliquez votre logique d'utilisation de l'IA…"
                             value={s.logique_reponse}
-                            onChange={(e) => updateStudent(i, 'logique_reponse', e.target.value)} />
+                            style={{ border: fieldErrors[i]?.logique_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.logique_reponse ? '#fff4f4' : undefined }}
+                            onChange={(e) => { updateStudent(i, 'logique_reponse', e.target.value); setFieldErrors(prev => prev.map((fe, fi) => fi === i ? { ...fe, logique_reponse: false } : fe)); }} />
+                                {fieldErrors[i]?.logique_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
 
                                 <div className="conforme-row">
                                   <input type="checkbox" id={`logique_${i}`} checked={s.logique_conforme}
