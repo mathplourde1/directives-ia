@@ -134,7 +134,7 @@ export default function Declaration() {
   }
 
   // Tick every minute to keep elapsed time fresh
-  React.useEffect(() => {
+  useEffect(() => {
     const id = setInterval(() => forceUpdate(n => n + 1), 60000);
     return () => clearInterval(id);
   }, []);
