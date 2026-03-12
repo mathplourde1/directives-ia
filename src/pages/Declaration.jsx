@@ -189,6 +189,13 @@ export default function Declaration() {
     // Validate nom
     if (!studentNom.trim()) { setNomError(true); setSubmitStatus({ ok: false }); return; }
 
+    // Validate all teammate names if team mode is on
+    if (isEquipe) {
+      const errs = equipiers.map(n => !n.trim());
+      setEquipiersErrors(errs);
+      if (errs.some(Boolean)) { setSubmitStatus({ ok: false }); return; }
+    }
+
     // Validate text fields (traces & logique must have text)
     const newFieldErrors = data.etapes.map((etape, i) => {
       const s = studentStates[i] || defaultStudentState();
