@@ -207,7 +207,7 @@ export default function Declaration() {
       + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h')
       + ' ' + tzCode;
     setApercu({
-      identification: data.identification,
+      identification: { ...data.identification, session: effectiveSession },
       studentNom, studentGroupe, isEquipe, nomEquipe,
       equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
       etapes: data.etapes,
