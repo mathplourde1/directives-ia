@@ -221,6 +221,12 @@ export default function Declaration() {
   }
 
   function handleSoumettre() {
+    // Validate session
+    const effectiveSession = data.identification.session && !sessionEditMode
+      ? data.identification.session
+      : sessionOverride.trim();
+    if (!effectiveSession) { setSessionError(true); setSubmitStatus({ ok: false }); return; }
+
     // Validate nom
     if (!studentNom.trim()) { setNomError(true); setSubmitStatus({ ok: false }); return; }
 
