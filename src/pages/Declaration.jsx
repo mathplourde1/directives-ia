@@ -251,6 +251,9 @@ export default function Declaration() {
     setFieldErrors(newFieldErrors);
     if (hasFieldErrors) { setSubmitStatus({ ok: false }); return; }
 
+    // Validate fichiers joints confirmation
+    if (hasFichiersJoints && !fichiersJointsConfirme) { setSubmitStatus({ ok: false }); return; }
+
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
     const newExpErrors = {};
