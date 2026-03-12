@@ -644,7 +644,7 @@ export default function Declaration() {
               {/* Commentaires in apercu */}
               {apercu.commentaires && (
                 <div style={{ background: '#fffbea', border: '1px solid #e5c040', borderRadius: 6, padding: '10px 14px', marginTop: 16, fontSize: '0.92em' }}>
-                  <div style={{ marginBottom: 4, color: '#555', fontSize: '0.9em' }}>Commentaires, exceptions et précisions :</div>
+                  <strong>Commentaires, exceptions et précisions :</strong>
                   <pre style={{ margin: '6px 0 0', fontFamily: 'inherit', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontWeight: 'bold' }}>{apercu.commentaires}</pre>
                 </div>
               )}
