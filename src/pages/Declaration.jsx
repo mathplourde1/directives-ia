@@ -480,6 +480,19 @@ export default function Declaration() {
         });
       }
 
+      if (ap.hasFichiersJoints) {
+        y += 12;
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        doc.setTextColor(0, 0, 0);
+        const fjText = ap.fichiersJointsConfirme
+          ? 'Fichiers joints : Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.'
+          : 'Fichiers joints : Engagement non confirmé';
+        const fjLines = doc.splitTextToSize(fjText, pageW - margin * 2);
+        doc.text(fjLines, margin, y);
+        y += fjLines.length * 11 + 6;
+      }
+
       y += 14;
       doc.setFontSize(8);
       doc.setFont(undefined, 'italic');
