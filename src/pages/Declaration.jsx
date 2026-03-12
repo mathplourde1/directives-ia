@@ -994,6 +994,13 @@ export default function Declaration() {
                 </div>
               )}
 
+              {/* Fichiers joints */}
+              {apercu.hasFichiersJoints && (
+                <div style={{ background: '#edf7ff', border: '1px solid #b3d9f4', borderRadius: 6, padding: '8px 14px', marginTop: 16, fontSize: '0.92em' }}>
+                  📎 <strong>Fichiers joints :</strong> {apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}
+                </div>
+              )}
+
               {/* Timestamp */}
               <div style={{ marginTop: 16, fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
                 Générée le {apercu.timestamp}
