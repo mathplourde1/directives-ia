@@ -384,11 +384,20 @@ export default function Guide() {
     });
     xml += `  </etapes>\n</guide-ia>`;
 
+    const now = new Date();
+    const dateStr = now.getFullYear().toString()
+      + String(now.getMonth() + 1).padStart(2, '0')
+      + String(now.getDate()).padStart(2, '0');
+    const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
+    const coursPart = identification.cours ? slugify(identification.cours) : 'cours';
+    const evalPart = identification.evaluation ? slugify(identification.evaluation) : 'evaluation';
+    const filename = `sauvegarde-${coursPart}-${evalPart}-${dateStr}.xml`;
+
     const blob = new Blob([xml], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'sauvegarde-guide-ia.xml';
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
   }
