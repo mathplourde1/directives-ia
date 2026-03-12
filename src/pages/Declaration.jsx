@@ -166,16 +166,18 @@ export default function Declaration() {
                   </p>
                 </>
               )}
-              <button className="btn-primary" onClick={() => {
-            const blob = new Blob([data.raw], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;a.download = 'contenu-brut.txt';a.click();
-            URL.revokeObjectURL(url);
-          }}>
-                💾 Sauvegarder la version brute
-              </button>
-              <div className="raw-box">{data.raw}</div>
+              {data.error !== 'manual' && <>
+                <button className="btn-primary" onClick={() => {
+              const blob = new Blob([data.raw], { type: 'text/plain' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;a.download = 'contenu-brut.txt';a.click();
+              URL.revokeObjectURL(url);
+            }}>
+                  💾 Sauvegarder la version brute
+                </button>
+                <div className="raw-box">{data.raw}</div>
+              </>}
             </div>
         }
         </div>
