@@ -133,16 +133,78 @@ export default function Declaration() {
     setStudentStates((prev) => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
   }
 
-  function handleSoumettre() {
-    if (!studentNom.trim()) { setNomError(true); return; }
+  // Tick every minute to keep elapsed time fresh
+  React.useEffect(() => {
+    const id = setInterval(() => forceUpdate(n => n + 1), 60000);
+    return () => clearInterval(id);
+  }, []);
+
+  function buildUncheckedItems(states) {
+    const items = [];
+    data.etapes.forEach((etape, i) => {
+      const s = states[i] || defaultStudentState();
+      const isAucune = etape.declaration === 'aucune';
+      const label = etape.etapeInfo.libelle;
+      if (isAucune && !s.aucune_conforme) {
+        items.push({ etape: label, exigence: 'Aucune exigence', field: `aucune_${i}` });
+      } else {
+        if (etape.decl_iagraphie && !s.iagraphie_conforme) items.push({ etape: label, exigence: 'Références et IAgraphie', field: `iag_${i}` });
+        if (etape.decl_traces && !s.traces_conforme) items.push({ etape: label, exigence: 'Conserver les traces suivantes', field: `traces_${i}` });
+        if (etape.decl_logique && !s.logique_conforme) items.push({ etape: label, exigence: 'Expliquer la logique d\'utilisation', field: `logique_${i}` });
+      }
+    });
+    return items;
+  }
+
+  function doGenerate(forcedCommentaires) {
+    const finalCommentaires = forcedCommentaires !== undefined ? forcedCommentaires : commentaires;
     setApercu({
       identification: data.identification,
       studentNom, studentGroupe, isEquipe, nomEquipe,
       equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
       etapes: data.etapes,
-      states: studentStates
+      states: studentStates,
+      commentaires: finalCommentaires
     });
+    setCommentaires(finalCommentaires);
+    setSubmitStatus({ ok: true, time: new Date() });
     setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
+  }
+
+  function handleSoumettre() {
+    // Validate nom
+    if (!studentNom.trim()) { setNomError(true); setSubmitStatus({ ok: false }); return; }
+
+    // Validate text fields (traces & logique must have text)
+    const newFieldErrors = data.etapes.map((etape, i) => {
+      const s = studentStates[i] || defaultStudentState();
+      return {
+        traces_reponse: etape.decl_traces && !s.traces_reponse.trim(),
+        logique_reponse: etape.decl_logique && !s.logique_reponse.trim()
+      };
+    });
+    const hasFieldErrors = newFieldErrors.some(e => e.traces_reponse || e.logique_reponse);
+    setFieldErrors(newFieldErrors);
+    if (hasFieldErrors) { setSubmitStatus({ ok: false }); return; }
+
+    // Check unchecked confirmations
+    const unchecked = buildUncheckedItems(studentStates);
+    if (unchecked.length > 0) {
+      setConfirmDialog({ uncheckedItems: unchecked });
+      return;
+    }
+
+    setSubmitStatus({ ok: true, time: new Date() });
+    doGenerate();
+  }
+
+  function handleGenerateAnyway() {
+    // Add auto-comments for unchecked items
+    const unchecked = confirmDialog?.uncheckedItems || [];
+    const autoLines = unchecked.map(u => `• ${u.etape} — ${u.exigence} : Cette confirmation n'a pas été cochée : Expliquez pourquoi.`).join('\n');
+    const merged = commentaires.trim() ? commentaires + '\n\n' + autoLines : autoLines;
+    setConfirmDialog(null);
+    doGenerate(merged);
   }
 
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4 };
