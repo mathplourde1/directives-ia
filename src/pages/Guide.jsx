@@ -1144,11 +1144,50 @@ export default function Guide() {
                   minHeight: 120
                 }}
                 theme="snow" />
-            </div>
-          </>
-        )}
-      </div>
-    </div>);
+                </div>
+
+                <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
+                 <button
+                   type="button"
+                   className="btn-primary"
+                   onClick={() => {
+                     if (navigator.clipboard) {
+                       const plainText = declarationFieldDescription.replace(/<[^>]+>/g, '');
+                       navigator.clipboard.writeText(plainText);
+                       setCopyInstructorOk(true);
+                       setTimeout(() => setCopyInstructorOk(false), 1800);
+                     }
+                   }}
+                   style={{ fontSize: '0.85em', padding: '6px 12px' }}>
+                   Copier pour coller en ligne (Brio)
+                 </button>
+                 {copyInstructorOk && <span style={{ color: 'green', fontWeight: 'bold', marginLeft: 10, fontSize: '0.9em' }}>Copié !</span>}
+                </div>
+                <ReactQuill
+                 value={declarationFieldDescription}
+                 onChange={setDeclarationFieldDescription}
+                 modules={{
+                   toolbar: [
+                     ['bold', 'italic', 'underline'],
+                     [{ list: 'ordered' }, { list: 'bullet' }],
+                     ['link']
+                   ]
+                 }}
+                 placeholder="Décrivez le contenu du fichier de déclaration..."
+                 style={{
+                   fontSize: '0.9em',
+                   backgroundColor: 'white',
+                   borderRadius: 4,
+                   minHeight: 120
+                 }}
+                 theme="snow" />
+                </div>
+                </>
+                )}
+                </div>
+                </div>);
 
 }
 
