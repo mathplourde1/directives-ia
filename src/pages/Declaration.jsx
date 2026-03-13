@@ -786,8 +786,11 @@ export default function Declaration() {
 
           {/* Declaration table + commentaires */}
           <div style={{ position: 'relative' }}>
-            {!studentNom.trim() && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord le champ Nom complet dans la section Identification" />}
-          <div className="section-box" style={{ padding: 0, overflow: 'hidden', opacity: studentNom.trim() ? 1 : 0.5, pointerEvents: studentNom.trim() ? 'auto' : 'none' }}>
+            {(() => {
+              const identOk = studentNom.trim() && (!isEquipe || (equipiers.length > 0 && equipiers[0].trim()));
+              return !identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires dans la section Identification" />;
+            })()}
+          <div className="section-box" style={{ padding: 0, overflow: 'hidden', opacity: (studentNom.trim() && (!isEquipe || (equipiers.length > 0 && equipiers[0].trim()))) ? 1 : 0.5, pointerEvents: (studentNom.trim() && (!isEquipe || (equipiers.length > 0 && equipiers[0].trim()))) ? 'auto' : 'none' }}>
             <table className="decl-table" style={{ fontSize: '0.93em', marginTop: 20, marginLeft: 20, marginRight: 20, width: 'calc(100% - 40px)' }}>
               <colgroup>
                 <col style={{ width: '18%' }} />
