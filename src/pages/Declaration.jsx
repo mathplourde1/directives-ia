@@ -651,7 +651,7 @@ export default function Declaration() {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '0.95em' }}>
               {data.identification.cours && <div><strong>Cours :</strong> {data.identification.cours}</div>}
               <div>
-                <strong>Session :</strong>{' '}
+                <strong>Session :<span style={{ color: '#E41E25' }}> *</span></strong>{' '}
                 {data.identification.session && !sessionEditMode ?
               <span>
                     {data.identification.session}{' '}
