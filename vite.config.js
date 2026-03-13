@@ -16,11 +16,5 @@ export default defineConfig({
       visualEditAgent: true
     }),
     react(),
-  ],
-  server: {
-    host: true,
-    allowedHosts: [
-      'ta-01kkkhgymj62rnxvhnkzhdk5bh-5173-00fsuj7h3emxe70m8c4vpp0bs.w.modal.host'
-    ]
-  }
+  ]
 });
