@@ -482,6 +482,8 @@ export default function Guide() {
     reader.readAsText(file);
   }
 
+  const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
+
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' };
   const inputErrorBorder = { border: '2px solid #E41E25', background: '#fff4f4' };
 
@@ -575,7 +577,9 @@ export default function Guide() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+      <div style={{ position: 'relative' }}>
+        {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis dans la section Évaluation ciblée" />}
+      <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', opacity: identFilled ? 1 : 0.5, pointerEvents: identFilled ? 'auto' : 'none' }}>
         <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 14 }}>Étapes de réalisation, permissions et exigences</h2>
         <DragDropContext onDragEnd={onDragEnd}>
         <table className="main-table">
@@ -863,6 +867,7 @@ export default function Guide() {
           }
         </div>
       </form>
+      </div>
 
       {/* ===== SYNTHESIS SECTIONS ===== */}
       {submitted &&
