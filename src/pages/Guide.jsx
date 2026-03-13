@@ -875,7 +875,19 @@ export default function Guide() {
       <div id="synthese-container" key={submitKey}>
           {/* Section Brio */}
           <BrioSection selections={selections} />
-          {/* Section 1: Tableau synthèse */}
+          {/* Section 1: Synthèse texte continu */}
+          <SyntheseSection
+          title="Synthèse en texte continu"
+          onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
+          onDownloadWord={() => downloadWord(buildTextHTML(selections, true), 'synthese-texte.doc')}
+          copyOk={copyMsgs['s2-brio']}>
+
+            <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
+          dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
+          
+          </SyntheseSection>
+
+          {/* Section 2: Tableau synthèse */}
           <SyntheseSection
           title="Tableau synthèse"
           onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
@@ -903,18 +915,6 @@ export default function Guide() {
               )}
               </tbody>
             </table>
-          </SyntheseSection>
-
-          {/* Section 2: Synthèse texte HTML */}
-          <SyntheseSection
-          title="Synthèse en texte continu"
-          onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
-          onDownloadWord={() => downloadWord(buildTextHTML(selections, true), 'synthese-texte.doc')}
-          copyOk={copyMsgs['s2-brio']}>
-
-            <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
-          dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
-          
           </SyntheseSection>
 
           {/* Section 3: Exigences de déclaration */}
