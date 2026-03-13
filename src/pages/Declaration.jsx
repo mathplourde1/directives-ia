@@ -696,7 +696,7 @@ export default function Declaration() {
               <div>
                 <button
                 type="button"
-                onClick={() => { setIsEquipe((v) => !v); setApercu(null); setSubmitStatus(null); }}
+                onClick={() => setIsEquipe((v) => !v)}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
