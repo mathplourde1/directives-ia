@@ -647,7 +647,8 @@ export default function Declaration() {
       <>
           {/* Identification */}
           <div className="section-box">
-            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 10 }}>Évaluation ciblée</h2>
+            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 6 }}>Évaluation ciblée</h2>
+            <p style={{ margin: '0 0 10px 0', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>Les champs obligatoires de cette section doivent être valides pour continuer.</p>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 24px', fontSize: '0.95em' }}>
               {data.identification.cours && <div><strong>Cours :</strong> {data.identification.cours}</div>}
               <div>
