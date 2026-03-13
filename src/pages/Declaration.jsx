@@ -597,7 +597,7 @@ export default function Declaration() {
           <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
             📂 Importer le fichier de sauvegarde
           </button>
-          <input ref={fileInputRef} type="file" accept=".xml" style={{ display: 'none' }} onChange={handleFile} />
+          <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleFile} />
 
           <div style={{ marginTop: 12 }}>
             
