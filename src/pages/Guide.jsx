@@ -1029,7 +1029,7 @@ export default function Guide() {
         <input
           ref={fileInputRef}
           type="file"
-          accept=".xml"
+          accept=".xml,.txt"
           style={{ display: 'none' }}
           onChange={handleLoad} />
 
