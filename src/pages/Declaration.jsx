@@ -257,7 +257,7 @@ export default function Declaration() {
     if (hasFieldErrors) hasErrors = true;
 
     // Validate fichiers joints confirmation
-    if (hasFichiersJoints && !fichiersJointsConfirme) hasErrors = true;
+    if (hasFichiersJoints && !fichiersJointsConfirme) { setFichiersJointsError(true); hasErrors = true; } else { setFichiersJointsError(false); }
 
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
