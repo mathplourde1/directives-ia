@@ -1120,6 +1120,7 @@ export default function Declaration() {
         </>
       }
 
+    </div>
     </div>);
 
 
