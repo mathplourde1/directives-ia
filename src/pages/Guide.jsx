@@ -545,7 +545,8 @@ export default function Guide() {
 
       {/* Identification section */}
       <div style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
-        <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 14 }}>Évaluation ciblée</h2>
+        <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 6 }}>Évaluation ciblée</h2>
+        <p style={{ margin: '0 0 14px 0', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>Les champs obligatoires de cette section d'identification doivent être valides pour continuer.</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Identifiant du cours <span className="required">*</span></label>
