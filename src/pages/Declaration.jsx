@@ -748,6 +748,7 @@ export default function Declaration() {
                   value={studentNom}
                   onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
                   placeholder="ex. Marie Tremblay"
+                  {...(nomError ? { 'data-first-error': true } : {})}
                   style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                   {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
                 </div>
