@@ -1090,7 +1090,7 @@ export default function Declaration() {
               {/* Fichiers joints */}
               {apercu.hasFichiersJoints &&
               <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
-                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Fichiers joints</h2>
+                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Fichiers joints</h2>
                   <p style={{ margin: 0 }}>{apercu.fichiersJointsConfirme ? '✔ Engagement confirmé — les fichiers requis seront transmis à la personne enseignante.' : '✘ Engagement non confirmé'}</p>
                 </div>
               }
