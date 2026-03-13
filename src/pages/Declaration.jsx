@@ -991,7 +991,7 @@ export default function Declaration() {
             {/* Preview */}
           {apercu &&
           <>
-          <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '11px', lineHeight: 1.2, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
+          <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: '4px', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '22px', lineHeight: 1.2, maxWidth: 1000, marginLeft: 'auto', marginRight: 'auto' }}>
               {/* Document title */}
               <h1 style={{ fontFamily: 'Georgia, serif', fontSize: '24px', fontWeight: 'bold', textAlign: 'center', marginBottom: '8pt', paddingBottom: '8pt', borderBottom: '1px solid black', margin: '0 0 8pt 0', color: '#000' }}>
                 Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)
