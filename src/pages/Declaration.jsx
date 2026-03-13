@@ -1097,7 +1097,7 @@ export default function Declaration() {
 
               {/* Affirmations finales */}
               <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
-                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
+                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
                 <ul style={{ margin: '0 0 0 20px', paddingLeft: 0, lineHeight: 1.6, listStyleType: 'disc' }}>
                   <li style={{ marginBottom: '4pt' }}>Les informations fournies sont complètes et fidèles à {apercu.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
                   <li style={{ marginBottom: '4pt' }}>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation de l'IAg est conforme aux règles établies par la personne enseignante pour ce travail.</li>
