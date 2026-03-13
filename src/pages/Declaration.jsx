@@ -595,7 +595,7 @@ export default function Declaration() {
             Importez le fichier de sauvegarde fourni par votre personne enseignante pour afficher les directives d'utilisation des SIA pour cette évaluation.
           </p>
           <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
-            📂 Importer le fichier XML
+            📂 Importer le fichier de sauvegarde
           </button>
           <input ref={fileInputRef} type="file" accept=".xml" style={{ display: 'none' }} onChange={handleFile} />
 
