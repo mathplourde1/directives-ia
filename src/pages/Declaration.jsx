@@ -955,11 +955,14 @@ export default function Declaration() {
                 J'ai au moins un fichier joint à soumettre en soutien à cette déclaration
               </button>
               {hasFichiersJoints &&
-              <div className="conforme-row" style={{ marginTop: 10 }}>
+              <div style={{ marginTop: 10 }}>
+                <div className="conforme-row">
                   <input type="checkbox" id="fichiers_joints_confirme" checked={fichiersJointsConfirme}
-                onChange={(e) => setFichiersJointsConfirme(e.target.checked)} />
-                  <label htmlFor="fichiers_joints_confirme">Je m'engage à transmettre le ou les fichiers requis à ma personne enseignante.</label>
+                onChange={(e) => { setFichiersJointsConfirme(e.target.checked); setFichiersJointsError(false); }} />
+                  <label htmlFor="fichiers_joints_confirme" style={{ color: fichiersJointsError ? '#E41E25' : undefined }}>Je m'engage à transmettre le ou les fichiers requis à ma personne enseignante.</label>
                 </div>
+                {fichiersJointsError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Cette confirmation est requise</span>}
+              </div>
               }
             </div>
 
