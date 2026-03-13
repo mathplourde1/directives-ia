@@ -388,7 +388,7 @@ export default function Declaration() {
 
   function copyDeclToClipboard(ap) {
     const content = buildApercuHTML(ap);
-    const htmlText = `<h2 style="color:#E41E25">Déclaration d'utilisation de systèmes d'intelligence artificielle</h2>${content}`;
+    const htmlText = content;
     const plainText = htmlText.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, '');
     
     if (navigator.clipboard && window.ClipboardItem) {
