@@ -117,12 +117,10 @@ export default function Declaration() {
   const [sessionError, setSessionError] = useState(false);
   const [hasFichiersJoints, setHasFichiersJoints] = useState(false);
   const [fichiersJointsConfirme, setFichiersJointsConfirme] = useState(false);
-  const [fichiersJointsError, setFichiersJointsError] = useState(false);
   const [, forceUpdate] = useState(0);
   const [copyOk, setCopyOk] = useState(false);
   const fileInputRef = useRef();
   const apercuRef = useRef();
-  const firstErrorRef = useRef();
 
   function handleFile(e) {
     const file = e.target.files[0];
@@ -228,23 +226,20 @@ export default function Declaration() {
   }
 
   function handleSoumettre() {
-    let hasErrors = false;
-
     // Validate session
     const effectiveSession = data.identification.session && !sessionEditMode ?
     data.identification.session :
     sessionOverride.trim();
-    if (!effectiveSession) { setSessionError(true); hasErrors = true; }
+    if (!effectiveSession) {setSessionError(true);setSubmitStatus({ ok: false });return;}
 
     // Validate nom
-    if (!studentNom.trim()) { setNomError(true); hasErrors = true; }
+    if (!studentNom.trim()) {setNomError(true);setSubmitStatus({ ok: false });return;}
 
     // Validate all teammate names if team mode is on
-    let equipierErrs = equipiers.map(() => false);
     if (isEquipe) {
-      equipierErrs = equipiers.map((n) => !n.trim());
-      setEquipiersErrors(equipierErrs);
-      if (equipierErrs.some(Boolean)) hasErrors = true;
+      const errs = equipiers.map((n) => !n.trim());
+      setEquipiersErrors(errs);
+      if (errs.some(Boolean)) {setSubmitStatus({ ok: false });return;}
     }
 
     // Validate text fields (traces & logique must have text)
@@ -257,12 +252,10 @@ export default function Declaration() {
     });
     const hasFieldErrors = newFieldErrors.some((e) => e.traces_reponse || e.logique_reponse);
     setFieldErrors(newFieldErrors);
-    if (hasFieldErrors) hasErrors = true;
+    if (hasFieldErrors) {setSubmitStatus({ ok: false });return;}
 
     // Validate fichiers joints confirmation
-    const fjErr = hasFichiersJoints && !fichiersJointsConfirme;
-    setFichiersJointsError(fjErr);
-    if (fjErr) hasErrors = true;
+    if (hasFichiersJoints && !fichiersJointsConfirme) {setSubmitStatus({ ok: false });return;}
 
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
@@ -271,16 +264,7 @@ export default function Declaration() {
       if (!uncheckedExplanations[u.field]?.trim()) newExpErrors[u.field] = true;
     });
     setUncheckedExpErrors(newExpErrors);
-    if (Object.keys(newExpErrors).length > 0) hasErrors = true;
-
-    if (hasErrors) {
-      setSubmitStatus({ ok: false });
-      setTimeout(() => {
-        const el = document.querySelector('[data-first-error]');
-        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 50);
-      return;
-    }
+    if (Object.keys(newExpErrors).length > 0) {setSubmitStatus({ ok: false });return;}
 
     const effSession = data.identification.session && !sessionEditMode ?
     data.identification.session :
@@ -748,7 +732,6 @@ export default function Declaration() {
                   value={studentNom}
                   onChange={(e) => {setStudentNom(e.target.value);setNomError(false);}}
                   placeholder="ex. Marie Tremblay"
-                  {...(nomError ? { 'data-first-error': true } : {})}
                   style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                   {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Ce champ est requis</span>}
                 </div>
@@ -766,7 +749,6 @@ export default function Declaration() {
                     setEquipiersErrors((prev) => prev.map((v, i) => i === idx ? false : v));
                   }}
                   placeholder="ex. Jean Dupont"
-                  {...(equipiersErrors[idx] ? { 'data-first-error': true } : {})}
                   style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                       {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
                     </div>
@@ -885,7 +867,6 @@ export default function Declaration() {
                             rows={3}
                             placeholder="Décrivez les traces que vous avez conservées…"
                             value={s.traces_reponse}
-                            {...(fieldErrors[i]?.traces_reponse ? { 'data-first-error': true } : {})}
                             style={{ border: fieldErrors[i]?.traces_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.traces_reponse ? '#fff4f4' : undefined }}
                             onChange={(e) => {updateStudent(i, 'traces_reponse', e.target.value);setFieldErrors((prev) => prev.map((fe, fi) => fi === i ? { ...fe, traces_reponse: false } : fe));}} />
                                {fieldErrors[i]?.traces_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
@@ -907,7 +888,6 @@ export default function Declaration() {
                             rows={3}
                             placeholder="Expliquez votre logique d'utilisation de l'IA…"
                             value={s.logique_reponse}
-                            {...(fieldErrors[i]?.logique_reponse ? { 'data-first-error': true } : {})}
                             style={{ border: fieldErrors[i]?.logique_reponse ? '2px solid #E41E25' : undefined, background: fieldErrors[i]?.logique_reponse ? '#fff4f4' : undefined }}
                             onChange={(e) => {updateStudent(i, 'logique_reponse', e.target.value);setFieldErrors((prev) => prev.map((fe, fi) => fi === i ? { ...fe, logique_reponse: false } : fe));}} />
                                 {fieldErrors[i]?.logique_reponse && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
@@ -952,7 +932,6 @@ export default function Declaration() {
                   setUncheckedExpErrors((prev) => ({ ...prev, [u.field]: false }));
                 }}
                 placeholder="Expliquez la raison…"
-                {...(uncheckedExpErrors[u.field] ? { 'data-first-error': true } : {})}
                 style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.9em', border: uncheckedExpErrors[u.field] ? '2px solid #E41E25' : '1px solid #aaa', background: uncheckedExpErrors[u.field] ? '#fff4f4' : 'white', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
                 {uncheckedExpErrors[u.field] && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
               </div>
@@ -962,7 +941,7 @@ export default function Declaration() {
             <div style={{ marginTop: 18 }}>
               <button
                 type="button"
-                onClick={() => setHasFichiersJoints((v) => !v)}
+                onClick={() => {setHasFichiersJoints((v) => !v);setFichiersJointsConfirme(false);}}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
@@ -974,13 +953,10 @@ export default function Declaration() {
                 J'ai au moins un fichier joint à soumettre en soutien à cette déclaration
               </button>
               {hasFichiersJoints &&
-              <div style={{ marginTop: 10 }}>
-                <div className="conforme-row" {...(fichiersJointsError ? { 'data-first-error': true } : {})}>
+              <div className="conforme-row" style={{ marginTop: 10 }}>
                   <input type="checkbox" id="fichiers_joints_confirme" checked={fichiersJointsConfirme}
-                onChange={(e) => { setFichiersJointsConfirme(e.target.checked); setFichiersJointsError(false); }} />
+                onChange={(e) => setFichiersJointsConfirme(e.target.checked)} />
                   <label htmlFor="fichiers_joints_confirme">Je m'engage à transmettre le ou les fichiers requis à ma personne enseignante.</label>
-                </div>
-                {fichiersJointsError && <span style={{ color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' }}>⚠ Vous devez confirmer l'engagement avant de générer la déclaration.</span>}
                 </div>
               }
             </div>
@@ -997,7 +973,7 @@ export default function Declaration() {
                 const elapsed = diffH > 0 ? `il y a ${diffH} heure${diffH > 1 ? 's' : ''}` : diffMin <= 0 ? "à l'instant" : `il y a ${diffMin} minute${diffMin > 1 ? 's' : ''}`;
                 return <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès {elapsed}.</span>;
               })() :
-              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis. Vérifiez les champs en rouge ci-dessus.</span>)
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>)
               }
             </div>
             </div>
