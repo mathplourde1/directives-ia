@@ -228,20 +228,23 @@ export default function Declaration() {
   }
 
   function handleSoumettre() {
+    let hasErrors = false;
+
     // Validate session
     const effectiveSession = data.identification.session && !sessionEditMode ?
     data.identification.session :
     sessionOverride.trim();
-    if (!effectiveSession) {setSessionError(true);setSubmitStatus({ ok: false });return;}
+    if (!effectiveSession) { setSessionError(true); hasErrors = true; }
 
     // Validate nom
-    if (!studentNom.trim()) {setNomError(true);setSubmitStatus({ ok: false });return;}
+    if (!studentNom.trim()) { setNomError(true); hasErrors = true; }
 
     // Validate all teammate names if team mode is on
+    let equipierErrs = equipiers.map(() => false);
     if (isEquipe) {
-      const errs = equipiers.map((n) => !n.trim());
-      setEquipiersErrors(errs);
-      if (errs.some(Boolean)) {setSubmitStatus({ ok: false });return;}
+      equipierErrs = equipiers.map((n) => !n.trim());
+      setEquipiersErrors(equipierErrs);
+      if (equipierErrs.some(Boolean)) hasErrors = true;
     }
 
     // Validate text fields (traces & logique must have text)
@@ -254,10 +257,12 @@ export default function Declaration() {
     });
     const hasFieldErrors = newFieldErrors.some((e) => e.traces_reponse || e.logique_reponse);
     setFieldErrors(newFieldErrors);
-    if (hasFieldErrors) {setSubmitStatus({ ok: false });return;}
+    if (hasFieldErrors) hasErrors = true;
 
     // Validate fichiers joints confirmation
-    if (hasFichiersJoints && !fichiersJointsConfirme) {setSubmitStatus({ ok: false });return;}
+    const fjErr = hasFichiersJoints && !fichiersJointsConfirme;
+    setFichiersJointsError(fjErr);
+    if (fjErr) hasErrors = true;
 
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
@@ -266,7 +271,16 @@ export default function Declaration() {
       if (!uncheckedExplanations[u.field]?.trim()) newExpErrors[u.field] = true;
     });
     setUncheckedExpErrors(newExpErrors);
-    if (Object.keys(newExpErrors).length > 0) {setSubmitStatus({ ok: false });return;}
+    if (Object.keys(newExpErrors).length > 0) hasErrors = true;
+
+    if (hasErrors) {
+      setSubmitStatus({ ok: false });
+      setTimeout(() => {
+        const el = document.querySelector('[data-first-error]');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 50);
+      return;
+    }
 
     const effSession = data.identification.session && !sessionEditMode ?
     data.identification.session :
