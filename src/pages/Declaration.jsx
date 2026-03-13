@@ -226,20 +226,22 @@ export default function Declaration() {
   }
 
   function handleSoumettre() {
+    let hasErrors = false;
+
     // Validate session
     const effectiveSession = data.identification.session && !sessionEditMode ?
     data.identification.session :
     sessionOverride.trim();
-    if (!effectiveSession) {setSessionError(true);setSubmitStatus({ ok: false });return;}
+    if (!effectiveSession) { setSessionError(true); hasErrors = true; } else { setSessionError(false); }
 
     // Validate nom
-    if (!studentNom.trim()) {setNomError(true);setSubmitStatus({ ok: false });return;}
+    if (!studentNom.trim()) { setNomError(true); hasErrors = true; } else { setNomError(false); }
 
     // Validate all teammate names if team mode is on
     if (isEquipe) {
       const errs = equipiers.map((n) => !n.trim());
       setEquipiersErrors(errs);
-      if (errs.some(Boolean)) {setSubmitStatus({ ok: false });return;}
+      if (errs.some(Boolean)) hasErrors = true;
     }
 
     // Validate text fields (traces & logique must have text)
@@ -252,10 +254,10 @@ export default function Declaration() {
     });
     const hasFieldErrors = newFieldErrors.some((e) => e.traces_reponse || e.logique_reponse);
     setFieldErrors(newFieldErrors);
-    if (hasFieldErrors) {setSubmitStatus({ ok: false });return;}
+    if (hasFieldErrors) hasErrors = true;
 
     // Validate fichiers joints confirmation
-    if (hasFichiersJoints && !fichiersJointsConfirme) {setSubmitStatus({ ok: false });return;}
+    if (hasFichiersJoints && !fichiersJointsConfirme) hasErrors = true;
 
     // Validate explanations for unchecked items
     const unchecked = buildUncheckedItems(studentStates);
@@ -264,12 +266,11 @@ export default function Declaration() {
       if (!uncheckedExplanations[u.field]?.trim()) newExpErrors[u.field] = true;
     });
     setUncheckedExpErrors(newExpErrors);
-    if (Object.keys(newExpErrors).length > 0) {setSubmitStatus({ ok: false });return;}
+    if (Object.keys(newExpErrors).length > 0) hasErrors = true;
 
-    const effSession = data.identification.session && !sessionEditMode ?
-    data.identification.session :
-    sessionOverride.trim();
-    doGenerate(effSession);
+    if (hasErrors) { setSubmitStatus({ ok: false }); return; }
+
+    doGenerate(effectiveSession);
   }
 
   function buildApercuHTML(ap) {
