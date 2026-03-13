@@ -952,6 +952,7 @@ export default function Declaration() {
                   setUncheckedExpErrors((prev) => ({ ...prev, [u.field]: false }));
                 }}
                 placeholder="Expliquez la raison…"
+                {...(uncheckedExpErrors[u.field] ? { 'data-first-error': true } : {})}
                 style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.9em', border: uncheckedExpErrors[u.field] ? '2px solid #E41E25' : '1px solid #aaa', background: uncheckedExpErrors[u.field] ? '#fff4f4' : 'white', borderRadius: 4, boxSizing: 'border-box', resize: 'vertical' }} />
                 {uncheckedExpErrors[u.field] && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Ce champ est requis</span>}
               </div>
