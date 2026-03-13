@@ -117,6 +117,7 @@ export default function Declaration() {
   const [sessionError, setSessionError] = useState(false);
   const [hasFichiersJoints, setHasFichiersJoints] = useState(false);
   const [fichiersJointsConfirme, setFichiersJointsConfirme] = useState(false);
+  const [fichiersJointsError, setFichiersJointsError] = useState(false);
   const [, forceUpdate] = useState(0);
   const [copyOk, setCopyOk] = useState(false);
   const fileInputRef = useRef();
