@@ -1115,9 +1115,11 @@ export default function Declaration() {
 
               {/* Export buttons outside preview */}
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
-              <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
-                📋 Copier pour coller dans Word
-              </button>
+              <span title='Utilisez la fonction "Conserver la mise en forme source" dans un fichier Word vierge.' style={{ cursor: 'default' }}>
+                <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
+                  📋 Copier pour coller dans Word
+                </button>
+              </span>
               {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
               <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
                 📄 Télécharger en Word (.doc)
