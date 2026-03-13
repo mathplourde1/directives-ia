@@ -975,6 +975,7 @@ export default function Declaration() {
             </div>
             </div>
           </div>
+          </div>
 
           {/* Preview */}
           {apercu &&
