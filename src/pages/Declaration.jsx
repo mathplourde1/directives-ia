@@ -793,7 +793,7 @@ export default function Declaration() {
               return (
           <div style={{ position: 'relative' }}>
             {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires (session et nom) dans la section Identification" />}
-          <div className="section-box" style={{ padding: 0, overflow: 'hidden', opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
+            <div className="section-box" style={{ padding: 0, overflow: 'hidden', opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
             <table className="decl-table" style={{ fontSize: '0.93em', marginTop: 20, marginLeft: 20, marginRight: 20, width: 'calc(100% - 40px)' }}>
               <colgroup>
                 <col style={{ width: '18%' }} />
