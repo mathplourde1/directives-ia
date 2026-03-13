@@ -1114,16 +1114,13 @@ export default function Declaration() {
               </div>
 
               {/* Export buttons outside preview */}
-              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20, alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 20, alignItems: 'center', justifyContent: 'center' }}>
               <button type="button" className="btn-primary" onClick={() => copyDeclToClipboard(apercu)}>
                 📋 Copier pour coller dans Word
               </button>
               {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
               <button type="button" className="btn-primary" onClick={() => downloadDeclWord(apercu)}>
                 📄 Télécharger en Word (.doc)
-              </button>
-              <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => downloadDeclPDF(apercu)}>
-                📋 Télécharger en PDF
               </button>
               </div>
               </>
