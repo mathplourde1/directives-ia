@@ -1074,7 +1074,7 @@ export default function Declaration() {
               {/* Commentaires + explanations */}
               {(apercu.commentaires || apercu.explanations && apercu.explanations.length > 0) &&
               <div style={{ marginTop: '16pt', paddingTop: '8pt', paddingBottom: '8pt' }}>
-                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '18px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Commentaires, exceptions et précisions</h2>
+                  <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '36px', fontWeight: 'bold', margin: '8pt 0', color: '#000' }}>Commentaires, exceptions et précisions</h2>
                   {apercu.commentaires &&
               <p style={{ margin: '0 0 8pt 0', whiteSpace: 'pre-wrap' }}>{apercu.commentaires}</p>
               }
