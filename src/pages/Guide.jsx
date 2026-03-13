@@ -399,7 +399,7 @@ export default function Guide() {
     const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
     const coursPart = identification.cours ? slugify(identification.cours) : 'cours';
     const evalPart = identification.evaluation ? slugify(identification.evaluation) : 'evaluation';
-    const filename = `sauvegarde-${coursPart}-${evalPart}-${dateStr}.xml`;
+    const filename = `sauvegarde-${coursPart}-${evalPart}-${dateStr}.txt`;
 
     const blob = new Blob([xml], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
