@@ -943,7 +943,7 @@ export default function Declaration() {
             <div style={{ marginTop: 18 }}>
               <button
                 type="button"
-                onClick={() => {setHasFichiersJoints((v) => !v);setFichiersJointsConfirme(false);}}
+                onClick={() => {setHasFichiersJoints((v) => !v);setFichiersJointsConfirme(false);setFichiersJointsError(false);}}
                 style={{
                   display: 'inline-flex', alignItems: 'center', gap: 8,
                   padding: '6px 14px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold', transition: 'background 0.2s',
