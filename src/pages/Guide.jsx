@@ -1132,13 +1132,17 @@ export default function Guide() {
                   <button
                   type="button"
                   className="btn-primary"
-                  onClick={() => {
-                    if (navigator.clipboard) {
-                      const plainText = instructorInstructions.replace(/<[^>]+>/g, '');
-                      navigator.clipboard.writeText(plainText);
-                      setCopyDescriptionOk(true);
-                      setTimeout(() => setCopyDescriptionOk(false), 1800);
+                  onClick={async () => {
+                    if (navigator.clipboard && window.ClipboardItem) {
+                      const plain = instructorInstructions.replace(/<[^>]+>/g, '');
+                      const blobHtml = new Blob([instructorInstructions], { type: 'text/html' });
+                      const blobText = new Blob([plain], { type: 'text/plain' });
+                      await navigator.clipboard.write([new ClipboardItem({ 'text/html': blobHtml, 'text/plain': blobText })]);
+                    } else if (navigator.clipboard) {
+                      await navigator.clipboard.writeText(instructorInstructions.replace(/<[^>]+>/g, ''));
                     }
+                    setCopyDescriptionOk(true);
+                    setTimeout(() => setCopyDescriptionOk(false), 1800);
                   }}
                   style={{ fontSize: '0.85em', padding: '6px 12px' }}>
                     Copier pour coller en ligne (Brio)
