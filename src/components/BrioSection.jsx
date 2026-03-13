@@ -65,7 +65,7 @@ export default function BrioSection({ selections }) {
           </p>
           <p style={{ marginTop: 12 }} className="mb-1">Pourquoi cette option?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
-          <p style={{ marginTop: 12 }} className="mb-1">Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> de l'une des synthèses ci-dessous dans la section <strong>Précision sur le niveau sélectionné</strong>.</p>
+          <p style={{ marginTop: 12 }} className="mb-1">Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> de l'une des synthèses ci-dessous dans la section <strong>Précisions sur le niveau sélectionné</strong>.</p>
         </div>
       }
     </div>);
