@@ -766,6 +766,7 @@ export default function Declaration() {
                     setEquipiersErrors((prev) => prev.map((v, i) => i === idx ? false : v));
                   }}
                   placeholder="ex. Jean Dupont"
+                  {...(equipiersErrors[idx] ? { 'data-first-error': true } : {})}
                   style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
                       {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
                     </div>
