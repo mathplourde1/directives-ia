@@ -594,7 +594,7 @@ export default function Declaration() {
       {!data?.ok &&
       <div className="section-box" style={{ textAlign: 'center' }}>
           <p style={{ marginBottom: 16, fontSize: '1em' }}>
-            Importez le fichier de sauvegarde fourni par votre personne enseignante pour afficher les directives d'utilisation des SIA pour cette évaluation.
+            Importez le fichier de sauvegarde fourni par la personne enseignante pour afficher les directives d'utilisation des SIA pour cette évaluation.
           </p>
           <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
             📂 Importer le fichier de sauvegarde
