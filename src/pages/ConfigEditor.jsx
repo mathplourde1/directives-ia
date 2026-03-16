@@ -313,6 +313,7 @@ export default function ConfigEditor() {
               <td style={tdS}><strong>{item.libelle}</strong></td>
               <td style={{ ...tdS, maxWidth: 240, color: '#555' }}>{item.parenthese}</td>
               <td style={tdS}>
+                <ResetBtn item={item} />
                 <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
                 <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
               </td>
