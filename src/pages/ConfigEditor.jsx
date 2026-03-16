@@ -277,6 +277,8 @@ export default function ConfigEditor() {
   const idBadge = { background: '#e8f4fd', color: '#0056b3', padding: '2px 7px', borderRadius: 10, fontSize: '0.82em', fontWeight: 'bold', whiteSpace: 'nowrap', display: 'inline-block' };
   const btnE = { background: '#00A4E4', color: 'white', border: 'none', borderRadius: 3, padding: '3px 8px', cursor: 'pointer', fontSize: '0.85em', marginRight: 3 };
   const btnD = { background: '#E41E25', color: 'white', border: 'none', borderRadius: 3, padding: '3px 8px', cursor: 'pointer', fontSize: '0.85em' };
+  const btnR = { background: '#ff9800', color: 'white', border: 'none', borderRadius: 3, padding: '3px 8px', cursor: 'pointer', fontSize: '0.85em', marginRight: 3, title: 'Réinitialiser' };
+  const ResetBtn = ({ item }) => isModified(item) ? <button onClick={() => handleReset(item)} style={btnR} title="Réinitialiser">↺</button> : null;
   const selFil = { padding: '4px 6px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.85em' };
 
   const thSort = (col, label) => (
