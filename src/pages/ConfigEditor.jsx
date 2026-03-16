@@ -151,6 +151,20 @@ export default function ConfigEditor() {
     syncDataToJson(data[contentType].filter((_, i) => i !== origIndex), contentType);
   };
 
+  // ── Reset modified item ──
+  const handleReset = (item) => {
+    const key = getItemKey(item, contentType);
+    const origItem = ORIGINAL_DATA[contentType].find(o => getItemKey(o, contentType) === key);
+    if (!origItem) return;
+    const newData = data[contentType].map(i => getItemKey(i, contentType) === key ? { ...origItem } : i);
+    syncDataToJson(newData, contentType);
+    setModifiedKeys(prev => {
+      const next = new Set(prev[contentType]);
+      next.delete(key);
+      return { ...prev, [contentType]: next };
+    });
+  };
+
   // ── Modal save ──
   const handleModalSave = (savedItem) => {
     let newData;
