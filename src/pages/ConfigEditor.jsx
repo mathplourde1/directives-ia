@@ -369,6 +369,7 @@ export default function ConfigEditor() {
               <td style={{ ...tdS, maxWidth: 180 }}>{item.court}</td>
               <td style={{ ...tdS, maxWidth: 240, color: '#333' }} dangerouslySetInnerHTML={{ __html: item.exemple }} />
               <td style={tdS}>
+                <ResetBtn item={item} />
                 <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
                 <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
               </td>
