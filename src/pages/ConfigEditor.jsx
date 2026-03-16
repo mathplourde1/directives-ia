@@ -1,8 +1,14 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import ETAPES_DEFAULT from '@/components/etapesData';
 import exemplesDirectivesDefault from '@/components/exemplesDirectives.json';
 import exemplesDeclarationsDefault from '@/components/exemplesDeclarations';
 import ItemEditorModal from '@/components/ItemEditorModal';
+
+const ORIGINAL_DATA = {
+  etapes: JSON.parse(JSON.stringify(ETAPES_DEFAULT)),
+  directives: JSON.parse(JSON.stringify(exemplesDirectivesDefault)),
+  declarations: JSON.parse(JSON.stringify(exemplesDeclarationsDefault)),
+};
 
 const CONTENT_OPTIONS = [
   { value: 'etapes', label: 'Étapes' },
