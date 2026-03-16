@@ -111,7 +111,17 @@ export default function ConfigEditor() {
       const parsed = JSON.parse(text);
       if (!Array.isArray(parsed)) throw new Error('Le JSON doit être un tableau (array).');
       setData(prev => ({ ...prev, [contentType]: parsed }));
-      clearModified(contentType);
+
+      // Detect which items differ from original data
+      const newModified = new Set();
+      parsed.forEach(item => {
+        const key = getItemKey(item, contentType);
+        const origItem = ORIGINAL_DATA[contentType].find(o => getItemKey(o, contentType) === key);
+        if (!origItem || JSON.stringify(item) !== JSON.stringify(origItem)) {
+          newModified.add(key);
+        }
+      });
+      setModifiedKeys(prev => ({ ...prev, [contentType]: newModified }));
       setJsonError(null);
     } catch (e) {
       setJsonError(e.message);
