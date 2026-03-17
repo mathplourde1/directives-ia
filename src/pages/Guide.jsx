@@ -100,6 +100,25 @@ export default function Guide() {
     setErrors((prev) => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
   }
 
+  function hasRowData(i) {
+    const r = rows[i];
+    return r.ia || r.justification || r.declaration || r.decl_iagraphie || r.decl_traces || r.decl_logique ||
+      r.decl_traces_text || r.decl_logique_text || r.libelle_custom || r.exemples;
+  }
+
+  function handleCollapseRow(i) {
+    if (rows[i].checked && hasRowData(i)) {
+      if (!window.confirm('Des données ont déjà été saisies pour cette étape. Voulez-vous vraiment la marquer "Ne s\'applique pas" et effacer les données saisies ?')) return;
+    }
+    setRows((prev) => prev.map((r, idx) => idx === i ? defaultRowState() : r));
+    setErrors((prev) => prev.map((e, idx) => idx === i ? defaultErrors() : e));
+    setCollapsedRows((prev) => prev.map((v, idx) => idx === i ? true : v));
+  }
+
+  function handleRestoreRow(i) {
+    setCollapsedRows((prev) => prev.map((v, idx) => idx === i ? false : v));
+  }
+
   function updateRow(i, field, value) {
     setRows((prev) => {
       const next = prev.map((r, idx) => idx === i ? { ...r, [field]: value } : r);
