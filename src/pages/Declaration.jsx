@@ -92,8 +92,15 @@ function defaultStudentState() {
     traces_conforme: false,
     // logique
     logique_reponse: '',
-    logique_conforme: false
+    logique_conforme: false,
+    // collapse
+    collapsed: false
   };
+}
+
+function hasEtapeData(s) {
+  return s.aucune_conforme || s.iagraphie_conforme || s.traces_conforme || s.logique_conforme ||
+    (s.traces_reponse && s.traces_reponse.trim()) || (s.logique_reponse && s.logique_reponse.trim());
 }
 
 export default function Declaration() {
