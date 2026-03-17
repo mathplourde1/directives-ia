@@ -786,11 +786,8 @@ export default function Guide() {
 
                   {/* Col 4: Exigences de déclaration */}
                   <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
-                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
-                    {!collapsedRows[i] && disabled ?
-                          <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
-                    !collapsedRows[i] &&
-
+                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> :
+                    disabled ? <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
                           <>
                         <div>
                           <input
