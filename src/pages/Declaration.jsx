@@ -301,7 +301,7 @@ export default function Declaration() {
         Je, <strong>${ap.studentNom}</strong>${groupeInfo}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
       </p>`;
     }
-    introHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;">Conformément aux exigences de ${ap.isEquipe ? 'notre' : 'ma'} personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche.</p>`;
+    introHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.2;margin:0 0 11pt 0;">Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche.</p>`;
 
     // --- Tableau synthèse ---
     let tableHtml = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;">
@@ -1007,7 +1007,7 @@ export default function Declaration() {
             })() :
             <p style={{ margin: '0 0 6px' }}>Je, <strong>{apercu.studentNom}</strong>{apercu.studentGroupe ? ` (groupe ${apercu.studentGroupe})` : ''}, soumets cette déclaration dans le cadre de l'évaluation nommée <strong>{apercu.identification.evaluation || '[évaluation]'}</strong> du cours <strong>{apercu.identification.cours || '[cours]'}</strong> de la session <strong>{apercu.identification.session || '[session]'}</strong>, enseigné par <strong>{apercu.identification.enseignants || '[personne enseignante]'}</strong>.</p>
             }
-                <p style={{ margin: 0 }}>Conformément aux exigences de {apercu.isEquipe ? 'notre' : 'ma'} personne enseignante, les renseignements suivants présentent {apercu.isEquipe ? 'notre' : 'ma'} démarche.</p>
+                <p style={{ margin: 0 }}>Conformément aux exigences de la personne enseignante, les renseignements suivants présentent {apercu.isEquipe ? 'notre' : 'ma'} démarche.</p>
               </div>
 
               {/* Declaration summary table */}
