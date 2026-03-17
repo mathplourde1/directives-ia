@@ -634,10 +634,10 @@ export default function Guide() {
                       style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}>
                   {/* Col 1: Étape checkbox */}
                   <td
-                          style={{ verticalAlign: 'top', cursor: 'pointer', transition: 'background 0.15s' }}
-                          onClick={() => handleCheckbox(i, !r.checked)}
-                          onMouseEnter={(e) => {if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd';}}
-                          onMouseLeave={(e) => e.currentTarget.style.background = ''}>
+                          style={{ verticalAlign: 'top', cursor: collapsedRows[i] ? 'default' : 'pointer', transition: 'background 0.15s', background: collapsedRows[i] ? '#f5f5f5' : '' }}
+                          onClick={() => !collapsedRows[i] && handleCheckbox(i, !r.checked)}
+                          onMouseEnter={(e) => {if (!snapshot.isDragging && !collapsedRows[i]) e.currentTarget.style.background = '#eaf6fd';}}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = collapsedRows[i] ? '#f5f5f5' : ''; }}>
                     {/* Drag handle + reorder buttons */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={(e) => e.stopPropagation()}>
                       <span {...provided.dragHandleProps} title="Glisser pour réordonner"
@@ -651,48 +651,73 @@ export default function Guide() {
                       <button type="button" title="En bas de la liste" onClick={() => moveEtape(pos, etapesOrder.length - 1)} disabled={pos === etapesOrder.length - 1}
                             style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>⏬</button>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <input
+
+                    {collapsedRows[i] ? (
+                      /* Collapsed state */
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <span style={{ fontWeight: 'bold', color: '#888', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
+                          {etape.libelle}
+                          {etape.parenthese && <span style={{ fontWeight: 'normal', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
+                        </span>
+                        <span style={{ fontSize: '0.78em', color: '#999', fontStyle: 'italic', display: 'block', marginBottom: 8 }}>Ne s'applique pas</span>
+                        <button type="button" onClick={() => handleRestoreRow(i)}
+                          style={{ fontSize: '0.78em', padding: '3px 10px', background: '#6c757d', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                          ↺ Rétablir
+                        </button>
+                      </div>
+                    ) : (
+                      /* Normal state */
+                      <>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                          <input
                               type="checkbox"
                               id={`etape_${i}`}
                               checked={r.checked}
                               onChange={(e) => {e.stopPropagation();handleCheckbox(i, e.target.checked);}}
                               style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
-                      <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>
-                        {etape.libelle}
-                        {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
-                      </label>
-                      </div>
-                      {etape.id === 'autres' && r.checked &&
-                          <div style={{ marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
-                        <div style={{ marginBottom: 6 }}>
-                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
-                            Libellé <span className="required">*</span>
+                          <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>
+                            {etape.libelle}
+                            {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
                           </label>
-                          <input
+                        </div>
+                        {etape.id === 'autres' && r.checked &&
+                          <div style={{ marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
+                            <div style={{ marginBottom: 6 }}>
+                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
+                                Libellé <span className="required">*</span>
+                              </label>
+                              <input
                                 type="text"
                                 value={r.libelle_custom}
                                 onChange={(e) => updateRow(i, 'libelle_custom', e.target.value)}
                                 placeholder="Nom de l'étape personnalisée"
                                 style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.libelle_custom ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.libelle_custom ? '#fff4f4' : 'white' }} />
-
-                          {err.libelle_custom && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                        </div>
-                        <div>
-                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
-                            Exemples <span className="required">*</span>
-                          </label>
-                          <textarea
+                              {err.libelle_custom && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                            </div>
+                            <div>
+                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
+                                Exemples <span className="required">*</span>
+                              </label>
+                              <textarea
                                 rows={3}
                                 value={r.exemples}
                                 onChange={(e) => updateRow(i, 'exemples', e.target.value)}
                                 placeholder="Décrivez des exemples d'utilisation"
                                 style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.exemples ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.exemples ? '#fff4f4' : 'white' }} />
-
-                          {err.exemples && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                              {err.exemples && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                            </div>
+                          </div>
+                        }
+                        {/* Ne s'applique pas button — shown at bottom of cell */}
+                        <div style={{ marginTop: 10 }} onClick={(e) => e.stopPropagation()}>
+                          <button type="button" onClick={() => handleCollapseRow(i)}
+                            style={{ fontSize: '0.75em', padding: '2px 8px', background: 'none', color: '#999', border: '1px solid #ccc', borderRadius: 4, cursor: 'pointer' }}
+                            title="Masquer cette étape — ne s'applique pas à cette évaluation">
+                            ✕ Ne s'applique pas
+                          </button>
                         </div>
-                      </div>
-                          }
+                      </>
+                    )}
                       </td>
 
                   {/* Col 2: IA options */}
