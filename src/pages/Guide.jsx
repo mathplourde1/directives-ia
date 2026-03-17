@@ -721,8 +721,9 @@ export default function Guide() {
                       </td>
 
                   {/* Col 2: IA options */}
-                  <td>
-                    <div className={disabled ? 'radio-disabled' : ''}>
+                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
+                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
+                    <div className={disabled ? 'radio-disabled' : ''} style={{ display: collapsedRows[i] ? 'none' : undefined }}>
                       {IA_OPTIONS.map((opt, j) =>
                             <div key={j}>
                           <input
