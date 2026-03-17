@@ -58,6 +58,7 @@ export default function Guide() {
   const [saveError, setSaveError] = useState('');
   const [submitStatus, setSubmitStatus] = useState(null); // null | { ok: true, time: Date } | { ok: false }
   const [, forceUpdate] = useState(0);
+  const [collapsedRows, setCollapsedRows] = useState(ETAPES.map(() => false));
   const [iaChangeConfirm, setIaChangeConfirm] = useState(null); // { rowIndex, newIa }
   const [declarationActive, setDeclarationActive] = useState(false);
   const [declarationTitle, setDeclarationTitle] = useState("Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)");
