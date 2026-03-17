@@ -152,6 +152,18 @@ export default function Declaration() {
     setStudentStates((prev) => prev.map((s, idx) => idx === i ? { ...s, [field]: value } : s));
   }
 
+  function handleCollapseEtape(i) {
+    const s = studentStates[i] || defaultStudentState();
+    if (hasEtapeData(s)) {
+      if (!window.confirm('Des données ont déjà été saisies pour cette étape. Voulez-vous vraiment marquer cette étape comme "Ne s\'applique pas" et effacer les données saisies ?')) return;
+    }
+    setStudentStates((prev) => prev.map((st, idx) => idx === i ? { ...defaultStudentState(), collapsed: true } : st));
+  }
+
+  function handleRestoreEtape(i) {
+    setStudentStates((prev) => prev.map((st, idx) => idx === i ? { ...st, collapsed: false } : st));
+  }
+
   // Tick every minute to keep elapsed time fresh
   useEffect(() => {
     const id = setInterval(() => forceUpdate((n) => n + 1), 60000);
