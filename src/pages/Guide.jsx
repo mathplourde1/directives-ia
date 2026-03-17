@@ -780,13 +780,14 @@ export default function Guide() {
                         </button>
                       </>
                           }
-                    {!r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
-                    {err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+                    {!collapsedRows[i] && !r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
+                    {!collapsedRows[i] && err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
                   </td>
 
                   {/* Col 4: Exigences de déclaration */}
-                  <td>
-                    {disabled ?
+                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
+                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
+                    {!collapsedRows[i] && disabled ?
                           <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
 
                           <>
