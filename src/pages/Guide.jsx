@@ -739,12 +739,13 @@ export default function Guide() {
                         </div>
                             )}
                     </div>
-                    {err.ia && <span style={errorStyle}>⚠ Sélection requise</span>}
+                    {!collapsedRows[i] && err.ia && <span style={errorStyle}>⚠ Sélection requise</span>}
                   </td>
 
                   {/* Col 3: Justification */}
-                  <td>
-                    {r.ia &&
+                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
+                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
+                    {!collapsedRows[i] && r.ia &&
                           <>
                         {r.justification ?
                             <div
