@@ -789,6 +789,7 @@ export default function Guide() {
                     {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
                     {!collapsedRows[i] && disabled ?
                           <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
+                    !collapsedRows[i] &&
 
                           <>
                         <div>
