@@ -1,8 +1,8 @@
 ====================================
-Version 0.4 du code de l'application
+Version 0.5 du code de l'application
 ====================================
 
-||| Mathieu Plourde, 16 mars 2026 |||
+||| Mathieu Plourde, 18 mars 2026 |||
 
 Fonctionne comme standalone pour un enseignant à ce point. Version étudiante tolérable.
 
@@ -11,7 +11,8 @@ ITEMS complétés :
 - Exigences avec RTE et exemples
 - Export pour application étudiante
 - Page étudiante avec import
+- Outil d'édition des exemples de directives (fonctions admin) - configeditor
 ITEMS à venir :
-- Page étudiante libre service?
-- Sauvegarde pour la page étudiante.
-- Outil d'édition des exemples de directives (fonctions admin)
+- Page étudiante libre service
+- Sauvegarde pour la page étudiante
+
