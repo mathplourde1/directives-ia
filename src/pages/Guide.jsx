@@ -146,10 +146,15 @@ export default function Guide() {
   }
 
   function handleIaChange(i, value) {
+    if (!rows[i].checked) {
+      // Auto-check the row and set IA level in one atomic update
+      setRows((prev) => prev.map((r, idx) => idx === i ? { ...defaultRowState(), checked: true, ia: value, justification: GABARITS[value] } : r));
+      setErrors((prev) => prev.map((e, idx) => idx === i ? defaultErrors() : e));
+      return;
+    }
     const currentJust = rows[i].justification.trim();
     const isTemplate = Object.values(GABARITS).includes(currentJust) || !currentJust;
     if (!isTemplate) {
-      // User has customized text — ask what to do
       setIaChangeConfirm({ rowIndex: i, newIa: value });
       return;
     }
