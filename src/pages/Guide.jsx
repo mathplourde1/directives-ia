@@ -151,7 +151,8 @@ export default function Guide() {
   function handleIaChange(i, value) {
     if (!rows[i].checked) {
       // Auto-check the row and set IA level in one atomic update
-      setRows((prev) => prev.map((r, idx) => idx === i ? { ...defaultRowState(), checked: true, ia: value, justification: GABARITS[value] } : r));
+      const autoDecl = value === 'Non autorisée' ? { declaration: 'aucune' } : {};
+      setRows((prev) => prev.map((r, idx) => idx === i ? { ...defaultRowState(), checked: true, ia: value, justification: GABARITS[value], ...autoDecl } : r));
       setErrors((prev) => prev.map((e, idx) => idx === i ? defaultErrors() : e));
       return;
     }
