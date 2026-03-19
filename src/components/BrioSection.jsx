@@ -65,7 +65,7 @@ export default function BrioSection({ selections }) {
           </p>
           <p style={{ marginTop: 12 }} className="mb-1">Pourquoi cette option?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
-          <p style={{ marginTop: 12 }} className="mb-1">Utilisez les synthèses ci-dessous.</p>
+          <p style={{ marginTop: 12 }} className="mb-1">La section suivante vous présente différentes versions mises en forme de vos directives.</p>
         </div>
       }
     </div>);
