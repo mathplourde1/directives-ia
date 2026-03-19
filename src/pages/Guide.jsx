@@ -1257,6 +1257,10 @@ export default function Guide() {
               theme="snow" />
                 </div>
 
+                <div style={{ marginTop: 14 }}>
+                  <button type="button" className="btn-primary" onClick={handleSave}>Créer un fichier de sauvegarde</button>
+                </div>
+
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
