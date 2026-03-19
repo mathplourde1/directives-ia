@@ -780,12 +780,28 @@ export default function Guide() {
                               Cliquez pour rédiger…
                             </div>
                             }
-                        <button
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
+                          <button
                               type="button"
                               onClick={() => openDirectiveModal(i)}
-                              style={{ marginTop: 4, fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                          ✏ Modifier / insérer un exemple
-                        </button>
+                              style={{ fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
+                            ✏ Modifier / insérer un exemple
+                          </button>
+                          <button
+                              type="button"
+                              onClick={() => {
+                                updateRow(i, 'justification_vierge', !r.justification_vierge);
+                                setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, justification: false } : e));
+                              }}
+                              style={{
+                                fontSize: '0.78em', padding: '3px 10px', border: 'none', borderRadius: 999, cursor: 'pointer',
+                                background: r.justification_vierge ? '#6c757d' : '#e0e0e0',
+                                color: r.justification_vierge ? 'white' : '#555',
+                                fontWeight: r.justification_vierge ? 'bold' : 'normal'
+                              }}>
+                            {r.justification_vierge ? '○ Directives vierges' : '○ Laisser vierge'}
+                          </button>
+                        </div>
                       </>
                           }
                     {!collapsedRows[i] && !r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
