@@ -758,7 +758,20 @@ export default function Guide() {
                     {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
                     {!collapsedRows[i] && r.ia &&
                           <>
-                        {r.justification ?
+                        {r.justification_vierge ? (
+                            <div
+                              style={{
+                                width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
+                                fontFamily: 'inherit', fontSize: '0.9em', color: '#aaa',
+                                border: '1px solid #ccc',
+                                background: '#f0f0f0',
+                                borderRadius: 4, cursor: 'text',
+                                fontStyle: 'italic'
+                              }}
+                              onClick={() => openDirectiveModal(i)}>
+                              Directives vierges — cliquez pour modifier
+                            </div>
+                          ) : r.justification ? (
                             <div
                               dangerouslySetInnerHTML={{ __html: r.justification }}
                               style={{
@@ -768,8 +781,8 @@ export default function Guide() {
                                 background: err.justification ? '#fff4f4' : '#fafafa',
                                 borderRadius: 4, cursor: 'text'
                               }}
-                              onClick={() => openDirectiveModal(i)} /> :
-
+                              onClick={() => openDirectiveModal(i)} />
+                          ) : (
                             <div
                               style={{
                                 width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
@@ -779,10 +792,9 @@ export default function Guide() {
                                 borderRadius: 4, cursor: 'text'
                               }}
                               onClick={() => openDirectiveModal(i)}>
-
                               Cliquez pour rédiger…
                             </div>
-                            }
+                          )}
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
                           <button
                               type="button"
