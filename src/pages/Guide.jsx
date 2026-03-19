@@ -141,7 +141,9 @@ export default function Guide() {
     setRows((prev) => {
       const r = prev[i];
       const justification = keepText ? r.justification : GABARITS[value];
-      return prev.map((row, idx) => idx === i ? { ...row, ia: value, justification } : row);
+      // Auto-check "Aucune exigence" when "Non autorisée" is selected and declaration was not manually set
+      const declarationUpdate = value === 'Non autorisée' && !r.declaration ? { declaration: 'aucune' } : {};
+      return prev.map((row, idx) => idx === i ? { ...row, ia: value, justification, ...declarationUpdate } : row);
     });
     setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, ia: false, justification: false } : e));
   }
