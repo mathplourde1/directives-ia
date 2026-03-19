@@ -966,7 +966,7 @@ export default function Guide() {
           <div className="synthese-section">
             <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
             {/* Espace pour explications sous le titre */}
-            <div id="syntheses-description" />
+            <div id="syntheses-description">Conetnu</div>
             <Accordion type="single" defaultValue="texte-continu" collapsible className="mt-4">
               <AccordionItem value="texte-continu">
                 <AccordionTrigger className="text-base font-semibold">Synthèse en texte continu</AccordionTrigger>
