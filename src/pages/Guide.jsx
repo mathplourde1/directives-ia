@@ -22,6 +22,7 @@ const defaultRowState = () => ({
   checked: false,
   ia: '',
   justification: '',
+  justification_vierge: false,
   declaration: '', // 'aucune' | 'requise'
   decl_iagraphie: false,
   decl_iagraphie_text: '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)',
