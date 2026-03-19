@@ -314,7 +314,7 @@ export default function Guide() {
 
   // ---- Build HTML for declaration table (section 3) ----
   function buildDeclTableHTML(sels, withHeading = false) {
-    let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Exigences de déclaration d'utilisation de l'IA</h2><p style="font-family:Arial,sans-serif;">Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.</p>` : '';
+    let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Exigences de déclaration d'utilisation de SIA</h2><p style="font-family:Arial,sans-serif;">Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle générative.</p>` : '';
     html += buildIdentHeader();
     html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;">
       <thead><tr>
@@ -1016,7 +1016,7 @@ export default function Guide() {
               </AccordionItem>
 
               <AccordionItem value="declaration">
-                <AccordionTrigger className="text-base font-semibold">Exigences de déclaration d'utilisation de l'IA</AccordionTrigger>
+                <AccordionTrigger className="text-base font-semibold">Exigences de déclaration d'utilisation de SIA</AccordionTrigger>
                 <AccordionContent>
                   {buildIdentLine() && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{buildIdentLine()}</p>}
                   <p style={{ marginBottom: 12 }}>
