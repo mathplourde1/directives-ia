@@ -409,6 +409,7 @@ export default function Guide() {
       xml += `      <checked>${r.checked}</checked>\n`;
       xml += `      <ia>${escapeXml(r.ia)}</ia>\n`;
       xml += `      <justification>${escapeXml(r.justification)}</justification>\n`;
+      xml += `      <justification_vierge>${r.justification_vierge}</justification_vierge>\n`;
       xml += `      <declaration>${escapeXml(r.declaration)}</declaration>\n`;
       xml += `      <decl_iagraphie>${r.decl_iagraphie}</decl_iagraphie>\n`;
       xml += `      <decl_iagraphie_text>${escapeXml(r.decl_iagraphie_text)}</decl_iagraphie_text>\n`;
