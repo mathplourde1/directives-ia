@@ -558,7 +558,7 @@ export default function Guide() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
-      <ol style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
+      <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
       <li>Remplissez la section d’identification.</li>
       <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d’autorisation d’utilisation des SIA pour chaque étape retenue.</li>
       <li>Choisissez et personnalisez au besoin les directives et exigences de déclaration — soyez bref et précis.</li>
