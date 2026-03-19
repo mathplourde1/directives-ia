@@ -376,6 +376,7 @@ export default function Guide() {
       checked: r.checked,
       ia: r.ia,
       justification: r.justification,
+      justification_vierge: r.justification_vierge,
       declaration: r.declaration,
       decl_iagraphie: r.decl_iagraphie,
       decl_iagraphie_text: r.decl_iagraphie_text,
