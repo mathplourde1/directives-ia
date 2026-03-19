@@ -793,7 +793,8 @@ export default function Guide() {
                           <button
                               type="button"
                               onClick={() => {
-                                updateRow(i, 'justification_vierge', !r.justification_vierge);
+                                const nextVierge = !r.justification_vierge;
+                                setRows((prev) => prev.map((row, idx) => idx === i ? { ...row, justification_vierge: nextVierge, justification: nextVierge ? '' : row.justification } : row));
                                 setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, justification: false } : e));
                               }}
                               style={{
