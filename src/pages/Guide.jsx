@@ -1078,7 +1078,8 @@ export default function Guide() {
         onSave={(html) => {
           const { rowIndex } = modalState;
           if (rowIndex === null) return;
-          setRows((prev) => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html } : r));
+          const hasContent = html && html.replace(/<[^>]*>/g, '').trim().length > 0;
+          setRows((prev) => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html, justification_vierge: hasContent ? false : r.justification_vierge } : r));
           setErrors((prev) => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
         }}
         initialValue={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.justification : ''}
