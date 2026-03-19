@@ -557,7 +557,7 @@ export default function Guide() {
       <div className="mr-12 mb-2 ml-12">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des SIA pour une évaluation. C’est un outil simple pour obtenir des directives complètes, prêtes à transmettre, pour accompagner les étudiants et étudiantes.</div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
-          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">👉 Instructions</h2>
+          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
         
         Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. Nous vous invitons à profiter de l'accompagnement d'une <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">personne conseillère</a> si vous avez des doutes sur le processus.
       <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
