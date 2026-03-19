@@ -568,7 +568,8 @@ export default function Guide() {
       <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l’évaluation.</li>
       <li>Optionnel: Transposez ces directives dans un formulaire de déclaration d’utilisation des SIA que les personnes étudiantes devront remplir en ligne et joindre à leur soumission.</li>
           </ol>
-        Cette application en ligne ne conserve pas vos données. Si vous désirez reprendre votre travail plus tard, utilisez la <a href="#sauvegarde" className="text-blue-800 underline">fonction de sauvegarde</a> en bas de la page.
+
+        🔒 Vos données ne sont pas conservées. Créer un <a href="#sauvegarde" className="text-blue-800 underline">fichier de sauvegarde</a> si vous souhaitez reprendre votre travail plus tard, où il vous suffira de l’importer.
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">🧠 À propos...</h2>
