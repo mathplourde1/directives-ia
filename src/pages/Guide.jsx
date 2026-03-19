@@ -470,6 +470,7 @@ export default function Guide() {
             checked: get('checked') === 'true',
             ia: get('ia'),
             justification: get('justification'),
+            justification_vierge: get('justification_vierge') === 'true',
             declaration: get('declaration'),
             decl_iagraphie: get('decl_iagraphie') === 'true',
             decl_iagraphie_text: get('decl_iagraphie_text') || '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)',
