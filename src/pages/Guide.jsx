@@ -728,7 +728,7 @@ export default function Guide() {
                   {/* Col 2: IA options */}
                   <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
                     {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
-                    <div className={disabled ? 'radio-disabled' : ''} style={{ display: collapsedRows[i] ? 'none' : undefined }}>
+                    <div style={{ display: collapsedRows[i] ? 'none' : undefined }}>
                       {IA_OPTIONS.map((opt, j) =>
                             <div key={j}>
                           <input
@@ -737,7 +737,6 @@ export default function Guide() {
                                 name={`ia_${i}`}
                                 value={opt}
                                 checked={r.ia === opt}
-                                disabled={disabled}
                                 onChange={() => handleIaChange(i, opt)} />
 
                           <label htmlFor={`radio_${i}_${j}`} style={{ marginLeft: 4 }}>{opt}</label>
