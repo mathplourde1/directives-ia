@@ -559,7 +559,7 @@ export default function Guide() {
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
         
-        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. Nous vous invitons à profiter de l'accompagnement d'une <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">personne conseillère</a> si vous avez des doutes sur le processus.
+        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, personne conseillère</a> si vous avez des doutes sur le processus.
       <ol style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
       <li>Remplissez la section d’identification.</li>
       <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d’autorisation d’utilisation des SIA pour chaque étape retenue.</li>
@@ -567,9 +567,10 @@ export default function Guide() {
       <li>Cliquez sur Soumettre pour obtenir une synthèse. Modifiez au besoin et soumettre à nouveau.</li>
       <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l’évaluation.</li>
       <li>Optionnel: Transposez ces directives dans un formulaire de déclaration d’utilisation des SIA que les personnes étudiantes devront remplir en ligne et joindre à leur soumission.</li>
-          </ol>
+      </ol>
+      💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner. 
 
-        🔒 Vos données ne sont pas conservées. Créer un <a href="#sauvegarde" className="text-blue-800 underline">fichier de sauvegarde</a> si vous souhaitez reprendre votre travail plus tard, où il vous suffira de l’importer.
+      🔒 Vos données ne sont pas conservées. Créer un <a href="#sauvegarde" className="text-blue-800 underline">fichier de sauvegarde</a> si vous souhaitez reprendre votre travail plus tard, où il vous suffira de l’importer.
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">🧠 À propos...</h2>
