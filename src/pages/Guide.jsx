@@ -568,7 +568,7 @@ export default function Guide() {
       </ol>
     💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br /><br />
 
-    🔒 Vos données ne sont pas conservées. Créer un <a href="#sauvegarde" className="text-blue-800 underline">fichier de sauvegarde</a> si vous souhaitez reprendre votre travail plus tard, où il vous suffira de l’importer.
+    🔒 Vos données ne sont pas conservées. Créez un <a href="#sauvegarde" className="text-blue-800 underline">fichier de sauvegarde</a> qui vous permettra de reprendre votre travail plus tard.
         </div>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">🧠 À propos...</h2>
