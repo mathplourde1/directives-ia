@@ -1082,7 +1082,7 @@ export default function Guide() {
           setRows((prev) => prev.map((r, idx) => idx === rowIndex ? { ...r, justification: html, justification_vierge: hasContent ? false : r.justification_vierge } : r));
           setErrors((prev) => prev.map((e, idx) => idx === rowIndex ? { ...e, justification: false } : e));
         }}
-        initialValue={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.justification : ''}
+        initialValue={modalState.rowIndex !== null ? (rows[modalState.rowIndex]?.justification_vierge ? '' : rows[modalState.rowIndex]?.justification) : ''}
         currentEtapeId={modalState.rowIndex !== null ? ETAPES[modalState.rowIndex]?.id : null}
         currentIaOption={modalState.rowIndex !== null ? rows[modalState.rowIndex]?.ia : null} />
 
