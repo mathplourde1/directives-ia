@@ -559,7 +559,7 @@ export default function Guide() {
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
         
-        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, personne conseillère</a> si vous avez des doutes sur le processus.
+        Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes. Consultez une <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">personne conseillère</a> si vous avez des doutes sur le processus.
       <ol style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
       <li>Remplissez la section d’identification.</li>
       <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d’autorisation d’utilisation des SIA pour chaque étape retenue.</li>
