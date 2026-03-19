@@ -560,13 +560,14 @@ export default function Guide() {
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
         
         Ce guide interactif à l'intention du personnel enseignant vous permet de rédiger en quelques étapes des directives complètes, claires et prêtes à transmettre aux étudiantes et étudiants concernant l'utilisation des SIA dans le cadre d'une évaluation. Nous vous invitons à profiter de l'accompagnement d'une <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">personne conseillère</a> si vous avez des doutes sur le processus.
-      <ul style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
-      <li>Cochez les étapes concernées par l'évaluation.</li>
-      <li>Complétez les informations requises. Soyez concis et précis.</li>
-      <li>Soumettez le formulaire pour obtenir une synthèse des directives qui précisent les usages autorisés, les attentes pédagogiques et les balises à respecter.</li>
-      <li>Vous pouvez apporter des modifications en cliquant <b>Soumettre</b> à nouveau.</li>
-      <li>Transmettez ensuite aux personnes étudiantes une synthèse transparente qui soutient leur réussite et l'intégrité.</li>
-          </ul>
+      <ol style={{ listStyleType: 'disc', paddingLeft: 20, marginTop: 8 }} className="pb-2">
+      <li>Remplissez la section d’identification.</li>
+      <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d’autorisation d’utilisation des SIA pour chaque étape retenue.</li>
+      <li>Choisissez et personnalisez au besoin les directives et exigences de déclaration — soyez bref et précis.</li>
+      <li>Cliquez sur Soumettre pour obtenir une synthèse. Modifiez au besoin et soumettre à nouveau.</li>
+      <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l’évaluation.</li>
+      <li>Optionnel: Transposez ces directives dans un formulaire de déclaration d’utilisation des SIA que les personnes étudiantes devront remplir en ligne et joindre à leur soumission.</li>
+          </ol>
         Cette application en ligne ne conserve pas vos données. Si vous désirez reprendre votre travail plus tard, utilisez la <a href="#sauvegarde" className="text-blue-800 underline">fonction de sauvegarde</a> en bas de la page.
         </div>
         <div style={{ textAlign: 'left' }}>
