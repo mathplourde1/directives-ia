@@ -1149,7 +1149,7 @@ export default function Guide() {
               width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s'
             }} />
           </span>
-          Je désire que mes personnes étudiantes utilisent mes directives pour générer une déclaration
+          Je désire que les personnes étudiantes complètent un formulaire interactif de déclaration
         </button>
 
         {declarationActive &&
