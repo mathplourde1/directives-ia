@@ -962,76 +962,89 @@ export default function Guide() {
       <div id="synthese-container" key={submitKey}>
           {/* Section Brio */}
           <BrioSection selections={selections} />
-          {/* Section 1: Synthèse texte continu */}
-          <SyntheseSection
-          title="Synthèse en texte continu"
-          onCopyBrio={() => copyRichText(buildTextHTML(selections), 's2-brio')}
-          onDownloadWord={() => downloadWord(buildTextHTML(selections, true), 'synthese-texte.doc')}
-          copyOk={copyMsgs['s2-brio']}>
+          {/* Synthèses accordion */}
+          <div className="synthese-section">
+            <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
+            {/* Espace pour explications sous le titre */}
+            <div id="syntheses-description" />
+            <Accordion type="single" defaultValue="texte-continu" collapsible className="mt-4">
+              <AccordionItem value="texte-continu">
+                <AccordionTrigger className="text-base font-semibold">Synthèse en texte continu</AccordionTrigger>
+                <AccordionContent>
+                  <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
+                    dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
+                  <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
+                    <button type="button" className="btn-primary" onClick={() => copyRichText(buildTextHTML(selections), 's2-brio')}>Copier pour coller en ligne (Brio)</button>
+                    {copyMsgs['s2-brio'] && <span className="copy-ok">Copié !</span>}
+                    <button type="button" className="btn-secondary" onClick={() => downloadWord(buildTextHTML(selections, true), 'synthese-texte.doc')}>Télécharger en format Word</button>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-            <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }}
-          dangerouslySetInnerHTML={{ __html: buildTextHTML(selections) }} />
-          
-          </SyntheseSection>
+              <AccordionItem value="tableau">
+                <AccordionTrigger className="text-base font-semibold">Tableau synthèse</AccordionTrigger>
+                <AccordionContent>
+                  {buildIdentLine() && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{buildIdentLine()}</p>}
+                  <table className="synth-table">
+                    <thead>
+                      <tr>
+                        <th>Étapes</th>
+                        <th>L'utilisation des SIA est…</th>
+                        <th>Précisions</th>
+                        <th>Exigences de déclaration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selections.map((s, i) =>
+                        <tr key={i}>
+                          <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
+                          <td>{s.ia}</td>
+                          <td dangerouslySetInnerHTML={{ __html: s.justification }} />
+                          <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                  <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
+                    <button type="button" className="btn-primary" onClick={() => copyRichText(buildTableHTML(selections), 's1-brio')}>Copier pour coller en ligne (Brio)</button>
+                    {copyMsgs['s1-brio'] && <span className="copy-ok">Copié !</span>}
+                    <button type="button" className="btn-secondary" onClick={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}>Télécharger en format Word</button>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-          {/* Section 2: Tableau synthèse */}
-          <SyntheseSection
-          title="Tableau synthèse"
-          onCopyBrio={() => copyRichText(buildTableHTML(selections), 's1-brio')}
-          onDownloadWord={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}
-          copyOk={copyMsgs['s1-brio']}
-          identLine={buildIdentLine() || null}>
-
-            <table className="synth-table">
-              <thead>
-                <tr>
-                  <th>Étapes</th>
-                  <th>L'utilisation des SIA est…</th>
-                  <th>Précisions</th>
-                  <th>Exigences de déclaration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selections.map((s, i) =>
-              <tr key={i}>
-                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
-                    <td>{s.ia}</td>
-                    <td dangerouslySetInnerHTML={{ __html: s.justification }} />
-                    <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
-                  </tr>
-              )}
-              </tbody>
-            </table>
-          </SyntheseSection>
-
-          {/* Section 3: Exigences de déclaration */}
-          <SyntheseSection
-          title="Exigences de déclaration d'utilisation de l'IA"
-          onCopyBrio={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}
-          onDownloadWord={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}
-          copyOk={copyMsgs['s3-brio']}
-          identLine={buildIdentLine() || null}>
-
-            <p style={{ marginBottom: 12 }}>
-              Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle.
-            </p>
-            <table className="synth-table">
-              <thead>
-                <tr>
-                  <th>Étapes</th>
-                  <th>Exigences de déclaration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selections.map((s, i) =>
-              <tr key={i}>
-                    <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
-                    <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
-                  </tr>
-              )}
-              </tbody>
-            </table>
-          </SyntheseSection>
+              <AccordionItem value="declaration">
+                <AccordionTrigger className="text-base font-semibold">Exigences de déclaration d'utilisation de l'IA</AccordionTrigger>
+                <AccordionContent>
+                  {buildIdentLine() && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{buildIdentLine()}</p>}
+                  <p style={{ marginBottom: 12 }}>
+                    Pour chacune des étapes de réalisation de l'évaluation ci-dessous, vous devez respecter les exigences de déclaration de l'utilisation de systèmes d'intelligence artificielle.
+                  </p>
+                  <table className="synth-table">
+                    <thead>
+                      <tr>
+                        <th>Étapes</th>
+                        <th>Exigences de déclaration</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {selections.map((s, i) =>
+                        <tr key={i}>
+                          <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
+                          <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                  <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
+                    <button type="button" className="btn-primary" onClick={() => copyRichText(buildDeclTableHTML(selections), 's3-brio')}>Copier pour coller en ligne (Brio)</button>
+                    {copyMsgs['s3-brio'] && <span className="copy-ok">Copié !</span>}
+                    <button type="button" className="btn-secondary" onClick={() => downloadWord(buildDeclTableHTML(selections, true), 'exigences-declaration.doc')}>Télécharger en format Word</button>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
         </div>
       }
 
