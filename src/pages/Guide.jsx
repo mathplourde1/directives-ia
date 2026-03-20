@@ -737,9 +737,9 @@ export default function Guide() {
                           </div>
                               }
                         {/* Ne s'applique pas button — shown at bottom of cell */}
-                        <div style={{ marginTop: 10 }} onClick={(e) => e.stopPropagation()}>
+                        <div style={{ marginTop: 10, textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
                           <button type="button" onClick={() => handleCollapseRow(i)}
-                                style={{ fontSize: '0.75em', padding: '2px 8px', background: 'none', color: '#999', border: '1px solid #ccc', borderRadius: 4, cursor: 'pointer' }}
+                                style={{ fontSize: '0.75em', padding: '3px 10px', background: '#888', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}
                                 title="Masquer cette étape — ne s'applique pas à cette évaluation">
                             ✕ Ne s'applique pas
                           </button>
