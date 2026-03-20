@@ -70,6 +70,8 @@ export default function Guide() {
   const [copyDescriptionOk, setCopyDescriptionOk] = useState(false);
   const [copyFileDescOk, setCopyFileDescOk] = useState(false);
   const [aProposOpen, setAProposOpen] = useState(false);
+  const [showNewEvalDialog, setShowNewEvalDialog] = useState(false);
+  const [highlightEvaluation, setHighlightEvaluation] = useState(false);
   const fileInputRef = useRef();
   const [modalState, setModalState] = useState({ open: false, rowIndex: null, cursorPos: null });
   const [declModalState, setDeclModalState] = useState({ open: false, rowIndex: null, fieldCode: null });
