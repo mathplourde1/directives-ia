@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import ETAPES from '@/components/etapesData';
 import ReactQuill from 'react-quill';
 import EtapeShuttle from '@/components/EtapeShuttle';
-import SIA_RAW from '@/components/listeSIA.json';
+import SIA_RAW from '@/components/listeSIA.js';
 
 const SIA_LIST = [...SIA_RAW].sort((a, b) => a.localeCompare(b, 'fr'));
 
