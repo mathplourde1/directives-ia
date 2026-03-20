@@ -313,7 +313,7 @@ export default function DeclarationOutil() {
         <thead><tr>
           <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:22%">Outil utilisé</th>
           <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:28%">Étapes de réalisation</th>
-          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:50%">Exemples d'usages, traces et logique d'explication</th>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:50%">Commentaires</th>
         </tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
         const etapeLabels = entry.etapes.map(id => {
