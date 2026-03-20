@@ -423,10 +423,11 @@ export default function ConfigEditor() {
           </tr></thead>
           <tbody>
             {sorted.map((item, i) => (
-              <tr key={item._origIndex} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
+              <tr key={item._origIndex} style={{ background: rowBg(item, i) }}>
                 <td style={{ ...tdS, width: 40, color: '#888' }}>{i + 1}</td>
-                <td style={tdS}><strong>{item.value !== undefined ? item.value : item}</strong></td>
+                <td style={tdS}><Star item={item} /><strong>{item.value}</strong></td>
                 <td style={tdS}>
+                  <ResetBtn item={item} />
                   <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
                   <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
                 </td>
