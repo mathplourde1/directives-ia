@@ -57,7 +57,18 @@ function parseXML(xmlText) {
       } else {
         etapeInfo = { id: 'autres', libelle: get('libelle_custom') || (found ? found.libelle : id), parenthese: get('exemples') || (found ? found.parenthese : '') };
       }
-      etapes.push({ etapeInfo, ia: get('ia'), justification: get('justification') });
+      etapes.push({
+        etapeInfo,
+        ia: get('ia'),
+        justification: get('justification'),
+        declaration: get('declaration'),
+        decl_iagraphie: get('decl_iagraphie') === 'true',
+        decl_iagraphie_text: get('decl_iagraphie_text'),
+        decl_traces: get('decl_traces') === 'true',
+        decl_traces_text: get('decl_traces_text'),
+        decl_logique: get('decl_logique') === 'true',
+        decl_logique_text: get('decl_logique_text'),
+      });
     });
     return { ok: true, identification, etapes };
   } catch { return { error: 'structure', raw: xmlText }; }
