@@ -953,7 +953,7 @@ export default function DeclarationOutil() {
                       <tr>
                         <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '20%', textAlign: 'left' }}>Outil utilisé</th>
                         <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '25%', textAlign: 'left' }}>Étapes de réalisation</th>
-                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '55%', textAlign: 'left' }}>Exemples d'usages, traces et logique d'explication</th>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '55%', textAlign: 'left' }}>Commentaires</th>
                       </tr>
                     </thead>
                     <tbody>
