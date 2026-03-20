@@ -809,7 +809,7 @@ export default function DeclarationOutil() {
                             {etape.decl_iagraphie && (
                               <div style={{ marginBottom: 12 }}>
                                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                                  Références et IAgraphie{etape.decl_iagraphie_text ? ` — ${etape.decl_iagraphie_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                  Références et IAgraphie{etape.decl_iagraphie_text ? <span> — <span dangerouslySetInnerHTML={{ __html: etape.decl_iagraphie_text }} /></span> : ''} <span style={{ color: '#E41E25' }}>*</span>
                                 </label>
                                 <textarea value={resp.iagraphie || ''} onChange={e => setResp('iagraphie', e.target.value)} rows={2} disabled={resp.iagraphieAilleurs}
                                   placeholder="Indiquez les références et IAgraphie…"
