@@ -156,6 +156,15 @@ export default function DeclarationOutil() {
       setEquipiersErrors(errs);
       if (errs.some(Boolean)) hasErrors = true;
     }
+    if (aucunSIA) {
+      const etapesObligatoires = data.etapes.filter(e => e.ia?.toLowerCase().includes('obligatoire'));
+      if (etapesObligatoires.length > 0 && !aucunSIAJustification.trim()) {
+        setAucunSIAJustifError(true);
+        hasErrors = true;
+      } else {
+        setAucunSIAJustifError(false);
+      }
+    }
     if (!aucunSIA) {
       const newEntryErrors = outilEntries.map(e => {
         const err = {};
