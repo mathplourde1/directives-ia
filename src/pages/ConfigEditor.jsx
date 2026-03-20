@@ -61,10 +61,11 @@ export default function ConfigEditor() {
     etapes: [...ETAPES_DEFAULT],
     directives: [...exemplesDirectivesDefault],
     declarations: [...exemplesDeclarationsDefault],
+    sia: [...SIA_LIST_DEFAULT],
   });
   const [jsonText, setJsonText] = useState(JSON.stringify(ETAPES_DEFAULT, null, 2));
   const [jsonError, setJsonError] = useState(null);
-  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set() });
+  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set(), sia: new Set() });
 
   // Modal
   const [modalOpen, setModalOpen] = useState(false);
