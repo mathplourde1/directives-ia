@@ -841,7 +841,7 @@ export default function DeclarationOutil() {
                             {etape.decl_logique && (
                               <div>
                                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                                  Logique d'utilisation{etape.decl_logique_text ? ` — ${etape.decl_logique_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                  Logique d'utilisation{etape.decl_logique_text ? <span> — <span dangerouslySetInnerHTML={{ __html: etape.decl_logique_text }} /></span> : ''} <span style={{ color: '#E41E25' }}>*</span>
                                 </label>
                                 <textarea value={resp.logique || ''} onChange={e => setResp('logique', e.target.value)} rows={2} disabled={resp.logiqueAilleurs}
                                   placeholder="Expliquez la logique de votre utilisation du SIA…"
