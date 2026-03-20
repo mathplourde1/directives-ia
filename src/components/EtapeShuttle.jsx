@@ -5,7 +5,8 @@ function getStatutIA(ia) {
   if (!ia) return 'non-mentionnee';
   const v = ia.toLowerCase();
   if (v.includes('obligatoire')) return 'obligatoire';
-  if (v.includes('interdit')) return 'interdite';
+  if (v.includes('interdit') || v.includes('non autoris')) return 'interdite';
+  if (v.includes('sans restriction')) return 'sans-restriction';
   if (v.includes('restriction') || v.includes('restreint')) return 'avec-restriction';
   return 'sans-restriction';
 }
