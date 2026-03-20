@@ -262,11 +262,15 @@ export default function ConfigEditor() {
   };
 
   const getFiltered = () => {
-    let items = data[contentType].map((item, i) => ({ ...item, _origIndex: i }));
+    let items = contentType === 'sia'
+      ? data.sia.map((s, i) => ({ value: s, _origIndex: i }))
+      : data[contentType].map((item, i) => ({ ...item, _origIndex: i }));
     if (keyword) {
       const kw = keyword.toLowerCase();
       items = items.filter(item =>
-        Object.entries(item).some(([k, v]) => !k.startsWith('_') && typeof v === 'string' && v.toLowerCase().includes(kw))
+        contentType === 'sia'
+          ? item.value.toLowerCase().includes(kw)
+          : Object.entries(item).some(([k, v]) => !k.startsWith('_') && typeof v === 'string' && v.toLowerCase().includes(kw))
       );
     }
     if (contentType === 'directives') {
