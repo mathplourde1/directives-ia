@@ -937,7 +937,7 @@ export default function DeclarationOutil() {
 
                 {/* Directive summary */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>Directives de la personne enseignante</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.76em' }}>
                   <thead>
                     <tr>
                       <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '20%', textAlign: 'left' }}>Étape</th>
