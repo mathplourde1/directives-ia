@@ -670,38 +670,42 @@ export default function DeclarationOutil() {
 
                 {/* Student declarations */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>{apercu.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '20%', textAlign: 'left' }}>Outil utilisé</th>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '25%', textAlign: 'left' }}>Étapes de réalisation</th>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '55%', textAlign: 'left' }}>Exemples d'usages, traces et logique d'explication</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {apercu.outilEntries.map((entry, i) => {
-                      const etapeLabels = entry.etapes.map(id => {
-                        const found = apercu.etapes.find(e => e.etapeInfo.id === id);
-                        return found ? found.etapeInfo.libelle : id;
-                      });
-                      return (
-                        <tr key={i}>
-                          <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
-                            <strong>{entry.outil === 'Autre' && entry.outilLibre ? entry.outilLibre : entry.outil}</strong>
-                          </td>
-                          <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
-                            <ul style={{ margin: 0, paddingLeft: 16 }}>
-                              {etapeLabels.map((l, li) => <li key={li}>{l}</li>)}
-                            </ul>
-                          </td>
-                          <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
-                            <div dangerouslySetInnerHTML={{ __html: entry.description }} />
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                {apercu.aucunSIA ? (
+                  <p style={{ fontStyle: 'italic', color: '#555', fontSize: '0.92em' }}>Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>
+                ) : (
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
+                    <thead>
+                      <tr>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '20%', textAlign: 'left' }}>Outil utilisé</th>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '25%', textAlign: 'left' }}>Étapes de réalisation</th>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '55%', textAlign: 'left' }}>Exemples d'usages, traces et logique d'explication</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {apercu.outilEntries.map((entry, i) => {
+                        const etapeLabels = entry.etapes.map(id => {
+                          const found = apercu.etapes.find(e => e.etapeInfo.id === id);
+                          return found ? found.etapeInfo.libelle : id;
+                        });
+                        return (
+                          <tr key={i}>
+                            <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
+                              <strong>{entry.outil === 'Autre' && entry.outilLibre ? entry.outilLibre : entry.outil}</strong>
+                            </td>
+                            <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
+                              <ul style={{ margin: 0, paddingLeft: 16 }}>
+                                {etapeLabels.map((l, li) => <li key={li}>{l}</li>)}
+                              </ul>
+                            </td>
+                            <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
+                              <div dangerouslySetInnerHTML={{ __html: entry.description }} />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
 
                 {/* Final affirmations */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
