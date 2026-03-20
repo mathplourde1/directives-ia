@@ -716,18 +716,17 @@ export default function DeclarationOutil() {
                           {/* 2) RTE description */}
                           <div>
                             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
-                              Exemples d'usages, traces ou logique d'explication <span style={{ color: '#E41E25' }}>*</span>
+                              Commentaires <span style={{ fontWeight: 'normal', color: '#666' }}>(optionnel)</span>
                             </label>
-                            <div className="quill-wrapper" style={{ border: entryErrors[i]?.description ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: 'white' }}>
+                            <div className="quill-wrapper" style={{ border: '1px solid #ccc', borderRadius: 4, background: 'white' }}>
                               <ReactQuill
                                 value={entry.description}
                                 onChange={val => updateEntry(i, 'description', val)}
                                 modules={QUILL_MODULES}
                                 theme="snow"
-                                placeholder="Décrivez comment vous avez utilisé cet outil, quelles traces vous avez conservées, et la logique de votre démarche…"
+                                placeholder="Commentaires additionnels sur votre utilisation de cet outil…"
                               />
                             </div>
-                            {entryErrors[i]?.description && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
                           </div>
                         </div>
                       ))}
