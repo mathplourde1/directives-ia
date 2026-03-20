@@ -4,7 +4,7 @@ import ReactQuill from 'react-quill';
 import EtapeShuttle from '@/components/EtapeShuttle';
 import SIA_LIST_RAW from '@/components/listeSIA';
 
-const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr'));
+const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr')).concat(['Autre']);
 
 const QUILL_MODULES = {
   toolbar: [
