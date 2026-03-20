@@ -589,6 +589,7 @@ export default function Guide() {
           }
         </div>
       </div>
+      </div>
 
       {/* Identification section */}
       <div style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
