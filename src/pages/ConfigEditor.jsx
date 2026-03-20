@@ -35,6 +35,7 @@ const niveauColors = {
 const ETAPE_IDS = ETAPES_DEFAULT.map(e => e.id);
 
 const getItemKey = (item, type) => {
+  if (type === 'sia') return typeof item === 'string' ? item : item.value || '';
   if (type === 'etapes') return item.id || '';
   if (type === 'directives') return `${item.parent}|${item.niveau}|${item.sequence}|${item.court}`;
   return `${item.code}|${item.sequence}|${item.court}`;
