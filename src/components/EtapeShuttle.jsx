@@ -12,10 +12,10 @@ function getStatutIA(ia) {
 
 const STATUT_CONFIG = {
   'obligatoire':      { label: 'Obligatoire',        color: '#155724', bg: '#d4edda', order: 0 },
-  'sans-restriction': { label: 'Permise',             color: '#0c5460', bg: '#d1ecf1', order: 1 },
+  'sans-restriction': { label: 'Sans restrictions',    color: '#0c5460', bg: '#d1ecf1', order: 1 },
   'avec-restriction': { label: 'Avec restrictions',   color: '#856404', bg: '#fff3cd', order: 2 },
   'non-mentionnee':   { label: 'Non mentionnée',      color: '#6c757d', bg: '#e2e3e5', order: 3 },
-  'interdite':        { label: 'Interdite',           color: '#721c24', bg: '#f8d7da', order: 4 },
+  'interdite':        { label: 'Non autorisée',        color: '#721c24', bg: '#f8d7da', order: 4 },
 };
 
 function EtapeItem({ etape, onClick, actionLabel, actionColor }) {
