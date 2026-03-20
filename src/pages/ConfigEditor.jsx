@@ -134,6 +134,13 @@ export default function ConfigEditor() {
 
   // ── Add ──
   const handleAdd = () => {
+    if (contentType === 'sia') {
+      const name = window.prompt('Nom du SIA à ajouter :');
+      if (!name?.trim()) return;
+      const newData = [...data.sia, name.trim()].sort((a, b) => a.localeCompare(b, 'fr'));
+      syncDataToJson(newData, 'sia');
+      return;
+    }
     const items = data[contentType];
     let newItem = {};
     if (contentType === 'etapes') {
@@ -141,8 +148,6 @@ export default function ConfigEditor() {
     } else if (contentType === 'directives') {
       const siblings = items.filter(i => i.parent === 'recherche' && i.niveau === 'non');
       newItem = { parent: 'recherche', niveau: 'non', court: '', exemple: '', sequence: siblings.length ? Math.max(...siblings.map(i => i.sequence || 0)) + 1 : 1 };
-    } else if (contentType === 'sia') {
-      newItem = '';
     } else {
       const siblings = items.filter(i => i.code === 'iagraphie');
       newItem = { code: 'iagraphie', sequence: siblings.length ? Math.max(...siblings.map(i => i.sequence || 0)) + 1 : 1, court: '', exemple: '' };
