@@ -825,7 +825,7 @@ export default function DeclarationOutil() {
                             {etape.decl_traces && (
                               <div style={{ marginBottom: 12 }}>
                                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                                  Traces conservées{etape.decl_traces_text ? ` — ${etape.decl_traces_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                  Traces conservées{etape.decl_traces_text ? <span> — <span dangerouslySetInnerHTML={{ __html: etape.decl_traces_text }} /></span> : ''} <span style={{ color: '#E41E25' }}>*</span>
                                 </label>
                                 <textarea value={resp.traces || ''} onChange={e => setResp('traces', e.target.value)} rows={2} disabled={resp.tracesAilleurs}
                                   placeholder="Indiquez les traces que vous avez conservées…"
