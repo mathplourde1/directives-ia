@@ -101,6 +101,12 @@ export default function DeclarationOutil() {
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
+  const [obligNonCouvJustif, setObligNonCouvJustif] = useState('');
+  const [obligNonCouvJustifError, setObligNonCouvJustifError] = useState(false);
+  const [nonAutoriseeJustifs, setNonAutoriseeJustifs] = useState({});
+  const [nonAutoriseeJustifErrors, setNonAutoriseeJustifErrors] = useState({});
+  const [exigencesResponses, setExigencesResponses] = useState({});
+  const [exigencesErrors, setExigencesErrors] = useState({});
   const [, forceUpdate] = useState(0);
   const fileInputRef = useRef();
   const apercuRef = useRef();
