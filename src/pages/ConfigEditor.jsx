@@ -138,8 +138,10 @@ export default function ConfigEditor() {
     if (contentType === 'sia') {
       const name = window.prompt('Nom du SIA à ajouter :');
       if (!name?.trim()) return;
-      const newData = [...data.sia, name.trim()].sort((a, b) => a.localeCompare(b, 'fr'));
+      const newName = name.trim();
+      const newData = [...data.sia, newName].sort((a, b) => a.localeCompare(b, 'fr'));
       syncDataToJson(newData, 'sia');
+      addModifiedKey(newName, 'sia');
       return;
     }
     const items = data[contentType];
