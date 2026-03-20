@@ -1002,7 +1002,7 @@ export default function Guide() {
         </DragDropContext>
         <br />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <button type="submit" className="btn-primary">Soumettre</button>
+          <button type="submit" className="btn-primary">Générer les directives mises en forme</button>
           {submitStatus && (submitStatus.ok ? (() => {
               const diffMs = new Date() - submitStatus.time;
               const diffMin = Math.floor(diffMs / 60000);
