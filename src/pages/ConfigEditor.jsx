@@ -167,8 +167,10 @@ export default function ConfigEditor() {
       const current = data.sia[origIndex];
       const updated = window.prompt('Modifier le nom du SIA :', current);
       if (!updated?.trim() || updated.trim() === current) return;
-      const newData = data.sia.map((s, i) => i === origIndex ? updated.trim() : s).sort((a, b) => a.localeCompare(b, 'fr'));
+      const updatedName = updated.trim();
+      const newData = data.sia.map((s, i) => i === origIndex ? updatedName : s).sort((a, b) => a.localeCompare(b, 'fr'));
       syncDataToJson(newData, 'sia');
+      addModifiedKey(updatedName, 'sia');
       return;
     }
     setModalItem({ ...data[contentType][origIndex] });
