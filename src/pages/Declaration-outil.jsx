@@ -277,7 +277,7 @@ export default function DeclarationOutil() {
     introHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.4;margin:0 0 11pt 0;">Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche d'utilisation des systèmes d'intelligence artificielle.</p>`;
 
     const directivesTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Directives de la personne enseignante</h2>`;
-    let directivesTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
+    let directivesTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9px;margin-bottom:12pt;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:20%">Étape</th>
         <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:15%">Utilisation des SIA</th>
