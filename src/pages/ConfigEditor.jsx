@@ -371,6 +371,31 @@ export default function ConfigEditor() {
       </table>
     );
 
+    if (contentType === 'sia') {
+      const sorted = [...filteredItems].sort((a, b) => String(a.value || a).localeCompare(String(b.value || b), 'fr'));
+      return (
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead><tr>
+            <th style={thFixed}>#</th>
+            <th style={thFixed}>Nom du SIA</th>
+            <th style={thFixed}>Actions</th>
+          </tr></thead>
+          <tbody>
+            {sorted.map((item, i) => (
+              <tr key={item._origIndex} style={{ background: i % 2 === 0 ? 'white' : '#fafafa' }}>
+                <td style={{ ...tdS, width: 40, color: '#888' }}>{i + 1}</td>
+                <td style={tdS}><strong>{item.value !== undefined ? item.value : item}</strong></td>
+                <td style={tdS}>
+                  <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
+                  <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+    }
+
     return (
       <table style={{ width: '100%', borderCollapse: 'collapse' }}>
         <thead><tr>
