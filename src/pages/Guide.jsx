@@ -1197,6 +1197,39 @@ export default function Guide() {
           style={{ display: 'none' }}
           onChange={handleLoad} />
 
+        <div style={{ marginTop: 12 }}>
+          <button type="button" onClick={() => setShowNewEvalDialog(true)}
+            style={{ background: '#4a4a4a', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95em' }}>
+            ➕ Créer des directives pour une autre évaluation
+          </button>
+        </div>
+
+        {showNewEvalDialog &&
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: 'white', borderRadius: 10, padding: '28px 32px', maxWidth: 460, width: '90%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)' }}>
+            <p style={{ marginBottom: 20, lineHeight: 1.6, fontSize: '1em', color: '#231F20', fontWeight: 'bold' }}>
+              Désirez-vous un formulaire vierge ou une copie de celui-ci ?
+            </p>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <button type="button" onClick={() => { setShowNewEvalDialog(false); handleOpenBlankEval(); }}
+                style={{ background: '#6c757d', color: 'white', border: 'none', borderRadius: 5, padding: '10px 18px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9em', flex: 1 }}>
+                📄 Formulaire vierge
+              </button>
+              <button type="button" onClick={() => { setShowNewEvalDialog(false); handleOpenCopyEval(); }}
+                style={{ background: '#00A4E4', color: 'white', border: 'none', borderRadius: 5, padding: '10px 18px', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.9em', flex: 1 }}>
+                📋 Copie de celui-ci
+              </button>
+            </div>
+            <div style={{ marginTop: 16, textAlign: 'right' }}>
+              <button type="button" onClick={() => setShowNewEvalDialog(false)}
+                style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '0.9em' }}>
+                Annuler
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+
         {saveError &&
         <div style={{ color: '#E41E25', marginTop: 10, padding: '8px 12px', background: '#fff4f4', border: '1px solid #E41E25', borderRadius: 5 }}>
             ⚠ {saveError}
