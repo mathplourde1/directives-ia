@@ -509,6 +509,12 @@ export default function DeclarationOutil() {
                 🔄 Charger un autre fichier
               </button>
             </div>
+            </>}
+            {!directivesVisible && <div style={{ marginTop: 10 }}>
+              <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setData(null); setApercu(null); setSubmitStatus(null); }}>
+                🔄 Charger un autre fichier
+              </button>
+            </div>}
           </div>
 
           {/* Declaration form */}
