@@ -235,6 +235,9 @@ export default function DeclarationOutil() {
       aucunSIACommentaire,
       aucunSIAJustification,
       outilEntries,
+      obligNonCouvJustif,
+      nonAutoriseeJustifs,
+      exigencesResponses,
       timestamp
     });
     setSubmitStatus({ ok: true, time: new Date() });
