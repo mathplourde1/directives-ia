@@ -798,11 +798,13 @@ export default function DeclarationOutil() {
                           setExigencesResponses(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
                           setExigencesErrors(prev => { const n = { ...prev }; delete n[`${id}_${field.replace('Ailleurs','')}`]; return n; });
                         };
+                        const outilsPourEtape = outilEntries.filter(e => e.etapes.includes(id)).map(e => e.outil === 'Autre' && e.outilLibre ? e.outilLibre : e.outil).filter(Boolean);
                         return (
                           <div key={id} style={{ background: '#f0f8ff', border: '1px solid #00A4E4', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
-                            <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 10px', fontSize: '0.92em' }}>
+                            <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 4px', fontSize: '0.92em' }}>
                               📋 Exigences de déclaration pour : <em>{etape.etapeInfo.libelle}</em>
                             </p>
+                            {outilsPourEtape.length > 0 && <p style={{ margin: '0 0 10px', fontSize: '0.88em', color: '#00527a' }}>Vous déclarez avoir utilisé : {outilsPourEtape.map((o, i) => <strong key={i}>{i > 0 ? ', ' : ''}{o}</strong>)}</p>}
 
                             {etape.decl_iagraphie && (
                               <div style={{ marginBottom: 12 }}>
