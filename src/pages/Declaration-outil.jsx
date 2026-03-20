@@ -181,6 +181,7 @@ export default function DeclarationOutil() {
       studentNom, studentGroupe, isEquipe, nomEquipe,
       equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
       etapes: data.etapes,
+      aucunSIA,
       outilEntries,
       timestamp
     });
