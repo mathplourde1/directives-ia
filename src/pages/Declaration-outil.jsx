@@ -173,6 +173,37 @@ export default function DeclarationOutil() {
       }
     }
     if (!aucunSIA) {
+      // Validate obligatoires non couvertes justification
+      if (obligatoiresNonCouvertes.length > 0 && !obligNonCouvJustif.trim()) {
+        setObligNonCouvJustifError(true); hasErrors = true;
+      } else { setObligNonCouvJustifError(false); }
+
+      // Validate non autorisées justifications
+      const newNonAutoriseeErrors = {};
+      nonAutoriseesSelectionnees.forEach(e => {
+        if (!nonAutoriseeJustifs[e.etapeInfo.id]?.trim()) {
+          newNonAutoriseeErrors[e.etapeInfo.id] = true; hasErrors = true;
+        }
+      });
+      setNonAutoriseeJustifErrors(newNonAutoriseeErrors);
+
+      // Validate exigences responses
+      const newExigencesErrors = {};
+      etapesAvecExigences.forEach(etape => {
+        const id = etape.etapeInfo.id;
+        const resp = exigencesResponses[id] || {};
+        if (etape.decl_iagraphie && !resp.iagraphie?.trim() && !resp.iagraphieAilleurs) {
+          newExigencesErrors[`${id}_iagraphie`] = true; hasErrors = true;
+        }
+        if (etape.decl_traces && !resp.traces?.trim() && !resp.tracesAilleurs) {
+          newExigencesErrors[`${id}_traces`] = true; hasErrors = true;
+        }
+        if (etape.decl_logique && !resp.logique?.trim() && !resp.logiqueAilleurs) {
+          newExigencesErrors[`${id}_logique`] = true; hasErrors = true;
+        }
+      });
+      setExigencesErrors(newExigencesErrors);
+
       const newEntryErrors = outilEntries.map(e => {
         const err = {};
         if (!e.outil) err.outil = true;
