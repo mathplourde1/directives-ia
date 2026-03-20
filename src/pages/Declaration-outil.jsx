@@ -184,6 +184,16 @@ export default function DeclarationOutil() {
     setTimeout(() => apercuRef.current?.scrollIntoView({ behavior: 'smooth' }), 100);
   }
 
+  function formatExigencesHTML(etape) {
+    if (etape.declaration === 'aucune') return '<ul style="margin:0;padding-left:18px;list-style-type:disc;"><li style="display:list-item;">Aucune exigence</li></ul>';
+    const items = [];
+    if (etape.decl_iagraphie) items.push(`Références et IAgraphie : ${etape.decl_iagraphie_text}`);
+    if (etape.decl_traces) items.push(`Conserver les traces suivantes : ${etape.decl_traces_text}`);
+    if (etape.decl_logique) items.push(`Expliquer la logique d'utilisation : ${etape.decl_logique_text}`);
+    if (items.length === 0) return '—';
+    return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map(i => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
+  }
+
   function getOutilLabel(entry) {
     return entry.outil === 'Autre' && entry.outilLibre.trim() ? entry.outilLibre.trim() : entry.outil;
   }
