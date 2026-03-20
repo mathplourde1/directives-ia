@@ -141,6 +141,8 @@ export default function ConfigEditor() {
     } else if (contentType === 'directives') {
       const siblings = items.filter(i => i.parent === 'recherche' && i.niveau === 'non');
       newItem = { parent: 'recherche', niveau: 'non', court: '', exemple: '', sequence: siblings.length ? Math.max(...siblings.map(i => i.sequence || 0)) + 1 : 1 };
+    } else if (contentType === 'sia') {
+      newItem = '';
     } else {
       const siblings = items.filter(i => i.code === 'iagraphie');
       newItem = { code: 'iagraphie', sequence: siblings.length ? Math.max(...siblings.map(i => i.sequence || 0)) + 1 : 1, court: '', exemple: '' };
