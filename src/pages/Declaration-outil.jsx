@@ -244,24 +244,29 @@ export default function DeclarationOutil() {
     directivesTable += '</tbody></table>';
 
     const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">${ap.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>`;
-    let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
-      <thead><tr>
-        <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:22%">Outil utilisé</th>
-        <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:28%">Étapes de réalisation</th>
-        <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:50%">Exemples d'usages, traces et logique d'explication</th>
-      </tr></thead><tbody>`;
-    ap.outilEntries.forEach(entry => {
-      const etapeLabels = entry.etapes.map(id => {
-        const found = ap.etapes.find(e => e.etapeInfo.id === id);
-        return found ? found.etapeInfo.libelle : id;
-      }).join('<br>');
-      declTable += `<tr>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${entry.outil === 'Autre' && entry.outilLibre ? entry.outilLibre : entry.outil}</strong></td>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etapeLabels}</td>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${entry.description}</td>
-      </tr>`;
-    });
-    declTable += '</tbody></table>';
+    let declTable;
+    if (ap.aucunSIA) {
+      declTable = `<p style="font-family:Arial,sans-serif;font-size:11pt;font-style:italic;color:#555;margin:0 0 12pt 0;">Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>`;
+    } else {
+      declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
+        <thead><tr>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:22%">Outil utilisé</th>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:28%">Étapes de réalisation</th>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:50%">Exemples d'usages, traces et logique d'explication</th>
+        </tr></thead><tbody>`;
+      ap.outilEntries.forEach(entry => {
+        const etapeLabels = entry.etapes.map(id => {
+          const found = ap.etapes.find(e => e.etapeInfo.id === id);
+          return found ? found.etapeInfo.libelle : id;
+        }).join('<br>');
+        declTable += `<tr>
+          <td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${entry.outil === 'Autre' && entry.outilLibre ? entry.outilLibre : entry.outil}</strong></td>
+          <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etapeLabels}</td>
+          <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${entry.description}</td>
+        </tr>`;
+      });
+      declTable += '</tbody></table>';
+    }
 
     const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
     const affirmList = [
