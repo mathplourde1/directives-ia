@@ -968,7 +968,8 @@ export default function Guide() {
           <div className="synthese-section">
             <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
             {/* Espace pour explications sous le titre */}
-            <div id="syntheses-description">Trois options de mise en forme sont disponibles. Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> de l'une des synthèses ci-dessous dans la section <strong>Précisions sur le niveau sélectionné</strong> ou téléchargez une version Word à intégrer dans vos directives.</div>
+            <div id="syntheses-description">Trois options de mise en forme sont disponibles. Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> de l'une des synthèses ci-dessous dans la section <strong>Précisions sur le niveau sélectionné</strong> ou téléchargez une version Word à intégrer dans vos directives. <br /><br />
+            Vous n'aimez pas une formualtion? Vous pourrez modifier le contenu après avoir collé ou téléchargé la version de votre choix.</div>
             <Accordion type="single" defaultValue="texte-continu" collapsible className="mt-4">
               <AccordionItem value="texte-continu">
                 <AccordionTrigger className="text-base font-semibold">Synthèse en texte continu</AccordionTrigger>
