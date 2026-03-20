@@ -521,7 +521,12 @@ export default function Guide() {
   const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
 
   function handleOpenBlankEval() {
-    window.open(window.location.href, '_blank');
+    const payload = {
+      identification: { cours: identification.cours, session: '', enseignants: identification.enseignants, evaluation: '' },
+      highlightEvaluation: true
+    };
+    localStorage.setItem('guide_copy_state', JSON.stringify(payload));
+    window.open(window.location.href + '?copy=1', '_blank');
   }
 
   function handleOpenCopyEval() {
