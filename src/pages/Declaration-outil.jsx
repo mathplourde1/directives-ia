@@ -770,11 +770,13 @@ export default function DeclarationOutil() {
                       {nonAutoriseesSelectionnees.map(etape => {
                         const id = etape.etapeInfo.id;
                         const hasError = nonAutoriseeJustifErrors[id];
+                        const outilsPourEtape = outilEntries.filter(e => e.etapes.includes(id)).map(e => e.outil === 'Autre' && e.outilLibre ? e.outilLibre : e.outil).filter(Boolean);
                         return (
                           <div key={id} style={{ background: '#fde8e8', border: '1px solid #E41E25', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
-                            <p style={{ fontWeight: 'bold', color: '#7b1d1d', margin: '0 0 6px', fontSize: '0.92em' }}>
+                            <p style={{ fontWeight: 'bold', color: '#7b1d1d', margin: '0 0 4px', fontSize: '0.92em' }}>
                               🚫 Étape non autorisée sélectionnée : <em>{etape.etapeInfo.libelle}</em>
                             </p>
+                            {outilsPourEtape.length > 0 && <p style={{ margin: '0 0 6px', fontSize: '0.88em', color: '#7b1d1d' }}>Vous déclarez avoir utilisé : {outilsPourEtape.map((o, i) => <strong key={i}>{i > 0 ? ', ' : ''}{o}</strong>)}</p>}
                             {etape.justification && <div style={{ fontSize: '0.88em', color: '#555', marginBottom: 8 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />}
                             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#7b1d1d' }}>
                               Justifiez l'utilisation d'un SIA pour cette étape non autorisée. <span style={{ color: '#E41E25' }}>*</span>
