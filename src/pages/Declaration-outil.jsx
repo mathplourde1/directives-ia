@@ -487,7 +487,7 @@ export default function DeclarationOutil() {
                     </td>
                     <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}><strong>{etape.ia}</strong></td>
                     <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <div className="locked-field" dangerouslySetInnerHTML={{ __html: etape.justification }} />
+                      <div style={{ fontSize: '0.95em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
                     </td>
                     <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
                       <div dangerouslySetInnerHTML={{ __html: formatExigencesHTML(etape) }} />
