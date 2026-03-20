@@ -209,7 +209,6 @@ export default function DeclarationOutil() {
         if (!e.outil) err.outil = true;
         if (e.outil === 'Autre' && !e.outilLibre.trim()) err.outilLibre = true;
         if (e.etapes.length === 0) err.etapes = true;
-        if (!e.description || e.description.replace(/<[^>]+>/g, '').trim() === '') err.description = true;
         return err;
       });
       setEntryErrors(newEntryErrors);
