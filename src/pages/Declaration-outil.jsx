@@ -94,6 +94,7 @@ export default function DeclarationOutil() {
   const [nomEquipe, setNomEquipe] = useState('');
   const [equipiers, setEquipiers] = useState(['']);
   const [equipiersErrors, setEquipiersErrors] = useState([]);
+  const [directivesVisible, setDirectivesVisible] = useState(false);
   const [sessionOverride, setSessionOverride] = useState('');
   const [sessionEditMode, setSessionEditMode] = useState(false);
   const [sessionError, setSessionError] = useState(false);
