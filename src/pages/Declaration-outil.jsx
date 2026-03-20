@@ -336,6 +336,20 @@ export default function DeclarationOutil() {
   const effectiveSession = data?.identification?.session && !sessionEditMode ? data.identification.session : sessionOverride.trim();
   const identOk = !!(effectiveSession && studentNom.trim() && (!isEquipe || (equipiers.length > 0 && equipiers[0].trim())));
 
+  // Derived lists for exigences section (only relevant when !aucunSIA)
+  const allSelectedEtapeIds = aucunSIA ? [] : [...new Set(outilEntries.flatMap(e => e.etapes))];
+  const obligatoiresNonCouvertes = data?.etapes?.filter(e =>
+    e.ia?.toLowerCase().includes('obligatoire') && !allSelectedEtapeIds.includes(e.etapeInfo.id)
+  ) ?? [];
+  const nonAutoriseesSelectionnees = data?.etapes?.filter(e =>
+    e.ia?.toLowerCase().includes('non autorisé') && allSelectedEtapeIds.includes(e.etapeInfo.id)
+  ) ?? [];
+  const etapesAvecExigences = data?.etapes?.filter(e =>
+    allSelectedEtapeIds.includes(e.etapeInfo.id) &&
+    (e.decl_iagraphie || e.decl_traces || e.decl_logique) &&
+    e.declaration !== 'aucune'
+  ) ?? [];
+
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
       <style>{`
