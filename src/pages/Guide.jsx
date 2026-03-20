@@ -520,6 +520,51 @@ export default function Guide() {
 
   const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
 
+  function handleOpenBlankEval() {
+    window.open(window.location.href, '_blank');
+  }
+
+  function handleOpenCopyEval() {
+    // Serialize current state to localStorage then open new tab
+    const payload = {
+      identification: { ...identification, evaluation: '' },
+      rows,
+      etapesOrder,
+      collapsedRows,
+      highlightEvaluation: true
+    };
+    localStorage.setItem('guide_copy_state', JSON.stringify(payload));
+    window.open(window.location.href + '?copy=1', '_blank');
+  }
+
+  // On mount: check if we should restore a copy
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('copy') === '1') {
+      const raw = localStorage.getItem('guide_copy_state');
+      if (raw) {
+        try {
+          const payload = JSON.parse(raw);
+          localStorage.removeItem('guide_copy_state');
+          setIdentification(payload.identification || { cours: '', session: '', enseignants: '', evaluation: '' });
+          setRows(payload.rows || ETAPES.map(() => defaultRowState()));
+          setEtapesOrder(payload.etapesOrder || ETAPES.map((_, i) => i));
+          setCollapsedRows(payload.collapsedRows || ETAPES.map(() => false));
+          setErrors(ETAPES.map(() => defaultErrors()));
+          setSubmitted(false);
+          setSelections([]);
+          if (payload.highlightEvaluation) {
+            setHighlightEvaluation(true);
+            setTimeout(() => {
+              const el = document.getElementById('field-evaluation');
+              if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+            }, 300);
+          }
+        } catch {}
+      }
+    }
+  }, []);
+
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' };
   const inputErrorBorder = { border: '2px solid #E41E25', background: '#fff4f4' };
 
