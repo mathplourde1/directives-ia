@@ -613,6 +613,39 @@ export default function Guide() {
         </div>
       </div>
 
+      {/* ===== TABLEAU SYNTHÈSE (sous identification) ===== */}
+      {submitted &&
+      <div className="synthese-section" style={{ marginTop: 20 }}>
+        <h2 className="my-2 text-lg font-semibold text-center">Tableau synthèse</h2>
+        {buildIdentLine() && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{buildIdentLine()}</p>}
+        <table className="synth-table">
+          <thead>
+            <tr>
+              <th>Étapes</th>
+              <th>L'utilisation des SIA est…</th>
+              <th>Précisions</th>
+              <th>Exigences de déclaration</th>
+            </tr>
+          </thead>
+          <tbody>
+            {selections.map((s, i) =>
+              <tr key={i}>
+                <td><strong>{s.etape}</strong>{s.parenthese && <span style={{ fontWeight: 'normal' }}> ({s.parenthese})</span>}</td>
+                <td>{s.ia}</td>
+                <td dangerouslySetInnerHTML={{ __html: s.justification }} />
+                <td dangerouslySetInnerHTML={{ __html: formatExigences(s) }} />
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
+          <button type="button" className="btn-primary" onClick={() => copyRichText(buildTableHTML(selections), 'tableau-ident-brio')}>Copier pour coller en ligne (Brio)</button>
+          {copyMsgs['tableau-ident-brio'] && <span className="copy-ok">Copié !</span>}
+          <button type="button" className="btn-secondary" onClick={() => downloadWord(buildTableHTML(selections, true), 'tableau-synthese.doc')}>Télécharger en format Word</button>
+        </div>
+      </div>
+      }
+
       <div style={{ position: 'relative' }}>
         {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis dans la section Évaluation ciblée" />}
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', opacity: identFilled ? 1 : 0.5, pointerEvents: identFilled ? 'auto' : 'none' }}>
