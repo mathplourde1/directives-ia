@@ -341,47 +341,6 @@ export default function DeclarationOutil() {
 
       {data?.ok &&
         <>
-          {/* Static directive summary */}
-          <div className="section-box">
-            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 4 }}>Directives d'utilisation des SIA</h2>
-            <p style={{ margin: '0 0 14px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
-              La personne enseignante a indiqué les directives d'utilisation des SIA suivantes :
-            </p>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em', background: 'white' }}>
-              <colgroup>
-                <col style={{ width: '25%' }} />
-                <col style={{ width: '18%' }} />
-                <col style={{ width: '57%' }} />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Étape</th>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>L'utilisation des SIA est…</th>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Directives de la personne enseignante</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.etapes.map((etape, i) => (
-                  <tr key={i}>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <strong>{etape.etapeInfo.libelle}</strong>
-                      {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.85em', marginTop: 2 }}>({etape.etapeInfo.parenthese})</span>}
-                    </td>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}><strong>{etape.ia}</strong></td>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <div className="locked-field" dangerouslySetInnerHTML={{ __html: etape.justification }} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            <div style={{ marginTop: 14 }}>
-              <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setData(null); setApercu(null); setSubmitStatus(null); }}>
-                🔄 Charger un autre fichier
-              </button>
-            </div>
-          </div>
-
           {/* Identification */}
           <div className="section-box">
             <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 4 }}>Identification</h2>
