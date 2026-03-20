@@ -376,7 +376,7 @@ export default function DeclarationOutil() {
     const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
     const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#666;font-style:italic;margin:16pt 0 0 0;">Générée le ${ap.timestamp}</p>`;
 
-    return titleHtml + introHtml + directivesTitle + directivesTable + declTitle + declTable + affirmTitle + affirmHtml + timestampHtml;
+    return titleHtml + introHtml + directivesTitle + directivesTable + declTitle + declTable + dynamiquesHtml + affirmTitle + affirmHtml + timestampHtml;
   }
 
   function copyDeclToClipboard(ap) {
