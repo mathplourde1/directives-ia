@@ -260,7 +260,14 @@ export default function DeclarationOutil() {
     const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">${ap.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>`;
     let declTable;
     if (ap.aucunSIA) {
-      declTable = `<p style="font-family:Arial,sans-serif;font-size:11pt;font-style:italic;color:#555;margin:0 0 12pt 0;">Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>`;
+      let aucunHtml = `<p style="font-family:Arial,sans-serif;font-size:11pt;font-style:italic;color:#555;margin:0 0 6pt 0;">Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>`;
+      if (ap.aucunSIAJustification) {
+        aucunHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;"><strong>Justification (étape(s) obligatoire(s)) :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;white-space:pre-wrap;">${ap.aucunSIAJustification}</p>`;
+      }
+      if (ap.aucunSIACommentaire) {
+        aucunHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;"><strong>Commentaires :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;white-space:pre-wrap;">${ap.aucunSIACommentaire}</p>`;
+      }
+      declTable = aucunHtml;
     } else {
       declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
         <thead><tr>
