@@ -658,9 +658,9 @@ export default function Guide() {
           </div>
           <div>
             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom de l'évaluation <span className="required">*</span></label>
-            <input type="text" value={identification.evaluation} onChange={(e) => {setIdentification((p) => ({ ...p, evaluation: e.target.value }));setIdentErrors((p) => ({ ...p, evaluation: false }));}}
+            <input id="field-evaluation" type="text" value={identification.evaluation} onChange={(e) => {setIdentification((p) => ({ ...p, evaluation: e.target.value }));setIdentErrors((p) => ({ ...p, evaluation: false }));setHighlightEvaluation(false);}}
             placeholder="ex. Travail final"
-            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.evaluation ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.evaluation ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+            style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: highlightEvaluation ? '2px solid #00A4E4' : identErrors.evaluation ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: highlightEvaluation ? '#e8f6fd' : identErrors.evaluation ? '#fff4f4' : 'white', boxSizing: 'border-box', transition: 'border 0.3s, background 0.3s' }} />
             {identErrors.evaluation && <span style={errorStyle}>⚠ Ce champ est requis</span>}
           </div>
           <div>
