@@ -2,12 +2,19 @@ import React, { useState, useRef, useEffect } from 'react';
 import ETAPES from '@/components/etapesData';
 import ReactQuill from 'react-quill';
 import EtapeShuttle from '@/components/EtapeShuttle';
+
 const SIA_LIST = [
-  "Antidote", "Autre", "Canva", "ChatGPT (OpenAI)", "Claude (Anthropic)",
-  "Consensus", "Copilot (Microsoft)", "DALL-E", "DeepL", "Elicit",
-  "Firefly (Adobe)", "Gemini (Google)", "Google Translate", "Grammarly",
-  "Grok (X)", "Meta AI", "Midjourney", "NotebookLM (Google)", "Perplexity AI"
-].sort((a, b) => a === 'Autre' ? 1 : b === 'Autre' ? -1 : a.localeCompare(b, 'fr'));
+  'Antidote (Fonctions IA)',
+  'ChatGPT (OpenAI)',
+  'Claude (Anthropic)',
+  'Copilot (Microsoft)',
+  'DeepL / Google Translate',
+  'Gemini (Google)',
+  'Midjourney / DALL-E',
+  'NotebookLM (Google)',
+  'Perplexity AI',
+  'Autre',
+];
 
 const QUILL_MODULES = {
   toolbar: [
