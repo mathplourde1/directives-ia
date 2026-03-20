@@ -81,6 +81,7 @@ function defaultOutilEntry() {
 
 export default function DeclarationOutil() {
   const [data, setData] = useState(null);
+  const [aucunSIA, setAucunSIA] = useState(false);
   const [outilEntries, setOutilEntries] = useState([defaultOutilEntry()]);
   const [entryErrors, setEntryErrors] = useState([{}]);
   const [studentNom, setStudentNom] = useState('');
