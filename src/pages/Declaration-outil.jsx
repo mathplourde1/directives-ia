@@ -739,12 +739,18 @@ export default function DeclarationOutil() {
                                 Étape(s) de réalisation <span style={{ color: '#E41E25' }}>*</span>
                                 <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — survolez une étape pour voir des exemples</span>
                               </label>
-                              <EtapeShuttle
-                                dataEtapes={data.etapes}
-                                selectedIds={entry.etapes}
-                                onChange={ids => { updateEntry(i, 'etapes', ids); }}
-                                hasError={!!entryErrors[i]?.etapes}
-                              />
+                              {(entry.outil && (entry.outil !== 'Autre' || entry.outilLibre.trim())) ? (
+                                <EtapeShuttle
+                                  dataEtapes={data.etapes}
+                                  selectedIds={entry.etapes}
+                                  onChange={ids => { updateEntry(i, 'etapes', ids); }}
+                                  hasError={!!entryErrors[i]?.etapes}
+                                />
+                              ) : (
+                                <div style={{ padding: '12px 16px', background: '#f8f9fa', border: '1px dashed #aaa', borderRadius: 6, color: '#888', fontSize: '0.88em', fontStyle: 'italic' }}>
+                                  {entry.outil === 'Autre' ? 'Précisez le nom de l\'outil ci-dessus pour sélectionner les étapes.' : 'Sélectionnez d\'abord un outil pour accéder aux étapes de réalisation.'}
+                                </div>
+                              )}
                             </div>
                           </div>
 
