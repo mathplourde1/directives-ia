@@ -742,7 +742,21 @@ export default function DeclarationOutil() {
                 {/* Student declarations */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>{apercu.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
                 {apercu.aucunSIA ? (
-                  <p style={{ fontStyle: 'italic', color: '#555', fontSize: '0.92em' }}>Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>
+                  <div style={{ fontSize: '0.92em' }}>
+                    <p style={{ fontStyle: 'italic', color: '#555', margin: '0 0 8px' }}>Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>
+                    {apercu.aucunSIAJustification && (
+                      <div style={{ marginBottom: 8 }}>
+                        <strong>Justification (étape(s) obligatoire(s)) :</strong>
+                        <p style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', color: '#333' }}>{apercu.aucunSIAJustification}</p>
+                      </div>
+                    )}
+                    {apercu.aucunSIACommentaire && (
+                      <div>
+                        <strong>Commentaires :</strong>
+                        <p style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', color: '#333' }}>{apercu.aucunSIACommentaire}</p>
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
                     <thead>
