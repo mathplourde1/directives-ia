@@ -669,7 +669,7 @@ export default function DeclarationOutil() {
                 </table>
 
                 {/* Student declarations */}
-                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>{apercu.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>
+                <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>{apercu.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
                 {apercu.aucunSIA ? (
                   <p style={{ fontStyle: 'italic', color: '#555', fontSize: '0.92em' }}>Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>
                 ) : (
