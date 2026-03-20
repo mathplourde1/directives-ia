@@ -234,6 +234,9 @@ export default function ConfigEditor() {
     } else if (contentType === 'directives') {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">Étape</th><th style="padding:8px">Niveau</th><th style="padding:8px">Court</th><th style="padding:8px">Exemple</th><th style="padding:8px">Séq.</th></tr>';
       rows = items.map(d => `<tr><td style="padding:8px">${d.parent}</td><td style="padding:8px">${NIVEAU_LABELS[d.niveau] || d.niveau}</td><td style="padding:8px">${d.court}</td><td style="padding:8px">${d.exemple}</td><td style="padding:8px">${d.sequence}</td></tr>`).join('');
+    } else if (contentType === 'sia') {
+      headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">#</th><th style="padding:8px">Nom du SIA</th></tr>';
+      rows = [...items].sort((a, b) => a.localeCompare(b, 'fr')).map((s, i) => `<tr><td style="padding:8px">${i + 1}</td><td style="padding:8px">${s}</td></tr>`).join('');
     } else {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">Code</th><th style="padding:8px">Séq.</th><th style="padding:8px">Court</th><th style="padding:8px">Exemple</th></tr>';
       rows = items.map(d => `<tr><td style="padding:8px">${d.code}</td><td style="padding:8px">${d.sequence}</td><td style="padding:8px">${d.court}</td><td style="padding:8px">${d.exemple}</td></tr>`).join('');
