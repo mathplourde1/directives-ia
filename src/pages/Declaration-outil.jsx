@@ -1018,6 +1018,62 @@ export default function DeclarationOutil() {
                   </table>
                 )}
 
+                {/* Champs dynamiques */}
+                {!apercu.aucunSIA && (() => {
+                  const blocks = [];
+                  if (apercu.obligNonCouvJustif?.trim()) {
+                    blocks.push(
+                      <div key="oblig" style={{ marginBottom: 10 }}>
+                        <strong>Justification — étape(s) obligatoire(s) non couvertes :</strong>
+                        <p style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', color: '#333', fontSize: '0.92em' }}>{apercu.obligNonCouvJustif}</p>
+                      </div>
+                    );
+                  }
+                  if (apercu.nonAutoriseeJustifs) {
+                    Object.entries(apercu.nonAutoriseeJustifs).forEach(([id, justif]) => {
+                      if (!justif?.trim()) return;
+                      const etape = apercu.etapes.find(e => e.etapeInfo.id === id);
+                      const label = etape ? etape.etapeInfo.libelle : id;
+                      blocks.push(
+                        <div key={`na_${id}`} style={{ marginBottom: 10 }}>
+                          <strong>Justification — étape non autorisée « {label} » :</strong>
+                          <p style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', color: '#333', fontSize: '0.92em' }}>{justif}</p>
+                        </div>
+                      );
+                    });
+                  }
+                  if (apercu.exigencesResponses) {
+                    Object.entries(apercu.exigencesResponses).forEach(([id, resp]) => {
+                      const etape = apercu.etapes.find(e => e.etapeInfo.id === id);
+                      const label = etape ? etape.etapeInfo.libelle : id;
+                      const parts = [];
+                      if (resp.iagraphieAilleurs) parts.push(<span key="ia"><em>Références et IAgraphie : déjà répondu dans le travail soumis.</em></span>);
+                      else if (resp.iagraphie?.trim()) parts.push(<span key="ia"><strong>Références et IAgraphie :</strong> {resp.iagraphie}</span>);
+                      if (resp.tracesAilleurs) parts.push(<span key="tr"><em>Traces conservées : déjà répondu dans le travail soumis.</em></span>);
+                      else if (resp.traces?.trim()) parts.push(<span key="tr"><strong>Traces conservées :</strong> {resp.traces}</span>);
+                      if (resp.logiqueAilleurs) parts.push(<span key="lo"><em>Logique d'utilisation : déjà répondu dans le travail soumis.</em></span>);
+                      else if (resp.logique?.trim()) parts.push(<span key="lo"><strong>Logique d'utilisation :</strong> {resp.logique}</span>);
+                      if (parts.length > 0) {
+                        blocks.push(
+                          <div key={`ex_${id}`} style={{ marginBottom: 10 }}>
+                            <strong>Exigences de déclaration — {label} :</strong>
+                            <div style={{ margin: '4px 0 0', fontSize: '0.92em', color: '#333' }}>
+                              {parts.map((p, i) => <div key={i}>{p}</div>)}
+                            </div>
+                          </div>
+                        );
+                      }
+                    });
+                  }
+                  if (blocks.length === 0) return null;
+                  return (
+                    <>
+                      <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>Informations complémentaires</h2>
+                      <div style={{ fontSize: '0.92em' }}>{blocks}</div>
+                    </>
+                  );
+                })()}
+
                 {/* Final affirmations */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
                 <ul style={{ margin: '0 0 0 20px', paddingLeft: 0, lineHeight: 1.7, listStyleType: 'disc', fontSize: '0.92em' }}>
