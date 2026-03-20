@@ -739,6 +739,122 @@ export default function DeclarationOutil() {
                     </>
                   )}
 
+                  {/* Exigences dynamiques — affiché uniquement si !aucunSIA */}
+                  {!aucunSIA && (obligatoiresNonCouvertes.length > 0 || nonAutoriseesSelectionnees.length > 0 || etapesAvecExigences.length > 0) && (
+                    <div style={{ marginBottom: 24 }}>
+                      <h3 style={{ fontWeight: 'bold', fontSize: '0.98em', marginBottom: 12, color: '#231F20' }}>Exigences à répondre avant de soumettre</h3>
+
+                      {/* Étapes obligatoires non couvertes */}
+                      {obligatoiresNonCouvertes.length > 0 && (
+                        <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
+                          <p style={{ fontWeight: 'bold', color: '#856404', margin: '0 0 8px', fontSize: '0.92em' }}>
+                            ⚠ Étape(s) obligatoire(s) non couverte(s) par vos outils déclarés
+                          </p>
+                          <ul style={{ margin: '0 0 10px 18px', padding: 0, fontSize: '0.9em' }}>
+                            {obligatoiresNonCouvertes.map((e, i) => (
+                              <li key={i}><strong>{e.etapeInfo.libelle}</strong> — {e.ia}</li>
+                            ))}
+                          </ul>
+                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#856404' }}>
+                            Justifiez pourquoi ces étapes obligatoires ne figurent pas dans votre déclaration. <span style={{ color: '#E41E25' }}>*</span>
+                          </label>
+                          <textarea value={obligNonCouvJustif} onChange={e => { setObligNonCouvJustif(e.target.value); setObligNonCouvJustifError(false); }}
+                            placeholder="Expliquez pourquoi vous n'avez pas utilisé de SIA pour ces étapes malgré l'obligation…"
+                            rows={3}
+                            style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: obligNonCouvJustifError ? '2px solid #E41E25' : '1px solid #ffc107', borderRadius: 4, background: obligNonCouvJustifError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
+                          {obligNonCouvJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                        </div>
+                      )}
+
+                      {/* Étapes non autorisées sélectionnées */}
+                      {nonAutoriseesSelectionnees.map(etape => {
+                        const id = etape.etapeInfo.id;
+                        const hasError = nonAutoriseeJustifErrors[id];
+                        return (
+                          <div key={id} style={{ background: '#fde8e8', border: '1px solid #E41E25', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
+                            <p style={{ fontWeight: 'bold', color: '#7b1d1d', margin: '0 0 6px', fontSize: '0.92em' }}>
+                              🚫 Étape non autorisée sélectionnée : <em>{etape.etapeInfo.libelle}</em>
+                            </p>
+                            {etape.justification && <div style={{ fontSize: '0.88em', color: '#555', marginBottom: 8 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />}
+                            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#7b1d1d' }}>
+                              Justifiez l'utilisation d'un SIA pour cette étape non autorisée. <span style={{ color: '#E41E25' }}>*</span>
+                            </label>
+                            <textarea value={nonAutoriseeJustifs[id] || ''} onChange={e => { setNonAutoriseeJustifs(prev => ({ ...prev, [id]: e.target.value })); setNonAutoriseeJustifErrors(prev => ({ ...prev, [id]: false })); }}
+                              placeholder="Expliquez les circonstances ou raisons de cette utilisation…"
+                              rows={3}
+                              style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #E41E25', borderRadius: 4, background: hasError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
+                            {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                          </div>
+                        );
+                      })}
+
+                      {/* Exigences de déclaration par étape */}
+                      {etapesAvecExigences.map(etape => {
+                        const id = etape.etapeInfo.id;
+                        const resp = exigencesResponses[id] || {};
+                        const setResp = (field, val) => {
+                          setExigencesResponses(prev => ({ ...prev, [id]: { ...(prev[id] || {}), [field]: val } }));
+                          setExigencesErrors(prev => { const n = { ...prev }; delete n[`${id}_${field.replace('Ailleurs','')}`]; return n; });
+                        };
+                        return (
+                          <div key={id} style={{ background: '#f0f8ff', border: '1px solid #00A4E4', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
+                            <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 10px', fontSize: '0.92em' }}>
+                              📋 Exigences de déclaration pour : <em>{etape.etapeInfo.libelle}</em>
+                            </p>
+
+                            {etape.decl_iagraphie && (
+                              <div style={{ marginBottom: 12 }}>
+                                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                                  Références et IAgraphie{etape.decl_iagraphie_text ? ` — ${etape.decl_iagraphie_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                </label>
+                                <textarea value={resp.iagraphie || ''} onChange={e => setResp('iagraphie', e.target.value)} rows={2} disabled={resp.iagraphieAilleurs}
+                                  placeholder="Indiquez les références et IAgraphie…"
+                                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_iagraphie`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.iagraphieAilleurs ? '#eee' : (exigencesErrors[`${id}_iagraphie`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
+                                  <input type="checkbox" checked={!!resp.iagraphieAilleurs} onChange={e => setResp('iagraphieAilleurs', e.target.checked)} />
+                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                </label>
+                                {exigencesErrors[`${id}_iagraphie`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
+                              </div>
+                            )}
+
+                            {etape.decl_traces && (
+                              <div style={{ marginBottom: 12 }}>
+                                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                                  Traces conservées{etape.decl_traces_text ? ` — ${etape.decl_traces_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                </label>
+                                <textarea value={resp.traces || ''} onChange={e => setResp('traces', e.target.value)} rows={2} disabled={resp.tracesAilleurs}
+                                  placeholder="Indiquez les traces que vous avez conservées…"
+                                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_traces`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.tracesAilleurs ? '#eee' : (exigencesErrors[`${id}_traces`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
+                                  <input type="checkbox" checked={!!resp.tracesAilleurs} onChange={e => setResp('tracesAilleurs', e.target.checked)} />
+                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                </label>
+                                {exigencesErrors[`${id}_traces`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
+                              </div>
+                            )}
+
+                            {etape.decl_logique && (
+                              <div>
+                                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                                  Logique d'utilisation{etape.decl_logique_text ? ` — ${etape.decl_logique_text}` : ''} <span style={{ color: '#E41E25' }}>*</span>
+                                </label>
+                                <textarea value={resp.logique || ''} onChange={e => setResp('logique', e.target.value)} rows={2} disabled={resp.logiqueAilleurs}
+                                  placeholder="Expliquez la logique de votre utilisation du SIA…"
+                                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_logique`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.logiqueAilleurs ? '#eee' : (exigencesErrors[`${id}_logique`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
+                                  <input type="checkbox" checked={!!resp.logiqueAilleurs} onChange={e => setResp('logiqueAilleurs', e.target.checked)} />
+                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                </label>
+                                {exigencesErrors[`${id}_logique`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
                   {/* Submit */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                     <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
