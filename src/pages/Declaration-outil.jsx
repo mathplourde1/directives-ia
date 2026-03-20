@@ -153,16 +153,18 @@ export default function DeclarationOutil() {
       setEquipiersErrors(errs);
       if (errs.some(Boolean)) hasErrors = true;
     }
-    const newEntryErrors = outilEntries.map(e => {
-      const err = {};
-      if (!e.outil) err.outil = true;
-      if (e.outil === 'Autre' && !e.outilLibre.trim()) err.outilLibre = true;
-      if (e.etapes.length === 0) err.etapes = true;
-      if (!e.description || e.description.replace(/<[^>]+>/g, '').trim() === '') err.description = true;
-      return err;
-    });
-    setEntryErrors(newEntryErrors);
-    if (newEntryErrors.some(e => Object.keys(e).length > 0)) hasErrors = true;
+    if (!aucunSIA) {
+      const newEntryErrors = outilEntries.map(e => {
+        const err = {};
+        if (!e.outil) err.outil = true;
+        if (e.outil === 'Autre' && !e.outilLibre.trim()) err.outilLibre = true;
+        if (e.etapes.length === 0) err.etapes = true;
+        if (!e.description || e.description.replace(/<[^>]+>/g, '').trim() === '') err.description = true;
+        return err;
+      });
+      setEntryErrors(newEntryErrors);
+      if (newEntryErrors.some(e => Object.keys(e).length > 0)) hasErrors = true;
+    }
     if (hasErrors) { setSubmitStatus({ ok: false }); return; }
 
     const tzCodes = { 'America/Toronto': 'HNE', 'America/Montreal': 'HNE', 'America/Ottawa': 'HNE', 'America/Vancouver': 'HNP', 'America/Edmonton': 'HNR', 'America/Winnipeg': 'HNC', 'America/Halifax': 'HNA', 'Europe/Paris': 'HEC' };
