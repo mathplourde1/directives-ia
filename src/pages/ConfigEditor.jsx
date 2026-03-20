@@ -219,7 +219,7 @@ export default function ConfigEditor() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : 'exemplesDeclarations.json';
+    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : contentType === 'sia' ? 'listeSIA.json' : 'exemplesDeclarations.json';
     a.click(); URL.revokeObjectURL(url);
   };
 
