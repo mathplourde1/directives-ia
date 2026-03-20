@@ -1330,7 +1330,6 @@ export default function Guide() {
                 </>
         }
                 </div>
-                </div>
-      </div>);
+                </div>);
 
 }
