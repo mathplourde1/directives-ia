@@ -2,19 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import ETAPES from '@/components/etapesData';
 import ReactQuill from 'react-quill';
 import EtapeShuttle from '@/components/EtapeShuttle';
+import SIA_LIST_RAW from '@/components/listeSIA';
 
-const SIA_LIST = [
-  'Antidote (Fonctions IA)',
-  'ChatGPT (OpenAI)',
-  'Claude (Anthropic)',
-  'Copilot (Microsoft)',
-  'DeepL / Google Translate',
-  'Gemini (Google)',
-  'Midjourney / DALL-E',
-  'NotebookLM (Google)',
-  'Perplexity AI',
-  'Autre',
-];
+const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr'));
 
 const QUILL_MODULES = {
   toolbar: [
