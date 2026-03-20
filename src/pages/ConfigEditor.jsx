@@ -2,18 +2,21 @@ import React, { useState, useRef, useMemo } from 'react';
 import ETAPES_DEFAULT from '@/components/etapesData';
 import exemplesDirectivesDefault from '@/components/exemplesDirectives.json';
 import exemplesDeclarationsDefault from '@/components/exemplesDeclarations';
+import SIA_LIST_DEFAULT from '@/components/listeSIA';
 import ItemEditorModal from '@/components/ItemEditorModal';
 
 const ORIGINAL_DATA = {
   etapes: JSON.parse(JSON.stringify(ETAPES_DEFAULT)),
   directives: JSON.parse(JSON.stringify(exemplesDirectivesDefault)),
   declarations: JSON.parse(JSON.stringify(exemplesDeclarationsDefault)),
+  sia: JSON.parse(JSON.stringify(SIA_LIST_DEFAULT)),
 };
 
 const CONTENT_OPTIONS = [
   { value: 'etapes', label: 'Étapes' },
   { value: 'directives', label: 'Exemples de directives' },
   { value: 'declarations', label: 'Exemples de déclarations' },
+  { value: 'sia', label: 'Liste SIA' },
 ];
 
 const NIVEAU_LABELS = {
