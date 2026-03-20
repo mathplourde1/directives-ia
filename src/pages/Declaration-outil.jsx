@@ -460,61 +460,58 @@ export default function DeclarationOutil() {
 
           {/* Static directive summary */}
           <div className="section-box">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: directivesVisible ? 4 : 0 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
               <h2 style={{ margin: 0, fontWeight: 'bold', fontSize: '1.05em' }}>Directives d'utilisation des SIA</h2>
               <button type="button" onClick={() => setDirectivesVisible(v => !v)}
                 style={{ background: 'none', border: '1px solid #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '4px 14px', cursor: 'pointer', fontSize: '0.85em', fontFamily: 'inherit' }}>
                 {directivesVisible ? '▲ Masquer les directives' : '▼ Révéler les directives'}
               </button>
             </div>
-            {directivesVisible && <>
-            <p style={{ margin: '10px 0 14px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
-              La personne enseignante a indiqué les directives d'utilisation des SIA suivantes :
-            </p>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em', background: 'white' }}>
-              <colgroup>
-                <col style={{ width: '20%' }} />
-                <col style={{ width: '15%' }} />
-                <col style={{ width: '40%' }} />
-                <col style={{ width: '25%' }} />
-              </colgroup>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Étape</th>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>L'utilisation des SIA est…</th>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Directives de la personne enseignante</th>
-                  <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Exigences de déclaration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.etapes.map((etape, i) => (
-                  <tr key={i}>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <strong>{etape.etapeInfo.libelle}</strong>
-                      {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.85em', marginTop: 2 }}>({etape.etapeInfo.parenthese})</span>}
-                    </td>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}><strong>{etape.ia}</strong></td>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <div style={{ fontSize: '0.95em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
-                    </td>
-                    <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
-                      <div dangerouslySetInnerHTML={{ __html: formatExigencesHTML(etape) }} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            {directivesVisible && (
+              <div>
+                <p style={{ margin: '0 0 14px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+                  La personne enseignante a indiqué les directives d'utilisation des SIA suivantes :
+                </p>
+                <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em', background: 'white' }}>
+                  <colgroup>
+                    <col style={{ width: '20%' }} />
+                    <col style={{ width: '15%' }} />
+                    <col style={{ width: '40%' }} />
+                    <col style={{ width: '25%' }} />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Étape</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>L'utilisation des SIA est…</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Directives de la personne enseignante</th>
+                      <th style={{ border: '1px solid #ccc', padding: '8px 10px', background: '#F2F2F2', textAlign: 'left' }}>Exigences de déclaration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.etapes.map((etape, i) => (
+                      <tr key={i}>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
+                          <strong>{etape.etapeInfo.libelle}</strong>
+                          {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#555', fontSize: '0.85em', marginTop: 2 }}>({etape.etapeInfo.parenthese})</span>}
+                        </td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}><strong>{etape.ia}</strong></td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
+                          <div style={{ fontSize: '0.95em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
+                        </td>
+                        <td style={{ border: '1px solid #ccc', padding: '8px 10px', verticalAlign: 'top' }}>
+                          <div dangerouslySetInnerHTML={{ __html: formatExigencesHTML(etape) }} />
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
             <div style={{ marginTop: 14 }}>
               <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setData(null); setApercu(null); setSubmitStatus(null); }}>
                 🔄 Charger un autre fichier
               </button>
             </div>
-            </>}
-            {!directivesVisible && <div style={{ marginTop: 10 }}>
-              <button className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setData(null); setApercu(null); setSubmitStatus(null); }}>
-                🔄 Charger un autre fichier
-              </button>
-            </div>}
           </div>
 
           {/* Declaration form */}
