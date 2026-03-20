@@ -460,8 +460,15 @@ export default function DeclarationOutil() {
 
           {/* Static directive summary */}
           <div className="section-box">
-            <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 4 }}>Directives d'utilisation des SIA</h2>
-            <p style={{ margin: '0 0 14px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: directivesVisible ? 4 : 0 }}>
+              <h2 style={{ margin: 0, fontWeight: 'bold', fontSize: '1.05em' }}>Directives d'utilisation des SIA</h2>
+              <button type="button" onClick={() => setDirectivesVisible(v => !v)}
+                style={{ background: 'none', border: '1px solid #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '4px 14px', cursor: 'pointer', fontSize: '0.85em', fontFamily: 'inherit' }}>
+                {directivesVisible ? '▲ Masquer les directives' : '▼ Révéler les directives'}
+              </button>
+            </div>
+            {directivesVisible && <>
+            <p style={{ margin: '10px 0 14px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
               La personne enseignante a indiqué les directives d'utilisation des SIA suivantes :
             </p>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9em', background: 'white' }}>
