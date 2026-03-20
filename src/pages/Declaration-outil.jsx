@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import ETAPES from '@/components/etapesData';
 import ReactQuill from 'react-quill';
+import EtapeShuttle from '@/components/EtapeShuttle';
 
 const SIA_LIST = [
   'Antidote (Fonctions IA)',
