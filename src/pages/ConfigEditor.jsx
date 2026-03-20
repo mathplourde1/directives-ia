@@ -188,6 +188,25 @@ export default function ConfigEditor() {
   // ── Reset modified item ──
   const handleReset = (item) => {
     const key = getItemKey(item, contentType);
+    if (contentType === 'sia') {
+      // For new SIA items not in original, just delete them; for renamed ones, restore original name
+      const origExists = ORIGINAL_DATA.sia.includes(key);
+      let newData;
+      if (origExists) {
+        // key is the current name; find and restore (same value — no change needed, just remove from modified)
+        newData = data.sia; // name is already correct (was renamed back), just clear modified
+      } else {
+        // it was added, remove it
+        newData = data.sia.filter(s => s !== key);
+        syncDataToJson(newData, 'sia');
+      }
+      setModifiedKeys(prev => {
+        const next = new Set(prev.sia);
+        next.delete(key);
+        return { ...prev, sia: next };
+      });
+      return;
+    }
     const origItem = ORIGINAL_DATA[contentType].find(o => getItemKey(o, contentType) === key);
     if (!origItem) return;
     const newData = data[contentType].map(i => getItemKey(i, contentType) === key ? { ...origItem } : i);
