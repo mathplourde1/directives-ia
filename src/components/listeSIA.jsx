@@ -1,4 +1,4 @@
-[
+const SIA_LIST_RAW = [
   "Antidote",
   "Canva",
   "ChatGPT (OpenAI)",
@@ -18,4 +18,6 @@
   "Nano Banana (Google)",
   "NotebookLM (Google)",
   "Perplexity AI"
-]
+];
+
+export default SIA_LIST_RAW;
