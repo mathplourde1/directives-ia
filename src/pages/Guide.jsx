@@ -555,7 +555,7 @@ export default function Guide() {
       `}</style>
 
       <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Assistant à la rédaction des directives d’utilisation des SIA pour une évaluation</h1>
-      <div className="mr-12 mb-2 ml-12">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
+      <div className="mr-5 mb-2 ml-5">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
       <div style={{ marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
@@ -574,18 +574,18 @@ export default function Guide() {
         <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
           <button
             type="button"
-            onClick={() => setAProposOpen(v => !v)}
+            onClick={() => setAProposOpen((v) => !v)}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
             <span style={{ fontSize: '0.8em', color: '#888', display: 'inline-block', transform: aProposOpen ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
             🧠 À propos…
           </button>
-          {aProposOpen && (
-            <div style={{ textAlign: 'left', paddingTop: 6 }}>
+          {aProposOpen &&
+          <div style={{ textAlign: 'left', paddingTop: 6 }}>
               Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval.<br /><br />
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/ce0c154f6_20240824_AIA_FR_EN.png" alt="Aidée de l'intelligence artificielle - crédit de l'image 2023 par Martine Peters CC BY-NC-SA 4.0" style={{ float: 'right', width: 80, marginLeft: 12, marginBottom: 4 }} />
               <b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b><br />L'idée originale, la logique et les contenus de cette application ont été développés par des humains, qui ont utilisé des SIA conversationnels pour aider avec la génération de texte et la reformulation (ChatGPT, Gemini et Microsoft Copilot). Ce travail est basé sur un guide destiné au personnel enseignant du Service pédagogique FSA ULaval.  Tous les textes présentés ont été validés par l'équipe de développement. Le code a été développé par Mathieu Plourde avec l'aide de ChatGPT et Claude, mais plus particulièrement par Base44 pour cette version actuelle.<br /><br />Elle est développée et maintenue par Mathieu Plourde, CC-By 2026 (version alpha 5).
             </div>
-          )}
+          }
         </div>
       </div>
 
