@@ -554,7 +554,7 @@ export default function Guide() {
       `}</style>
 
       <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Assistant à la rédaction des directives d’utilisation des SIA pour une évaluation</h1>
-      <div className="mr-12 mb-2 ml-12">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des SIA pour une évaluation. C’est un outil simple pour obtenir des directives complètes, prêtes à transmettre, pour accompagner les étudiants et étudiantes.</div>
+      <div className="mr-12 mb-2 ml-12">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }} className="mr-5 ml-5">
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
