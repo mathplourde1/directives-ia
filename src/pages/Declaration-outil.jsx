@@ -329,6 +329,42 @@ export default function DeclarationOutil() {
       declTable += '</tbody></table>';
     }
 
+    // Champs dynamiques
+    let dynamiquesHtml = '';
+    const hasDynamiques = (ap.obligNonCouvJustif && ap.obligNonCouvJustif.trim()) ||
+      (ap.nonAutoriseeJustifs && Object.values(ap.nonAutoriseeJustifs).some(v => v?.trim())) ||
+      (ap.exigencesResponses && Object.keys(ap.exigencesResponses).length > 0);
+    if (hasDynamiques) {
+      dynamiquesHtml += `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Informations complémentaires</h2>`;
+      if (ap.obligNonCouvJustif && ap.obligNonCouvJustif.trim()) {
+        dynamiquesHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;"><strong>Justification — étape(s) obligatoire(s) non couvertes :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 10pt 0;white-space:pre-wrap;">${ap.obligNonCouvJustif}</p>`;
+      }
+      if (ap.nonAutoriseeJustifs) {
+        Object.entries(ap.nonAutoriseeJustifs).forEach(([id, justif]) => {
+          if (!justif?.trim()) return;
+          const etape = ap.etapes.find(e => e.etapeInfo.id === id);
+          const label = etape ? etape.etapeInfo.libelle : id;
+          dynamiquesHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;"><strong>Justification — étape non autorisée « ${label} » :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 10pt 0;white-space:pre-wrap;">${justif}</p>`;
+        });
+      }
+      if (ap.exigencesResponses) {
+        Object.entries(ap.exigencesResponses).forEach(([id, resp]) => {
+          const etape = ap.etapes.find(e => e.etapeInfo.id === id);
+          const label = etape ? etape.etapeInfo.libelle : id;
+          const parts = [];
+          if (resp.iagraphieAilleurs) parts.push(`<em>Références et IAgraphie : déjà répondu dans le travail soumis.</em>`);
+          else if (resp.iagraphie?.trim()) parts.push(`<strong>Références et IAgraphie :</strong> ${resp.iagraphie}`);
+          if (resp.tracesAilleurs) parts.push(`<em>Traces conservées : déjà répondu dans le travail soumis.</em>`);
+          else if (resp.traces?.trim()) parts.push(`<strong>Traces conservées :</strong> ${resp.traces}`);
+          if (resp.logiqueAilleurs) parts.push(`<em>Logique d'utilisation : déjà répondu dans le travail soumis.</em>`);
+          else if (resp.logique?.trim()) parts.push(`<strong>Logique d'utilisation :</strong> ${resp.logique}`);
+          if (parts.length > 0) {
+            dynamiquesHtml += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;"><strong>Exigences de déclaration — ${label} :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 10pt 0;">${parts.join('<br>')}</p>`;
+          }
+        });
+      }
+    }
+
     const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
     const affirmList = [
       `Les informations fournies sont complètes et fidèles à ${ap.isEquipe ? 'notre' : 'mon'} utilisation réelle.`,
