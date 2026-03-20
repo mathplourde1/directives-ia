@@ -483,85 +483,113 @@ export default function DeclarationOutil() {
               <div style={{ position: 'relative' }}>
                 {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
                 <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
-                  <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 4 }}>Votre déclaration par outil utilisé</h2>
-                  <p style={{ margin: '0 0 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
-                    Pour chaque système d'intelligence artificielle utilisé, indiquez l'outil, les étapes concernées et décrivez votre usage.
-                  </p>
+                  <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8 }}>Votre déclaration par outil utilisé</h2>
 
-                  {outilEntries.map((entry, i) => (
-                    <div key={i} className="entry-card">
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-                        <strong style={{ fontSize: '0.95em', color: '#231F20' }}>Outil {i + 1}</strong>
-                        {outilEntries.length > 1 &&
-                          <button type="button" onClick={() => removeEntry(i)}
-                            style={{ background: 'none', border: '1px solid #E41E25', color: '#E41E25', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontSize: '0.82em', fontFamily: 'inherit' }}>
-                            ✕ Retirer
-                          </button>
-                        }
-                      </div>
+                  {/* TogglePill SIA ou non */}
+                  <div style={{ display: 'flex', gap: 0, marginBottom: 20, background: '#f0f0f0', borderRadius: 999, padding: 3, width: 'fit-content' }}>
+                    {[
+                      { val: true,  label: 'Je n\'ai utilisé aucun SIA pour cette évaluation.' },
+                      { val: false, label: 'J\'ai utilisé le(s) SIA suivant(s).' },
+                    ].map(opt => (
+                      <button key={String(opt.val)} type="button"
+                        onClick={() => setAucunSIA(opt.val)}
+                        style={{
+                          padding: '7px 18px', borderRadius: 999, border: 'none', cursor: 'pointer',
+                          fontFamily: 'inherit', fontSize: '0.9em', fontWeight: aucunSIA === opt.val ? 'bold' : 'normal',
+                          background: aucunSIA === opt.val ? (opt.val ? '#231F20' : '#00A4E4') : 'transparent',
+                          color: aucunSIA === opt.val ? 'white' : '#555',
+                          transition: 'background 0.2s, color 0.2s',
+                        }}>
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
 
-                      {/* 1) Outil dropdown */}
-                      <div style={{ marginBottom: 14 }}>
-                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5 }}>
-                          Outil utilisé <span style={{ color: '#E41E25' }}>*</span>
-                        </label>
-                        <select value={entry.outil} onChange={e => updateEntry(i, 'outil', e.target.value)}
-                          style={{ padding: '6px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outil ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: entryErrors[i]?.outil ? '#fff4f4' : 'white', minWidth: 260 }}>
-                          <option value="">-- Choisir --</option>
-                          {SIA_LIST.map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                        {entryErrors[i]?.outil && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Sélection requise</span>}
-                        {entry.outil === 'Autre' &&
-                          <div style={{ marginTop: 8 }}>
-                            <input type="text" value={entry.outilLibre} onChange={e => updateEntry(i, 'outilLibre', e.target.value)}
-                              placeholder="Précisez le nom du service ou de la fonctionnalité…"
-                              style={{ width: '100%', maxWidth: 400, padding: '5px 8px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outilLibre ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: entryErrors[i]?.outilLibre ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
-                            {entryErrors[i]?.outilLibre && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
-                          </div>
-                        }
-                      </div>
-
-                      {/* 2) Étapes checkboxes */}
-                      <div style={{ marginBottom: 14 }}>
-                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
-                          Étape(s) de réalisation pour laquelle/lesquelles cet outil a été utilisé <span style={{ color: '#E41E25' }}>*</span>
-                        </label>
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px 24px' }}>
-                          {data.etapes.map((etape, ei) => (
-                            <label key={ei} style={{ display: 'flex', alignItems: 'flex-start', gap: 6, cursor: 'pointer', fontSize: '0.9em', minWidth: 200 }}>
-                              <input type="checkbox" checked={entry.etapes.includes(etape.etapeInfo.id)}
-                                onChange={() => toggleEtape(i, etape.etapeInfo.id)}
-                                style={{ marginTop: 2, flexShrink: 0 }} />
-                              <span>{etape.etapeInfo.libelle}</span>
-                            </label>
-                          ))}
-                        </div>
-                        {entryErrors[i]?.etapes && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 4 }}>⚠ Sélectionnez au moins une étape</span>}
-                      </div>
-
-                      {/* 3) RTE description */}
-                      <div>
-                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
-                          Exemples d'usages, traces ou logique d'explication <span style={{ color: '#E41E25' }}>*</span>
-                        </label>
-                        <div className="quill-wrapper" style={{ border: entryErrors[i]?.description ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: 'white' }}>
-                          <ReactQuill
-                            value={entry.description}
-                            onChange={val => updateEntry(i, 'description', val)}
-                            modules={QUILL_MODULES}
-                            theme="snow"
-                            placeholder="Décrivez comment vous avez utilisé cet outil, quelles traces vous avez conservées, et la logique de votre démarche…"
-                          />
-                        </div>
-                        {entryErrors[i]?.description && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
-                      </div>
+                  {aucunSIA ? (
+                    <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px', marginBottom: 20, color: '#555', fontSize: '0.92em' }}>
+                      Aucun système d'intelligence artificielle n'a été utilisé dans le cadre de cette évaluation. Vous pouvez directement générer la déclaration.
                     </div>
-                  ))}
+                  ) : (
+                    <>
+                      <p style={{ margin: '0 0 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+                        Pour chaque système d'intelligence artificielle utilisé, indiquez l'outil, les étapes concernées et décrivez votre usage.
+                      </p>
 
-                  <button type="button" onClick={addEntry}
-                    style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '8px 20px', cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit', display: 'block', width: '100%', marginBottom: 20 }}>
-                    + Ajouter un autre outil utilisé
-                  </button>
+                      {outilEntries.map((entry, i) => (
+                        <div key={i} className="entry-card">
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+                            <strong style={{ fontSize: '0.95em', color: '#231F20' }}>Outil {i + 1}</strong>
+                            {outilEntries.length > 1 &&
+                              <button type="button" onClick={() => removeEntry(i)}
+                                style={{ background: 'none', border: '1px solid #E41E25', color: '#E41E25', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontSize: '0.82em', fontFamily: 'inherit' }}>
+                                ✕ Retirer
+                              </button>
+                            }
+                          </div>
+
+                          {/* 1) Outil + Étapes côte à côte */}
+                          <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: 20, marginBottom: 14, alignItems: 'start' }}>
+                            {/* Outil dropdown */}
+                            <div>
+                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5 }}>
+                                Outil utilisé <span style={{ color: '#E41E25' }}>*</span>
+                              </label>
+                              <select value={entry.outil} onChange={e => updateEntry(i, 'outil', e.target.value)}
+                                style={{ padding: '6px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outil ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: entryErrors[i]?.outil ? '#fff4f4' : 'white', minWidth: 240 }}>
+                                <option value="">-- Choisir --</option>
+                                {SIA_LIST.map(s => <option key={s} value={s}>{s}</option>)}
+                              </select>
+                              {entryErrors[i]?.outil && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Sélection requise</span>}
+                              {entry.outil === 'Autre' &&
+                                <div style={{ marginTop: 8 }}>
+                                  <input type="text" value={entry.outilLibre} onChange={e => updateEntry(i, 'outilLibre', e.target.value)}
+                                    placeholder="Précisez le nom…"
+                                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outilLibre ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: entryErrors[i]?.outilLibre ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
+                                  {entryErrors[i]?.outilLibre && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                                </div>
+                              }
+                            </div>
+
+                            {/* Étapes shuttle */}
+                            <div>
+                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
+                                Étape(s) de réalisation <span style={{ color: '#E41E25' }}>*</span>
+                                <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — survolez une étape pour voir des exemples</span>
+                              </label>
+                              <EtapeShuttle
+                                dataEtapes={data.etapes}
+                                selectedIds={entry.etapes}
+                                onChange={ids => { updateEntry(i, 'etapes', ids); }}
+                                hasError={!!entryErrors[i]?.etapes}
+                              />
+                            </div>
+                          </div>
+
+                          {/* 2) RTE description */}
+                          <div>
+                            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
+                              Exemples d'usages, traces ou logique d'explication <span style={{ color: '#E41E25' }}>*</span>
+                            </label>
+                            <div className="quill-wrapper" style={{ border: entryErrors[i]?.description ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: 'white' }}>
+                              <ReactQuill
+                                value={entry.description}
+                                onChange={val => updateEntry(i, 'description', val)}
+                                modules={QUILL_MODULES}
+                                theme="snow"
+                                placeholder="Décrivez comment vous avez utilisé cet outil, quelles traces vous avez conservées, et la logique de votre démarche…"
+                              />
+                            </div>
+                            {entryErrors[i]?.description && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                          </div>
+                        </div>
+                      ))}
+
+                      <button type="button" onClick={addEntry}
+                        style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '8px 20px', cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit', display: 'block', width: '100%', marginBottom: 20 }}>
+                        + Ajouter un autre outil utilisé
+                      </button>
+                    </>
+                  )}
 
                   {/* Submit */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
