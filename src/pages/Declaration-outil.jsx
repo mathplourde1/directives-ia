@@ -220,9 +220,10 @@ export default function DeclarationOutil() {
     const directivesTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Directives de la personne enseignante</h2>`;
     let directivesTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
       <thead><tr>
-        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:22%">Étape</th>
-        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:18%">Utilisation des SIA</th>
-        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:60%">Directives</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:20%">Étape</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:15%">Utilisation des SIA</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:40%">Directives</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:25%">Exigences de déclaration</th>
       </tr></thead><tbody>`;
     ap.etapes.forEach(etape => {
       const label = etape.etapeInfo.parenthese
@@ -232,6 +233,7 @@ export default function DeclarationOutil() {
         <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}</td>
         <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etape.ia}</td>
         <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etape.justification}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${formatExigencesHTML(etape)}</td>
       </tr>`;
     });
     directivesTable += '</tbody></table>';
