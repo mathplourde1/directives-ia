@@ -605,9 +605,10 @@ export default function DeclarationOutil() {
                 <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
                   <thead>
                     <tr>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '25%', textAlign: 'left' }}>Étape</th>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '18%', textAlign: 'left' }}>Utilisation des SIA</th>
-                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '57%', textAlign: 'left' }}>Directives</th>
+                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '20%', textAlign: 'left' }}>Étape</th>
+                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '15%', textAlign: 'left' }}>Utilisation des SIA</th>
+                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '40%', textAlign: 'left' }}>Directives</th>
+                      <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#F2F2F2', width: '25%', textAlign: 'left' }}>Exigences de déclaration</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -620,6 +621,9 @@ export default function DeclarationOutil() {
                         <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>{etape.ia}</td>
                         <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
                           <div style={{ fontSize: '0.95em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
+                        </td>
+                        <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
+                          <div dangerouslySetInnerHTML={{ __html: formatExigencesHTML(etape) }} />
                         </td>
                       </tr>
                     ))}
