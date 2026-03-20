@@ -525,8 +525,65 @@ export default function DeclarationOutil() {
                   </div>
 
                   {aucunSIA ? (
-                    <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px', marginBottom: 20, color: '#555', fontSize: '0.92em' }}>
-                      Aucun système d'intelligence artificielle n'a été utilisé dans le cadre de cette évaluation. Vous pouvez directement générer la déclaration.
+                    <div style={{ marginBottom: 20 }}>
+                      {/* Avertissement étapes obligatoires */}
+                      {data.etapes.filter(e => e.ia?.toLowerCase().includes('obligatoire')).length > 0 && (() => {
+                        const obligatoires = data.etapes.filter(e => e.ia?.toLowerCase().includes('obligatoire'));
+                        return (
+                          <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
+                            <p style={{ fontWeight: 'bold', color: '#856404', margin: '0 0 10px', fontSize: '0.92em' }}>
+                              ⚠ Vous avez indiqué ne pas avoir utilisé de SIA. L'utilisation d'un SIA est pourtant marquée comme étant obligatoire pour au moins une étape de réalisation.
+                            </p>
+                            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em', marginBottom: 12 }}>
+                              <thead>
+                                <tr>
+                                  <th style={{ border: '1px solid #ffc107', padding: '6px 8px', background: '#fff8e1', textAlign: 'left', width: '25%' }}>Étape</th>
+                                  <th style={{ border: '1px solid #ffc107', padding: '6px 8px', background: '#fff8e1', textAlign: 'left', width: '15%' }}>Utilisation des SIA</th>
+                                  <th style={{ border: '1px solid #ffc107', padding: '6px 8px', background: '#fff8e1', textAlign: 'left' }}>Directives</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {obligatoires.map((etape, i) => (
+                                  <tr key={i}>
+                                    <td style={{ border: '1px solid #ffc107', padding: '6px 8px', verticalAlign: 'top' }}>
+                                      <strong>{etape.etapeInfo.libelle}</strong>
+                                      {etape.etapeInfo.parenthese && <span style={{ display: 'block', color: '#666', fontSize: '0.85em' }}>({etape.etapeInfo.parenthese})</span>}
+                                    </td>
+                                    <td style={{ border: '1px solid #ffc107', padding: '6px 8px', verticalAlign: 'top' }}><strong>{etape.ia}</strong></td>
+                                    <td style={{ border: '1px solid #ffc107', padding: '6px 8px', verticalAlign: 'top' }}>
+                                      <div style={{ fontSize: '0.95em' }} dangerouslySetInnerHTML={{ __html: etape.justification }} />
+                                    </td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#856404' }}>
+                              Justifiez pourquoi vous n'avez pas utilisé de SIA pour cette étape ou ces étapes. <span style={{ color: '#E41E25' }}>*</span>
+                            </label>
+                            <textarea
+                              value={aucunSIAJustification}
+                              onChange={e => { setAucunSIAJustification(e.target.value); setAucunSIAJustifError(false); }}
+                              placeholder="Expliquez les raisons pour lesquelles vous n'avez pas utilisé de SIA malgré cette exigence…"
+                              rows={4}
+                              style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: aucunSIAJustifError ? '2px solid #E41E25' : '1px solid #ffc107', borderRadius: 4, background: aucunSIAJustifError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                            />
+                            {aucunSIAJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                          </div>
+                        );
+                      })()}
+                      {/* Commentaires facultatifs */}
+                      <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px' }}>
+                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#231F20' }}>
+                          Commentaires <span style={{ fontWeight: 'normal', color: '#888' }}>(facultatif)</span>
+                        </label>
+                        <textarea
+                          value={aucunSIACommentaire}
+                          onChange={e => setAucunSIACommentaire(e.target.value)}
+                          placeholder="Ajoutez tout commentaire pertinent concernant votre non-utilisation des SIA…"
+                          rows={3}
+                          style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                        />
+                      </div>
                     </div>
                   ) : (
                     <>
