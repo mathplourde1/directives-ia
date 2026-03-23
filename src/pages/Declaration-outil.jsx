@@ -66,7 +66,7 @@ function parseXML(xmlText) {
 }
 
 function defaultOutilEntry() {
-  return { outil: '', outilLibre: '', etapes: [], description: '' };
+  return { outil: '', outilLibre: '', etapes: [] };
 }
 
 export default function DeclarationOutil() {
