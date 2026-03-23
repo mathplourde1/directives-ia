@@ -319,6 +319,9 @@ export default function DeclarationOutil() {
         </tr>`;
       });
       declTable += '</tbody></table>';
+      if (ap.commentaireGlobal?.trim()) {
+        declTable += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:8pt 0 4pt 0;"><strong>Commentaires :</strong></p><p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;white-space:pre-wrap;">${ap.commentaireGlobal}</p>`;
+      }
     }
 
     // Champs dynamiques
