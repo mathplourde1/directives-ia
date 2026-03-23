@@ -225,6 +225,7 @@ export default function DeclarationOutil() {
       aucunSIACommentaire,
       aucunSIAJustification,
       outilEntries,
+      commentaireGlobal,
       obligNonCouvJustif,
       nonAutoriseeJustifs,
       exigencesResponses,
