@@ -59,14 +59,14 @@ export default function EtapeRow({
       <tr
         ref={provided.innerRef}
         {...provided.draggableProps}
-        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '#fafafa' }}
+        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '#ffffff' }}
       >
         <td
           colSpan={4}
           style={{ padding: '10px 14px', cursor: 'pointer', transition: 'background 0.15s', verticalAlign: 'middle' }}
           onClick={() => onCheckbox(i, true)}
           onMouseEnter={(e) => { if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = snapshot.isDragging ? '#e0f3fc' : '#fafafa'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = snapshot.isDragging ? '#e0f3fc' : '#ffffff'; }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
             {/* Drag + reorder */}
