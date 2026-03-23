@@ -989,16 +989,15 @@ export default function DeclarationOutil() {
                   <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em' }}>
                     <thead>
                       <tr>
-                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '20%', textAlign: 'left' }}>Outil utilisé</th>
-                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '25%', textAlign: 'left' }}>Étapes de réalisation</th>
-                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '55%', textAlign: 'left' }}>Commentaires</th>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '25%', textAlign: 'left' }}>Outil utilisé</th>
+                        <th style={{ border: '1px solid #ccc', padding: '7px 9px', background: '#edfbf0', width: '75%', textAlign: 'left' }}>Étapes de réalisation</th>
                       </tr>
                     </thead>
                     <tbody>
                       {apercu.outilEntries.map((entry, i) => {
-                        const etapeLabels = entry.etapes.map(id => {
+                        const etapeItems = entry.etapes.map(id => {
                           const found = apercu.etapes.find(e => e.etapeInfo.id === id);
-                          return found ? found.etapeInfo.libelle : id;
+                          return found ? { libelle: found.etapeInfo.libelle, ia: found.ia } : { libelle: id, ia: null };
                         });
                         return (
                           <tr key={i}>
@@ -1007,11 +1006,10 @@ export default function DeclarationOutil() {
                             </td>
                             <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
                               <ul style={{ margin: 0, paddingLeft: 16 }}>
-                                {etapeLabels.map((l, li) => <li key={li}>{l}</li>)}
+                                {etapeItems.map((item, li) => (
+                                  <li key={li}>{item.libelle}{item.ia ? <span style={{ color: '#555', fontStyle: 'italic' }}> ({item.ia})</span> : ''}</li>
+                                ))}
                               </ul>
-                            </td>
-                            <td style={{ border: '1px solid #ccc', padding: '7px 9px', verticalAlign: 'top' }}>
-                              <div dangerouslySetInnerHTML={{ __html: entry.description }} />
                             </td>
                           </tr>
                         );
