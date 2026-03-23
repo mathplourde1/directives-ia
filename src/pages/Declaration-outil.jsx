@@ -875,6 +875,22 @@ export default function DeclarationOutil() {
                     </div>
                   )}
 
+                  {/* Commentaires globaux — seulement si outils déclarés */}
+                  {!aucunSIA && (
+                    <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
+                      <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#231F20' }}>
+                        Commentaires <span style={{ fontWeight: 'normal', color: '#888' }}>(facultatif)</span>
+                      </label>
+                      <textarea
+                        value={commentaireGlobal}
+                        onChange={e => setCommentaireGlobal(e.target.value)}
+                        placeholder="Ajoutez tout commentaire pertinent concernant votre utilisation des SIA pour cette évaluation…"
+                        rows={3}
+                        style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                      />
+                    </div>
+                  )}
+
                   {/* Submit */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                     <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
