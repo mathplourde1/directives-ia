@@ -3,6 +3,7 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ETAPES from '@/components/etapesData';
+import EtapeRow from '@/components/guide/EtapeRow';
 import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 import DeclarationFieldModal from '@/components/DeclarationFieldModal';
 import BrioSection from '@/components/BrioSection';
