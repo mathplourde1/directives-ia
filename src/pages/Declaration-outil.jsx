@@ -73,6 +73,7 @@ export default function DeclarationOutil() {
   const [data, setData] = useState(null);
   const [aucunSIA, setAucunSIA] = useState(false);
   const [aucunSIACommentaire, setAucunSIACommentaire] = useState('');
+  const [commentaireGlobal, setCommentaireGlobal] = useState('');
   const [aucunSIAJustification, setAucunSIAJustification] = useState('');
   const [aucunSIAJustifError, setAucunSIAJustifError] = useState(false);
   const [outilEntries, setOutilEntries] = useState([defaultOutilEntry()]);
