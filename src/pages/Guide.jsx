@@ -10,9 +10,6 @@ import BrioSection from '@/components/BrioSection';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 
-const IA_OPTIONS = ['Non autorisée', 'Autorisée avec restrictions', 'Autorisée sans restrictions', 'Obligatoire'];
-
-
 const GABARITS = {
   'Non autorisée': "Lors de cette étape, les SIA ne sont pas autorisés car ...",
   'Autorisée avec restrictions': "Lors de cette étape, les SIA sont autorisés dans ce contexte ... Ils sont interdits dans cet autre contexte ...",
