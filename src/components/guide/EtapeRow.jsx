@@ -21,9 +21,9 @@ export default function EtapeRow({
       <tr
         ref={provided.innerRef}
         {...provided.draggableProps}
-        style={{ ...provided.draggableProps.style, background: '#f2f2f2' }}
+        style={{ ...provided.draggableProps.style }}
       >
-        <td colSpan={4} style={{ padding: '8px 12px', verticalAlign: 'middle' }}>
+        <td colSpan={4} style={{ padding: '8px 12px', verticalAlign: 'middle', background: '#f2f2f2' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             {/* Drag + reorder */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
