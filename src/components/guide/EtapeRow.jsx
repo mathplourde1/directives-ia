@@ -94,7 +94,7 @@ export default function EtapeRow({
             />
 
             {/* Label — bigger */}
-            <label htmlFor={`etape_${i}`} style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', fontSize: '1em', color: '#231F20' }}
+            <label htmlFor={`etape_${i}`} style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', fontSize: '16px', color: '#231F20' }}
               onClick={(e) => e.stopPropagation()}>
               {etape.libelle}
               {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.9em' }}> ({etape.parenthese})</span>}
