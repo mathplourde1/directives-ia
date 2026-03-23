@@ -68,9 +68,9 @@ export default function EtapeRow({
           onMouseEnter={(e) => { if (!snapshot.isDragging) e.currentTarget.style.background = '#eaf6fd'; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = snapshot.isDragging ? '#e0f3fc' : '#ffffff'; }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
-            {/* Drag + reorder */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 2 }} onClick={(e) => e.stopPropagation()}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+            {/* Boutons fixes (drag + reorder + checkbox) */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 2, flexShrink: 0, paddingTop: 2 }} onClick={(e) => e.stopPropagation()}>
               <span {...provided.dragHandleProps} title="Glisser pour réordonner"
                 style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none' }}>⠿</span>
               <button type="button" title="En haut" onClick={() => onMoveEtape(pos, 0)} disabled={pos === 0}
@@ -81,32 +81,30 @@ export default function EtapeRow({
                 style={{ background: 'none', border: 'none', cursor: pos === etapesOrderLength - 1 ? 'default' : 'pointer', fontSize: '0.85em', opacity: pos === etapesOrderLength - 1 ? 0.25 : 1 }}>🔽</button>
               <button type="button" title="En bas" onClick={() => onMoveEtape(pos, etapesOrderLength - 1)} disabled={pos === etapesOrderLength - 1}
                 style={{ background: 'none', border: 'none', cursor: pos === etapesOrderLength - 1 ? 'default' : 'pointer', fontSize: '0.85em', opacity: pos === etapesOrderLength - 1 ? 0.25 : 1 }}>⏬</button>
+              <input
+                type="checkbox"
+                id={`etape_${i}`}
+                checked={false}
+                onChange={(e) => { e.stopPropagation(); onCheckbox(i, e.target.checked); }}
+                style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0, marginLeft: 4 }}
+                onClick={(e) => e.stopPropagation()}
+              />
             </div>
 
-            {/* Checkbox */}
-            <input
-              type="checkbox"
-              id={`etape_${i}`}
-              checked={false}
-              onChange={(e) => { e.stopPropagation(); onCheckbox(i, e.target.checked); }}
-              style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }}
-              onClick={(e) => e.stopPropagation()}
-            />
-
-            {/* Label — bigger */}
-            <label htmlFor={`etape_${i}`} style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', fontSize: '16px', color: '#231F20' }}
-              onClick={(e) => e.stopPropagation()}>
-              {etape.libelle}
-              {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.9em' }}> ({etape.parenthese})</span>}
-            </label>
-
-            {/* "Ne s'applique pas" */}
-            <div style={{ marginLeft: 'auto' }} onClick={(e) => e.stopPropagation()}>
-              <button type="button" onClick={() => onCollapseRow(i)}
-                style={{ fontSize: '0.75em', padding: '3px 10px', background: '#888', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}
-                title="Masquer cette étape — ne s'applique pas à cette évaluation">
-                ✕ Ne s'applique pas
-              </button>
+            {/* Label + "Ne s'applique pas" — zone flexible */}
+            <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+              <label htmlFor={`etape_${i}`} style={{ cursor: 'pointer', margin: 0, fontWeight: 'bold', fontSize: '16px', color: '#231F20' }}
+                onClick={(e) => e.stopPropagation()}>
+                {etape.libelle}
+                {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.9em' }}> ({etape.parenthese})</span>}
+              </label>
+              <div style={{ flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+                <button type="button" onClick={() => onCollapseRow(i)}
+                  style={{ fontSize: '0.75em', padding: '3px 10px', background: '#888', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}
+                  title="Masquer cette étape — ne s'applique pas à cette évaluation">
+                  ✕ Ne s'applique pas
+                </button>
+              </div>
             </div>
           </div>
         </td>
