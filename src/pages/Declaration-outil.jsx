@@ -834,7 +834,7 @@ export default function DeclarationOutil() {
                                   style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_iagraphie`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.iagraphieAilleurs ? '#eee' : (exigencesErrors[`${id}_iagraphie`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
                                   <input type="checkbox" checked={!!resp.iagraphieAilleurs} onChange={e => setResp('iagraphieAilleurs', e.target.checked)} />
-                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                  Cette exigence a déjà été traitée ailleurs dans le travail soumis ou dans cette déclaration.
                                 </label>
                                 {exigencesErrors[`${id}_iagraphie`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
                               </div>
@@ -850,7 +850,7 @@ export default function DeclarationOutil() {
                                   style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_traces`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.tracesAilleurs ? '#eee' : (exigencesErrors[`${id}_traces`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
                                   <input type="checkbox" checked={!!resp.tracesAilleurs} onChange={e => setResp('tracesAilleurs', e.target.checked)} />
-                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                  Cette exigence a déjà été traitée ailleurs dans le travail soumis ou dans cette déclaration.
                                 </label>
                                 {exigencesErrors[`${id}_traces`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
                               </div>
@@ -866,7 +866,7 @@ export default function DeclarationOutil() {
                                   style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: exigencesErrors[`${id}_logique`] ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.logiqueAilleurs ? '#eee' : (exigencesErrors[`${id}_logique`] ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
                                   <input type="checkbox" checked={!!resp.logiqueAilleurs} onChange={e => setResp('logiqueAilleurs', e.target.checked)} />
-                                  Cette exigence est déjà répondue ailleurs dans le travail soumis
+                                  Cette exigence a déjà été traitée ailleurs dans le travail soumis ou dans cette déclaration.
                                 </label>
                                 {exigencesErrors[`${id}_logique`] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
                               </div>
