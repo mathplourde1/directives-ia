@@ -606,7 +606,7 @@ export default function Guide() {
 
       <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Assistant à la rédaction des directives d’utilisation des SIA pour une évaluation</h1>
       <div style={{ maxWidth: 1000, margin: '0 auto', fontSize: 'initial' }}>
-      <div className="mb-2">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des systèmes d'intelligence artificielle (SIA) (ou des fonctionnalités IA intégrées dans les outils) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
+      <div className="mb-2">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
@@ -941,7 +941,7 @@ export default function Guide() {
           style={{ display: 'none' }}
           onChange={handleLoad} />
 
-        <div style={{ marginTop: 12, alignItems: 'center' }}>
+        <div style={{ marginTop: 12 }}>
           <button type="button" onClick={() => setShowNewEvalDialog(true)}
             style={{ background: '#4a4a4a', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95em' }}>
             ➕ Créer des directives pour une autre évaluation
