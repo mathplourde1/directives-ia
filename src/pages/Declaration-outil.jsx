@@ -1017,6 +1017,14 @@ export default function DeclarationOutil() {
                   </table>
                 )}
 
+                {/* Commentaires globaux apercu */}
+                {!apercu.aucunSIA && apercu.commentaireGlobal?.trim() && (
+                  <div style={{ marginTop: 12, fontSize: '0.92em' }}>
+                    <strong>Commentaires :</strong>
+                    <p style={{ margin: '4px 0 0', whiteSpace: 'pre-wrap', color: '#333' }}>{apercu.commentaireGlobal}</p>
+                  </div>
+                )}
+
                 {/* Champs dynamiques */}
                 {!apercu.aucunSIA && (() => {
                   const blocks = [];
