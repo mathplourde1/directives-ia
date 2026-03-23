@@ -701,303 +701,44 @@ export default function Guide() {
           </thead>
           <Droppable droppableId="etapes-table">
             {(provided) =>
-                <tbody ref={provided.innerRef} {...provided.droppableProps}>
-            {etapesOrder.map((etapeIdx, pos) => {
-                    const etape = ETAPES[etapeIdx];
-                    const i = etapeIdx;
-                    const r = rows[i];
-                    const err = errors[i];
-                    const disabled = !r.checked;
-                    return (
-                      <Draggable key={etape.id} draggableId={etape.id} index={pos}>
-                  {(provided, snapshot) =>
-                        <tr ref={provided.innerRef} {...provided.draggableProps}
-                        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}>
-                  {/* Col 1: Étape checkbox */}
-                  <td
-                            style={{ verticalAlign: 'top', cursor: collapsedRows[i] ? 'default' : 'pointer', transition: 'background 0.15s', background: collapsedRows[i] ? '#f5f5f5' : '' }}
-                            onClick={() => !collapsedRows[i] && handleCheckbox(i, !r.checked)}
-                            onMouseEnter={(e) => {if (!snapshot.isDragging && !collapsedRows[i]) e.currentTarget.style.background = '#eaf6fd';}}
-                            onMouseLeave={(e) => {e.currentTarget.style.background = collapsedRows[i] ? '#f5f5f5' : '';}}>
-                    {/* Drag handle + reorder buttons */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={(e) => e.stopPropagation()}>
-                      <span {...provided.dragHandleProps} title="Glisser pour réordonner"
-                              style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
-                      <button type="button" title="En haut de la liste" onClick={() => moveEtape(pos, 0)} disabled={pos === 0}
-                              style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>⏫</button>
-                      <button type="button" title="Déplacer vers le haut" onClick={() => moveEtape(pos, pos - 1)} disabled={pos === 0}
-                              style={{ background: 'none', border: 'none', cursor: pos === 0 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === 0 ? 0.25 : 1 }}>🔼</button>
-                      <button type="button" title="Déplacer vers le bas" onClick={() => moveEtape(pos, pos + 1)} disabled={pos === etapesOrder.length - 1}
-                              style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>🔽</button>
-                      <button type="button" title="En bas de la liste" onClick={() => moveEtape(pos, etapesOrder.length - 1)} disabled={pos === etapesOrder.length - 1}
-                              style={{ background: 'none', border: 'none', cursor: pos === etapesOrder.length - 1 ? 'default' : 'pointer', fontSize: '0.9em', padding: '1px 3px', opacity: pos === etapesOrder.length - 1 ? 0.25 : 1 }}>⏬</button>
-                    </div>
-
-                    {collapsedRows[i] ? (
-                            /* Collapsed state */
-                            <div onClick={(e) => e.stopPropagation()}>
-                        <span style={{ fontWeight: 'bold', color: '#888', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
-                          {etape.libelle}
-                          {etape.parenthese && <span style={{ fontWeight: 'normal', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
-                        </span>
-                        <span style={{ fontSize: '0.78em', color: '#999', fontStyle: 'italic', display: 'block', marginBottom: 8 }}>Ne s'applique pas</span>
-                        <button type="button" onClick={() => handleRestoreRow(i)}
-                              style={{ fontSize: '0.78em', padding: '3px 10px', background: '#6c757d', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                          ↺ Rétablir
-                        </button>
-                      </div>) : (
-
-                            /* Normal state */
-                            <>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                          <input
-                                  type="checkbox"
-                                  id={`etape_${i}`}
-                                  checked={r.checked}
-                                  onChange={(e) => {e.stopPropagation();handleCheckbox(i, e.target.checked);}}
-                                  style={{ width: 18, height: 18, minWidth: 18, accentColor: '#00A4E4', cursor: 'pointer', flexShrink: 0 }} />
-                          <label htmlFor={`etape_${i}`} className="step-label" style={{ cursor: 'pointer', margin: 0 }}>
-                            {etape.libelle}
-                            {etape.parenthese && <span style={{ fontWeight: 'normal', color: '#555', fontSize: '0.88em' }}> ({etape.parenthese})</span>}
-                          </label>
-                        </div>
-                        {etape.id === 'autres' && r.checked &&
-                              <div style={{ marginTop: 8 }} onClick={(e) => e.stopPropagation()}>
-                            <div style={{ marginBottom: 6 }}>
-                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
-                                Libellé <span className="required">*</span>
-                              </label>
-                              <input
-                                    type="text"
-                                    value={r.libelle_custom}
-                                    onChange={(e) => updateRow(i, 'libelle_custom', e.target.value)}
-                                    placeholder="Nom de l'étape personnalisée"
-                                    style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.libelle_custom ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.libelle_custom ? '#fff4f4' : 'white' }} />
-                              {err.libelle_custom && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                            </div>
-                            <div>
-                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 2 }}>
-                                Exemples <span className="required">*</span>
-                              </label>
-                              <textarea
-                                    rows={3}
-                                    value={r.exemples}
-                                    onChange={(e) => updateRow(i, 'exemples', e.target.value)}
-                                    placeholder="Décrivez des exemples d'utilisation"
-                                    style={{ width: '95%', padding: '5px 8px', fontFamily: 'inherit', border: err.exemples ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: err.exemples ? '#fff4f4' : 'white' }} />
-                              {err.exemples && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                            </div>
-                          </div>
-                              }
-                        {/* Ne s'applique pas button — shown at bottom of cell */}
-                        <div style={{ marginTop: 10, textAlign: 'center' }} onClick={(e) => e.stopPropagation()}>
-                          <button type="button" onClick={() => handleCollapseRow(i)}
-                                style={{ fontSize: '0.75em', padding: '3px 10px', background: '#888', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}
-                                title="Masquer cette étape — ne s'applique pas à cette évaluation">
-                            ✕ Ne s'applique pas
-                          </button>
-                        </div>
-                      </>)
-                            }
-                      </td>
-
-                  {/* Col 2: IA options */}
-                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
-                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
-                    <div style={{ display: collapsedRows[i] ? 'none' : undefined }}>
-                      {IA_OPTIONS.map((opt, j) =>
-                              <div key={j}>
-                          <input
-                                  type="radio"
-                                  id={`radio_${i}_${j}`}
-                                  name={`ia_${i}`}
-                                  value={opt}
-                                  checked={r.ia === opt}
-                                  onChange={() => handleIaChange(i, opt)} />
-
-                          <label htmlFor={`radio_${i}_${j}`} style={{ marginLeft: 4 }}>{opt}</label>
-                        </div>
-                              )}
-                    </div>
-                    {!collapsedRows[i] && err.ia && <span style={errorStyle}>⚠ Sélection requise</span>}
-                  </td>
-
-                  {/* Col 3: Justification */}
-                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
-                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> : null}
-                    {!collapsedRows[i] && r.ia &&
-                            <>
-                        {r.justification_vierge ?
-                              <div
-                                style={{
-                                  width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
-                                  fontFamily: 'inherit', fontSize: '0.9em', color: '#aaa',
-                                  border: '1px solid #ccc',
-                                  background: '#f0f0f0',
-                                  borderRadius: 4, cursor: 'text',
-                                  fontStyle: 'italic'
-                                }}
-                                onClick={() => openDirectiveModal(i)}>
-                              Directives vierges — cliquez pour modifier
-                            </div> :
-                              r.justification ?
-                              <div
-                                dangerouslySetInnerHTML={{ __html: r.justification }}
-                                style={{
-                                  width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
-                                  fontFamily: 'inherit', fontSize: '0.9em', lineHeight: 1.5,
-                                  border: err.justification ? '2px solid #E41E25' : '1px solid #ccc',
-                                  background: err.justification ? '#fff4f4' : '#fafafa',
-                                  borderRadius: 4, cursor: 'text'
-                                }}
-                                onClick={() => openDirectiveModal(i)} /> :
-
-                              <div
-                                style={{
-                                  width: '95%', minHeight: 48, marginTop: 4, padding: '6px 8px',
-                                  fontFamily: 'inherit', fontSize: '0.9em', color: '#aaa',
-                                  border: err.justification ? '2px solid #E41E25' : '1px solid #ccc',
-                                  background: err.justification ? '#fff4f4' : '#fafafa',
-                                  borderRadius: 4, cursor: 'text'
-                                }}
-                                onClick={() => openDirectiveModal(i)}>
-                              Cliquez pour rédiger…
-                            </div>
-                              }
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4, flexWrap: 'wrap' }}>
-                          <button
-                                  type="button"
-                                  onClick={() => openDirectiveModal(i)}
-                                  style={{ fontSize: '0.78em', padding: '3px 10px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>
-                            ✏ Modifier / insérer un exemple
-                          </button>
-                          <button
-                                  type="button"
-                                  onClick={() => {
-                                    const nextVierge = !r.justification_vierge;
-                                    setRows((prev) => prev.map((row, idx) => idx === i ? { ...row, justification_vierge: nextVierge, justification: nextVierge ? '' : row.justification } : row));
-                                    setErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, justification: false } : e));
-                                  }}
-                                  style={{
-                                    fontSize: '0.78em', padding: '3px 10px', border: 'none', borderRadius: 999, cursor: 'pointer',
-                                    background: r.justification_vierge ? '#6c757d' : '#e0e0e0',
-                                    color: r.justification_vierge ? 'white' : '#555',
-                                    fontWeight: r.justification_vierge ? 'bold' : 'normal'
-                                  }}>
-                            {r.justification_vierge ? '○ Directives vierges' : '○ Laisser vierge'}
-                          </button>
-                        </div>
-                      </>
-                            }
-                    {!collapsedRows[i] && !r.ia && r.checked && <span style={{ color: '#999', fontSize: '0.9em' }}>Sélectionnez une option IA d'abord.</span>}
-                    {!collapsedRows[i] && err.justification && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                  </td>
-
-                  {/* Col 4: Exigences de déclaration */}
-                  <td style={{ background: collapsedRows[i] ? '#f5f5f5' : '' }}>
-                    {collapsedRows[i] ? <span style={{ color: '#ccc' }}>—</span> :
-                            disabled ? <span style={{ color: '#999', fontSize: '0.9em' }}>—</span> :
-                            <>
-                        <div>
-                          <input
-                                  type="radio"
-                                  id={`decl_aucune_${i}`}
-                                  name={`decl_${i}`}
-                                  value="aucune"
-                                  checked={r.declaration === 'aucune'}
-                                  onChange={() => updateRow(i, 'declaration', 'aucune')} />
-
-                          <label htmlFor={`decl_aucune_${i}`} style={{ marginLeft: 4 }}>Aucune exigence</label>
-                        </div>
-                        <div>
-                          <input
-                                  type="radio"
-                                  id={`decl_requise_${i}`}
-                                  name={`decl_${i}`}
-                                  value="requise"
-                                  checked={r.declaration === 'requise'}
-                                  onChange={() => updateRow(i, 'declaration', 'requise')} />
-
-                          <label htmlFor={`decl_requise_${i}`} style={{ marginLeft: 4 }}>Exigence(s) requise(s)</label>
-                        </div>
-                        {err.declaration && <span style={errorStyle}>⚠ Sélection requise</span>}
-
-                        {r.declaration === 'requise' &&
-                              <div className="decl-sub">
-                            {/* Iagraphie */}
-                            <div>
-                              <input
-                                    type="checkbox"
-                                    id={`iagraphie_${i}`}
-                                    checked={r.decl_iagraphie}
-                                    onChange={(e) => updateRow(i, 'decl_iagraphie', e.target.checked)} />
-
-                              <label htmlFor={`iagraphie_${i}`} style={{ marginLeft: 4 }}>Références et IAgraphie</label>
-                              {r.decl_iagraphie &&
-                                  <>
-                                  <div
-                                      dangerouslySetInnerHTML={{ __html: r.decl_iagraphie_text || '<span style="color:#aaa">Cliquez pour rédiger…</span>' }}
-                                      onClick={() => openDeclModal(i, 'iagraphie')}
-                                      style={{ width: '95%', minHeight: 36, marginTop: 4, padding: '5px 7px', fontFamily: 'inherit', fontSize: '0.88em', lineHeight: 1.5, border: err.decl_iagraphie_text ? '2px solid #E41E25' : '1px solid #ccc', background: err.decl_iagraphie_text ? '#fff4f4' : '#fafafa', borderRadius: 4, cursor: 'text' }} />
-                                  <button type="button" onClick={() => openDeclModal(i, 'iagraphie')} style={{ marginTop: 3, fontSize: '0.75em', padding: '2px 8px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>✏ Modifier / insérer un exemple</button>
-                                  {err.decl_iagraphie_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                                </>
-                                  }
-                              </div>
-                            {/* Traces */}
-                            <div style={{ marginTop: 6 }}>
-                              <input
-                                    type="checkbox"
-                                    id={`traces_${i}`}
-                                    checked={r.decl_traces}
-                                    onChange={(e) => updateRow(i, 'decl_traces', e.target.checked)} />
-
-                              <label htmlFor={`traces_${i}`} style={{ marginLeft: 4 }}>Conserver les traces suivantes :</label>
-                              {r.decl_traces &&
-                                  <>
-                                  <div
-                                      dangerouslySetInnerHTML={{ __html: r.decl_traces_text || '<span style="color:#aaa">Cliquez pour rédiger…</span>' }}
-                                      onClick={() => openDeclModal(i, 'traces')}
-                                      style={{ width: '95%', minHeight: 36, marginTop: 4, padding: '5px 7px', fontFamily: 'inherit', fontSize: '0.88em', lineHeight: 1.5, border: err.decl_traces_text ? '2px solid #E41E25' : '1px solid #ccc', background: err.decl_traces_text ? '#fff4f4' : '#fafafa', borderRadius: 4, cursor: 'text' }} />
-                                  <button type="button" onClick={() => openDeclModal(i, 'traces')} style={{ marginTop: 3, fontSize: '0.75em', padding: '2px 8px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>✏ Modifier / insérer un exemple</button>
-                                  {err.decl_traces_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                                </>
-                                  }
-                            </div>
-                            {/* Logique */}
-                            <div style={{ marginTop: 6 }}>
-                              <input
-                                    type="checkbox"
-                                    id={`logique_${i}`}
-                                    checked={r.decl_logique}
-                                    onChange={(e) => updateRow(i, 'decl_logique', e.target.checked)} />
-
-                              <label htmlFor={`logique_${i}`} style={{ marginLeft: 4 }}>Expliquer la logique d'utilisation :</label>
-                              {r.decl_logique &&
-                                  <>
-                                  <div
-                                      dangerouslySetInnerHTML={{ __html: r.decl_logique_text || '<span style="color:#aaa">Cliquez pour rédiger…</span>' }}
-                                      onClick={() => openDeclModal(i, 'logique')}
-                                      style={{ width: '95%', minHeight: 36, marginTop: 4, padding: '5px 7px', fontFamily: 'inherit', fontSize: '0.88em', lineHeight: 1.5, border: err.decl_logique_text ? '2px solid #E41E25' : '1px solid #ccc', background: err.decl_logique_text ? '#fff4f4' : '#fafafa', borderRadius: 4, cursor: 'text' }} />
-                                  <button type="button" onClick={() => openDeclModal(i, 'logique')} style={{ marginTop: 3, fontSize: '0.75em', padding: '2px 8px', background: '#00A4E4', color: 'white', border: 'none', borderRadius: 4, cursor: 'pointer' }}>✏ Modifier / insérer un exemple</button>
-                                  {err.decl_logique_text && <span style={errorStyle}>⚠ Ce champ est requis</span>}
-                                </>
-                                  }
-                            </div>
-                            {err.declaration_checkbox && <span style={errorStyle}>⚠ Au moins une exigence doit être sélectionnée</span>}
-                          </div>
-                              }
-                      </>
-                            }
-                  </td>
-                  </tr>
-                        }
-                </Draggable>);
-
-                  })}
-            {provided.placeholder}
-          </tbody>
-                }
+              <tbody ref={provided.innerRef} {...provided.droppableProps}>
+                {etapesOrder.map((etapeIdx, pos) => {
+                  const etape = ETAPES[etapeIdx];
+                  const i = etapeIdx;
+                  return (
+                    <Draggable key={etape.id} draggableId={etape.id} index={pos}>
+                      {(provided, snapshot) => (
+                        <EtapeRow
+                          etape={etape}
+                          i={i}
+                          pos={pos}
+                          etapesOrderLength={etapesOrder.length}
+                          r={rows[i]}
+                          err={errors[i]}
+                          collapsed={collapsedRows[i]}
+                          provided={provided}
+                          snapshot={snapshot}
+                          onCheckbox={handleCheckbox}
+                          onCollapseRow={handleCollapseRow}
+                          onRestoreRow={handleRestoreRow}
+                          onIaChange={handleIaChange}
+                          onOpenDirectiveModal={openDirectiveModal}
+                          onToggleVierge={(idx) => {
+                            const nextVierge = !rows[idx].justification_vierge;
+                            setRows((prev) => prev.map((row, j) => j === idx ? { ...row, justification_vierge: nextVierge, justification: nextVierge ? '' : row.justification } : row));
+                            setErrors((prev) => prev.map((e, j) => j === idx ? { ...e, justification: false } : e));
+                          }}
+                          onUpdateRow={updateRow}
+                          onOpenDeclModal={openDeclModal}
+                          onMoveEtape={moveEtape}
+                        />
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </tbody>
+            }
           </Droppable>
         </table>
         </DragDropContext>
