@@ -119,10 +119,10 @@ export default function EtapeRow({
     <tr
       ref={provided.innerRef}
       {...provided.draggableProps}
-      style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '' }}
+      style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '#ffffff' }}
     >
       {/* Col 1: Étape */}
-      <td style={{ verticalAlign: 'top' }}>
+      <td style={{ verticalAlign: 'top', background: '#eaf6fd' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 6 }} onClick={(e) => e.stopPropagation()}>
           <span {...provided.dragHandleProps} title="Glisser pour réordonner"
             style={{ cursor: 'grab', color: '#aaa', fontSize: '1.1em', padding: '2px 4px', userSelect: 'none', lineHeight: 1 }}>⠿</span>
