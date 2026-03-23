@@ -1072,6 +1072,22 @@ export default function Guide() {
             </div>
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
+              {/* Toggle pill: par étape / par outil */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
+                <span style={{ fontSize: '0.88em', color: '#555', fontWeight: 'bold' }}>Type de déclaration :</span>
+                <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
+                  <button type="button"
+                    onClick={() => { setDeclMode('etape'); setInstructorInstructions(INSTRUCTIONS_PAR_ETAPE); }}
+                    style={{ padding: '5px 14px', fontSize: '0.85em', fontWeight: declMode === 'etape' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'etape' ? '#00A4E4' : 'transparent', color: declMode === 'etape' ? 'white' : '#555', transition: 'background 0.15s' }}>
+                    Par étape
+                  </button>
+                  <button type="button"
+                    onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
+                    style={{ padding: '5px 14px', fontSize: '0.85em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#00A4E4' : 'transparent', color: declMode === 'outil' ? 'white' : '#555', transition: 'background 0.15s' }}>
+                    Par outil
+                  </button>
+                </div>
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
