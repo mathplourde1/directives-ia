@@ -59,7 +59,7 @@ export default function EtapeRow({
       <tr
         ref={provided.innerRef}
         {...provided.draggableProps}
-        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '#fafafa' }}
+        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : 'white' }}
       >
         <td
           colSpan={4}
