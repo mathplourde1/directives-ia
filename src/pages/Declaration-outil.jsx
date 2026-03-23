@@ -745,26 +745,11 @@ export default function DeclarationOutil() {
                             </div>
                           </div>
 
-                          {/* 2) RTE description */}
-                          <div>
-                            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6 }}>
-                              Commentaires <span style={{ fontWeight: 'normal', color: '#666' }}>(optionnel)</span>
-                            </label>
-                            <div className="quill-wrapper" style={{ border: '1px solid #ccc', borderRadius: 4, background: 'white' }}>
-                              <ReactQuill
-                                value={entry.description}
-                                onChange={val => updateEntry(i, 'description', val)}
-                                modules={QUILL_MODULES}
-                                theme="snow"
-                                placeholder="Commentaires additionnels sur votre utilisation de cet outil…"
-                              />
-                            </div>
-                          </div>
                         </div>
                       ))}
 
                       <button type="button" onClick={addEntry}
-                        style={{ background: 'none', border: '1px dashed #00A4E4', color: '#00A4E4', borderRadius: 5, padding: '8px 20px', cursor: 'pointer', fontSize: '0.9em', fontFamily: 'inherit', display: 'block', width: '100%', marginBottom: 20 }}>
+                        style={{ background: '#00A4E4', color: 'white', border: 'none', borderRadius: 5, padding: '10px 24px', cursor: 'pointer', fontSize: '0.95em', fontFamily: 'inherit', fontWeight: 'bold', display: 'block', width: '100%', marginBottom: 20 }}>
                         + Ajouter un autre outil utilisé
                       </button>
                     </>
