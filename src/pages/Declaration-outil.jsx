@@ -303,19 +303,17 @@ export default function DeclarationOutil() {
     } else {
       declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;margin-bottom:12pt;">
         <thead><tr>
-          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:22%">Outil utilisé</th>
-          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:28%">Étapes de réalisation</th>
-          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:50%">Commentaires</th>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:25%">Outil utilisé</th>
+          <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:75%">Étapes de réalisation</th>
         </tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
-        const etapeLabels = entry.etapes.map(id => {
+        const etapeItems = entry.etapes.map(id => {
           const found = ap.etapes.find(e => e.etapeInfo.id === id);
-          return found ? found.etapeInfo.libelle : id;
+          return found ? `${found.etapeInfo.libelle} <em>(${found.ia})</em>` : id;
         }).join('<br>');
         declTable += `<tr>
           <td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${entry.outil === 'Autre' && entry.outilLibre ? entry.outilLibre : entry.outil}</strong></td>
-          <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etapeLabels}</td>
-          <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${entry.description}</td>
+          <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${etapeItems}</td>
         </tr>`;
       });
       declTable += '</tbody></table>';
