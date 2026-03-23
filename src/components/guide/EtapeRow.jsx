@@ -21,7 +21,7 @@ export default function EtapeRow({
       <tr
         ref={provided.innerRef}
         {...provided.draggableProps}
-        style={{ ...provided.draggableProps.style, background: '#f5f5f5' }}
+        style={{ ...provided.draggableProps.style, background: '#F2F2F2' }}
       >
         <td colSpan={4} style={{ padding: '8px 12px', verticalAlign: 'middle' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -59,7 +59,7 @@ export default function EtapeRow({
       <tr
         ref={provided.innerRef}
         {...provided.draggableProps}
-        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : '#fafafa' }}
+        style={{ ...provided.draggableProps.style, background: snapshot.isDragging ? '#e0f3fc' : 'white' }}
       >
         <td
           colSpan={4}
