@@ -941,7 +941,7 @@ export default function Guide() {
           style={{ display: 'none' }}
           onChange={handleLoad} />
 
-        <div style={{ marginTop: 12 }}>
+        <div style={{ marginTop: 12, alignItems: 'center' }}>
           <button type="button" onClick={() => setShowNewEvalDialog(true)}
             style={{ background: '#4a4a4a', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95em' }}>
             ➕ Créer des directives pour une autre évaluation
