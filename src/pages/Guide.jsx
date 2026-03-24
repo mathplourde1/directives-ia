@@ -988,6 +988,12 @@ export default function Guide() {
 
       {/* ===== DÉCLARATION ÉTUDIANTE TOGGLE ===== */}
       <div id="declaration" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
+        <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.3em', fontWeight: 'bold', color: '#231F20' }}>
+          Formulaire de déclaration pour personnes étudiantes
+        </h2>
+        <div style={{ marginBottom: 16, fontSize: '0.93em', color: '#444', lineHeight: 1.6 }}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </div>
         <button
           type="button"
           onClick={() => setDeclarationActive((v) => !v)}
