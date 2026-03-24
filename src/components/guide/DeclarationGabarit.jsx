@@ -67,14 +67,11 @@ function buildGabaritEtapeHTML(selections, identification) {
       <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:45%">Exigences de déclaration — réponses</th>
     </tr></thead><tbody>`;
   selections.forEach(s => {
+    if (s.declaration === 'aucune') return; // skip steps with no declaration requirement
     const exigItems = [];
-    if (s.declaration === 'aucune') {
-      exigItems.push('Aucune exigence à déclarer.');
-    } else {
-      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
-      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
-      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
-    }
+    if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
+    if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
+    if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
     const exigHtml = exigItems.length
       ? `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:4px">${i}</li>`).join('')}</ul>`
       : '—';
@@ -89,6 +86,10 @@ function buildGabaritEtapeHTML(selections, identification) {
   });
   declTable += '</tbody></table>';
 
+  const commentsSection = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Commentaires additionnels</h2>
+  <p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 6pt 0;">Vous pouvez ajouter ici tout commentaire pertinent concernant votre utilisation des SIA dans le cadre de cette évaluation.</p>
+  <div style="border:1px solid #ccc;border-radius:4px;min-height:80px;padding:8px;font-family:Arial,sans-serif;font-size:10pt;color:#aaa;font-style:italic;">[Commentaires optionnels]</div>`;
+
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
     "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
@@ -101,7 +102,7 @@ function buildGabaritEtapeHTML(selections, identification) {
 
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + intro + directivesTitle + directivesTable + declTitle + declTable + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + directivesTitle + directivesTable + declTitle + declTable + commentsSection + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function buildGabaritOutilHTML(selections, identification) {
