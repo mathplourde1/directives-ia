@@ -9,6 +9,7 @@ import DeclarationFieldModal from '@/components/DeclarationFieldModal';
 import BrioSection from '@/components/BrioSection';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import DeclarationGabarit from '@/components/guide/DeclarationGabarit';
+import PageRightNav from '@/components/guide/PageRightNav';
 
 
 const GABARITS = {
@@ -579,6 +580,7 @@ export default function Guide() {
 
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
+      <PageRightNav submitted={submitted} />
       <style>{`
         :root { --rouge: #E41E25; --bleu-ul: #00A4E4; --gris-pale: #F2F2F2; --gris-fonce: #231F20; --bordure: #ccc; }
         body { font-size: smaller; }
@@ -648,7 +650,7 @@ export default function Guide() {
       </div>
 
       {/* Identification section */}
-      <div style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
+      <div id="evaluation-ciblee" style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
         <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 6 }}>Évaluation ciblée</h2>
         <p style={{ margin: '0 0 14px 0', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>Les champs obligatoires de cette section d'identification doivent être valides pour continuer.</p>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
@@ -778,7 +780,7 @@ export default function Guide() {
       {submitted &&
       <div id="synthese-container" key={submitKey}>
           {/* Section Brio */}
-          <BrioSection selections={selections} />
+          <div id="brio-section"><BrioSection selections={selections} /></div>
           {/* Synthèses accordion */}
           <div className="synthese-section">
             <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
