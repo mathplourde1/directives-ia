@@ -989,7 +989,7 @@ export default function Guide() {
       </div>
 
       {/* ===== DÉCLARATION ÉTUDIANTE ===== */}
-      <div id="declaration" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
+      {submitted && <div id="declaration" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
         <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.3em', fontWeight: 'bold', color: '#231F20' }}>
           Formulaire de déclaration pour personnes étudiantes
         </h2>
@@ -1165,7 +1165,7 @@ export default function Guide() {
               }} />
                </div>
                </div>{/* fin formulaire interactif Brio */}
-               </div>{/* fin #declaration */}
+               </div>}{/* fin #declaration */}
       </div>{/* fin main content */}
       <PageRightNav submitted={submitted} />
                </div>);
