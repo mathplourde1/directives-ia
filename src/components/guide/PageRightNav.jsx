@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 const NAV_ITEMS = [
   { id: 'evaluation-ciblee', label: 'Évaluation ciblée', conditional: false },
-  { id: 'synthese-container', label: 'Synthèses', conditional: true },
   { id: 'brio-section', label: 'Suggestion Brio', conditional: true },
+  { id: 'synthese-container', label: 'Synthèses', conditional: true },
   { id: 'sauvegarde', label: 'Sauvegarde et restauration', conditional: false },
   { id: 'declaration', label: 'Déclaration étudiante', conditional: true },
 ];
@@ -20,7 +20,6 @@ export default function PageRightNav({ submitted }) {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'stretch',
-      flexShrink: 0,
       width: open ? 200 : 28,
       transition: 'width 0.25s ease',
       overflow: 'hidden',
@@ -29,9 +28,10 @@ export default function PageRightNav({ submitted }) {
       borderRadius: '8px 0 0 8px',
       borderRight: 'none',
       boxShadow: '-2px 4px 12px rgba(0,0,0,0.08)',
-      alignSelf: 'flex-start',
-      position: 'sticky',
-      top: 16,
+      position: 'fixed',
+      top: 80,
+      right: 0,
+      zIndex: 100,
     }}>
       {/* Collapsed tab — always visible */}
       <button

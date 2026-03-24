@@ -581,7 +581,7 @@ export default function Guide() {
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh', display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 0 }}>
       {/* Main content */}
-      <div style={{ flex: 1, minWidth: 0 }}>
+      <div style={{ flex: 1, minWidth: 0, paddingRight: 36 }}>
       <style>{`
         :root { --rouge: #E41E25; --bleu-ul: #00A4E4; --gris-pale: #F2F2F2; --gris-fonce: #231F20; --bordure: #ccc; }
         body { font-size: smaller; }
