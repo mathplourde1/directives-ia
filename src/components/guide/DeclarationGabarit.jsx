@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // ---- Helpers partagés ----
 
@@ -217,9 +217,10 @@ function downloadWordGabarit(htmlContent, filename) {
 
 // ---- Composant principal ----
 
-export default function DeclarationGabarit({ selections, identification, isGenerated }) {
-  const [mode, setMode] = useState('etape'); // 'etape' | 'outil'
+export default function DeclarationGabarit({ selections, identification, isGenerated, mode }) {
   const [showApercu, setShowApercu] = useState(false);
+
+  useEffect(() => { setShowApercu(false); }, [mode]);
 
   const html = mode === 'etape'
     ? buildGabaritEtapeHTML(selections, identification)
@@ -229,12 +230,14 @@ export default function DeclarationGabarit({ selections, identification, isGener
   const filename = `gabarit-declaration-${mode}-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 
   return (
-    <div style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
-      <h3 style={{ marginTop: 0, marginBottom: 8, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
-        📄 Gabarit Word filtré pour personnes étudiantes
+    <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
+      <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
+        📄 Option : gabarit Word à compléter manuellement
       </h3>
-      <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 14px', lineHeight: 1.5 }}>
-        Téléchargez un gabarit Word déjà filtré selon vos directives, que les étudiantes et étudiants pourront compléter manuellement et vous remettre.
+      <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 10px', lineHeight: 1.5 }}>
+        {mode === 'etape'
+          ? 'Gabarit filtré listant chaque étape de réalisation avec un espace pour identifier les outils SIA utilisés et répondre aux exigences de déclaration.'
+          : 'Gabarit filtré avec un tableau pour déclarer chaque outil utilisé et les étapes concernées, suivi des exigences de déclaration à compléter.'}
       </p>
 
       {!isGenerated && (
@@ -242,39 +245,6 @@ export default function DeclarationGabarit({ selections, identification, isGener
           ⚠ Générez d'abord vos directives (bouton <strong>Générer les directives mises en forme</strong>) pour activer le téléchargement du gabarit.
         </div>
       )}
-
-      {/* Toggle pill */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-        <span style={{ fontSize: '0.88em', color: '#555', fontWeight: 'bold' }}>Variante :</span>
-        <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
-          {[
-            { val: 'etape', label: 'Déclaration par étape' },
-            { val: 'outil', label: 'Déclaration par outil' },
-          ].map(opt => (
-            <button
-              key={opt.val}
-              type="button"
-              onClick={() => { setMode(opt.val); setShowApercu(false); }}
-              style={{
-                padding: '6px 16px', fontSize: '0.85em',
-                fontWeight: mode === opt.val ? 'bold' : 'normal',
-                border: 'none', cursor: 'pointer',
-                background: mode === opt.val ? '#00A4E4' : 'transparent',
-                color: mode === opt.val ? 'white' : '#555',
-                transition: 'background 0.15s'
-              }}>
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Description de la variante */}
-      <p style={{ fontSize: '0.85em', color: '#666', margin: '0 0 14px', fontStyle: 'italic' }}>
-        {mode === 'etape'
-          ? 'Le gabarit liste chaque étape de réalisation avec un espace pour identifier le ou les outils SIA utilisés et répondre aux exigences de déclaration.'
-          : 'Le gabarit propose un tableau vide pour déclarer chaque outil utilisé et les étapes concernées, suivi des exigences de déclaration à compléter.'}
-      </p>
 
       {/* Boutons d'action */}
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>

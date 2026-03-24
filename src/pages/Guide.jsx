@@ -985,49 +985,49 @@ export default function Guide() {
         }
       </div>
 
-      {/* ===== DÉCLARATION ÉTUDIANTE TOGGLE ===== */}
+      {/* ===== DÉCLARATION ÉTUDIANTE ===== */}
       <div id="declaration" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
         <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.3em', fontWeight: 'bold', color: '#231F20' }}>
           Formulaire de déclaration pour personnes étudiantes
         </h2>
         <div style={{ marginBottom: 16, fontSize: '0.93em', color: '#444', lineHeight: 1.6 }}>
-          Au-delà des directives que vous avez rédigé, si vous désirez que vos étudiantes et étudiants vous soumettent une déclaration d'utilisation des SIA dans le cadre de cette évaluation, vous pouvez leur offrir un gabarit Word déjà filtré ou une version interactive en ligne.
+          Au-delà des directives que vous avez rédigées, si vous désirez que vos étudiantes et étudiants vous soumettent une déclaration d'utilisation des SIA dans le cadre de cette évaluation, vous pouvez leur offrir un gabarit Word déjà filtré ou une version interactive en ligne.
         </div>
-        <button
-          type="button"
-          onClick={() => setDeclarationActive((v) => !v)}
-          style={{
-            display: 'inline-flex', alignItems: 'center', gap: 10,
-            padding: '7px 16px', borderRadius: 999, border: 'none', cursor: 'pointer',
-            fontFamily: 'inherit', fontSize: '0.95em', fontWeight: 'bold', transition: 'background 0.2s',
-            background: declarationActive ? '#00A4E4' : '#e0e0e0',
-            color: declarationActive ? 'white' : '#555'
-          }}>
-          <span style={{
-            width: 34, height: 20, borderRadius: 999,
-            background: declarationActive ? 'rgba(255,255,255,0.35)' : '#bbb',
-            display: 'inline-block', position: 'relative', flexShrink: 0, transition: 'background 0.2s'
-          }}>
-            <span style={{
-              position: 'absolute', top: 3, left: declarationActive ? 16 : 3,
-              width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s'
-            }} />
-          </span>
-          Je désire que les personnes étudiantes complètent un formulaire interactif de déclaration
-        </button>
 
-        {declarationActive &&
-        <>
-            <h2 style={{ marginTop: 20, marginBottom: 16, fontSize: '1.3em', fontWeight: 'bold', background: 'transparent' }} className="py-2">
+        {/* Toggle pill principal */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+          <span style={{ fontSize: '0.9em', color: '#555', fontWeight: 'bold' }}>Type de déclaration :</span>
+          <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
+            <button type="button"
+              onClick={() => { setDeclMode('etape'); setInstructorInstructions(INSTRUCTIONS_PAR_ETAPE); }}
+              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'etape' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'etape' ? '#00A4E4' : 'transparent', color: declMode === 'etape' ? 'white' : '#555', transition: 'background 0.15s' }}>
+              Déclaration par étape
+            </button>
+            <button type="button"
+              onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
+              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#00A4E4' : 'transparent', color: declMode === 'outil' ? 'white' : '#555', transition: 'background 0.15s' }}>
+              Déclaration par outil
+            </button>
+          </div>
+        </div>
+
+        {/* Gabarit Word en haut */}
+        <DeclarationGabarit
+          selections={selections}
+          identification={identification}
+          isGenerated={submitted}
+          mode={declMode}
+        />
+
+        {/* Formulaire interactif (Brio) en dessous */}
+        <div style={{ marginTop: 20, borderTop: '1px solid #e0e0e0', paddingTop: 20 }}>
+            <h2 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.15em', fontWeight: 'bold', background: 'transparent' }}>
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/43d3bfa87_logo-brio.png" alt="Logo Brio" style={{ float: 'right', width: 80, marginLeft: 12, marginBottom: 4 }} />
-              Instructions pour Brio
+              Option : formulaire interactif en ligne (Brio)
             </h2>
-            <div style={{ marginBottom: 20 }}>
+            <div style={{ marginBottom: 16 }}>
               <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="blank" className="text-blue-800 underline">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.</p>
             </div>
-            
-
-
 
 
 
@@ -1077,22 +1077,6 @@ export default function Guide() {
             </div>
 
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
-              {/* Toggle pill: par étape / par outil */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 14 }}>
-                <span style={{ fontSize: '0.88em', color: '#555', fontWeight: 'bold' }}>Type de déclaration :</span>
-                <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
-                  <button type="button"
-                    onClick={() => { setDeclMode('etape'); setInstructorInstructions(INSTRUCTIONS_PAR_ETAPE); }}
-                    style={{ padding: '5px 14px', fontSize: '0.85em', fontWeight: declMode === 'etape' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'etape' ? '#00A4E4' : 'transparent', color: declMode === 'etape' ? 'white' : '#555', transition: 'background 0.15s' }}>
-                    Par étape
-                  </button>
-                  <button type="button"
-                    onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
-                    style={{ padding: '5px 14px', fontSize: '0.85em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#00A4E4' : 'transparent', color: declMode === 'outil' ? 'white' : '#555', transition: 'background 0.15s' }}>
-                    Par outil
-                  </button>
-                </div>
-              </div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans la section Description:</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -1141,12 +1125,6 @@ export default function Guide() {
                   <button type="button" className="btn-primary" onClick={handleSave}>💾 Télécharger un fichier de sauvegarde</button>
                 </div>
 
-                <DeclarationGabarit
-                  selections={selections}
-                  identification={identification}
-                  isGenerated={submitted}
-                />
-
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                     <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
@@ -1182,10 +1160,9 @@ export default function Guide() {
                 backgroundColor: 'white',
                 resize: 'none'
               }} />
-                </div>
-                </>
-        }
-                </div>
-                </div>);
+               </div>
+               </div>{/* fin formulaire interactif Brio */}
+               </div>{/* fin #declaration */}
+               </div>);
 
 }
