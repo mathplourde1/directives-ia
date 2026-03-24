@@ -747,6 +747,11 @@ export default function Guide() {
         <br />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
           <button type="submit" className="btn-primary">Générer les directives mises en forme</button>
+          <button type="button" onClick={() => setShowNewEvalDialog(true)}
+            disabled={!submitted}
+            style={{ background: submitted ? '#4a4a4a' : '#b0b0b0', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: submitted ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.95em', opacity: submitted ? 1 : 0.6 }}>
+            ➕ Créer des directives pour une autre évaluation
+          </button>
           {submitStatus && (submitStatus.ok ? (() => {
               const diffMs = new Date() - submitStatus.time;
               const diffMin = Math.floor(diffMs / 60000);
@@ -945,13 +950,6 @@ export default function Guide() {
           accept=".xml,.txt"
           style={{ display: 'none' }}
           onChange={handleLoad} />
-
-        <div style={{ marginTop: 12 }}>
-          <button type="button" onClick={() => setShowNewEvalDialog(true)}
-            style={{ background: '#4a4a4a', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: 'pointer', fontWeight: 'bold', fontSize: '0.95em' }}>
-            ➕ Créer des directives pour une autre évaluation
-          </button>
-        </div>
 
         {showNewEvalDialog &&
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
