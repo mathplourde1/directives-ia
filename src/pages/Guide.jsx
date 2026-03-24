@@ -621,7 +621,7 @@ export default function Guide() {
       <li>Choisissez et personnalisez au besoin les directives et exigences de déclaration — soyez bref et précis.</li>
       <li>Cliquez sur Soumettre pour obtenir une synthèse. Modifiez au besoin et soumettre à nouveau.</li>
       <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l’évaluation.</li>
-      <li>(Optionnel) Transposez ces directives dans un <a href="#declaration" target="blank" className="text-blue-800 underline">formulaire de déclaration d’utilisation des SIA</a> que les personnes étudiantes devront remplir en ligne et joindre à leur soumission (deux versions disponibles).</li>
+      <li>(Optionnel) Transposez ces directives dans un <a href="#declaration" target="self" className="text-blue-800 underline">formulaire de déclaration d’utilisation des SIA</a> que les personnes étudiantes devront remplir en ligne et joindre à leur soumission (deux versions disponibles).</li>
       </ol>
     💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br /><br />
 
