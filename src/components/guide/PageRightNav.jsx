@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const NAV_ITEMS = [
   { id: 'evaluation-ciblee', label: 'Évaluation ciblée', conditional: false },
   { id: 'brio-section', label: 'Suggestion Brio', conditional: true },
-  { id: 'synthese-container', label: 'Synthèses', conditional: true },
+  { id: 'synthese-section', label: 'Synthèses', conditional: true },
   { id: 'sauvegarde', label: 'Sauvegarde et restauration', conditional: false },
   { id: 'declaration', label: 'Déclaration étudiante', conditional: true },
 ];
