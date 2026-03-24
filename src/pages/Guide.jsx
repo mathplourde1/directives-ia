@@ -8,6 +8,7 @@ import DirectiveSelectionModal from '@/components/DirectiveSelectionModal';
 import DeclarationFieldModal from '@/components/DeclarationFieldModal';
 import BrioSection from '@/components/BrioSection';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import DeclarationGabarit from '@/components/guide/DeclarationGabarit';
 
 
 const GABARITS = {
@@ -1139,6 +1140,12 @@ export default function Guide() {
                 <div style={{ marginTop: 14 }}>
                   <button type="button" className="btn-primary" onClick={handleSave}>💾 Télécharger un fichier de sauvegarde</button>
                 </div>
+
+                <DeclarationGabarit
+                  selections={selections}
+                  identification={identification}
+                  isGenerated={submitted}
+                />
 
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>

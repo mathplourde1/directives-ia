@@ -1,0 +1,318 @@
+import React, { useState } from 'react';
+
+// ---- Helpers partagés ----
+
+function escHtml(str) {
+  return String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatExigences(s) {
+  if (s.declaration === 'aucune')
+    return `<ul style="margin:0;padding-left:18px;list-style-type:disc;"><li style="display:list-item;">Aucune exigence</li></ul>`;
+  const items = [];
+  if (s.decl_iagraphie) items.push(`Références et IAgraphie : ${s.decl_iagraphie_text}`);
+  if (s.decl_traces) items.push(`Conserver les traces suivantes : ${s.decl_traces_text}`);
+  if (s.decl_logique) items.push(`Expliquer la logique d'utilisation : ${s.decl_logique_text}`);
+  if (items.length === 0) return '—';
+  return `<ul style="margin:0;padding-left:18px;list-style-type:disc;">${items.map(i => `<li style="display:list-item;">${i}</li>`).join('')}</ul>`;
+}
+
+// ---- Générateurs HTML gabarit ----
+
+function buildGabaritEtapeHTML(selections, identification) {
+  const cours = escHtml(identification.cours || '[cours]');
+  const evaluation = escHtml(identification.evaluation || '[évaluation]');
+  const session = escHtml(identification.session || '[session]');
+  const enseignants = escHtml(identification.enseignants || '[personne enseignante]');
+
+  const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 8pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>`;
+
+  const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.4;margin:8pt 0 4pt 0;">
+    Je, <strong>[Nom complet de l'étudiant(e)]</strong> (groupe <strong>[Numéro de groupe]</strong>), soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
+  </p>
+  <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.4;margin:0 0 11pt 0;">
+    Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ma démarche d'utilisation des systèmes d'intelligence artificielle.
+  </p>`;
+
+  const directivesTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Directives de la personne enseignante</h2>`;
+  let directivesTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:12pt;">
+    <thead><tr>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:22%">Étape</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:15%">Utilisation des SIA</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:38%">Directives</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:25%">Exigences de déclaration</th>
+    </tr></thead><tbody>`;
+  selections.forEach(s => {
+    const label = s.parenthese
+      ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>`
+      : `<strong>${escHtml(s.etape)}</strong>`;
+    directivesTable += `<tr>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(s.ia)}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${s.justification}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${formatExigences(s)}</td>
+    </tr>`;
+  });
+  directivesTable += '</tbody></table>';
+
+  const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par étape</h2>`;
+  let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:12pt;">
+    <thead><tr>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:25%">Étape de réalisation</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:30%">Outil(s) SIA utilisé(s)</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:45%">Exigences de déclaration — réponses</th>
+    </tr></thead><tbody>`;
+  selections.forEach(s => {
+    const exigItems = [];
+    if (s.declaration === 'aucune') {
+      exigItems.push('Aucune exigence à déclarer.');
+    } else {
+      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
+      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
+      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
+    }
+    const exigHtml = exigItems.length
+      ? `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:4px">${i}</li>`).join('')}</ul>`
+      : '—';
+    const label = s.parenthese
+      ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>`
+      : `<strong>${escHtml(s.etape)}</strong>`;
+    declTable += `<tr>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}<br><span style="color:#888;font-size:0.85em;font-style:italic">${escHtml(s.ia)}</span></td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:#888;font-style:italic">[Outil(s) utilisé(s) ou « Aucun SIA »]</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${exigHtml}</td>
+    </tr>`;
+  });
+  declTable += '</tbody></table>';
+
+  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
+  const affirmList = [
+    "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
+    "Mon utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    "J'ai exercé mon jugement critique sur les contenus générés par les SIA.",
+    "Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
+  ];
+  const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
+
+  const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
+
+  return title + intro + directivesTitle + directivesTable + declTitle + declTable + affirmTitle + affirmHtml + signatureBlock;
+}
+
+function buildGabaritOutilHTML(selections, identification) {
+  const cours = escHtml(identification.cours || '[cours]');
+  const evaluation = escHtml(identification.evaluation || '[évaluation]');
+  const session = escHtml(identification.session || '[session]');
+  const enseignants = escHtml(identification.enseignants || '[personne enseignante]');
+
+  const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 8pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>`;
+
+  const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.4;margin:8pt 0 4pt 0;">
+    Je, <strong>[Nom complet de l'étudiant(e)]</strong> (groupe <strong>[Numéro de groupe]</strong>), soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.
+  </p>
+  <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.4;margin:0 0 11pt 0;">
+    Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ma démarche d'utilisation des systèmes d'intelligence artificielle.
+  </p>`;
+
+  const directivesTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Directives de la personne enseignante</h2>`;
+  let directivesTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:12pt;">
+    <thead><tr>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:22%">Étape</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:15%">Utilisation des SIA</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:38%">Directives</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:25%">Exigences de déclaration</th>
+    </tr></thead><tbody>`;
+  selections.forEach(s => {
+    const label = s.parenthese
+      ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>`
+      : `<strong>${escHtml(s.etape)}</strong>`;
+    directivesTable += `<tr>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(s.ia)}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${s.justification}</td>
+      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${formatExigences(s)}</td>
+    </tr>`;
+  });
+  directivesTable += '</tbody></table>';
+
+  const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par outil</h2>`;
+  const declInstructions = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 8pt 0;">Pour chaque outil d'IA utilisé, indiquez le nom de l'outil et les étapes pour lesquelles vous l'avez utilisé. Ajoutez des lignes au besoin.</p>`;
+
+  // Build list of step labels for the helper column
+  const etapesList = selections.map(s => escHtml(s.etape)).join(', ');
+
+  let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:8pt;">
+    <thead><tr>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:30%">Outil SIA utilisé</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:70%">Étapes de réalisation concernées</th>
+    </tr></thead><tbody>`;
+  // 3 empty rows for the student to fill in
+  for (let i = 0; i < 3; i++) {
+    declTable += `<tr>
+      <td style="border:1px solid #ccc;padding:6px;height:32px;vertical-align:top;color:#aaa;font-style:italic">[Nom de l'outil]</td>
+      <td style="border:1px solid #ccc;padding:6px;height:32px;vertical-align:top;color:#aaa;font-style:italic">[Étapes : ${etapesList}]</td>
+    </tr>`;
+  }
+  declTable += '</tbody></table>';
+
+  // Exigences section
+  const hasExigences = selections.some(s => s.declaration !== 'aucune' && (s.decl_iagraphie || s.decl_traces || s.decl_logique));
+  let exigencesHtml = '';
+  if (hasExigences) {
+    exigencesHtml = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Exigences de déclaration à compléter</h2>
+    <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:12pt;">
+      <thead><tr>
+        <th style="border:1px solid #ccc;padding:6px;background:#f0f8ff;width:22%">Étape</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f0f8ff;width:78%">Exigences — réponses</th>
+      </tr></thead><tbody>`;
+    selections.forEach(s => {
+      if (s.declaration === 'aucune') return;
+      const exigItems = [];
+      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
+      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
+      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
+      if (!exigItems.length) return;
+      const exigContent = `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:6px">${i}</li>`).join('')}</ul>`;
+      const label = s.parenthese ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>` : `<strong>${escHtml(s.etape)}</strong>`;
+      exigencesHtml += `<tr>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${exigContent}</td>
+      </tr>`;
+    });
+    exigencesHtml += '</tbody></table>';
+  }
+
+  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
+  const affirmList = [
+    "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
+    "Mon utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    "J'ai exercé mon jugement critique sur les contenus générés par les SIA.",
+    "Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
+  ];
+  const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
+  const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
+
+  return title + intro + directivesTitle + directivesTable + declTitle + declInstructions + declTable + exigencesHtml + affirmTitle + affirmHtml + signatureBlock;
+}
+
+function downloadWordGabarit(htmlContent, filename) {
+  const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset="utf-8"><title>${filename}</title>
+    <style>body{font-family:Arial,sans-serif;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ccc;padding:6px;}</style>
+    </head><body>${htmlContent}</body></html>`;
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ---- Composant principal ----
+
+export default function DeclarationGabarit({ selections, identification, isGenerated }) {
+  const [mode, setMode] = useState('etape'); // 'etape' | 'outil'
+  const [showApercu, setShowApercu] = useState(false);
+
+  const html = mode === 'etape'
+    ? buildGabaritEtapeHTML(selections, identification)
+    : buildGabaritOutilHTML(selections, identification);
+
+  const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
+  const filename = `gabarit-declaration-${mode}-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
+
+  return (
+    <div style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
+      <h3 style={{ marginTop: 0, marginBottom: 8, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
+        📄 Gabarit Word filtré pour personnes étudiantes
+      </h3>
+      <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 14px', lineHeight: 1.5 }}>
+        Téléchargez un gabarit Word déjà filtré selon vos directives, que les étudiantes et étudiants pourront compléter manuellement et vous remettre.
+      </p>
+
+      {!isGenerated && (
+        <div style={{ padding: '10px 14px', background: '#fff8e1', border: '1px solid #ffc107', borderRadius: 6, fontSize: '0.88em', color: '#856404', marginBottom: 14 }}>
+          ⚠ Générez d'abord vos directives (bouton <strong>Générer les directives mises en forme</strong>) pour activer le téléchargement du gabarit.
+        </div>
+      )}
+
+      {/* Toggle pill */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+        <span style={{ fontSize: '0.88em', color: '#555', fontWeight: 'bold' }}>Variante :</span>
+        <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
+          {[
+            { val: 'etape', label: 'Déclaration par étape' },
+            { val: 'outil', label: 'Déclaration par outil' },
+          ].map(opt => (
+            <button
+              key={opt.val}
+              type="button"
+              onClick={() => { setMode(opt.val); setShowApercu(false); }}
+              style={{
+                padding: '6px 16px', fontSize: '0.85em',
+                fontWeight: mode === opt.val ? 'bold' : 'normal',
+                border: 'none', cursor: 'pointer',
+                background: mode === opt.val ? '#00A4E4' : 'transparent',
+                color: mode === opt.val ? 'white' : '#555',
+                transition: 'background 0.15s'
+              }}>
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Description de la variante */}
+      <p style={{ fontSize: '0.85em', color: '#666', margin: '0 0 14px', fontStyle: 'italic' }}>
+        {mode === 'etape'
+          ? 'Le gabarit liste chaque étape de réalisation avec un espace pour identifier le ou les outils SIA utilisés et répondre aux exigences de déclaration.'
+          : 'Le gabarit propose un tableau vide pour déclarer chaque outil utilisé et les étapes concernées, suivi des exigences de déclaration à compléter.'}
+      </p>
+
+      {/* Boutons d'action */}
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        <button
+          type="button"
+          disabled={!isGenerated}
+          onClick={() => setShowApercu(v => !v)}
+          style={{
+            background: isGenerated ? '#6c757d' : '#c0c0c0',
+            color: 'white', border: 'none', padding: '8px 18px', borderRadius: 5,
+            cursor: isGenerated ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.9em'
+          }}>
+          {showApercu ? '🙈 Masquer l\'aperçu' : '👁 Voir l\'aperçu'}
+        </button>
+        <button
+          type="button"
+          disabled={!isGenerated}
+          onClick={() => downloadWordGabarit(html, filename)}
+          style={{
+            background: isGenerated ? '#00A4E4' : '#c0c0c0',
+            color: 'white', border: 'none', padding: '8px 18px', borderRadius: 5,
+            cursor: isGenerated ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.9em'
+          }}>
+          📥 Télécharger le gabarit Word
+        </button>
+      </div>
+
+      {/* Aperçu */}
+      {showApercu && isGenerated && (
+        <div style={{
+          marginTop: 16, border: '1px solid #ccc', borderRadius: 6,
+          background: 'white', padding: '24px 28px',
+          fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5,
+          maxHeight: 520, overflowY: 'auto'
+        }}
+          dangerouslySetInnerHTML={{ __html: html }}
+        />
+      )}
+    </div>
+  );
+}
