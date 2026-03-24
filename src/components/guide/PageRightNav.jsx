@@ -84,7 +84,7 @@ export default function PageRightNav({ submitted }) {
           letterSpacing: '0.06em',
           borderBottom: '1px solid #eee',
           whiteSpace: 'nowrap',
-        }}>Navigation</p>
+        }}>Sur cette page:</p>
         <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
           {NAV_ITEMS.map(item => {
             const active = !item.conditional || submitted;
