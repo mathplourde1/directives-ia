@@ -579,9 +579,8 @@ export default function Guide() {
   const inputErrorBorder = { border: '2px solid #E41E25', background: '#fff4f4' };
 
   return (
-    <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh', display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 0 }}>
-      {/* Main content */}
-      <div style={{ flex: 1, minWidth: 0, paddingRight: 36 }}>
+    <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
         :root { --rouge: #E41E25; --bleu-ul: #00A4E4; --gris-pale: #F2F2F2; --gris-fonce: #231F20; --bordure: #ccc; }
         body { font-size: smaller; }
@@ -613,19 +612,18 @@ export default function Guide() {
         table.main-table td li, .synthese-section li { display: list-item; }
       `}</style>
 
-      <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Assistant à la rédaction des directives d’utilisation des SIA pour une évaluation</h1>
-      <div style={{ maxWidth: 1000, margin: '0 auto', fontSize: 'initial' }}>
-      <div className="mb-2">Précisez, à l’aide de ce formulaire interactif, les autorisations et les directives d’utilisation de fonctionnalités IA ou de systèmes d'intelligence artificielle (SIA) pour une évaluation. C’est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
+      <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Assistant à la rédaction des directives d'utilisation des SIA pour une évaluation</h1>
+      <div className="mb-2">Précisez, à l'aide de ce formulaire interactif, les autorisations et les directives d'utilisation de fonctionnalités IA ou de systèmes d'intelligence artificielle (SIA) pour une évaluation. C'est un outil simple pour obtenir des directives complètes et prêtes à transmettre pour accompagner les étudiants et étudiantes.</div>
       <div style={{ marginBottom: 20 }}>
         <div style={{ textAlign: 'left' }}>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
       <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
-      <li>Remplissez la section d’identification.</li>
-      <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d’autorisation d’utilisation des SIA pour chaque étape retenue.</li>
+      <li>Remplissez la section d'identification.</li>
+      <li>Sélectionnez uniquement les étapes de réalisation qui s'appliquent à cette évaluation, puis cochez le niveau d'autorisation d'utilisation des SIA pour chaque étape retenue.</li>
       <li>Choisissez et personnalisez au besoin les directives et exigences de déclaration — soyez bref et précis.</li>
       <li>Cliquez sur Soumettre pour obtenir une synthèse. Modifiez au besoin et soumettre à nouveau.</li>
-      <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l’évaluation.</li>
-      <li>(Optionnel) Transposez ces directives dans un <a href="#declaration" target="self" className="text-blue-800 underline">formulaire de déclaration d’utilisation des SIA</a> que les personnes étudiantes devront remplir en ligne et joindre à leur soumission (deux versions disponibles).</li>
+      <li>Partagez ces directives dans Brio ou intégrez-le les consignes de l'évaluation.</li>
+      <li>(Optionnel) Transposez ces directives dans un <a href="#declaration" target="self" className="text-blue-800 underline">formulaire de déclaration d'utilisation des SIA</a> que les personnes étudiantes devront remplir en ligne et joindre à leur soumission (deux versions disponibles).</li>
       </ol>
     💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br /><br />
 
@@ -647,7 +645,6 @@ export default function Guide() {
             </div>
           }
         </div>
-      </div>
       </div>
 
       {/* Identification section */}
@@ -1032,17 +1029,6 @@ export default function Guide() {
               <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="blank" className="text-blue-800 underline">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.</p>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
             <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
                 <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Titre de la liste:</p>
@@ -1112,7 +1098,6 @@ export default function Guide() {
                 ['bold', 'italic', 'underline'],
                 [{ list: 'ordered' }, { list: 'bullet' }],
                 ['link']]
-
               }}
               placeholder="Écrivez des instructions supplémentaires pour les personnes étudiantes..."
               style={{
@@ -1122,17 +1107,17 @@ export default function Guide() {
                 minHeight: 120
               }}
               theme="snow" />
-                </div>
+            </div>
 
-                <div style={{ marginTop: 14 }}>
-                  <button type="button" className="btn-primary" onClick={handleSave}>💾 Télécharger un fichier de sauvegarde</button>
-                </div>
+            <div style={{ marginTop: 14 }}>
+              <button type="button" className="btn-primary" onClick={handleSave}>💾 Télécharger un fichier de sauvegarde</button>
+            </div>
 
-                <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                    <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <button
+            <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <p style={{ margin: 0, fontWeight: 'bold', fontSize: '0.93em' }}>À copier dans le champ Description du fichier:</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <button
                   type="button"
                   className="btn-primary"
                   onClick={() => {
@@ -1143,12 +1128,12 @@ export default function Guide() {
                     }
                   }}
                   style={{ fontSize: '0.85em', padding: '6px 12px' }}>
-                        Copier pour coller en ligne (Brio)
-                      </button>
-                      {copyFileDescOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
-                    </div>
-                  </div>
-                  <textarea
+                    Copier pour coller en ligne (Brio)
+                  </button>
+                  {copyFileDescOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
+                </div>
+              </div>
+              <textarea
               value={declarationFieldDescription}
               onChange={(e) => setDeclarationFieldDescription(e.target.value)}
               rows={1}
@@ -1163,11 +1148,12 @@ export default function Guide() {
                 backgroundColor: 'white',
                 resize: 'none'
               }} />
-               </div>
-               </div>{/* fin formulaire interactif Brio */}
-               </div>}{/* fin #declaration */}
-      </div>{/* fin main content */}
-      <PageRightNav submitted={submitted} />
-               </div>);
+            </div>
+        </div>{/* fin formulaire interactif Brio */}
+      </div>}{/* fin #declaration */}
 
+      <PageRightNav submitted={submitted} />
+      </div>{/* fin conteneur centré */}
+    </div>
+  );
 }
