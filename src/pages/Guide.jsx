@@ -991,7 +991,7 @@ export default function Guide() {
           Formulaire de déclaration pour personnes étudiantes
         </h2>
         <div style={{ marginBottom: 16, fontSize: '0.93em', color: '#444', lineHeight: 1.6 }}>
-          Au-delà des directives que vous avez rédigées, si vous désirez que vos étudiantes et étudiants vous soumettent une déclaration d'utilisation des SIA dans le cadre de cette évaluation, vous pouvez leur offrir un gabarit Word déjà filtré ou une version interactive en ligne.
+          Au-delà des directives que vous avez rédigées, si vous désirez que vos étudiantes et étudiants vous soumettent une déclaration d'utilisation des SIA dans le cadre de cette évaluation, vous pouvez leur offrir un gabarit Word déjà filtré ou une version interactive en ligne (déclaration par étape de réalisation ou par outil utilisé).
         </div>
 
         {/* Toggle pill principal */}
