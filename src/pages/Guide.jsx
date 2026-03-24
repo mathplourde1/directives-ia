@@ -783,7 +783,7 @@ export default function Guide() {
           {/* Section Brio */}
           <div id="brio-section"><BrioSection selections={selections} /></div>
           {/* Synthèses accordion */}
-          <div className="synthese-section">
+          <div id="syntheses" className="synthese-section">
             <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
             {/* Espace pour explications sous le titre */}
             <div id="syntheses-description">Trois options de mise en forme sont disponibles. Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> de l'une des synthèses ci-dessous dans la section <strong>Précisions sur le niveau sélectionné</strong> ou téléchargez une version Word à intégrer dans vos directives. <br /><br />
