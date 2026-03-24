@@ -579,8 +579,9 @@ export default function Guide() {
   const inputErrorBorder = { border: '2px solid #E41E25', background: '#fff4f4' };
 
   return (
-    <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
-      <PageRightNav submitted={submitted} />
+    <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh', display: 'flex', flexDirection: 'row', alignItems: 'flex-start', gap: 0 }}>
+      {/* Main content */}
+      <div style={{ flex: 1, minWidth: 0 }}>
       <style>{`
         :root { --rouge: #E41E25; --bleu-ul: #00A4E4; --gris-pale: #F2F2F2; --gris-fonce: #231F20; --bordure: #ccc; }
         body { font-size: smaller; }
@@ -1165,6 +1166,8 @@ export default function Guide() {
                </div>
                </div>{/* fin formulaire interactif Brio */}
                </div>{/* fin #declaration */}
+      </div>{/* fin main content */}
+      <PageRightNav submitted={submitted} />
                </div>);
 
 }
