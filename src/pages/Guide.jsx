@@ -1137,7 +1137,7 @@ export default function Guide() {
                 </div>
 
                 <div style={{ marginTop: 14 }}>
-                  <button type="button" className="btn-primary" onClick={handleSave}>Créer un fichier de sauvegarde</button>
+                  <button type="button" className="btn-primary" onClick={handleSave}>💾 Télécharger un fichier de sauvegarde</button>
                 </div>
 
                 <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
