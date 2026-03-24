@@ -987,7 +987,7 @@ export default function Guide() {
       </div>
 
       {/* ===== DÉCLARATION ÉTUDIANTE TOGGLE ===== */}
-      <div style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
+      <div id="declaration" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
         <button
           type="button"
           onClick={() => setDeclarationActive((v) => !v)}
