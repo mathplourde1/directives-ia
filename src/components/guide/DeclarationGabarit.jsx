@@ -59,32 +59,37 @@ function buildGabaritEtapeHTML(selections, identification) {
   });
   directivesTable += '</tbody></table>';
 
+  const stepsWithDecl = selections.filter(s => s.declaration !== 'aucune');
   const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par étape</h2>`;
-  let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:12pt;">
+  let declTable;
+  if (stepsWithDecl.length === 0) {
+    declTable = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 12pt 0;padding:10px 14px;background:#f8f8f8;border:1px solid #ddd;border-radius:4px;">Cette évaluation n'indique aucune exigence de déclaration. Utilisez le champ Commentaires additionnels ci-dessous si vous le jugez approprié.</p>`;
+  } else {
+    declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:12pt;">
     <thead><tr>
       <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:25%">Étape de réalisation</th>
       <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:30%">Outil(s) SIA utilisé(s)</th>
       <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:45%">Exigences de déclaration — réponses</th>
     </tr></thead><tbody>`;
-  selections.forEach(s => {
-    if (s.declaration === 'aucune') return; // skip steps with no declaration requirement
-    const exigItems = [];
-    if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
-    if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
-    if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
-    const exigHtml = exigItems.length
-      ? `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:4px">${i}</li>`).join('')}</ul>`
-      : '—';
-    const label = s.parenthese
-      ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>`
-      : `<strong>${escHtml(s.etape)}</strong>`;
-    declTable += `<tr>
-      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}<br><span style="color:#888;font-size:0.85em;font-style:italic">${escHtml(s.ia)}</span></td>
-      <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:#888;font-style:italic">[Outil(s) utilisé(s) ou « Aucun SIA »]</td>
-      <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${exigHtml}</td>
-    </tr>`;
-  });
-  declTable += '</tbody></table>';
+    stepsWithDecl.forEach(s => {
+      const exigItems = [];
+      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
+      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
+      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
+      const exigHtml = exigItems.length
+        ? `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:4px">${i}</li>`).join('')}</ul>`
+        : '—';
+      const label = s.parenthese
+        ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>`
+        : `<strong>${escHtml(s.etape)}</strong>`;
+      declTable += `<tr>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${label}<br><span style="color:#888;font-size:0.85em;font-style:italic">${escHtml(s.ia)}</span></td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:#888;font-style:italic">[Outil(s) utilisé(s) ou « Aucun SIA »]</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${exigHtml}</td>
+      </tr>`;
+    });
+    declTable += '</tbody></table>';
+  }
 
   const commentsSection = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Commentaires additionnels</h2>
   <p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 6pt 0;">Vous pouvez ajouter ici tout commentaire pertinent concernant votre utilisation des SIA dans le cadre de cette évaluation.</p>
