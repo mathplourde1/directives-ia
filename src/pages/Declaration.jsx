@@ -608,7 +608,7 @@ export default function Declaration() {
       `}</style>
 
       <h1 className="mb-4 text-2xl font-semibold">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA) dans le cadre d'une évaluation</h1>
-
+      <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.95em' }}>Formulaire par étape de réalisation</p>
       {/* Upload zone */}
       {!data?.ok &&
       <div className="section-box" style={{ textAlign: 'center' }}>
