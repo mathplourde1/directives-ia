@@ -61,7 +61,7 @@ export default function PageRightNav({ submitted }) {
           textTransform: 'uppercase',
           userSelect: 'none',
         }}>
-          {open ? '▶ Fermer' : 'Navigation ◀'}
+          {open ? '▼ Fermer' : 'Navigation ▲'}
         </span>
       </button>
 
