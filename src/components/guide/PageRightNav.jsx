@@ -54,14 +54,14 @@ export default function PageRightNav({ submitted }) {
           display: 'inline-block',
           transform: 'rotate(-90deg)',
           whiteSpace: 'nowrap',
-          fontSize: '0.7em',
+          fontSize: '0.8em',
           fontWeight: 'bold',
           color: '#888',
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
           userSelect: 'none',
         }}>
-          {open ? '▼ Fermer' : 'Navigation ▲'}
+          {open ? '▼ Masquer' : 'Navigation ▲'}
         </span>
       </button>
 
