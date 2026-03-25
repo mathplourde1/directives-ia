@@ -1150,6 +1150,7 @@ export default function Guide() {
                 resize: 'none'
               }} />
             </div>
+          </div>{/* fin wrapper bleu Option B */}
         </div>{/* fin formulaire interactif Brio */}
       </div>}{/* fin #declaration */}
 
