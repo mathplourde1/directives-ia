@@ -242,7 +242,7 @@ export default function DeclarationGabarit({ selections, identification, isGener
   return (
     <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
       <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
-        📄 Option : gabarit Word à compléter manuellement
+        📄 Option A : gabarit Word à compléter manuellement
       </h3>
       <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 10px', lineHeight: 1.5 }}>
         {mode === 'etape'
