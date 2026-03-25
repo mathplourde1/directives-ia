@@ -747,12 +747,7 @@ export default function Guide() {
         </DragDropContext>
         <br />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-          <button type="submit" className="btn-primary">Générer les directives mises en forme</button>
-          <button type="button" onClick={() => setShowNewEvalDialog(true)}
-            disabled={!submitted}
-            style={{ background: submitted ? '#4a4a4a' : '#b0b0b0', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: submitted ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.95em', opacity: submitted ? 1 : 0.6 }}>
-            ➕ Créer des directives pour une autre évaluation
-          </button>
+          <button type="submit" className="btn-primary" style={{ fontSize: '1.425em', padding: '14px 28px' }}>✅ Générer les directives mises en forme</button>
           {submitStatus && (submitStatus.ok ? (() => {
               const diffMs = new Date() - submitStatus.time;
               const diffMin = Math.floor(diffMs / 60000);
@@ -764,12 +759,18 @@ export default function Guide() {
                 <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
                 ✔️ Sommaires générés avec succès {elapsed}.
               </span>);
-
             })() :
             <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
               ⚠ Certains champs obligatoires ne sont pas remplis correctement.
             </span>)
             }
+        </div>
+        <div style={{ marginTop: 10, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <button type="button" onClick={() => setShowNewEvalDialog(true)}
+            disabled={!submitted}
+            style={{ background: submitted ? '#4a4a4a' : '#b0b0b0', color: 'white', border: 'none', padding: '10px 20px', borderRadius: 5, cursor: submitted ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.95em', opacity: submitted ? 1 : 0.6 }}>
+            ➕ Créer des directives pour une autre évaluation
+          </button>
         </div>
       </form>
       </div>
