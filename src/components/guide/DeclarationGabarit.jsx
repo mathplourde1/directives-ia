@@ -73,9 +73,9 @@ function buildGabaritEtapeHTML(selections, identification) {
     </tr></thead><tbody>`;
     stepsWithDecl.forEach(s => {
       const exigItems = [];
-      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
-      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
-      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
+      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> Indiquer si et comment vous êtes en conformité, où se trouvent les références ou commentez ici directement.`);
+      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> Indiquer si et comment vous êtes en conformité, où se trouvent les traces ou commentez ici directement.`);
+      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> Indiquer si et comment vous êtes en conformité, où se trouve la logique ou commentez ici directement.`);
       const exigHtml = exigItems.length
         ? `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:4px">${i}</li>`).join('')}</ul>`
         : '—';
@@ -146,21 +146,21 @@ function buildGabaritOutilHTML(selections, identification) {
   });
   directivesTable += '</tbody></table>';
 
-  const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par outil</h2>`;
-  const declInstructions = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 8pt 0;">Pour chaque outil d'IA utilisé, indiquez le nom de l'outil et les étapes pour lesquelles vous l'avez utilisé. Ajoutez des lignes au besoin.</p>`;
+  const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par SIA</h2>`;
+  const declInstructions = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 8pt 0;">Pour chaque SIA utilisé, indiquez le nom du SIA et les étapes pour lesquelles vous l'avez utilisé. Ajoutez des lignes au besoin.</p>`;
 
   // Build list of step labels for the helper column — exclude non-authorized steps
   const etapesList = selections.filter(s => s.ia !== 'Non autorisée').map(s => escHtml(s.etape)).join(', ');
 
   let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:8pt;">
     <thead><tr>
-      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:30%">Outil SIA utilisé</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:30%">Nom du SIA utilisé</th>
       <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;width:70%">Étapes de réalisation concernées</th>
     </tr></thead><tbody>`;
   // 3 empty rows for the student to fill in
   for (let i = 0; i < 3; i++) {
     declTable += `<tr>
-      <td style="border:1px solid #ccc;padding:6px;height:32px;vertical-align:top;color:#aaa;font-style:italic">[Nom de l'outil]</td>
+      <td style="border:1px solid #ccc;padding:6px;height:32px;vertical-align:top;color:#aaa;font-style:italic">[Nom du SIA]</td>
       <td style="border:1px solid #ccc;padding:6px;height:32px;vertical-align:top;color:#aaa;font-style:italic">[Étapes : ${etapesList}]</td>
     </tr>`;
   }
@@ -170,7 +170,7 @@ function buildGabaritOutilHTML(selections, identification) {
   const hasExigences = selections.some(s => s.declaration !== 'aucune' && (s.decl_iagraphie || s.decl_traces || s.decl_logique));
   let exigencesHtml = '';
   if (hasExigences) {
-    exigencesHtml = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Exigences de déclaration à compléter</h2>
+    exigencesHtml = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Exigences de déclaration à compléter (si applicable)</h2>
     <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:12pt;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:6px;background:#f0f8ff;width:22%">Étape</th>
@@ -179,9 +179,9 @@ function buildGabaritOutilHTML(selections, identification) {
     selections.forEach(s => {
       if (s.declaration === 'aucune') return;
       const exigItems = [];
-      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> [À compléter]`);
-      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> [À compléter]`);
-      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> [À compléter]`);
+      if (s.decl_iagraphie) exigItems.push(`<strong>Références et IAgraphie :</strong> Indiquer si et comment vous êtes en conformité, où se trouvent les références ou commentez ici directement.`);
+      if (s.decl_traces) exigItems.push(`<strong>Traces conservées :</strong> Indiquer si et comment vous êtes en conformité, où se trouvent les traces ou commentez ici directement.`);
+      if (s.decl_logique) exigItems.push(`<strong>Logique d'utilisation :</strong> Indiquer si et comment vous êtes en conformité, où se trouve la logique ou commentez ici directement.`);
       if (!exigItems.length) return;
       const exigContent = `<ul style="margin:0;padding-left:16px;">${exigItems.map(i => `<li style="display:list-item;margin-bottom:6px">${i}</li>`).join('')}</ul>`;
       const label = s.parenthese ? `<strong>${escHtml(s.etape)}</strong><br><span style="color:#555;font-size:0.88em">(${escHtml(s.parenthese)})</span>` : `<strong>${escHtml(s.etape)}</strong>`;
@@ -192,6 +192,10 @@ function buildGabaritOutilHTML(selections, identification) {
     });
     exigencesHtml += '</tbody></table>';
   }
+
+  const commentsSection = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Commentaires additionnels</h2>
+  <p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 6pt 0;">Vous pouvez ajouter ici tout commentaire pertinent concernant votre utilisation des SIA dans le cadre de cette évaluation.</p>
+  <div style="border:1px solid #ccc;border-radius:4px;min-height:80px;padding:8px;font-family:Arial,sans-serif;font-size:10pt;color:#aaa;font-style:italic;">[Commentaires optionnels]</div>`;
 
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
@@ -204,7 +208,7 @@ function buildGabaritOutilHTML(selections, identification) {
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + intro + directivesTitle + directivesTable + declTitle + declInstructions + declTable + exigencesHtml + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + directivesTitle + directivesTable + declTitle + declInstructions + declTable + exigencesHtml + commentsSection + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function downloadWordGabarit(htmlContent, filename) {

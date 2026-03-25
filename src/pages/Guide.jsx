@@ -1006,7 +1006,7 @@ export default function Guide() {
             <button type="button"
               onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
               style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#00A4E4' : 'transparent', color: declMode === 'outil' ? 'white' : '#555', transition: 'background 0.15s' }}>
-              Déclaration par outil
+              Déclaration par SIA
             </button>
           </div>
         </div>
