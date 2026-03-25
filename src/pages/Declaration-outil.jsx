@@ -428,7 +428,7 @@ export default function DeclarationOutil() {
       `}</style>
 
       <h1 className="mb-4 text-2xl font-semibold">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA) dans le cadre d'une évaluation</h1>
-      <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.95em' }}>Formulaire par outil utilisé</p>
+      <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.95em' }}>Formulaire par système d'intelligence artificielle utilisé</p>
 
       {/* Upload zone */}
       {!data?.ok &&
