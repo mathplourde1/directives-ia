@@ -1152,7 +1152,8 @@ export default function Guide() {
             </div>
           </div>{/* fin wrapper bleu Option B */}
         </div>{/* fin formulaire interactif Brio */}
-      </div>}{/* fin #declaration */}
+      </div>
+      }{/* fin #declaration */}
 
       <PageRightNav submitted={submitted} />
       </div>{/* fin conteneur centré */}
