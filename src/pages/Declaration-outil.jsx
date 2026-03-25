@@ -414,6 +414,7 @@ export default function DeclarationOutil() {
 
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
       <style>{`
         :root { --rouge: #E41E25; --bleu: #00A4E4; }
         h1 { color: #E41E25; text-align: center; }
@@ -1114,6 +1115,7 @@ export default function DeclarationOutil() {
           }
         </>
       }
+      </div>{/* fin conteneur centré */}
     </div>
   );
 }
