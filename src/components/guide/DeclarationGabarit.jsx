@@ -149,8 +149,8 @@ function buildGabaritOutilHTML(selections, identification) {
   const declTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">Ma déclaration d'utilisation — par outil</h2>`;
   const declInstructions = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 8pt 0;">Pour chaque outil d'IA utilisé, indiquez le nom de l'outil et les étapes pour lesquelles vous l'avez utilisé. Ajoutez des lignes au besoin.</p>`;
 
-  // Build list of step labels for the helper column
-  const etapesList = selections.map(s => escHtml(s.etape)).join(', ');
+  // Build list of step labels for the helper column — exclude non-authorized steps
+  const etapesList = selections.filter(s => s.ia !== 'Non autorisée').map(s => escHtml(s.etape)).join(', ');
 
   let declTable = `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:10pt;margin-bottom:8pt;">
     <thead><tr>
