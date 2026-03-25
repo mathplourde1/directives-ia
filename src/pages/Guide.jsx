@@ -1024,7 +1024,7 @@ export default function Guide() {
           <div style={{ padding: '16px 20px', border: `1px solid ${declMode === 'outil' ? '#e6c000' : '#b3d9f7'}`, borderRadius: 8, background: declMode === 'outil' ? '#fffde7' : '#f7fbff' }}>
             <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/43d3bfa87_logo-brio.png" alt="Logo Brio" style={{ float: 'right', width: 70, marginLeft: 12, marginBottom: 4 }} />
-              Option B : formulaire interactif en ligne (Brio)
+              ✅ Option B : formulaire interactif en ligne (Brio)
             </h3>
             <div style={{ marginBottom: 16 }}>
               <p style={{ margin: '0 0 12px', fontSize: '0.95em', lineHeight: 1.6 }}>Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="blank" className="text-blue-800 underline">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.</p>
