@@ -1005,7 +1005,7 @@ export default function Guide() {
             </button>
             <button type="button"
               onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
-              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#00A4E4' : 'transparent', color: declMode === 'outil' ? 'white' : '#555', transition: 'background 0.15s' }}>
+              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#e6b800' : 'transparent', color: declMode === 'outil' ? '#231F20' : '#555', transition: 'background 0.15s' }}>
               Déclaration par SIA
             </button>
           </div>
@@ -1021,7 +1021,7 @@ export default function Guide() {
 
         {/* Formulaire interactif (Brio) en dessous */}
         <div style={{ marginTop: 20, borderTop: '1px solid #e0e0e0', paddingTop: 20 }}>
-          <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
+          <div style={{ padding: '16px 20px', border: `1px solid ${declMode === 'outil' ? '#e6c000' : '#b3d9f7'}`, borderRadius: 8, background: declMode === 'outil' ? '#fffde7' : '#f7fbff' }}>
             <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
               <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/43d3bfa87_logo-brio.png" alt="Logo Brio" style={{ float: 'right', width: 70, marginLeft: 12, marginBottom: 4 }} />
               Option B : formulaire interactif en ligne (Brio)

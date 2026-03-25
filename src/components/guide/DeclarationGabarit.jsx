@@ -239,8 +239,11 @@ export default function DeclarationGabarit({ selections, identification, isGener
   const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
   const filename = `gabarit-declaration-${mode}-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 
+  const borderColor = mode === 'outil' ? '#e6c000' : '#b3d9f7';
+  const bgColor = mode === 'outil' ? '#fffde7' : '#f7fbff';
+
   return (
-    <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
+    <div style={{ padding: '16px 20px', border: `1px solid ${borderColor}`, borderRadius: 8, background: bgColor }}>
       <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
         📄 Option A : gabarit Word à compléter manuellement
       </h3>
