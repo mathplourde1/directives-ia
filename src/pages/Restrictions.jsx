@@ -402,7 +402,7 @@ export default function Restrictions() {
           .synth-table th { background-color: #F2F2F2; }
         `}</style>
 
-        <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives - restrictions d'utilisation des SIA</h1>
+        <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives d'utilisation des SIA</h1>
         <div className="mb-2">Ce formulaire interactif permet de définir, action par action, le niveau d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA) selon les catégories de la taxonomie de Bloom.</div>
 
         {/* Instructions */}
