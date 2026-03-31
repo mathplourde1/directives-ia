@@ -87,14 +87,14 @@ export default function Restrictions() {
       setSubmitStatus({ ok: false, emptyCustom: true });
       return;
     }
-    // Check that at least one restricted category has an action placed in a column
+    // Check that each restricted category has at least one action placed in a column
     const restrictedCats = BLOOM_CATEGORIES.filter(cat => (categoryModes[cat.id] || 'aucune') === 'restreindre');
-    const allRestrictedEmpty = restrictedCats.length > 0 && restrictedCats.every(cat => {
+    const emptyCats = restrictedCats.filter(cat => {
       const state = catStates[cat.id];
       return !state || state.hasNoActionInColumns;
     });
-    if (allRestrictedEmpty) {
-      setSubmitStatus({ ok: false, noActionInColumns: true });
+    if (emptyCats.length > 0) {
+      setSubmitStatus({ ok: false, noActionInColumns: true, emptyCatNames: emptyCats.map(c => c.libelle) });
       return;
     }
     setShowErrors(false);
@@ -494,7 +494,9 @@ export default function Restrictions() {
             ) : submitStatus.emptyCustom ? (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Au moins une action personnalisée est vide. Veuillez y inscrire une action ou la retirer.</span>
             ) : submitStatus.noActionInColumns ? (
-              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Placez au moins une action dans une colonne de permission avant de générer.</span>
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>
+                ⚠ Placez au moins une action dans une colonne pour : <strong>{submitStatus.emptyCatNames?.join(', ')}</strong>
+              </span>
             ) : (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
             ))}
