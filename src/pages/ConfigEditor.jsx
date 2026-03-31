@@ -4,12 +4,21 @@ import exemplesDirectivesDefault from '@/components/exemplesDirectives.json';
 import exemplesDeclarationsDefault from '@/components/exemplesDeclarations';
 import SIA_LIST_DEFAULT from '@/components/listeSIA';
 import ItemEditorModal from '@/components/ItemEditorModal';
+import BLOOM_CATEGORIES_DEFAULT from '@/components/restrictions/restrictionsData';
+
+// Flatten categories and actions for editing
+const CATEGORIES_DEFAULT = BLOOM_CATEGORIES_DEFAULT.map(({ actions, ...cat }) => cat);
+const ACTIONS_DEFAULT = BLOOM_CATEGORIES_DEFAULT.flatMap(cat =>
+  cat.actions.map(a => ({ ...a, categorie: cat.id }))
+);
 
 const ORIGINAL_DATA = {
   etapes: JSON.parse(JSON.stringify(ETAPES_DEFAULT)),
   directives: JSON.parse(JSON.stringify(exemplesDirectivesDefault)),
   declarations: JSON.parse(JSON.stringify(exemplesDeclarationsDefault)),
   sia: JSON.parse(JSON.stringify(SIA_LIST_DEFAULT)),
+  categories: JSON.parse(JSON.stringify(CATEGORIES_DEFAULT)),
+  actions: JSON.parse(JSON.stringify(ACTIONS_DEFAULT)),
 };
 
 const CONTENT_OPTIONS = [
@@ -17,6 +26,8 @@ const CONTENT_OPTIONS = [
   { value: 'directives', label: 'Exemples de directives' },
   { value: 'declarations', label: 'Exemples de déclarations' },
   { value: 'sia', label: 'Liste SIA' },
+  { value: 'categories', label: 'Catégories Bloom (Restrictions)' },
+  { value: 'actions', label: 'Actions Bloom (Restrictions)' },
 ];
 
 const NIVEAU_LABELS = {
@@ -38,11 +49,21 @@ const getItemKey = (item, type) => {
   if (type === 'sia') return typeof item === 'string' ? item : item.value || '';
   if (type === 'etapes') return item.id || '';
   if (type === 'directives') return `${item.parent}|${item.niveau}|${item.sequence}|${item.court}`;
+  if (type === 'categories') return item.id || '';
+  if (type === 'actions') return item.id || '';
   return `${item.code}|${item.sequence}|${item.court}`;
 };
 
+const CATEGORY_IDS = CATEGORIES_DEFAULT.map(c => c.id);
+
 const sortNaturally = (items, type) => {
   if (type === 'etapes') return [...items].sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
+  if (type === 'categories') return [...items].sort((a, b) => CATEGORY_IDS.indexOf(a.id) - CATEGORY_IDS.indexOf(b.id));
+  if (type === 'actions') return [...items].sort((a, b) => {
+    const ci = CATEGORY_IDS.indexOf(a.categorie) - CATEGORY_IDS.indexOf(b.categorie);
+    if (ci !== 0) return ci;
+    return String(a.libelle).localeCompare(String(b.libelle), 'fr');
+  });
   if (type === 'directives') return [...items].sort((a, b) => {
     const pi = ETAPE_IDS.indexOf(a.parent) - ETAPE_IDS.indexOf(b.parent);
     if (pi !== 0) return pi;
@@ -63,10 +84,12 @@ export default function ConfigEditor() {
     directives: [...exemplesDirectivesDefault],
     declarations: [...exemplesDeclarationsDefault],
     sia: [...SIA_LIST_DEFAULT],
+    categories: [...CATEGORIES_DEFAULT],
+    actions: [...ACTIONS_DEFAULT],
   });
   const [jsonText, setJsonText] = useState(JSON.stringify(ETAPES_DEFAULT, null, 2));
   const [jsonError, setJsonError] = useState(null);
-  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set(), sia: new Set() });
+  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set(), sia: new Set(), categories: new Set(), actions: new Set() });
 
   // Modal
   const [modalOpen, setModalOpen] = useState(false);
@@ -256,7 +279,7 @@ export default function ConfigEditor() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : contentType === 'sia' ? 'listeSIA.json' : 'exemplesDeclarations.json';
+    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : contentType === 'sia' ? 'listeSIA.json' : contentType === 'categories' ? 'bloomCategories.json' : contentType === 'actions' ? 'bloomActions.json' : 'exemplesDeclarations.json';
     a.click(); URL.revokeObjectURL(url);
   };
 
@@ -274,6 +297,12 @@ export default function ConfigEditor() {
     } else if (contentType === 'sia') {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">#</th><th style="padding:8px">Nom du SIA</th></tr>';
       rows = [...items].sort((a, b) => a.localeCompare(b, 'fr')).map((s, i) => `<tr><td style="padding:8px">${i + 1}</td><td style="padding:8px">${s}</td></tr>`).join('');
+    } else if (contentType === 'categories') {
+      headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">ID</th><th style="padding:8px">Libellé</th><th style="padding:8px">Couleur</th></tr>';
+      rows = items.map(c => `<tr><td style="padding:8px">${c.id}</td><td style="padding:8px">${c.libelle}</td><td style="padding:8px">${c.color}</td></tr>`).join('');
+    } else if (contentType === 'actions') {
+      headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">ID</th><th style="padding:8px">Catégorie</th><th style="padding:8px">Libellé</th></tr>';
+      rows = items.map(a => `<tr><td style="padding:8px">${a.id}</td><td style="padding:8px">${a.categorie}</td><td style="padding:8px">${a.libelle}</td></tr>`).join('');
     } else {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">Code</th><th style="padding:8px">Séq.</th><th style="padding:8px">Court</th><th style="padding:8px">Exemple</th></tr>';
       rows = items.map(d => `<tr><td style="padding:8px">${d.code}</td><td style="padding:8px">${d.sequence}</td><td style="padding:8px">${d.court}</td><td style="padding:8px">${d.exemple}</td></tr>`).join('');
@@ -316,6 +345,9 @@ export default function ConfigEditor() {
     }
     if (contentType === 'declarations') {
       if (filterCode) items = items.filter(i => i.code === filterCode);
+    }
+    if (contentType === 'actions') {
+      if (filterParent) items = items.filter(i => i.categorie === filterParent);
     }
     if (sortCol) {
       items = [...items].sort((a, b) => {
@@ -408,6 +440,68 @@ export default function ConfigEditor() {
               </td>
             </tr>
           ))}
+        </tbody>
+      </table>
+    );
+
+    if (contentType === 'categories') return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead><tr>
+          <th style={thFixed}>ID <span style={{ color: '#bbb', fontWeight: 'normal' }}>(fixe)</span></th>
+          {thSort('libelle', 'Libellé')}
+          {thSort('color', 'Couleur')}
+          <th style={thFixed}>Actions</th>
+        </tr></thead>
+        <tbody>
+          {filteredItems.map((item, i) => (
+            <tr key={item._origIndex} style={{ background: rowBg(item, i) }}>
+              <td style={tdS}><Star item={item} /><span style={idBadge}>{item.id}</span></td>
+              <td style={tdS}><strong>{item.libelle}</strong></td>
+              <td style={tdS}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ width: 16, height: 16, borderRadius: 3, background: item.color, display: 'inline-block', border: '1px solid #ccc' }} />
+                  <code style={{ fontSize: '0.85em' }}>{item.color}</code>
+                </span>
+              </td>
+              <td style={tdS}>
+                <ResetBtn item={item} />
+                <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
+                <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+
+    if (contentType === 'actions') return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead><tr>
+          <th style={thFixed}>ID <span style={{ color: '#bbb', fontWeight: 'normal' }}>(fixe)</span></th>
+          {thSort('categorie', 'Catégorie')}
+          {thSort('libelle', 'Libellé')}
+          <th style={thFixed}>Actions</th>
+        </tr></thead>
+        <tbody>
+          {filteredItems.map((item, i) => {
+            const cat = CATEGORIES_DEFAULT.find(c => c.id === item.categorie);
+            return (
+              <tr key={item._origIndex} style={{ background: rowBg(item, i) }}>
+                <td style={tdS}><Star item={item} /><span style={idBadge}>{item.id}</span></td>
+                <td style={tdS}>
+                  <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 10, fontSize: '0.82em', fontWeight: 'bold', background: cat?.color || '#eee', color: 'white' }}>
+                    {item.categorie}
+                  </span>
+                </td>
+                <td style={tdS}>{item.libelle}</td>
+                <td style={tdS}>
+                  <ResetBtn item={item} />
+                  <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
+                  <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     );
@@ -552,6 +646,12 @@ export default function ConfigEditor() {
               <select value={filterCode} onChange={e => setFilterCode(e.target.value)} style={selFil}>
                 <option value="">Tous codes</option>
                 {['iagraphie', 'traces', 'logique'].map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            )}
+            {contentType === 'actions' && (
+              <select value={filterParent} onChange={e => setFilterParent(e.target.value)} style={selFil}>
+                <option value="">Toutes catégories</option>
+                {CATEGORIES_DEFAULT.map(c => <option key={c.id} value={c.id}>{c.libelle}</option>)}
               </select>
             )}
             {hasFilters && <button className="btn-clr" onClick={clearFilters}>✕ Retirer les filtres</button>}
