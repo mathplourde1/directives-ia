@@ -416,7 +416,8 @@ export default function Restrictions() {
               <li>Cliquez sur <strong>Générer les directives</strong> pour obtenir les synthèses.</li>
               <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
             </ol>
-            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.
+            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
+            🔒 Vos données ne sont pas conservées. Créez un <a href="#sauvegarde-r" className="text-blue-800 underline">fichier de sauvegarde</a> pour reprendre votre travail plus tard.
           </div>
           <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
             <AProposButton />
@@ -545,9 +546,9 @@ export default function Restrictions() {
             </div>
           </div>
         )}
-      </div>
-      {/* ===== SAVE & LOAD ===== */}
-      <div id="sauvegarde-r" style={{ marginTop: 24, padding: 16, border: '1px solid #ccc', borderRadius: 8, background: 'white' }}>
+
+        {/* ===== SAVE & LOAD ===== */}
+        <div id="sauvegarde-r" style={{ marginTop: 24, padding: 16, border: '1px solid #ccc', borderRadius: 8, background: 'white' }}>
         <h2 style={{ marginTop: 0, color: '#231F20' }} className="my-2 text-xl font-semibold text-center">Sauvegarde et restauration</h2>
         <p style={{ fontSize: '0.88em', color: '#555', marginBottom: 12 }}>
           🔒 Vos données ne sont pas conservées automatiquement. Créez un fichier de sauvegarde pour reprendre votre travail plus tard.
@@ -560,8 +561,9 @@ export default function Restrictions() {
             ⚠ {saveError}
           </div>
         )}
-      </div>
+        </div>
 
+      </div>
       <PageRightNav submitted={submitted} items={RESTRICTIONS_NAV_ITEMS} />
     </div>
   );
