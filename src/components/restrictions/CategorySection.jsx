@@ -428,18 +428,6 @@ export default function CategorySection({
               })}
             </div>
 
-          {/* Précisions */}
-          <div style={{ marginBottom: 10 }}>
-            <label style={{ fontWeight: 'bold', fontSize: '0.85em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions</label>
-            <textarea
-              value={precisions[category.id] || ''}
-              onChange={e => onPrecisionsChange(category.id, e.target.value)}
-              placeholder="Ajoutez ici des précisions pour cette catégorie…"
-              rows={2}
-              style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical' }}
-            />
-          </div>
-
           {/* Removed items — droppable zone */}
           <Droppable droppableId={REMOVED_ZONE} direction="horizontal">
             {(provided, snapshot) => (
@@ -453,7 +441,7 @@ export default function CategorySection({
                   padding: '8px 10px',
                   minHeight: 38,
                   transition: 'background 0.1s',
-                  display: removedActions.length === 0 && !snapshot.isDraggingOver ? 'none' : 'block',
+                  display: 'block',
                 }}
               >
                 <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold' }}>
@@ -496,6 +484,18 @@ export default function CategorySection({
             )}
           </Droppable>
           </DragDropContext>
+
+          {/* Précisions */}
+          <div style={{ marginTop: 10 }}>
+            <label style={{ fontWeight: 'bold', fontSize: '0.85em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions</label>
+            <textarea
+              value={precisions[category.id] || ''}
+              onChange={e => onPrecisionsChange(category.id, e.target.value)}
+              placeholder="Ajoutez ici des précisions pour cette catégorie…"
+              rows={2}
+              style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical' }}
+            />
+          </div>
         </div>
       )}
     </div>
