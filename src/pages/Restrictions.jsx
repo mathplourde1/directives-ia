@@ -411,7 +411,7 @@ export default function Restrictions() {
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
               <li>Remplissez la section d'identification.</li>
-              <li>Pour chaque catégorie de la taxonomie de Bloom, choisissez de restreindre ou non l'usage des SIA.</li>
+              <li>Pour chaque catégorie, choisissez de restreindre ou non l'usage des SIA.</li>
               <li>Si vous choisissez de restreindre, déplacez chaque action dans la colonne correspondant au niveau de permission souhaité.</li>
               <li>Cliquez sur <strong>Générer les directives</strong> pour obtenir les synthèses.</li>
               <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
