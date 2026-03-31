@@ -4,6 +4,36 @@ import CategorySection from '@/components/restrictions/CategorySection';
 import BrioSectionRestrictions from '@/components/restrictions/BrioSectionRestrictions';
 import RestrictionsGabarit from '@/components/restrictions/RestrictionsGabarit';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import PageRightNav from '@/components/guide/PageRightNav';
+
+const RESTRICTIONS_NAV_ITEMS = [
+  { id: 'evaluation-ciblee-r', label: 'Évaluation ciblée', conditional: false },
+  { id: 'synthese-container-r', label: 'Synthèses', conditional: true },
+  { id: 'declaration-r', label: 'Déclaration étudiante', conditional: true },
+];
+
+function AProposButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: '0.8em', color: '#888', display: 'inline-block', transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
+        🧠 À propos…
+      </button>
+      {open && (
+        <div style={{ textAlign: 'left', paddingTop: 6 }}>
+          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" className="text-blue-800 underline">Service de soutien à l'enseignement</a> de l'Université Laval.<br /><br />
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/ce0c154f6_20240824_AIA_FR_EN.png" alt="Aidée de l'intelligence artificielle" style={{ float: 'right', width: 80, marginLeft: 12, marginBottom: 4 }} />
+          <b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b><br />L'idée originale, la logique et les contenus de cette application ont été développés par des humains, qui ont utilisé des SIA conversationnels pour aider avec la génération de texte et la reformulation (ChatGPT, Gemini et Microsoft Copilot). Ce travail est basé sur un guide destiné au personnel enseignant du Service pédagogique FSA ULaval. Tous les textes présentés ont été validés par l'équipe de développement. Le code a été développé par Mathieu Plourde avec l'aide de ChatGPT et Claude, mais plus particulièrement par Base44 pour cette version actuelle.<br /><br />
+          Elle est développée et maintenue par Mathieu Plourde, CC-BY 4.0 2026 (version alpha 5).
+        </div>
+      )}
+    </div>
+  );
+}
 
 // Initialize all actions to 'non' permission
 function initPermissions() {
@@ -229,10 +259,28 @@ export default function Restrictions() {
         `}</style>
 
         <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives - restrictions d'utilisation des SIA</h1>
-        <div className="mb-4">Ce formulaire interactif permet de définir, action par action, le niveau d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA) selon les catégories de la taxonomie de Bloom.</div>
+        <div className="mb-2">Ce formulaire interactif permet de définir, action par action, le niveau d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA) selon les catégories de la taxonomie de Bloom.</div>
+
+        {/* Instructions */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ textAlign: 'left' }}>
+            <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
+            <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
+              <li>Remplissez la section d'identification.</li>
+              <li>Pour chaque catégorie de la taxonomie de Bloom, choisissez de restreindre ou non l'usage des SIA.</li>
+              <li>Si vous choisissez de restreindre, déplacez chaque action dans la colonne correspondant au niveau de permission souhaité.</li>
+              <li>Cliquez sur <strong>Générer les directives</strong> pour obtenir les synthèses.</li>
+              <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
+            </ol>
+            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.
+          </div>
+          <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
+            <AProposButton />
+          </div>
+        </div>
 
         {/* Identification */}
-        <div style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
+        <div id="evaluation-ciblee-r" style={{ background: 'white', padding: 20, borderRadius: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)', marginBottom: 20 }}>
           <h2 style={{ marginTop: 0, color: '#231F20', fontSize: '1.1em', fontWeight: 'bold', marginBottom: 6 }}>Évaluation ciblée</h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px' }}>
             <div>
@@ -354,6 +402,7 @@ export default function Restrictions() {
           </div>
         )}
       </div>
+      <PageRightNav submitted={submitted} items={RESTRICTIONS_NAV_ITEMS} />
     </div>
   );
 }
