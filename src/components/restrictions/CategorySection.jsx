@@ -253,6 +253,8 @@ export default function CategorySection({
     setCustomActions(prev => ({ ...prev, [actionId]: { ...prev[actionId], libelle: newLabel } }));
   }
 
+  const REMOVED_ZONE = '__removed__';
+
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
@@ -261,6 +263,33 @@ export default function CategorySection({
     const srcCol = source.droppableId;
     const dstCol = destination.droppableId;
 
+    // Dragging INTO removed zone → remove the action
+    if (dstCol === REMOVED_ZONE) {
+      if (srcCol === REMOVED_ZONE) return; // already removed
+      setRemovedIds(prev => [...prev, draggableId]);
+      setColumnOrder(prev => {
+        const next = { ...prev };
+        COL_IDS.forEach(cid => { next[cid] = (next[cid] || []).filter(id => id !== draggableId); });
+        return next;
+      });
+      return;
+    }
+
+    // Dragging FROM removed zone → restore into target column
+    if (srcCol === REMOVED_ZONE) {
+      setRemovedIds(prev => prev.filter(id => id !== draggableId));
+      setColumnOrder(prev => {
+        const next = { ...prev };
+        const dstList = Array.from(next[dstCol] || []);
+        dstList.splice(destination.index, 0, draggableId);
+        next[dstCol] = dstList;
+        return next;
+      });
+      onPermissionChange(draggableId, dstCol);
+      return;
+    }
+
+    // Normal column-to-column or reorder
     setColumnOrder(prev => {
       const next = { ...prev };
       if (srcCol === dstCol) {
@@ -317,8 +346,8 @@ export default function CategorySection({
         </div>
       ) : (
         <div style={{ padding: '12px 14px' }}>
-          {/* 4 columns with DnD */}
           <DragDropContext onDragEnd={onDragEnd}>
+          {/* 4 columns with DnD */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 12 }}>
               {COLUMN_STYLES.map((col, colIndex) => {
                 const orderedIds = (columnOrder[col.id] || []).filter(id => !removedIds.includes(id));
@@ -398,7 +427,6 @@ export default function CategorySection({
                 );
               })}
             </div>
-          </DragDropContext>
 
           {/* Précisions */}
           <div style={{ marginBottom: 10 }}>
@@ -412,23 +440,62 @@ export default function CategorySection({
             />
           </div>
 
-          {/* Removed items */}
-          {removedActions.length > 0 && (
-            <div style={{ background: '#f5f5f5', border: '1px dashed #bbb', borderRadius: 6, padding: '8px 10px' }}>
-              <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold' }}>Actions retirées :</span>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
-                {removedActions.map(action => (
-                  <div key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 5, background: 'white', border: `1px solid ${category.color}`, borderRadius: 16, padding: '2px 8px', fontSize: '0.8em' }}>
-                    <span style={{ color: category.color }}>{action.libelle || 'Action personnalisée'}</span>
-                    <button type="button" onClick={() => handleRestore(action.id)}
-                      style={{ background: category.color, color: 'white', border: 'none', borderRadius: 10, padding: '0px 7px', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
-                      +
-                    </button>
-                  </div>
-                ))}
+          {/* Removed items — droppable zone */}
+          <Droppable droppableId={REMOVED_ZONE} direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{
+                  background: snapshot.isDraggingOver ? '#e8e8e8' : '#f5f5f5',
+                  border: snapshot.isDraggingOver ? '1px dashed #999' : '1px dashed #bbb',
+                  borderRadius: 6,
+                  padding: '8px 10px',
+                  minHeight: 38,
+                  transition: 'background 0.1s',
+                  display: removedActions.length === 0 && !snapshot.isDraggingOver ? 'none' : 'block',
+                }}
+              >
+                <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold' }}>
+                  Actions retirées {snapshot.isDraggingOver ? '(déposer ici pour retirer)' : ''}:
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                  {removedActions.map((action, idx) => (
+                    <Draggable key={action.id} draggableId={action.id} index={idx}>
+                      {(dragProvided, dragSnapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                          {...dragProvided.dragHandleProps}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
+                            background: dragSnapshot.isDragging ? '#fff' : 'white',
+                            border: `1px solid ${category.color}`,
+                            borderRadius: 16,
+                            padding: '2px 8px',
+                            fontSize: '0.8em',
+                            cursor: 'grab',
+                            boxShadow: dragSnapshot.isDragging ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
+                            ...dragProvided.draggableProps.style,
+                          }}
+                        >
+                          <span style={{ color: category.color }}>{action.libelle || 'Action personnalisée'}</span>
+                          <button type="button" onClick={() => handleRestore(action.id)}
+                            style={{ background: category.color, color: 'white', border: 'none', borderRadius: 10, padding: '0px 7px', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
+                            +
+                          </button>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </Droppable>
+          </DragDropContext>
         </div>
       )}
     </div>
