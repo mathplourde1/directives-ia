@@ -487,6 +487,37 @@ export default function Restrictions() {
             />
           ))}
 
+          {/* Exigences de déclaration section */}
+          <div style={{ background: 'white', borderRadius: 8, border: '2px solid #00A4E4', marginBottom: 20, overflow: 'hidden' }}>
+            <div style={{ background: '#00A4E4', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Exigences de déclaration</span>
+            </div>
+            <div style={{ padding: '12px 14px' }}>
+              <p style={{ fontSize: '0.88em', color: '#555', marginTop: 0, marginBottom: 10 }}>Sélectionnez les exigences de déclaration à appliquer à cette évaluation :</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {[
+                  { key: 'iagraphie', label: 'Références et IAgraphie' },
+                  { key: 'traces', label: 'Conserver les traces' },
+                  { key: 'logique', label: 'Expliquer la logique d\'utilisation' }
+                ].map(req => (
+                  <label key={req.key} style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer', fontSize: '0.9em', color: '#231F20' }}>
+                    <input
+                      type="checkbox"
+                      checked={catStates.global_exigences ? catStates.global_exigences[req.key] : false}
+                      onChange={e => {
+                        const newExigences = { ...catStates.global_exigences };
+                        newExigences[req.key] = e.target.checked;
+                        setCatStates(prev => ({ ...prev, global_exigences: newExigences }));
+                      }}
+                      style={{ cursor: 'pointer', width: 16, height: 16 }}
+                    />
+                    <span>{req.label}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
             <button type="submit" className="btn-primary" style={{ fontSize: '1.425em', padding: '14px 28px' }}>✅ Générer les directives mises en forme</button>
             {submitStatus && (submitStatus.ok ? (
