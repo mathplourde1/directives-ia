@@ -26,6 +26,7 @@ export default function Restrictions() {
   const [submitKey, setSubmitKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyMsgs, setCopyMsgs] = useState({});
+  const [showErrors, setShowErrors] = useState(false);
 
   const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' };
@@ -46,6 +47,14 @@ export default function Restrictions() {
       setSubmitStatus({ ok: false });
       return;
     }
+    // Check for empty custom actions
+    const hasEmptyCustom = Object.values(catStates).some(s => s.hasEmptyCustom);
+    if (hasEmptyCustom) {
+      setShowErrors(true);
+      setSubmitStatus({ ok: false, emptyCustom: true });
+      return;
+    }
+    setShowErrors(false);
     setSubmitted(true);
     setSubmitKey(k => k + 1);
     setSubmitStatus({ ok: true, time: new Date() });
@@ -266,6 +275,7 @@ export default function Restrictions() {
               onPermissionChange={handlePermissionChange}
               onPrecisionsChange={handlePrecisionsChange}
               onStateChange={handleCatStateChange}
+              showErrors={showErrors}
             />
           ))}
 
@@ -273,6 +283,8 @@ export default function Restrictions() {
             <button type="submit" className="btn-primary" style={{ fontSize: '1.425em', padding: '14px 28px' }}>✅ Générer les directives mises en forme</button>
             {submitStatus && (submitStatus.ok ? (
               <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Sommaires générés avec succès.</span>
+            ) : submitStatus.emptyCustom ? (
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Au moins une action personnalisée est vide. Veuillez y inscrire une action ou la retirer.</span>
             ) : (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
             ))}

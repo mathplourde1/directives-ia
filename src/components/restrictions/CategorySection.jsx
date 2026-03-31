@@ -11,7 +11,7 @@ const COLUMN_STYLES = [
 const COL_IDS = COLUMN_STYLES.map(c => c.id);
 
 // ActionChip: drag handle in middle, arrows on hover at 10% edges
-function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange }) {
+function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange, hasError }) {
   const col = COLUMN_STYLES.find(c => c.id === levelId) || COLUMN_STYLES[0];
   const label = action.libelle;
   const [hoverZone, setHoverZone] = useState(null); // 'left' | 'right' | null
@@ -34,7 +34,7 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
     <div
       style={{
         background: isCustom ? (isDragging ? col.bg : '#fffdf0') : (isDragging ? col.bg : 'white'),
-        border: isCustom ? `1px dashed ${col.border}` : `1px solid ${col.border}`,
+        border: hasError ? '2px solid #E41E25' : (isCustom ? `1px dashed ${col.border}` : `1px solid ${col.border}`),
         borderRadius: 6,
         marginBottom: 4,
         fontSize: '0.82em',
@@ -100,16 +100,19 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
                 flex: 1,
                 width: '100%',
                 border: 'none',
-                borderBottom: '1px dashed #ccc',
+                borderBottom: hasError ? '1px solid #E41E25' : '1px dashed #ccc',
                 outline: 'none',
                 fontFamily: 'inherit',
                 fontSize: '1em',
                 background: 'transparent',
                 cursor: 'text',
                 fontStyle: 'italic',
-                color: '#666',
+                color: hasError ? '#E41E25' : '#666',
               }}
             />
+            {hasError && (
+              <span style={{ fontSize: '0.78em', color: '#E41E25', marginTop: 2 }}>⚠ Champ requis</span>
+            )}
           </div>
         ) : (
           <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3 }}>{label}</span>
@@ -171,6 +174,7 @@ export default function CategorySection({
   onPermissionChange,
   onPrecisionsChange,
   onStateChange,
+  showErrors,
 }) {
   // columnOrder[colId] = array of action ids in display order
   const buildInitialOrder = useCallback(() => {
@@ -203,9 +207,14 @@ export default function CategorySection({
     return null;
   }
 
+  // IDs of active custom actions with empty label
+  const emptyCustomIds = Object.values(customActions)
+    .filter(a => !removedIds.includes(a.id) && !a.libelle.trim())
+    .map(a => a.id);
+
   // Notify parent whenever local state changes
   useEffect(() => {
-    if (onStateChange) onStateChange(category.id, { columnOrder, removedIds, customActions });
+    if (onStateChange) onStateChange(category.id, { columnOrder, removedIds, customActions, hasEmptyCustom: emptyCustomIds.length > 0 });
   }, [columnOrder, removedIds, customActions]);
 
   function handleMove(actionId, newColId) {
@@ -383,15 +392,16 @@ export default function CategorySection({
                                     {...dragProvided.draggableProps}
                                   >
                                     <ActionChip
-                                      action={action}
-                                      levelId={col.id}
-                                      colIndex={colIndex}
-                                      onMoveTo={handleMove}
-                                      onRemove={handleRemove}
-                                      dragHandleProps={dragProvided.dragHandleProps}
-                                      isDragging={dragSnapshot.isDragging}
-                                      isCustom={!!action.isCustom}
-                                      onLabelChange={handleCustomLabelChange}
+                                     action={action}
+                                     levelId={col.id}
+                                     colIndex={colIndex}
+                                     onMoveTo={handleMove}
+                                     onRemove={handleRemove}
+                                     dragHandleProps={dragProvided.dragHandleProps}
+                                     isDragging={dragSnapshot.isDragging}
+                                     isCustom={!!action.isCustom}
+                                     onLabelChange={handleCustomLabelChange}
+                                     hasError={showErrors && !!action.isCustom && emptyCustomIds.includes(action.id)}
                                     />
                                   </div>
                                 )}
