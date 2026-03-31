@@ -251,15 +251,6 @@ export default function Restrictions() {
           </div>
         </div>
 
-        {/* Légende niveaux */}
-        <div style={{ background: 'white', padding: '10px 16px', borderRadius: 8, marginBottom: 16, display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
-          <span style={{ fontWeight: 'bold', fontSize: '0.88em', color: '#555' }}>Niveaux :</span>
-          {PERMISSION_LEVELS.map(l => (
-            <span key={l.id} style={{ background: l.bg, border: `1px solid ${l.border}`, color: l.color, borderRadius: 4, padding: '2px 10px', fontSize: '0.82em', fontWeight: 'bold' }}>{l.libelle}</span>
-          ))}
-          <span style={{ fontSize: '0.8em', color: '#888', marginLeft: 4 }}>— Par défaut : <strong>Non autorisée</strong></span>
-        </div>
-
         {/* Categories */}
         <form onSubmit={handleSubmit} style={{ opacity: identFilled ? 1 : 0.5, position: 'relative' }}>
           {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis" />}
