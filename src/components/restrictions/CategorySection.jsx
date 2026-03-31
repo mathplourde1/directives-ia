@@ -10,18 +10,20 @@ const COLUMN_STYLES = [
 
 const COL_IDS = COLUMN_STYLES.map(c => c.id);
 
-// ActionChip: drag handle in middle, arrows on hover at 20% edges
+// ActionChip: drag handle in middle, arrows on hover at 10% edges
 function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange }) {
   const col = COLUMN_STYLES.find(c => c.id === levelId) || COLUMN_STYLES[0];
   const label = action.libelle;
   const [hoverZone, setHoverZone] = useState(null); // 'left' | 'right' | null
+  const [isEditing, setIsEditing] = useState(false);
 
   function handleMouseMove(e) {
+    if (isEditing) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const w = rect.width;
-    if (x < w * 0.2) setHoverZone('left');
-    else if (x > w * 0.8) setHoverZone('right');
+    if (x < w * 0.1) setHoverZone('left');
+    else if (x > w * 0.9) setHoverZone('right');
     else setHoverZone(null);
   }
 
@@ -31,8 +33,8 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
   return (
     <div
       style={{
-        background: isDragging ? col.bg : 'white',
-        border: `1px solid ${col.border}`,
+        background: isCustom ? (isDragging ? col.bg : '#fffdf0') : (isDragging ? col.bg : 'white'),
+        border: isCustom ? `1px dashed ${col.border}` : `1px solid ${col.border}`,
         borderRadius: 6,
         marginBottom: 4,
         fontSize: '0.82em',
@@ -43,13 +45,13 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
         userSelect: 'none',
       }}
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setHoverZone(null)}
+      onMouseLeave={() => { setHoverZone(null); }}
     >
-      {/* Left arrow zone */}
+      {/* Left arrow zone — 10% */}
       <div
         style={{
-          width: '20%',
-          minWidth: 24,
+          width: '10%',
+          minWidth: 18,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -63,43 +65,54 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
         title={prevColId ? `Déplacer vers "${COLUMN_STYLES.find(c => c.id === prevColId)?.libelle}"` : ''}
       >
         {hoverZone === 'left' && prevColId && (
-          <span style={{ color: COLUMN_STYLES.find(c => c.id === prevColId)?.headerBg, fontWeight: 'bold', fontSize: '1.1em', lineHeight: 1 }}>◀</span>
+          <span style={{ color: COLUMN_STYLES.find(c => c.id === prevColId)?.headerBg, fontWeight: 'bold', fontSize: '1em', lineHeight: 1 }}>◀</span>
         )}
       </div>
 
       {/* Middle: drag handle + label */}
       <div
-        {...dragHandleProps}
+        {...(!isEditing ? dragHandleProps : {})}
         style={{
           flex: 1,
           padding: '5px 4px',
-          cursor: 'grab',
+          cursor: isEditing ? 'default' : 'grab',
           display: 'flex',
-          alignItems: 'center',
+          alignItems: 'flex-start',
           minWidth: 0,
         }}
       >
         {isCustom ? (
-          <input
-            type="text"
-            value={label}
-            onChange={e => onLabelChange(action.id, e.target.value)}
-            placeholder="Action personnalisée…"
-            onClick={e => e.stopPropagation()}
-            onMouseDown={e => e.stopPropagation()}
-            style={{
-              flex: 1,
-              border: 'none',
-              outline: 'none',
-              fontFamily: 'inherit',
-              fontSize: '1em',
-              background: 'transparent',
-              cursor: 'text',
-              minWidth: 0,
-            }}
-          />
+          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+            {/* Drag handle bar for custom items */}
+            {!isEditing && (
+              <div style={{ fontSize: '0.7em', color: '#bbb', textAlign: 'center', letterSpacing: 2, lineHeight: 1, marginBottom: 2, cursor: 'grab' }}>
+                ⠿
+              </div>
+            )}
+            <input
+              type="text"
+              value={label}
+              onChange={e => onLabelChange(action.id, e.target.value)}
+              placeholder="Action personnalisée…"
+              onFocus={() => setIsEditing(true)}
+              onBlur={() => setIsEditing(false)}
+              style={{
+                flex: 1,
+                width: '100%',
+                border: 'none',
+                borderBottom: '1px dashed #ccc',
+                outline: 'none',
+                fontFamily: 'inherit',
+                fontSize: '1em',
+                background: 'transparent',
+                cursor: 'text',
+                fontStyle: 'italic',
+                color: '#666',
+              }}
+            />
+          </div>
         ) : (
-          <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
+          <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3 }}>{label}</span>
         )}
         <button
           type="button"
@@ -114,15 +127,16 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
             lineHeight: 1,
             padding: '0 2px',
             flexShrink: 0,
+            alignSelf: 'flex-start',
           }}
         >×</button>
       </div>
 
-      {/* Right arrow zone */}
+      {/* Right arrow zone — 10% */}
       <div
         style={{
-          width: '20%',
-          minWidth: 24,
+          width: '10%',
+          minWidth: 18,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -136,7 +150,7 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
         title={nextColId ? `Déplacer vers "${COLUMN_STYLES.find(c => c.id === nextColId)?.libelle}"` : ''}
       >
         {hoverZone === 'right' && nextColId && (
-          <span style={{ color: COLUMN_STYLES.find(c => c.id === nextColId)?.headerBg, fontWeight: 'bold', fontSize: '1.1em', lineHeight: 1 }}>▶</span>
+          <span style={{ color: COLUMN_STYLES.find(c => c.id === nextColId)?.headerBg, fontWeight: 'bold', fontSize: '1em', lineHeight: 1 }}>▶</span>
         )}
       </div>
     </div>
