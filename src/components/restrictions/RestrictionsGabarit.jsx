@@ -40,23 +40,25 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
     if (catActions.length === 0) continue;
 
     body += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">${escHtml(cat.libelle)}</h2>`;
-    const catPrec = precisions[cat.id] || '';
-    if (catPrec) body += `<p style="font-family:Arial,sans-serif;font-size:9pt;color:#444;margin:0 0 6pt 0;"><em>Précisions :</em> ${escHtml(catPrec)}</p>`;
-    body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:12pt;">
+    body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:6pt;">
       <thead><tr>
-        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:60%">Action</th>
-        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:40%">Utilisation des SIA</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:40%">Permissions SIA</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:60%">Actions SIA</th>
       </tr></thead><tbody>`;
 
-    for (const action of catActions) {
-      const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-      const actionLabel = action.libelle || 'Action personnalisée';
+    PERMISSION_LEVELS.forEach(level => {
+      const levelActions = catActions.filter(a => (permissions[a.id] || 'non') === level.id);
+      if (levelActions.length === 0) return;
+      const items = levelActions.map(a => `<li style="font-weight:normal;margin:1pt 0;">${escHtml(a.libelle || 'Action personnalisée')}</li>`).join('');
       body += `<tr>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(actionLabel)}</td>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:${level.color};font-weight:bold">${escHtml(level.libelle)}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:${level.color};font-weight:bold;">${escHtml(level.libelle)}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;"><ul style="margin:0;padding-left:16px;">${items}</ul></td>
       </tr>`;
-    }
+    });
     body += '</tbody></table>';
+
+    const catPrec = precisions[cat.id] || '';
+    if (catPrec) body += `<p style="font-family:Arial,sans-serif;font-size:9pt;color:#444;margin:0 0 10pt 0;"><em>Précisions :</em> ${escHtml(catPrec)}</p>`;
   }
 
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
