@@ -319,7 +319,6 @@ export default function Restrictions() {
                 <AccordionItem value="tableau">
                   <AccordionTrigger className="text-base font-semibold">Tableau synthèse</AccordionTrigger>
                   <AccordionContent>
-                    {buildIdentLine() && <p style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', marginBottom: 8 }}>{buildIdentLine()}</p>}
                     <div dangerouslySetInnerHTML={{ __html: buildTableHTML() }} />
                     <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
                       <button type="button" className="btn-primary" onClick={() => copyRichText(buildTableHTML(), 'table-brio')}>Copier pour coller en ligne (Brio)</button>
