@@ -223,9 +223,9 @@ export default function CustomActionModal({ isOpen, onClose, onSave, initialValu
                 fontFamily: 'inherit',
                 fontSize: '0.9em',
                 resize: 'vertical',
+                minHeight: '3.5em',
                 outline: 'none',
                 boxSizing: 'border-box',
-                flex: 1,
               }}
             />
             <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6, flexShrink: 0 }}>
