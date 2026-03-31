@@ -214,7 +214,7 @@ export default function CustomActionModal({ isOpen, onClose, onSave, initialValu
               value={value}
               onChange={e => setValue(e.target.value)}
               placeholder="Ex. : Analyser des sources primaires…"
-              rows={6}
+              rows={2}
               style={{
                 width: '100%',
                 border: '1px solid #ccc',
