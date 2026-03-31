@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import CustomActionModal from './CustomActionModal';
 
 const COLUMN_STYLES = [
   { id: 'non', libelle: 'Non autorisée', color: '#E41E25', bg: '#fff4f4', border: '#E41E25', headerBg: '#E41E25' },
@@ -11,11 +12,12 @@ const COLUMN_STYLES = [
 const COL_IDS = COLUMN_STYLES.map(c => c.id);
 
 // ActionChip: drag handle in middle, arrows on hover at 10% edges
-function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange, hasError }) {
+function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange, hasError, categoryColor }) {
   const col = COLUMN_STYLES.find(c => c.id === levelId) || COLUMN_STYLES[0];
   const label = action.libelle;
   const [hoverZone, setHoverZone] = useState(null); // 'left' | 'right' | null
   const [isEditing, setIsEditing] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   function handleMouseMove(e) {
     if (isEditing) return;
@@ -89,30 +91,45 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
                 ⠿
               </div>
             )}
-            <input
-              type="text"
-              value={label}
-              onChange={e => onLabelChange(action.id, e.target.value)}
-              placeholder="Action personnalisée…"
-              onFocus={() => setIsEditing(true)}
-              onBlur={() => setIsEditing(false)}
-              style={{
-                flex: 1,
-                width: '100%',
-                border: 'none',
-                borderBottom: hasError ? '1px solid #E41E25' : '1px dashed #ccc',
-                outline: 'none',
-                fontFamily: 'inherit',
-                fontSize: '1em',
-                background: 'transparent',
-                cursor: 'text',
-                fontStyle: 'italic',
-                color: hasError ? '#E41E25' : '#666',
-              }}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+              <input
+                type="text"
+                value={label}
+                onChange={e => onLabelChange(action.id, e.target.value)}
+                placeholder="Action personnalisée…"
+                onFocus={() => setIsEditing(true)}
+                onBlur={() => setIsEditing(false)}
+                style={{
+                  flex: 1,
+                  border: 'none',
+                  borderBottom: hasError ? '1px solid #E41E25' : '1px dashed #ccc',
+                  outline: 'none',
+                  fontFamily: 'inherit',
+                  fontSize: '1em',
+                  background: 'transparent',
+                  cursor: 'text',
+                  fontStyle: 'italic',
+                  color: hasError ? '#E41E25' : '#666',
+                  minWidth: 0,
+                }}
+              />
+              <button
+                type="button"
+                title="Parcourir les verbes de Bloom"
+                onClick={e => { e.stopPropagation(); setModalOpen(true); }}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '0.85em', padding: '0 2px', flexShrink: 0 }}
+              >✎</button>
+            </div>
             {hasError && (
               <span style={{ fontSize: '0.78em', color: '#E41E25', marginTop: 2 }}>⚠ Champ requis</span>
             )}
+            <CustomActionModal
+              isOpen={modalOpen}
+              onClose={() => setModalOpen(false)}
+              initialValue={label}
+              onSave={newLabel => onLabelChange(action.id, newLabel)}
+              categoryColor={categoryColor}
+            />
           </div>
         ) : (
           <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3 }}>{label}</span>
@@ -392,16 +409,17 @@ export default function CategorySection({
                                     {...dragProvided.draggableProps}
                                   >
                                     <ActionChip
-                                     action={action}
-                                     levelId={col.id}
-                                     colIndex={colIndex}
-                                     onMoveTo={handleMove}
-                                     onRemove={handleRemove}
-                                     dragHandleProps={dragProvided.dragHandleProps}
-                                     isDragging={dragSnapshot.isDragging}
-                                     isCustom={!!action.isCustom}
-                                     onLabelChange={handleCustomLabelChange}
-                                     hasError={showErrors && !!action.isCustom && emptyCustomIds.includes(action.id)}
+                                    action={action}
+                                    levelId={col.id}
+                                    colIndex={colIndex}
+                                    onMoveTo={handleMove}
+                                    onRemove={handleRemove}
+                                    dragHandleProps={dragProvided.dragHandleProps}
+                                    isDragging={dragSnapshot.isDragging}
+                                    isCustom={!!action.isCustom}
+                                    onLabelChange={handleCustomLabelChange}
+                                    hasError={showErrors && !!action.isCustom && emptyCustomIds.includes(action.id)}
+                                    categoryColor={category.color}
                                     />
                                   </div>
                                 )}
