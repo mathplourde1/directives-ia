@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
   { id: 'evaluation-ciblee', label: 'Évaluation ciblée', conditional: false },
   { id: 'brio-section', label: 'Suggestion Brio', conditional: true },
   { id: 'syntheses', label: 'Synthèses', conditional: true },
@@ -8,7 +8,8 @@ const NAV_ITEMS = [
   { id: 'declaration', label: 'Déclaration étudiante', conditional: true },
 ];
 
-export default function PageRightNav({ submitted }) {
+export default function PageRightNav({ submitted, items }) {
+  const NAV_ITEMS = items || DEFAULT_NAV_ITEMS;
   const [open, setOpen] = useState(false);
 
   const scrollTo = (id) => {
