@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import BLOOM_CATEGORIES, { PERMISSION_LEVELS } from '@/components/restrictions/restrictionsData';
 import CategorySection from '@/components/restrictions/CategorySection';
 import BrioSectionRestrictions from '@/components/restrictions/BrioSectionRestrictions';
@@ -10,6 +10,7 @@ const RESTRICTIONS_NAV_ITEMS = [
   { id: 'evaluation-ciblee-r', label: 'Évaluation ciblée', conditional: false },
   { id: 'synthese-container-r', label: 'Synthèses', conditional: true },
   { id: 'declaration-r', label: 'Déclaration étudiante', conditional: true },
+  { id: 'sauvegarde-r', label: 'Sauvegarde', conditional: false },
 ];
 
 function AProposButton() {
@@ -57,6 +58,8 @@ export default function Restrictions() {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyMsgs, setCopyMsgs] = useState({});
   const [showErrors, setShowErrors] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const fileInputRef = useRef();
 
   const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' };
@@ -239,6 +242,147 @@ export default function Restrictions() {
     setCatStates(prev => ({ ...prev, [catId]: state }));
   }
 
+  // ---- XML Save ----
+  function handleSave() {
+    const escapeXml = (str) => String(str ?? '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<restrictions-ia version="1.0">\n`;
+    xml += `  <identification>\n`;
+    xml += `    <cours>${escapeXml(identification.cours)}</cours>\n`;
+    xml += `    <session>${escapeXml(identification.session)}</session>\n`;
+    xml += `    <enseignants>${escapeXml(identification.enseignants)}</enseignants>\n`;
+    xml += `    <evaluation>${escapeXml(identification.evaluation)}</evaluation>\n`;
+    xml += `  </identification>\n`;
+    xml += `  <categories>\n`;
+    BLOOM_CATEGORIES.forEach(cat => {
+      const mode = categoryModes[cat.id] || 'aucune';
+      const prec = precisions[cat.id] || '';
+      const state = catStates[cat.id] || {};
+      const columnOrder = state.columnOrder || {};
+      const removedIds = state.removedIds || [];
+      const customActions = state.customActions || {};
+      xml += `    <categorie id="${cat.id}">\n`;
+      xml += `      <mode>${escapeXml(mode)}</mode>\n`;
+      xml += `      <precisions>${escapeXml(prec)}</precisions>\n`;
+      xml += `      <colonnes>\n`;
+      Object.entries(columnOrder).forEach(([colId, ids]) => {
+        xml += `        <colonne id="${colId}">${escapeXml((ids || []).join(','))}</colonne>\n`;
+      });
+      xml += `      </colonnes>\n`;
+      xml += `      <retires>${escapeXml(removedIds.join(','))}</retires>\n`;
+      xml += `      <actions_custom>\n`;
+      Object.values(customActions).forEach(a => {
+        xml += `        <action id="${escapeXml(a.id)}" libelle="${escapeXml(a.libelle)}" colId="${escapeXml(a.colId)}" />\n`;
+      });
+      xml += `      </actions_custom>\n`;
+      xml += `      <permissions>\n`;
+      cat.actions.forEach(a => {
+        if (permissions[a.id]) {
+          xml += `        <perm actionId="${escapeXml(a.id)}">${escapeXml(permissions[a.id])}</perm>\n`;
+        }
+      });
+      Object.values(customActions).forEach(a => {
+        if (permissions[a.id]) {
+          xml += `        <perm actionId="${escapeXml(a.id)}">${escapeXml(permissions[a.id])}</perm>\n`;
+        }
+      });
+      xml += `      </permissions>\n`;
+      xml += `    </categorie>\n`;
+    });
+    xml += `  </categories>\n</restrictions-ia>`;
+
+    const now = new Date();
+    const dateStr = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
+    const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
+    const coursPart = identification.cours ? slugify(identification.cours) : 'cours';
+    const evalPart = identification.evaluation ? slugify(identification.evaluation) : 'evaluation';
+    const filename = `restrictions-${coursPart}-${evalPart}-${dateStr}.txt`;
+
+    const blob = new Blob([xml], { type: 'application/xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+  }
+
+  // ---- XML Load ----
+  function handleLoad(e) {
+    setSaveError('');
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(ev.target.result, 'application/xml');
+        if (doc.querySelector('parseerror') || doc.querySelector('parsererror')) { setSaveError("Le fichier XML est invalide ou corrompu."); return; }
+        const root = doc.querySelector('restrictions-ia');
+        if (!root) { setSaveError("Ce fichier n'est pas un fichier de sauvegarde valide pour les restrictions."); return; }
+
+        // Restore identification
+        const identNode = root.querySelector('identification');
+        if (identNode) {
+          const getI = (tag) => identNode.querySelector(tag)?.textContent ?? '';
+          setIdentification({ cours: getI('cours'), session: getI('session'), enseignants: getI('enseignants'), evaluation: getI('evaluation') });
+        }
+
+        // Restore categories
+        const newCategoryModes = {};
+        const newPrecisions = {};
+        const newPermissions = { ...initPermissions() };
+        const newCatStates = {};
+
+        doc.querySelectorAll('categorie').forEach(catNode => {
+          const catId = catNode.getAttribute('id');
+          if (!catId) return;
+          newCategoryModes[catId] = catNode.querySelector('mode')?.textContent || 'aucune';
+          newPrecisions[catId] = catNode.querySelector('precisions')?.textContent || '';
+
+          // Column order
+          const columnOrder = {};
+          catNode.querySelectorAll('colonne').forEach(col => {
+            const colId = col.getAttribute('id');
+            const ids = col.textContent.split(',').map(s => s.trim()).filter(Boolean);
+            columnOrder[colId] = ids;
+          });
+
+          // Removed ids
+          const retiresText = catNode.querySelector('retires')?.textContent || '';
+          const removedIds = retiresText.split(',').map(s => s.trim()).filter(Boolean);
+
+          // Custom actions
+          const customActions = {};
+          catNode.querySelectorAll('action_custom, actions_custom action').forEach(a => {
+            const id = a.getAttribute('id');
+            const libelle = a.getAttribute('libelle') || '';
+            const colId = a.getAttribute('colId') || 'non';
+            if (id) customActions[id] = { id, libelle, colId };
+          });
+
+          newCatStates[catId] = { columnOrder, removedIds, customActions, hasEmptyCustom: false };
+
+          // Permissions
+          catNode.querySelectorAll('perm').forEach(p => {
+            const actionId = p.getAttribute('actionId');
+            if (actionId) newPermissions[actionId] = p.textContent;
+          });
+        });
+
+        setCategoryModes(newCategoryModes);
+        setPrecisions(newPrecisions);
+        setPermissions(newPermissions);
+        setCatStates(newCatStates);
+        setSubmitted(false);
+        setSubmitStatus(null);
+      } catch {
+        setSaveError("Erreur lors de la lecture du fichier. Vérifiez qu'il s'agit d'un fichier de sauvegarde valide.");
+      }
+      e.target.value = '';
+    };
+    reader.readAsText(file);
+  }
+
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
       <div style={{ maxWidth: 1000, margin: '0 auto' }}>
@@ -402,6 +546,22 @@ export default function Restrictions() {
           </div>
         )}
       </div>
+      {/* ===== SAVE & LOAD ===== */}
+      <div id="sauvegarde-r" style={{ marginTop: 24, padding: 16, border: '1px solid #ccc', borderRadius: 8, background: 'white' }}>
+        <h2 style={{ marginTop: 0, color: '#231F20' }} className="my-2 text-xl font-semibold text-center">Sauvegarde et restauration</h2>
+        <p style={{ fontSize: '0.88em', color: '#555', marginBottom: 12 }}>
+          🔒 Vos données ne sont pas conservées automatiquement. Créez un fichier de sauvegarde pour reprendre votre travail plus tard.
+        </p>
+        <button type="button" className="btn-primary" onClick={handleSave}>💾 Créer un fichier de sauvegarde</button>
+        <button type="button" className="btn-secondary" onClick={() => fileInputRef.current?.click()}>📂 Importer un fichier de sauvegarde</button>
+        <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleLoad} />
+        {saveError && (
+          <div style={{ color: '#E41E25', marginTop: 10, padding: '8px 12px', background: '#fff4f4', border: '1px solid #E41E25', borderRadius: 5 }}>
+            ⚠ {saveError}
+          </div>
+        )}
+      </div>
+
       <PageRightNav submitted={submitted} items={RESTRICTIONS_NAV_ITEMS} />
     </div>
   );
