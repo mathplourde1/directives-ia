@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import ConfigEditor from './pages/ConfigEditor';
 import DeclarationOutil from './pages/Declaration-outil';
+import Restrictions from './pages/Restrictions';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -61,6 +62,7 @@ const AuthenticatedApp = () => {
       ))}
       <Route path="/ConfigEditor" element={<LayoutWrapper currentPageName="ConfigEditor"><ConfigEditor /></LayoutWrapper>} />
       <Route path="/Declaration-outil" element={<LayoutWrapper currentPageName="Declaration-outil"><DeclarationOutil /></LayoutWrapper>} />
+      <Route path="/Restrictions" element={<LayoutWrapper currentPageName="Restrictions"><Restrictions /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

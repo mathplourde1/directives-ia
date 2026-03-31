@@ -1,0 +1,109 @@
+import React, { useState } from 'react';
+import BLOOM_CATEGORIES, { PERMISSION_LEVELS } from './restrictionsData';
+
+function escHtml(str) {
+  return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function buildGabaritHTML(identification, allActions, permissions, precisions) {
+  const cours = escHtml(identification.cours || '[cours]');
+  const evaluation = escHtml(identification.evaluation || '[évaluation]');
+  const session = escHtml(identification.session || '[session]');
+  const enseignants = escHtml(identification.enseignants || '[personne enseignante]');
+
+  const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 8pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Directives d'utilisation des SIA — par action</h1>`;
+  const ident = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 12pt 0;">${[cours && `Cours : ${cours}`, evaluation && `Évaluation : ${evaluation}`, session && `Session : ${session}`, enseignants && `Enseignant(e) : ${enseignants}`].filter(Boolean).join(' | ')}</p>`;
+
+  let body = '';
+  for (const cat of BLOOM_CATEGORIES) {
+    const catActions = allActions.filter(a => cat.actions.some(ca => ca.id === a.id));
+    if (catActions.length === 0) continue;
+
+    body += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">${escHtml(cat.libelle)}</h2>`;
+    body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:12pt;">
+      <thead><tr>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:45%">Action</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:30%">Utilisation des SIA</th>
+        <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;width:25%">Précisions</th>
+      </tr></thead><tbody>`;
+
+    for (const action of catActions) {
+      const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
+      const actionLabel = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
+      const prec = precisions[action.id] || '';
+      body += `<tr>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(actionLabel)}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:${level.color};font-weight:bold">${escHtml(level.libelle)}</td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(prec)}</td>
+      </tr>`;
+    }
+    body += '</tbody></table>';
+  }
+
+  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
+  const affirmList = [
+    "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
+    "Mon utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    "J'ai exercé mon jugement critique sur les contenus générés par les SIA.",
+    "Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
+  ];
+  const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
+  const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
+
+  return title + ident + body + affirmTitle + affirmHtml + signatureBlock;
+}
+
+function downloadWord(htmlContent, filename) {
+  const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset="utf-8"><title>${filename}</title>
+    <style>body{font-family:Arial,sans-serif;}table{border-collapse:collapse;width:100%;}th,td{border:1px solid #ccc;padding:6px;}</style>
+    </head><body>${htmlContent}</body></html>`;
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export default function RestrictionsGabarit({ identification, allActions, permissions, precisions, isGenerated }) {
+  const [showApercu, setShowApercu] = useState(false);
+
+  const html = buildGabaritHTML(identification, allActions, permissions, precisions);
+  const slugify = s => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
+  const filename = `gabarit-restrictions-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
+
+  return (
+    <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
+      <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
+        📄 Gabarit Word de déclaration étudiante
+      </h3>
+      <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 10px', lineHeight: 1.5 }}>
+        Gabarit filtré listant chaque action avec le niveau d'autorisation correspondant, à transmettre aux personnes étudiantes.
+      </p>
+      {!isGenerated && (
+        <div style={{ padding: '10px 14px', background: '#fff8e1', border: '1px solid #ffc107', borderRadius: 6, fontSize: '0.88em', color: '#856404', marginBottom: 14 }}>
+          ⚠ Générez d'abord vos directives pour activer le téléchargement du gabarit.
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+        <button type="button" disabled={!isGenerated}
+          onClick={() => setShowApercu(v => !v)}
+          style={{ background: isGenerated ? '#6c757d' : '#c0c0c0', color: 'white', border: 'none', padding: '8px 18px', borderRadius: 5, cursor: isGenerated ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.9em' }}>
+          {showApercu ? "🙈 Masquer l'aperçu" : "👁 Voir l'aperçu"}
+        </button>
+        <button type="button" disabled={!isGenerated}
+          onClick={() => downloadWord(html, filename)}
+          style={{ background: isGenerated ? '#00A4E4' : '#c0c0c0', color: 'white', border: 'none', padding: '8px 18px', borderRadius: 5, cursor: isGenerated ? 'pointer' : 'not-allowed', fontWeight: 'bold', fontSize: '0.9em' }}>
+          📥 Télécharger le gabarit Word
+        </button>
+      </div>
+      {showApercu && isGenerated && (
+        <div style={{ marginTop: 16, border: '1px solid #ccc', borderRadius: 6, background: 'white', padding: '24px 28px', fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5, maxHeight: 520, overflowY: 'auto' }}
+          dangerouslySetInnerHTML={{ __html: html }} />
+      )}
+    </div>
+  );
+}
