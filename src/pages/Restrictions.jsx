@@ -87,6 +87,16 @@ export default function Restrictions() {
       setSubmitStatus({ ok: false, emptyCustom: true });
       return;
     }
+    // Check that at least one restricted category has an action placed in a column
+    const restrictedCats = BLOOM_CATEGORIES.filter(cat => (categoryModes[cat.id] || 'aucune') === 'restreindre');
+    const allRestrictedEmpty = restrictedCats.length > 0 && restrictedCats.every(cat => {
+      const state = catStates[cat.id];
+      return !state || state.hasNoActionInColumns;
+    });
+    if (allRestrictedEmpty) {
+      setSubmitStatus({ ok: false, noActionInColumns: true });
+      return;
+    }
     setShowErrors(false);
     setSubmitted(true);
     setSubmitKey(k => k + 1);
@@ -483,6 +493,8 @@ export default function Restrictions() {
               <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Sommaires générés avec succès.</span>
             ) : submitStatus.emptyCustom ? (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Au moins une action personnalisée est vide. Veuillez y inscrire une action ou la retirer.</span>
+            ) : submitStatus.noActionInColumns ? (
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Placez au moins une action dans une colonne de permission avant de générer.</span>
             ) : (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis correctement.</span>
             ))}

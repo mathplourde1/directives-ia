@@ -164,13 +164,13 @@ export default function CategorySection({
   const buildInitialOrder = useCallback(() => {
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
-    // All base actions start in 'non' column (sorted alphabetically = already sorted in data)
-    order['non'] = category.actions.map(a => a.id);
+    // All base actions start in the "suggested" pool (all removed by default)
     return order;
   }, [category]);
 
   const [columnOrder, setColumnOrder] = useState(buildInitialOrder);
-  const [removedIds, setRemovedIds] = useState([]);
+  // All base actions start in the suggested pool
+  const [removedIds, setRemovedIds] = useState(() => category.actions.map(a => a.id));
   const [customActions, setCustomActions] = useState({}); // id -> { id, libelle, colId }
   const [pendingModal, setPendingModal] = useState(null); // { colId } when modal is open for new action
 
@@ -197,9 +197,13 @@ export default function CategorySection({
     .filter(a => !removedIds.includes(a.id) && !a.libelle.trim())
     .map(a => a.id);
 
+  // Check if at least one action is placed in any column
+  const totalInColumns = COL_IDS.reduce((sum, cid) => sum + (columnOrder[cid] || []).filter(id => !removedIds.includes(id)).length, 0);
+  const hasNoActionInColumns = totalInColumns === 0;
+
   // Notify parent whenever local state changes
   useEffect(() => {
-    if (onStateChange) onStateChange(category.id, { columnOrder, removedIds, customActions, hasEmptyCustom: emptyCustomIds.length > 0 });
+    if (onStateChange) onStateChange(category.id, { columnOrder, removedIds, customActions, hasEmptyCustom: emptyCustomIds.length > 0, hasNoActionInColumns });
   }, [columnOrder, removedIds, customActions]);
 
   function handleMove(actionId, newColId) {
@@ -363,6 +367,58 @@ export default function CategorySection({
       ) : (
         <div style={{ padding: '12px 14px' }}>
           <DragDropContext onDragEnd={onDragEnd}>
+          {/* Suggested actions pool — above columns */}
+          <Droppable droppableId={REMOVED_ZONE} direction="horizontal">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                style={{
+                  background: snapshot.isDraggingOver ? '#e8e8e8' : '#f5f5f5',
+                  border: snapshot.isDraggingOver ? '1px dashed #999' : '1px dashed #bbb',
+                  borderRadius: 6,
+                  padding: '8px 10px',
+                  minHeight: 38,
+                  transition: 'background 0.1s',
+                  marginBottom: 10,
+                }}
+              >
+                <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold' }}>
+                  Actions suggérées {snapshot.isDraggingOver ? '(déposer ici pour retirer des colonnes)' : '— faites glisser vers une colonne :'}
+                </span>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+                  {removedActions.map((action, idx) => (
+                    <Draggable key={action.id} draggableId={action.id} index={idx}>
+                      {(dragProvided, dragSnapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                          {...dragProvided.dragHandleProps}
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
+                            background: dragSnapshot.isDragging ? '#fff' : 'white',
+                            border: `1px solid ${category.color}`,
+                            borderRadius: 16,
+                            padding: '2px 8px',
+                            fontSize: '0.8em',
+                            cursor: 'grab',
+                            boxShadow: dragSnapshot.isDragging ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
+                            ...dragProvided.draggableProps.style,
+                          }}
+                        >
+                          <span style={{ color: category.color }}>{action.libelle || 'Action personnalisée'}</span>
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              </div>
+            )}
+          </Droppable>
+
           {/* 4 columns with DnD */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, marginBottom: 12 }}>
               {COLUMN_STYLES.map((col, colIndex) => {
@@ -446,61 +502,6 @@ export default function CategorySection({
               })}
             </div>
 
-          {/* Removed items — droppable zone */}
-          <Droppable droppableId={REMOVED_ZONE} direction="horizontal">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                style={{
-                  background: snapshot.isDraggingOver ? '#e8e8e8' : '#f5f5f5',
-                  border: snapshot.isDraggingOver ? '1px dashed #999' : '1px dashed #bbb',
-                  borderRadius: 6,
-                  padding: '8px 10px',
-                  minHeight: 38,
-                  transition: 'background 0.1s',
-                  display: 'block',
-                }}
-              >
-                <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold' }}>
-                  Actions retirées {snapshot.isDraggingOver ? '(déposer ici pour retirer)' : ''}:
-                </span>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
-                  {removedActions.map((action, idx) => (
-                    <Draggable key={action.id} draggableId={action.id} index={idx}>
-                      {(dragProvided, dragSnapshot) => (
-                        <div
-                          ref={dragProvided.innerRef}
-                          {...dragProvided.draggableProps}
-                          {...dragProvided.dragHandleProps}
-                          style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 5,
-                            background: dragSnapshot.isDragging ? '#fff' : 'white',
-                            border: `1px solid ${category.color}`,
-                            borderRadius: 16,
-                            padding: '2px 8px',
-                            fontSize: '0.8em',
-                            cursor: 'grab',
-                            boxShadow: dragSnapshot.isDragging ? '0 4px 12px rgba(0,0,0,0.15)' : 'none',
-                            ...dragProvided.draggableProps.style,
-                          }}
-                        >
-                          <span style={{ color: category.color }}>{action.libelle || 'Action personnalisée'}</span>
-                          <button type="button" onClick={() => handleRestore(action.id)}
-                            style={{ background: category.color, color: 'white', border: 'none', borderRadius: 10, padding: '0px 7px', cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
-                            +
-                          </button>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </div>
-              </div>
-            )}
-          </Droppable>
           </DragDropContext>
 
           {/* Modal for new custom action */}
