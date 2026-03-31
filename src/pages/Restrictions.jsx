@@ -519,15 +519,43 @@ export default function Restrictions() {
                     <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Aucune exigence ajoutée.</p>
                   ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                      {exigences.map((exig) => {
+                      {exigences.map((exig, idx) => {
                         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
                         return (
-                          <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '6px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85em' }}>
-                            <div>
+                          <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '8px 10px', display: 'flex', alignItems: 'center', fontSize: '0.85em', gap: 8 }}>
+                            <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                  if (idx > 0) {
+                                    const newExigences = [...exigences];
+                                    [newExigences[idx - 1], newExigences[idx]] = [newExigences[idx], newExigences[idx - 1]];
+                                    setExigences(newExigences);
+                                  }
+                                }}
+                                disabled={idx === 0}
+                                style={{ background: 'none', border: 'none', cursor: idx === 0 ? 'not-allowed' : 'pointer', color: idx === 0 ? '#ccc' : '#444444', fontSize: '1em', padding: '2px 4px', fontWeight: 'bold' }}>
+                                ▲
+                              </button>
+                              <button 
+                                type="button"
+                                onClick={() => {
+                                  if (idx < exigences.length - 1) {
+                                    const newExigences = [...exigences];
+                                    [newExigences[idx], newExigences[idx + 1]] = [newExigences[idx + 1], newExigences[idx]];
+                                    setExigences(newExigences);
+                                  }
+                                }}
+                                disabled={idx === exigences.length - 1}
+                                style={{ background: 'none', border: 'none', cursor: idx === exigences.length - 1 ? 'not-allowed' : 'pointer', color: idx === exigences.length - 1 ? '#ccc' : '#444444', fontSize: '1em', padding: '2px 4px', fontWeight: 'bold' }}>
+                                ▼
+                              </button>
+                            </div>
+                            <div style={{ flex: 1 }}>
                               <span style={{ fontWeight: 'bold', color: '#444444' }}>{typeLabels[exig.type]}</span>
                               {exig.description && <p style={{ margin: '4px 0 0 0', fontSize: '0.8em', color: '#666' }}>{exig.description.replace(/<[^>]*>/g, '').substring(0, 80)}...</p>}
                             </div>
-                            <div style={{ display: 'flex', gap: 4 }}>
+                            <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
                               <button type="button" onClick={() => setExigenceEditModal({ exigenceId: exig.id, type: exig.type })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
                               <button type="button" onClick={() => setExigences(prev => prev.filter(e => e.id !== exig.id))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
                             </div>
