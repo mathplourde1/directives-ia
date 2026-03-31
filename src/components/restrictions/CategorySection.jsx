@@ -16,11 +16,9 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
   const col = COLUMN_STYLES.find(c => c.id === levelId) || COLUMN_STYLES[0];
   const label = action.libelle;
   const [hoverZone, setHoverZone] = useState(null); // 'left' | 'right' | null
-  const [isEditing, setIsEditing] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   function handleMouseMove(e) {
-    if (isEditing) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const w = rect.width;
@@ -73,56 +71,25 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
 
       {/* Middle: drag handle + label */}
       <div
-        {...(!isEditing ? dragHandleProps : {})}
+        {...dragHandleProps}
         style={{
           flex: 1,
           padding: '5px 4px',
-          cursor: isEditing ? 'default' : 'grab',
+          cursor: 'grab',
           display: 'flex',
           alignItems: 'flex-start',
           minWidth: 0,
         }}
       >
         {isCustom ? (
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            {/* Drag handle bar for custom items */}
-            {!isEditing && (
-              <div style={{ fontSize: '0.7em', color: '#bbb', textAlign: 'center', letterSpacing: 2, lineHeight: 1, marginBottom: 2, cursor: 'grab' }}>
-                ⠿
-              </div>
-            )}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
-              <input
-                type="text"
-                value={label}
-                onChange={e => onLabelChange(action.id, e.target.value)}
-                placeholder="Action personnalisée…"
-                onFocus={() => setIsEditing(true)}
-                onBlur={() => setIsEditing(false)}
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  borderBottom: hasError ? '1px solid #E41E25' : '1px dashed #ccc',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  fontSize: '1em',
-                  background: 'transparent',
-                  cursor: 'text',
-                  fontStyle: 'italic',
-                  color: hasError ? '#E41E25' : '#666',
-                  minWidth: 0,
-                }}
-              />
-              <button
-                type="button"
-                title="Parcourir les verbes de Bloom"
-                onClick={e => { e.stopPropagation(); setModalOpen(true); }}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '0.85em', padding: '0 2px', flexShrink: 0 }}
-              >✎</button>
-            </div>
-            {hasError && (
-              <span style={{ fontSize: '0.78em', color: '#E41E25', marginTop: 2 }}>⚠ Champ requis</span>
-            )}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 3, minWidth: 0 }}>
+            <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3, fontStyle: 'italic', color: '#555' }}>{label}</span>
+            <button
+              type="button"
+              title="Modifier via les verbes de Bloom"
+              onClick={e => { e.stopPropagation(); setModalOpen(true); }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '0.85em', padding: '0 2px', flexShrink: 0 }}
+            >✎</button>
             <CustomActionModal
               isOpen={modalOpen}
               onClose={() => setModalOpen(false)}
@@ -205,6 +172,7 @@ export default function CategorySection({
   const [columnOrder, setColumnOrder] = useState(buildInitialOrder);
   const [removedIds, setRemovedIds] = useState([]);
   const [customActions, setCustomActions] = useState({}); // id -> { id, libelle, colId }
+  const [pendingModal, setPendingModal] = useState(null); // { colId } when modal is open for new action
 
   // Rebuild column order when permissions change from outside (initial sync done via columnOrder state)
   // We manage permissions locally here and propagate up
@@ -245,6 +213,20 @@ export default function CategorySection({
   }
 
   function handleRemove(actionId) {
+    // Custom actions: delete entirely instead of moving to "removed"
+    if (customActions[actionId]) {
+      setCustomActions(prev => {
+        const next = { ...prev };
+        delete next[actionId];
+        return next;
+      });
+      setColumnOrder(prev => {
+        const next = { ...prev };
+        COL_IDS.forEach(cid => { next[cid] = (next[cid] || []).filter(id => id !== actionId); });
+        return next;
+      });
+      return;
+    }
     setRemovedIds(prev => [...prev, actionId]);
     setColumnOrder(prev => {
       const next = { ...prev };
@@ -264,8 +246,15 @@ export default function CategorySection({
   }
 
   function handleAddCustom(colId) {
+    // Open modal for new action — create only when saved with a label
+    setPendingModal({ colId });
+  }
+
+  function handlePendingModalSave(label) {
+    if (!label.trim()) { setPendingModal(null); return; }
+    const colId = pendingModal.colId;
     const id = makeCustomId(category.id);
-    const newAction = { id, libelle: '', colId };
+    const newAction = { id, libelle: label.trim(), colId };
     setCustomActions(prev => ({ ...prev, [id]: newAction }));
     setColumnOrder(prev => {
       const next = { ...prev };
@@ -273,6 +262,7 @@ export default function CategorySection({
       return next;
     });
     onPermissionChange(id, colId);
+    setPendingModal(null);
   }
 
   function handleCustomLabelChange(actionId, newLabel) {
@@ -512,6 +502,17 @@ export default function CategorySection({
             )}
           </Droppable>
           </DragDropContext>
+
+          {/* Modal for new custom action */}
+          {pendingModal && (
+            <CustomActionModal
+              isOpen={true}
+              onClose={() => setPendingModal(null)}
+              initialValue=""
+              onSave={handlePendingModalSave}
+              categoryColor={category.color}
+            />
+          )}
 
           {/* Précisions */}
           <div style={{ marginTop: 10 }}>
