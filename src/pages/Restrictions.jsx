@@ -501,12 +501,12 @@ export default function Restrictions() {
                 <button type="button"
                   onClick={() => setExigencesMode('aucune')}
                   style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: exigencesMode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'aucune' ? 'rgba(255,255,255,0.9)' : 'transparent', color: exigencesMode === 'aucune' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '999px 0 0 999px' }}>
-                  Aucune
+                  Aucune exigence
                 </button>
                 <button type="button"
                   onClick={() => setExigencesMode('inclure')}
                   style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: exigencesMode === 'inclure' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'inclure' ? 'rgba(255,255,255,0.9)' : 'transparent', color: exigencesMode === 'inclure' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '0 999px 999px 0' }}>
-                  Inclure
+                  Inclure des exigences
                 </button>
               </div>
             </div>
