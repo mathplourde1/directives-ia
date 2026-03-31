@@ -188,6 +188,15 @@ export default function Restrictions() {
       html += '</tbody></table>';
       if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
     }
+    // Add exigences section
+    if (exigencesMode === 'inclure' && exigences.length > 0) {
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">Exigences de déclaration</h3>`;
+      exigences.forEach(exig => {
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
+        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
+        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
+      });
+    }
     return html;
   }
 
@@ -215,6 +224,15 @@ export default function Restrictions() {
         if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:6px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
       }
       html += '<hr style="margin:12px 0;" />';
+    }
+    // Add exigences section
+    if (exigencesMode === 'inclure' && exigences.length > 0) {
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">Exigences de déclaration</h3>`;
+      exigences.forEach(exig => {
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
+        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
+        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
+      });
     }
     return html;
   }
@@ -306,7 +324,14 @@ export default function Restrictions() {
       xml += `      </permissions>\n`;
       xml += `    </categorie>\n`;
     });
-    xml += `  </categories>\n</restrictions-ia>`;
+    xml += `  </categories>\n`;
+    xml += `  <exigences mode="${escapeXml(exigencesMode)}">\n`;
+    exigences.forEach(exig => {
+      xml += `    <exigence id="${escapeXml(exig.id)}" type="${escapeXml(exig.type)}">\n`;
+      xml += `      <description>${escapeXml(exig.description)}</description>\n`;
+      xml += `    </exigence>\n`;
+    });
+    xml += `  </exigences>\n</restrictions-ia>`;
 
     const now = new Date();
     const dateStr = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
@@ -384,10 +409,23 @@ export default function Restrictions() {
           });
         });
 
+        // Restore exigences
+        const exigencesNode = root.querySelector('exigences');
+        const newExigencesMode = exigencesNode?.getAttribute('mode') || 'aucune';
+        const newExigences = [];
+        exigencesNode?.querySelectorAll('exigence').forEach(exigNode => {
+          const id = exigNode.getAttribute('id');
+          const type = exigNode.getAttribute('type');
+          const description = exigNode.querySelector('description')?.textContent || '';
+          if (id && type) newExigences.push({ id, type, description });
+        });
+
         setCategoryModes(newCategoryModes);
         setPrecisions(newPrecisions);
         setPermissions(newPermissions);
         setCatStates(newCatStates);
+        setExigencesMode(newExigencesMode);
+        setExigences(newExigences);
         setSubmitted(false);
         setSubmitStatus(null);
       } catch {
@@ -640,6 +678,7 @@ export default function Restrictions() {
                 allActions={getAllActiveActions()}
                 permissions={permissions}
                 precisions={precisions}
+                exigences={exigencesMode === 'inclure' ? exigences : []}
                 isGenerated={submitted}
               />
             </div>
