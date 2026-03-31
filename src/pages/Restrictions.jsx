@@ -116,28 +116,29 @@ export default function Restrictions() {
     html += buildIdentHeader();
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
       if (mode === 'aucune') {
-        html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
         html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
         continue;
       }
       const prec = precisions[cat.id] || '';
-      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
-      if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
       html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;margin-bottom:12px;">
         <thead><tr>
-          <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Action</th>
-          <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Utilisation des SIA</th>
+          <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Permissions SIA</th>
+          <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Actions SIA</th>
         </tr></thead><tbody>`;
-      getCatActiveActions(cat).forEach(action => {
-        const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-        const label = action.libelle || 'Action personnalisée';
+      // Group actions by permission level, in order of PERMISSION_LEVELS
+      PERMISSION_LEVELS.forEach(level => {
+        const actions = getCatActiveActions(cat).filter(a => (permissions[a.id] || 'non') === level.id);
+        if (actions.length === 0) return;
+        const actionItems = actions.map(a => `<li style="font-weight:normal;">${a.libelle || 'Action personnalisée'}</li>`).join('');
         html += `<tr>
-          <td style="border:1px solid #ccc;padding:8px;">${label}</td>
-          <td style="border:1px solid #ccc;padding:8px;font-weight:bold;color:${level.color};">${level.libelle}</td>
+          <td style="border:1px solid #ccc;padding:8px;font-weight:bold;color:${level.color};vertical-align:top;">${level.libelle}</td>
+          <td style="border:1px solid #ccc;padding:8px;vertical-align:top;"><ul style="margin:0;padding-left:18px;">${actionItems}</ul></td>
         </tr>`;
       });
       html += '</tbody></table>';
+      if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
     }
     return html;
   }
@@ -148,18 +149,22 @@ export default function Restrictions() {
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
       const prec = precisions[cat.id] || '';
-      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
       if (mode === 'aucune') {
         html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
       } else {
-        if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 6px 0;"><em>Précisions :</em> ${prec}</p>`;
-        getCatActiveActions(cat).forEach(action => {
-          const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-          const label = action.libelle || 'Action personnalisée';
-          html += `<p style="font-family:Arial,sans-serif;margin:4px 0 4px 16px;">
-            <strong>${label}</strong> — <span style="color:${level.color};font-weight:bold;">${level.libelle}</span>
-          </p>`;
+        // Group by permission level
+        PERMISSION_LEVELS.forEach(level => {
+          const actions = getCatActiveActions(cat).filter(a => (permissions[a.id] || 'non') === level.id);
+          if (actions.length === 0) return;
+          html += `<p style="font-family:Arial,sans-serif;margin:8px 0 2px 0;font-weight:bold;color:${level.color};">Actions SIA ${level.libelle}s</p>`;
+          html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;">`;
+          actions.forEach(action => {
+            html += `<li style="font-weight:normal;margin:2px 0;">${action.libelle || 'Action personnalisée'}</li>`;
+          });
+          html += `</ul>`;
         });
+        if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:6px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
       }
       html += '<hr style="margin:12px 0;" />';
     }
