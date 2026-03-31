@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import BLOOM_CATEGORIES, { PERMISSION_LEVELS } from '@/components/restrictions/restrictionsData';
 import CategorySection from '@/components/restrictions/CategorySection';
-import RemovedActions from '@/components/restrictions/RemovedActions';
 import BrioSectionRestrictions from '@/components/restrictions/BrioSectionRestrictions';
 import RestrictionsGabarit from '@/components/restrictions/RestrictionsGabarit';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -17,8 +16,10 @@ export default function Restrictions() {
   const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '' });
   const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false, enseignants: false });
   const [permissions, setPermissions] = useState(initPermissions());
+  // precisions keyed by category id
   const [precisions, setPrecisions] = useState({});
-  const [removedActions, setRemovedActions] = useState([]);
+  // categoryModes keyed by category id: 'aucune' | 'restreindre'
+  const [categoryModes, setCategoryModes] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -27,27 +28,12 @@ export default function Restrictions() {
   const identFilled = identification.cours.trim() && identification.evaluation.trim() && identification.enseignants.trim();
   const errorStyle = { color: '#E41E25', fontSize: '0.82em', marginTop: 4, display: 'block' };
 
-  function handlePermissionChange(actionId, newPermission, autreText) {
+  function handlePermissionChange(actionId, newPermission) {
     setPermissions(prev => ({ ...prev, [actionId]: newPermission }));
-    // If autre text changed, store it
-    if (autreText !== undefined) {
-      BLOOM_CATEGORIES.forEach(cat => {
-        const action = cat.actions.find(a => a.id === actionId);
-        if (action && action.isAutre) action.autreText = autreText;
-      });
-    }
   }
 
-  function handlePrecisionsChange(actionId, text) {
-    setPrecisions(prev => ({ ...prev, [actionId]: text }));
-  }
-
-  function handleRemoveAction(actionId) {
-    setRemovedActions(prev => [...prev, actionId]);
-  }
-
-  function handleRestoreAction(actionId) {
-    setRemovedActions(prev => prev.filter(id => id !== actionId));
+  function handlePrecisionsChange(catId, text) {
+    setPrecisions(prev => ({ ...prev, [catId]: text }));
   }
 
   function handleSubmit(e) {
@@ -64,13 +50,13 @@ export default function Restrictions() {
     setTimeout(() => { document.getElementById('synthese-container-r')?.scrollIntoView({ behavior: 'smooth' }); }, 100);
   }
 
-  // Get all active actions (not removed) across all categories
+  // Get all active actions across all restricted categories
   function getAllActiveActions() {
     const all = [];
     BLOOM_CATEGORIES.forEach(cat => {
-      cat.actions.forEach(a => {
-        if (!removedActions.includes(a.id)) all.push(a);
-      });
+      if ((categoryModes[cat.id] || 'aucune') === 'restreindre') {
+        cat.actions.forEach(a => all.push(a));
+      }
     });
     return all;
   }
@@ -94,23 +80,26 @@ export default function Restrictions() {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse — Restrictions d'utilisation des SIA</h2>` : '';
     html += buildIdentHeader();
     for (const cat of BLOOM_CATEGORIES) {
-      const catActions = cat.actions.filter(a => !removedActions.includes(a.id));
-      if (catActions.length === 0) continue;
-      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 6px 0;">${cat.libelle}</h3>`;
+      const mode = categoryModes[cat.id] || 'aucune';
+      if (mode === 'aucune') {
+        html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+        html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
+        continue;
+      }
+      const prec = precisions[cat.id] || '';
+      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+      if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
       html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;margin-bottom:12px;">
         <thead><tr>
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Action</th>
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Utilisation des SIA</th>
-          <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Précisions</th>
         </tr></thead><tbody>`;
-      catActions.forEach(action => {
+      cat.actions.forEach(action => {
         const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
         const label = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
-        const prec = precisions[action.id] || '';
         html += `<tr>
           <td style="border:1px solid #ccc;padding:8px;">${label}</td>
           <td style="border:1px solid #ccc;padding:8px;font-weight:bold;color:${level.color};">${level.libelle}</td>
-          <td style="border:1px solid #ccc;padding:8px;">${prec}</td>
         </tr>`;
       });
       html += '</tbody></table>';
@@ -122,17 +111,21 @@ export default function Restrictions() {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu — Restrictions d'utilisation des SIA</h2>` : '';
     html += buildIdentHeader();
     for (const cat of BLOOM_CATEGORIES) {
-      const catActions = cat.actions.filter(a => !removedActions.includes(a.id));
-      if (catActions.length === 0) continue;
-      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 6px 0;">${cat.libelle}</h3>`;
-      catActions.forEach(action => {
-        const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-        const label = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
-        const prec = precisions[action.id] || '';
-        html += `<p style="font-family:Arial,sans-serif;margin:4px 0 4px 16px;">
-          <strong>${label}</strong> — <span style="color:${level.color};font-weight:bold;">${level.libelle}</span>${prec ? ` : ${prec}` : ''}
-        </p>`;
-      });
+      const mode = categoryModes[cat.id] || 'aucune';
+      const prec = precisions[cat.id] || '';
+      html += `<h3 style="font-family:Arial,sans-serif;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+      if (mode === 'aucune') {
+        html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
+      } else {
+        if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 6px 0;"><em>Précisions :</em> ${prec}</p>`;
+        cat.actions.forEach(action => {
+          const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
+          const label = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
+          html += `<p style="font-family:Arial,sans-serif;margin:4px 0 4px 16px;">
+            <strong>${label}</strong> — <span style="color:${level.color};font-weight:bold;">${level.libelle}</span>
+          </p>`;
+        });
+      }
       html += '<hr style="margin:12px 0;" />';
     }
     return html;
@@ -166,6 +159,10 @@ export default function Restrictions() {
 
   const activePermissions = {};
   getAllActiveActions().forEach(a => { activePermissions[a.id] = permissions[a.id] || 'non'; });
+
+  function handleCategoryModeChange(catId, newMode) {
+    setCategoryModes(prev => ({ ...prev, [catId]: newMode }));
+  }
 
   return (
     <div style={{ background: '#F2F2F2', color: '#231F20', margin: 0, padding: 20, minHeight: '100vh' }}>
@@ -236,27 +233,18 @@ export default function Restrictions() {
         <form onSubmit={handleSubmit} style={{ opacity: identFilled ? 1 : 0.5, position: 'relative' }}>
           {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis" />}
 
-          {BLOOM_CATEGORIES.map(cat => {
-            const activeActions = cat.actions.filter(a => !removedActions.includes(a.id));
-            return (
-              <CategorySection
-                key={cat.id}
-                category={cat}
-                activeActions={activeActions}
-                permissions={permissions}
-                precisions={precisions}
-                onPermissionChange={handlePermissionChange}
-                onPrecisionsChange={handlePrecisionsChange}
-                onRemoveAction={handleRemoveAction}
-              />
-            );
-          })}
-
-          <RemovedActions
-            removedActions={removedActions}
-            allCategories={BLOOM_CATEGORIES}
-            onRestore={handleRestoreAction}
-          />
+          {BLOOM_CATEGORIES.map(cat => (
+            <CategorySection
+              key={cat.id}
+              category={cat}
+              mode={categoryModes[cat.id] || 'aucune'}
+              onModeChange={handleCategoryModeChange}
+              permissions={permissions}
+              precisions={precisions}
+              onPermissionChange={handlePermissionChange}
+              onPrecisionsChange={handlePrecisionsChange}
+            />
+          ))}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
             <button type="submit" className="btn-primary" style={{ fontSize: '1.425em', padding: '14px 28px' }}>✅ Générer les directives mises en forme</button>
