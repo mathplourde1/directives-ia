@@ -522,8 +522,8 @@ export default function Restrictions() {
                       {exigences.map((exig, idx) => {
                         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
                         return (
-                          <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '8px 10px', display: 'flex', alignItems: 'center', fontSize: '0.85em', gap: 8 }}>
-                            <div style={{ display: 'flex', gap: 2, flexShrink: 0 }}>
+                          <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '10px', display: 'flex', alignItems: 'flex-start', fontSize: '0.9em', gap: 10 }}>
+                            <div style={{ display: 'flex', gap: 2, flexShrink: 0, paddingTop: 4 }}>
                               <button 
                                 type="button"
                                 onClick={() => {
@@ -552,10 +552,10 @@ export default function Restrictions() {
                               </button>
                             </div>
                             <div style={{ flex: 1 }}>
-                              <span style={{ fontWeight: 'bold', color: '#444444' }}>{typeLabels[exig.type]}</span>
-                              {exig.description && <p style={{ margin: '4px 0 0 0', fontSize: '0.8em', color: '#666' }}>{exig.description.replace(/<[^>]*>/g, '').substring(0, 80)}...</p>}
+                              <div style={{ fontWeight: 'bold', color: '#444444', marginBottom: 6 }}>{typeLabels[exig.type]}</div>
+                              {exig.description && <div style={{ fontSize: '0.9em', color: '#555', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: exig.description }} />}
                             </div>
-                            <div style={{ display: 'flex', gap: 4, flexShrink: 0 }}>
+                            <div style={{ display: 'flex', gap: 4, flexShrink: 0, paddingTop: 4 }}>
                               <button type="button" onClick={() => setExigenceEditModal({ exigenceId: exig.id, type: exig.type })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
                               <button type="button" onClick={() => setExigences(prev => prev.filter(e => e.id !== exig.id))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
                             </div>
@@ -659,7 +659,10 @@ export default function Restrictions() {
                 ].map(req => (
                   <button key={req.type} type="button" onClick={() => {
                     const id = `exig-${Date.now()}-${Math.random()}`;
-                    setExigences(prev => [...prev, { id, type: req.type, description: '' }]);
+                    const defaultDesc = req.type === 'iagraphie' 
+                      ? '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)'
+                      : '';
+                    setExigences(prev => [...prev, { id, type: req.type, description: defaultDesc }]);
                     setExigenceEditModal({ exigenceId: id, type: req.type });
                     setExigenceTypeModal(false);
                   }} style={{ background: '#f5f5f5', border: '1px solid #ddd', borderRadius: 4, padding: '10px 12px', cursor: 'pointer', textAlign: 'left', fontSize: '0.9em', fontWeight: '500', color: '#231F20', transition: 'background 0.15s' }} onMouseEnter={e => e.target.style.background = '#e8e8e8'} onMouseLeave={e => e.target.style.background = '#f5f5f5'}>
