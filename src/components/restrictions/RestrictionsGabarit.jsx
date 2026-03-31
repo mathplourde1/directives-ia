@@ -15,8 +15,28 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
   const ident = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 12pt 0;">${[cours && `Cours : ${cours}`, evaluation && `Évaluation : ${evaluation}`, session && `Session : ${session}`, enseignants && `Enseignant(e) : ${enseignants}`].filter(Boolean).join(' | ')}</p>`;
 
   let body = '';
+  // allActions is already the flat ordered list passed from parent (active only, across all categories)
+  // Group by category using categoryActions map
+  const catMap = {};
+  BLOOM_CATEGORIES.forEach(cat => { catMap[cat.id] = cat; });
+
+  // Build per-category buckets preserving order from allActions
+  const catBuckets = {};
+  for (const action of allActions) {
+    // Find which category this action belongs to (by id prefix or explicit catId)
+    let catId = action.catId;
+    if (!catId) {
+      // derive from id: connaitre-1 -> connaitre, analyser-1 -> analyser, creer-1 -> creer, custom-connaitre-... -> connaitre
+      const match = action.id.match(/^(?:custom-)?([a-z]+)-/);
+      catId = match ? match[1] : null;
+    }
+    if (!catId || !catMap[catId]) continue;
+    if (!catBuckets[catId]) catBuckets[catId] = [];
+    catBuckets[catId].push(action);
+  }
+
   for (const cat of BLOOM_CATEGORIES) {
-    const catActions = allActions.filter(a => cat.actions.some(ca => ca.id === a.id));
+    const catActions = catBuckets[cat.id] || [];
     if (catActions.length === 0) continue;
 
     body += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">${escHtml(cat.libelle)}</h2>`;
@@ -30,7 +50,7 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
 
     for (const action of catActions) {
       const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-      const actionLabel = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
+      const actionLabel = action.libelle || 'Action personnalisée';
       body += `<tr>
         <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${escHtml(actionLabel)}</td>
         <td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:${level.color};font-weight:bold">${escHtml(level.libelle)}</td>

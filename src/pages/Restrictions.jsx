@@ -20,6 +20,8 @@ export default function Restrictions() {
   const [precisions, setPrecisions] = useState({});
   // categoryModes keyed by category id: 'aucune' | 'restreindre'
   const [categoryModes, setCategoryModes] = useState({});
+  // per-category state: { columnOrder, removedIds, customActions }
+  const [catStates, setCatStates] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -50,12 +52,36 @@ export default function Restrictions() {
     setTimeout(() => { document.getElementById('synthese-container-r')?.scrollIntoView({ behavior: 'smooth' }); }, 100);
   }
 
-  // Get all active actions across all restricted categories
+  // Get all active actions for a category (excluding removed, including custom)
+  function getCatActiveActions(cat) {
+    const state = catStates[cat.id] || {};
+    const removedIds = state.removedIds || [];
+    const customActions = state.customActions || {};
+    const columnOrder = state.columnOrder || {};
+
+    const base = cat.actions.filter(a => !removedIds.includes(a.id));
+    const customs = Object.values(customActions).filter(a => !removedIds.includes(a.id));
+    const all = [...base, ...customs];
+
+    // Return in column order
+    const seen = new Set();
+    const ordered = [];
+    const allIds = new Set(all.map(a => a.id));
+    Object.values(columnOrder).forEach(ids => {
+      (ids || []).forEach(id => {
+        if (allIds.has(id) && !seen.has(id)) { seen.add(id); ordered.push(all.find(a => a.id === id)); }
+      });
+    });
+    all.forEach(a => { if (!seen.has(a.id)) ordered.push(a); });
+    return ordered.filter(Boolean);
+  }
+
+  // Get all active actions across all restricted categories (excludes removed)
   function getAllActiveActions() {
     const all = [];
     BLOOM_CATEGORIES.forEach(cat => {
       if ((categoryModes[cat.id] || 'aucune') === 'restreindre') {
-        cat.actions.forEach(a => all.push(a));
+        getCatActiveActions(cat).forEach(a => all.push(a));
       }
     });
     return all;
@@ -94,9 +120,9 @@ export default function Restrictions() {
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Action</th>
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;">Utilisation des SIA</th>
         </tr></thead><tbody>`;
-      cat.actions.forEach(action => {
+      getCatActiveActions(cat).forEach(action => {
         const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-        const label = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
+        const label = action.libelle || 'Action personnalisée';
         html += `<tr>
           <td style="border:1px solid #ccc;padding:8px;">${label}</td>
           <td style="border:1px solid #ccc;padding:8px;font-weight:bold;color:${level.color};">${level.libelle}</td>
@@ -118,9 +144,9 @@ export default function Restrictions() {
         html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
       } else {
         if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 6px 0;"><em>Précisions :</em> ${prec}</p>`;
-        cat.actions.forEach(action => {
+        getCatActiveActions(cat).forEach(action => {
           const level = PERMISSION_LEVELS.find(l => l.id === (permissions[action.id] || 'non'));
-          const label = action.isAutre ? (action.autreText || 'Autre') : action.libelle;
+          const label = action.libelle || 'Action personnalisée';
           html += `<p style="font-family:Arial,sans-serif;margin:4px 0 4px 16px;">
             <strong>${label}</strong> — <span style="color:${level.color};font-weight:bold;">${level.libelle}</span>
           </p>`;
@@ -160,8 +186,13 @@ export default function Restrictions() {
   const activePermissions = {};
   getAllActiveActions().forEach(a => { activePermissions[a.id] = permissions[a.id] || 'non'; });
 
+
   function handleCategoryModeChange(catId, newMode) {
     setCategoryModes(prev => ({ ...prev, [catId]: newMode }));
+  }
+
+  function handleCatStateChange(catId, state) {
+    setCatStates(prev => ({ ...prev, [catId]: state }));
   }
 
   return (
@@ -243,6 +274,7 @@ export default function Restrictions() {
               precisions={precisions}
               onPermissionChange={handlePermissionChange}
               onPrecisionsChange={handlePrecisionsChange}
+              onStateChange={handleCatStateChange}
             />
           ))}
 
