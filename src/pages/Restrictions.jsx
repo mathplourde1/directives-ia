@@ -3,6 +3,7 @@ import BLOOM_CATEGORIES, { PERMISSION_LEVELS } from '@/components/restrictions/r
 import CategorySection from '@/components/restrictions/CategorySection';
 import BrioSectionRestrictions from '@/components/restrictions/BrioSectionRestrictions';
 import RestrictionsGabarit from '@/components/restrictions/RestrictionsGabarit';
+import ExigenceEditModal from '@/components/restrictions/ExigenceEditModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import PageRightNav from '@/components/guide/PageRightNav';
 
@@ -495,54 +496,52 @@ export default function Restrictions() {
           <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>
             <div style={{ background: '#444444', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Exigences de déclaration</span>
-            </div>
-            <div style={{ padding: '12px 14px' }}>
-              {/* Toggle */}
-              <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0', marginBottom: 12 }}>
+              {/* Toggle pill on the right */}
+              <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
                 <button type="button"
                   onClick={() => setExigencesMode('aucune')}
-                  style={{ padding: '6px 16px', fontSize: '0.85em', fontWeight: exigencesMode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'aucune' ? '#444444' : 'transparent', color: exigencesMode === 'aucune' ? 'white' : '#555', transition: 'background 0.15s' }}>
-                  Aucune exigence
+                  style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: exigencesMode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'aucune' ? 'rgba(255,255,255,0.9)' : 'transparent', color: exigencesMode === 'aucune' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '999px 0 0 999px' }}>
+                  Aucune
                 </button>
                 <button type="button"
                   onClick={() => setExigencesMode('inclure')}
-                  style={{ padding: '6px 16px', fontSize: '0.85em', fontWeight: exigencesMode === 'inclure' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'inclure' ? '#444444' : 'transparent', color: exigencesMode === 'inclure' ? 'white' : '#555', transition: 'background 0.15s' }}>
-                  Inclure des exigences
+                  style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: exigencesMode === 'inclure' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: exigencesMode === 'inclure' ? 'rgba(255,255,255,0.9)' : 'transparent', color: exigencesMode === 'inclure' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '0 999px 999px 0' }}>
+                  Inclure
                 </button>
               </div>
-
-              {/* Show exigences list when inclure mode */}
-              {exigencesMode === 'inclure' && (
-                <div>
-                  <div style={{ marginBottom: 10 }}>
-                    {exigences.length === 0 ? (
-                      <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Aucune exigence ajoutée.</p>
-                    ) : (
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        {exigences.map((exig, idx) => {
-                          const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
-                          return (
-                            <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '6px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85em' }}>
-                              <div>
-                                <span style={{ fontWeight: 'bold', color: '#444444' }}>{typeLabels[exig.type]}</span>
-                                {exig.description && <p style={{ margin: '4px 0 0 0', fontSize: '0.8em', color: '#666' }}>{exig.description.substring(0, 80)}...</p>}
-                              </div>
-                              <div style={{ display: 'flex', gap: 4 }}>
-                                <button type="button" onClick={() => setExigenceEditModal({ exigenceId: exig.id, type: exig.type })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
-                                <button type="button" onClick={() => setExigences(prev => prev.filter(e => e.id !== exig.id))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                  <button type="button" onClick={() => setExigenceTypeModal(true)} style={{ background: '#444444', color: 'white', border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
-                    + Ajouter une exigence
-                  </button>
-                </div>
-              )}
             </div>
+
+            {/* Show exigences list when inclure mode */}
+            {exigencesMode === 'inclure' && (
+              <div style={{ padding: '12px 14px' }}>
+                <div style={{ marginBottom: 10 }}>
+                  {exigences.length === 0 ? (
+                    <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Aucune exigence ajoutée.</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      {exigences.map((exig) => {
+                        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
+                        return (
+                          <div key={exig.id} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '6px 10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85em' }}>
+                            <div>
+                              <span style={{ fontWeight: 'bold', color: '#444444' }}>{typeLabels[exig.type]}</span>
+                              {exig.description && <p style={{ margin: '4px 0 0 0', fontSize: '0.8em', color: '#666' }}>{exig.description.replace(/<[^>]*>/g, '').substring(0, 80)}...</p>}
+                            </div>
+                            <div style={{ display: 'flex', gap: 4 }}>
+                              <button type="button" onClick={() => setExigenceEditModal({ exigenceId: exig.id, type: exig.type })} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
+                              <button type="button" onClick={() => setExigences(prev => prev.filter(e => e.id !== exig.id))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+                <button type="button" onClick={() => setExigenceTypeModal(true)} style={{ background: '#444444', color: 'white', border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold' }}>
+                  + Ajouter une exigence
+                </button>
+              </div>
+            )}
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', marginTop: 8 }}>
@@ -649,25 +648,15 @@ export default function Restrictions() {
 
         {/* ===== EXIGENCE EDIT MODAL ===== */}
         {exigenceEditModal && (
-          <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div style={{ background: 'white', borderRadius: 10, padding: '24px 28px', maxWidth: 600, width: '90%', boxShadow: '0 8px 32px rgba(0,0,0,0.18)', maxHeight: '80vh', overflow: 'auto' }}>
-              <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>Rédiger l'exigence</h3>
-              <div>
-                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 6, color: '#444' }}>Description de l'exigence</label>
-                <textarea
-                  value={exigences.find(e => e.id === exigenceEditModal.exigenceId)?.description || ''}
-                  onChange={e => setExigences(prev => prev.map(ex => ex.id === exigenceEditModal.exigenceId ? { ...ex, description: e.target.value } : ex))}
-                  placeholder="Décrivez les exigences en détail..."
-                  rows={6}
-                  style={{ width: '100%', padding: '8px 10px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.9em', boxSizing: 'border-box', resize: 'vertical' }}
-                />
-              </div>
-              <div style={{ marginTop: 16, display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
-                <button type="button" onClick={() => setExigenceEditModal(null)} style={{ background: '#f0f0f0', color: '#555', border: 'none', padding: '8px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '0.9em', fontWeight: '500' }}>Annuler</button>
-                <button type="button" onClick={() => setExigenceEditModal(null)} style={{ background: '#444444', color: 'white', border: 'none', padding: '8px 16px', borderRadius: 4, cursor: 'pointer', fontSize: '0.9em', fontWeight: '500' }}>Enregistrer</button>
-              </div>
-            </div>
-          </div>
+          <ExigenceEditModal
+            isOpen={true}
+            onClose={() => setExigenceEditModal(null)}
+            onSave={(html) => {
+              setExigences(prev => prev.map(ex => ex.id === exigenceEditModal.exigenceId ? { ...ex, description: html } : ex));
+            }}
+            initialValue={exigences.find(e => e.id === exigenceEditModal.exigenceId)?.description || ''}
+            exigenceType={exigenceEditModal.type}
+          />
         )}
 
         {/* ===== SAVE & LOAD ===== */}
