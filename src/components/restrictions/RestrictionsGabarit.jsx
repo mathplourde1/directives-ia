@@ -83,11 +83,13 @@ function buildGabaritHTML(identification, allActions, permissions, precisions, e
 
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
-    "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
-    "Mon utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
-    "J'ai exercé mon jugement critique sur les contenus générés par les SIA.",
-    "Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
-    "Je comprends que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire."
+    "Les informations fournies sont complètes et fidèles à votre utilisation réelle.",
+    "Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    "Vous avez fait un usage responsable des SIA et avez respecté le Droit d'auteur lors des requêtes et référencement.",
+    "Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.",
+    "Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
+    `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;">Règlement disciplinaire</a> de l'Université Laval.`
   ];
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
