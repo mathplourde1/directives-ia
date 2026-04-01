@@ -451,7 +451,7 @@ export default function Restrictions() {
         `}</style>
 
         <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives d'utilisation des SIA pour une évaluation</h1>
-        <div className="mb-2">Ce formulaire interactif permet de définir, action par action, le niveau d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA) selon les catégories de la taxonomie de Bloom.</div>
+        <div className="mb-2">Ce formulaire interactif permet de définir, action par action, le niveau d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA). Les catégories d'action potentielles que les SIA peuvent jouer ont été inspirées de la taxonomie de Bloom.</div>
 
         {/* Instructions */}
         <div style={{ marginBottom: 20 }}>
