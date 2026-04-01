@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import CustomActionModal from './CustomActionModal';
+import BloomCategoryInfoModal from './BloomCategoryInfoModal';
 
 const COLUMN_STYLES = [
   { id: 'non', libelle: 'Non autorisée', color: '#E41E25', bg: '#fff4f4', border: '#E41E25', headerBg: '#E41E25' },
@@ -173,6 +174,7 @@ export default function CategorySection({
   const [removedIds, setRemovedIds] = useState(() => category.actions.map(a => a.id));
   const [customActions, setCustomActions] = useState({}); // id -> { id, libelle, colId }
   const [pendingModal, setPendingModal] = useState(null); // { colId } when modal is open for new action
+  const [showInfoModal, setShowInfoModal] = useState(false);
 
   // Rebuild column order when permissions change from outside (initial sync done via columnOrder state)
   // We manage permissions locally here and propagate up
@@ -345,7 +347,15 @@ export default function CategorySection({
     }}>
       {/* Header */}
       <div style={{ background: category.color, color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-        <span style={{ fontWeight: 'bold', fontSize: '1em' }}>{category.libelle}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontWeight: 'bold', fontSize: '1em' }}>{category.libelle}</span>
+          <button
+            type="button"
+            onClick={() => setShowInfoModal(true)}
+            title="Voir les définitions de cette catégorie"
+            style={{ background: 'rgba(255,255,255,0.25)', border: '1px solid rgba(255,255,255,0.5)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', fontSize: '0.75em', fontWeight: 'bold', lineHeight: 1, flexShrink: 0 }}
+          >?</button>
+        </div>
         <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
           <button type="button"
             onClick={() => onModeChange(category.id, 'aucune')}
@@ -503,6 +513,11 @@ export default function CategorySection({
             </div>
 
           </DragDropContext>
+
+          {/* Bloom info modal */}
+          {showInfoModal && (
+            <BloomCategoryInfoModal categoryId={category.id} onClose={() => setShowInfoModal(false)} />
+          )}
 
           {/* Modal for new custom action */}
           {pendingModal && (
