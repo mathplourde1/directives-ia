@@ -161,7 +161,6 @@ export default function Restrictions() {
 
   function buildTableHTML(withHeading = false) {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse — Restrictions d'utilisation des SIA</h2>` : '';
-    html += buildIdentHeader();
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
       html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
@@ -202,7 +201,6 @@ export default function Restrictions() {
 
   function buildTextHTML(withHeading = false) {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu — Restrictions d'utilisation des SIA</h2>` : '';
-    html += buildIdentHeader();
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
       const prec = precisions[cat.id] || '';

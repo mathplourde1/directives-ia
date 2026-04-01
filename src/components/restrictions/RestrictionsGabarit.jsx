@@ -11,8 +11,9 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
   const session = escHtml(identification.session || '[session]');
   const enseignants = escHtml(identification.enseignants || '[personne enseignante]');
 
-  const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 8pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Directives d'utilisation des SIA — par action</h1>`;
-  const ident = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#555;margin:0 0 12pt 0;">${[cours && `Cours : ${cours}`, evaluation && `Évaluation : ${evaluation}`, session && `Session : ${session}`, enseignants && `Enseignant(e) : ${enseignants}`].filter(Boolean).join(' | ')}</p>`;
+  const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 14pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>`;
+  const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">Je, <strong>[NOM]</strong> (groupe <strong>[GROUPE]</strong>), soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.</p>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 16pt 0;">Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ma démarche.</p>`;
 
   let body = '';
   // allActions is already the flat ordered list passed from parent (active only, across all categories)
@@ -72,7 +73,7 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + ident + body + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + body + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function downloadWord(htmlContent, filename) {
