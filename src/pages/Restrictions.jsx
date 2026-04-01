@@ -163,9 +163,9 @@ export default function Restrictions() {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse — Restrictions d'utilisation des SIA</h2>` : '';
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
       if (mode === 'aucune') {
-        html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
+        html += `<p style="font-family:Arial,sans-serif;font-style:italic;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
         continue;
       }
       const prec = precisions[cat.id] || '';
@@ -174,22 +174,20 @@ export default function Restrictions() {
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Permissions SIA</th>
           <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Actions SIA</th>
         </tr></thead><tbody>`;
-      // Group actions by permission level, in order of PERMISSION_LEVELS
       PERMISSION_LEVELS.forEach(level => {
         const actions = getCatActiveActions(cat).filter(a => (permissions[a.id] || 'non') === level.id);
         if (actions.length === 0) return;
-        const actionItems = actions.map(a => `<li style="font-weight:normal;">${a.libelle || 'Action personnalisée'}</li>`).join('');
+        const actionItems = actions.map(a => `<li style="display:list-item;list-style-type:disc;">${a.libelle || 'Action personnalisée'}</li>`).join('');
         html += `<tr>
-          <td style="border:1px solid #ccc;padding:8px;font-weight:bold;color:${level.color};vertical-align:top;">${level.libelle}</td>
-          <td style="border:1px solid #ccc;padding:8px;vertical-align:top;"><ul style="margin:0;padding-left:18px;">${actionItems}</ul></td>
+          <td style="border:1px solid #ccc;padding:8px;font-weight:bold;vertical-align:top;">${level.libelle}</td>
+          <td style="border:1px solid #ccc;padding:8px;vertical-align:top;"><ul style="margin:0;padding-left:18px;list-style-type:disc;">${actionItems}</ul></td>
         </tr>`;
       });
       html += '</tbody></table>';
-      if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
+      if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
     }
-    // Add exigences section
     if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">Exigences de déclaration</h3>`;
+      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;margin:16px 0 4px 0;">Exigences de déclaration</h3>`;
       exigences.forEach(exig => {
         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
         html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
@@ -204,28 +202,27 @@ export default function Restrictions() {
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
       const prec = precisions[cat.id] || '';
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle}</h3>`;
+      html += `<p style="font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;margin:16px 0 4px 0;">${cat.libelle}</p>`;
       if (mode === 'aucune') {
-        html += `<p style="font-family:Arial,sans-serif;font-style:italic;color:#555;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
+        html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;list-style-type:disc;"><li style="display:list-item;list-style-type:disc;font-style:italic;">Aucune restriction — toutes les actions sont autorisées sans restriction.</li></ul>`;
       } else {
-        // Group by permission level
         PERMISSION_LEVELS.forEach(level => {
           const actions = getCatActiveActions(cat).filter(a => (permissions[a.id] || 'non') === level.id);
           if (actions.length === 0) return;
-          html += `<p style="font-family:Arial,sans-serif;margin:8px 0 2px 0;font-weight:bold;color:${level.color};">Actions SIA ${level.libelle}s</p>`;
-          html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;">`;
+          html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;list-style-type:disc;">`;
+          html += `<li style="display:list-item;list-style-type:disc;margin:2px 0;"><strong>${level.libelle}</strong>`;
+          html += `<ul style="margin:2px 0 4px 0;padding-left:18px;list-style-type:disc;">`;
           actions.forEach(action => {
-            html += `<li style="font-weight:normal;margin:2px 0;">${action.libelle || 'Action personnalisée'}</li>`;
+            html += `<li style="display:list-item;list-style-type:disc;margin:1px 0;">${action.libelle || 'Action personnalisée'}</li>`;
           });
-          html += `</ul>`;
+          html += `</ul></li></ul>`;
         });
-        if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;color:#444;margin:6px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
+        if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:4px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
       }
-      html += '<hr style="margin:12px 0;" />';
+      html += '<hr style="margin:10px 0;" />';
     }
-    // Add exigences section
     if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">Exigences de déclaration</h3>`;
+      html += `<p style="font-family:Arial,sans-serif;font-weight:bold;text-transform:uppercase;margin:16px 0 4px 0;">Exigences de déclaration</p>`;
       exigences.forEach(exig => {
         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
         html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
