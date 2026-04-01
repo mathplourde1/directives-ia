@@ -370,6 +370,11 @@ export default function CategorySection({
         </div>
       </div>
 
+      {/* Bloom info modal — always available regardless of mode */}
+      {showInfoModal && (
+        <BloomCategoryInfoModal categoryId={category.id} onClose={() => setShowInfoModal(false)} />
+      )}
+
       {mode === 'aucune' ? (
         <div style={{ padding: '10px 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
           Aucune restriction appliquée pour cette catégorie. Les SIA sont autorisés sans restriction pour toutes les actions.
@@ -513,11 +518,6 @@ export default function CategorySection({
             </div>
 
           </DragDropContext>
-
-          {/* Bloom info modal */}
-          {showInfoModal && (
-            <BloomCategoryInfoModal categoryId={category.id} onClose={() => setShowInfoModal(false)} />
-          )}
 
           {/* Modal for new custom action */}
           {pendingModal && (
