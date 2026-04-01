@@ -78,6 +78,9 @@ function buildGabaritHTML(identification, allActions, permissions, precisions, e
     });
   }
 
+  const declarationSupp = `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:14pt 0 2pt 0;">Déclaration supplémentaire ou commentaires sur l'utilisation des SIA pour cette évaluation :</p>
+<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 16pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
     "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
@@ -89,7 +92,7 @@ function buildGabaritHTML(identification, allActions, permissions, precisions, e
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + intro + body + exigencesBlock + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + body + exigencesBlock + declarationSupp + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function downloadWord(htmlContent, filename) {
