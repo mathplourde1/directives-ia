@@ -5,7 +5,7 @@ function escHtml(str) {
   return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildGabaritHTML(identification, allActions, permissions, precisions) {
+function buildGabaritHTML(identification, allActions, permissions, precisions, exigences = []) {
   const cours = escHtml(identification.cours || '[cours]');
   const evaluation = escHtml(identification.evaluation || '[évaluation]');
   const session = escHtml(identification.session || '[session]');
@@ -62,6 +62,22 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
     if (catPrec) body += `<p style="font-family:Arial,sans-serif;font-size:9pt;color:#444;margin:0 0 10pt 0;"><em>Précisions :</em> ${escHtml(catPrec)}</p>`;
   }
 
+  // Exigences de déclaration
+  let exigencesBlock = '';
+  if (exigences && exigences.length > 0) {
+    const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique d\'utilisation' };
+    exigencesBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Exigences de déclaration</h2>`;
+    exigences.forEach(exig => {
+      const label = typeLabels[exig.type] || exig.type;
+      exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:10pt 0 2pt 0;">${escHtml(label)}</p>`;
+      if (exig.description) {
+        exigencesBlock += `<div style="font-family:Arial,sans-serif;font-size:10pt;color:#444;margin:0 0 6pt 0;">${exig.description}</div>`;
+      }
+      exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:10pt;margin:2pt 0 0 0;color:#555;font-style:italic;">Réponse :</p>`;
+      exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+    });
+  }
+
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
     "Les informations fournies sont complètes et fidèles à mon utilisation réelle.",
@@ -73,7 +89,7 @@ function buildGabaritHTML(identification, allActions, permissions, precisions) {
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + intro + body + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + body + exigencesBlock + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function downloadWord(htmlContent, filename) {
@@ -90,10 +106,10 @@ function downloadWord(htmlContent, filename) {
   URL.revokeObjectURL(url);
 }
 
-export default function RestrictionsGabarit({ identification, allActions, permissions, precisions, isGenerated }) {
+export default function RestrictionsGabarit({ identification, allActions, permissions, precisions, exigences, isGenerated }) {
   const [showApercu, setShowApercu] = useState(false);
 
-  const html = buildGabaritHTML(identification, allActions, permissions, precisions);
+  const html = buildGabaritHTML(identification, allActions, permissions, precisions, exigences);
   const slugify = s => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
   const filename = `gabarit-restrictions-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 
