@@ -176,6 +176,9 @@ export default function CategorySection({
   const [pendingModal, setPendingModal] = useState(null); // { colId } when modal is open for new action
   const [showInfoModal, setShowInfoModal] = useState(false);
 
+  // Reset modal when mode changes
+  useEffect(() => { setShowInfoModal(false); }, [mode]);
+
   // Rebuild column order when permissions change from outside (initial sync done via columnOrder state)
   // We manage permissions locally here and propagate up
 
@@ -351,7 +354,7 @@ export default function CategorySection({
           <span style={{ fontWeight: 'bold', fontSize: '1em' }}>{category.libelle}</span>
           <button
             type="button"
-            onClick={() => setShowInfoModal(true)}
+            onClick={(e) => { e.stopPropagation(); setShowInfoModal(true); }}
             title="Voir les définitions de cette catégorie"
             style={{ background: 'rgba(255,255,255,0.25)', border: '1px solid rgba(255,255,255,0.5)', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: 'white', fontSize: '0.75em', fontWeight: 'bold', lineHeight: 1, flexShrink: 0 }}
           >?</button>
