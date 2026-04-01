@@ -163,7 +163,7 @@ export default function Restrictions() {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Tableau synthèse — Restrictions d'utilisation des SIA</h2>` : '';
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle.toUpperCase()}</h3>`;
+      html += `<p style="font-family:Arial,sans-serif;margin:16px 0 4px 0;"><strong>${cat.libelle.toUpperCase()}</strong></p>`;
       if (mode === 'aucune') {
         html += `<p style="font-family:Arial,sans-serif;font-style:italic;margin:0 0 12px 0;">Aucune restriction — toutes les actions sont autorisées sans restriction.</p>`;
         continue;
@@ -187,7 +187,7 @@ export default function Restrictions() {
       if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
     }
     if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<h3 style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">EXIGENCES DE DÉCLARATION</h3>`;
+      html += `<p style="font-family:Arial,sans-serif;margin:16px 0 4px 0;"><strong>EXIGENCES DE DÉCLARATION</strong></p>`;
       exigences.forEach(exig => {
         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
         html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
@@ -202,7 +202,7 @@ export default function Restrictions() {
     for (const cat of BLOOM_CATEGORIES) {
       const mode = categoryModes[cat.id] || 'aucune';
       const prec = precisions[cat.id] || '';
-      html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">${cat.libelle.toUpperCase()}</p>`;
+      html += `<p style="font-family:Arial,sans-serif;margin:16px 0 4px 0;"><strong>${cat.libelle.toUpperCase()}</strong></p>`;
       if (mode === 'aucune') {
         html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;list-style-type:disc;"><li style="display:list-item;list-style-type:disc;font-style:italic;">Aucune restriction — toutes les actions sont autorisées sans restriction.</li></ul>`;
       } else {
@@ -222,7 +222,7 @@ export default function Restrictions() {
       html += '<hr style="margin:10px 0;" />';
     }
     if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:16px 0 4px 0;">EXIGENCES DE DÉCLARATION</p>`;
+      html += `<p style="font-family:Arial,sans-serif;margin:16px 0 4px 0;"><strong>EXIGENCES DE DÉCLARATION</strong></p>`;
       exigences.forEach(exig => {
         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
         html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
