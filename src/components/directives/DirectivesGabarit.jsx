@@ -38,14 +38,14 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
     for (const level of PERMISSION_LEVELS) {
       const levelActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
       if (levelActions.length === 0) continue;
-      const items = levelActions.map(a => `<li style="margin:1pt 0;">${escHtml(a.libelle)}</li>`).join('');
+      const items = levelActions.map(a => `<li style="margin:1pt 0;display:list-item;list-style-type:disc;">${escHtml(a.libelle)}</li>`).join('');
       body += `<tr>`;
       if (firstRowInPhase) {
         body += `<td style="border:1px solid #ccc;padding:6px;vertical-align:top;font-weight:bold;" rowspan="${phaseRowCount}">${escHtml(phase.libelle)}</td>`;
         firstRowInPhase = false;
       }
       body += `<td style="border:1px solid #ccc;padding:6px;vertical-align:top;color:${level.color};font-weight:bold;">${escHtml(level.libelle)}</td>
-        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;"><ul style="margin:0;padding-left:16px;">${items}</ul></td>
+        <td style="border:1px solid #ccc;padding:6px;vertical-align:top;"><ul style="margin:0;padding-left:16px;list-style-type:disc;">${items}</ul></td>
       </tr>`;
     }
   }
@@ -79,7 +79,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
     "Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
     `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;">Règlement disciplinaire</a> de l'Université Laval.`
   ];
-  const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
+  const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;list-style-type:disc;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
   return title + intro + body + exigencesBlock + declarationSupp + affirmTitle + affirmHtml + signatureBlock;
