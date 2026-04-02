@@ -279,7 +279,7 @@ export default function DirectivesSection({
               <div ref={provided.innerRef} {...provided.droppableProps}
                 style={{ background: snapshot.isDraggingOver ? '#e8e8e8' : '#f5f5f5', border: snapshot.isDraggingOver ? '1px dashed #999' : '1px dashed #bbb', borderRadius: 6, padding: '8px 10px', marginBottom: 12, transition: 'background 0.1s' }}>
                 <span style={{ fontSize: '0.8em', color: '#666', fontWeight: 'bold', display: 'block', marginBottom: 6 }}>
-                  Actions suggérées {snapshot.isDraggingOver ? '(déposer ici pour retirer des colonnes)' : '— faites glisser vers une colonne de permission :'}
+                  Actions suggérées d'un SIA {snapshot.isDraggingOver ? '(déposer ici pour retirer des colonnes)' : '— faites glisser vers une colonne de permission :'}
                 </span>
                 {/* 3-column layout by phase */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
