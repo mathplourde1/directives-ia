@@ -108,6 +108,7 @@ export default function DirectivesSection({
   onStateChange,
   showErrors,
 }) {
+  const [mode, setMode] = useState('aucune'); // 'aucune' | 'restreindre'
   const buildInitialOrder = useCallback(() => {
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
@@ -249,10 +250,27 @@ export default function DirectivesSection({
   return (
     <div style={{ background: 'white', borderRadius: 8, border: '2px solid #1895FD', marginBottom: 20, overflow: 'hidden' }}>
       {/* Header */}
-      <div style={{ background: '#1895FD', color: 'white', padding: '12px 16px' }}>
+      <div style={{ background: '#1895FD', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
         <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Directives à l'intention des personnes étudiantes</span>
+        <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
+          <button type="button"
+            onClick={() => setMode('aucune')}
+            style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: mode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: mode === 'aucune' ? 'rgba(255,255,255,0.9)' : 'transparent', color: mode === 'aucune' ? '#1895FD' : 'white', transition: 'background 0.15s', borderRadius: '999px 0 0 999px' }}>
+            Aucune restriction
+          </button>
+          <button type="button"
+            onClick={() => setMode('restreindre')}
+            style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: mode === 'restreindre' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: mode === 'restreindre' ? 'rgba(255,255,255,0.9)' : 'transparent', color: mode === 'restreindre' ? '#1895FD' : 'white', transition: 'background 0.15s', borderRadius: '0 999px 999px 0' }}>
+            Restreindre l'usage des SIA
+          </button>
+        </div>
       </div>
 
+      {mode === 'aucune' ? (
+        <div style={{ padding: '10px 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
+          Aucune restriction appliquée. Les SIA sont autorisés sans restriction pour toutes les actions.
+        </div>
+      ) : (
       <div style={{ padding: '12px 14px' }}>
         <DragDropContext onDragEnd={onDragEnd}>
           {/* Suggested actions pool — 3 columns by phase */}
@@ -395,6 +413,7 @@ export default function DirectivesSection({
           />
         </div>
       </div>
+      )}
     </div>
   );
 }
