@@ -109,28 +109,25 @@ export default function DirectivesSection({
   showErrors,
   initialMode,
   initialPrecisions,
+  initialColumnOrder,
+  initialRemovedIds,
+  initialCustomActions,
 }) {
-  const [mode, setMode] = useState(initialMode || 'aucune'); // 'aucune' | 'restreindre'
+  const [mode, setMode] = useState(initialMode || 'aucune');
   const [precisions, setPrecisions] = useState(initialPrecisions || '');
+
   const buildInitialOrder = useCallback(() => {
+    if (initialColumnOrder && Object.keys(initialColumnOrder).length > 0) return initialColumnOrder;
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
     return order;
   }, []);
 
   const [columnOrder, setColumnOrder] = useState(buildInitialOrder);
-  const [removedIds, setRemovedIds] = useState(() => ALL_ACTIONS.map(a => a.id));
-
-  // Sync mode and precisions when parent passes new initial values (e.g. after XML import)
-  useEffect(() => {
-    if (initialMode !== undefined) setMode(initialMode);
-  }, [initialMode]);
-
-  useEffect(() => {
-    if (initialPrecisions !== undefined) setPrecisions(initialPrecisions);
-  }, [initialPrecisions]);
-  const [customActions, setCustomActions] = useState({});
+  const [removedIds, setRemovedIds] = useState(() => initialRemovedIds ?? ALL_ACTIONS.map(a => a.id));
+  const [customActions, setCustomActions] = useState(initialCustomActions || {});
   const [pendingModal, setPendingModal] = useState(null);
+
 
   function getAllActions() {
     const base = ALL_ACTIONS.filter(a => !removedIds.includes(a.id));

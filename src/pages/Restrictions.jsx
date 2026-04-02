@@ -56,6 +56,7 @@ export default function Restrictions() {
   const [catStates, setCatStates] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
+  const [loadKey, setLoadKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyMsgs, setCopyMsgs] = useState({});
   const [showErrors, setShowErrors] = useState(false);
@@ -423,6 +424,7 @@ export default function Restrictions() {
         setExigences(newExigences);
         setSubmitted(false);
         setSubmitStatus(null);
+        setLoadKey(k => k + 1);
       } catch {
         setSaveError("Erreur lors de la lecture du fichier. Vérifiez qu'il s'agit d'un fichier de sauvegarde valide.");
       }
@@ -510,20 +512,26 @@ export default function Restrictions() {
         <form onSubmit={handleSubmit} style={{ opacity: identFilled ? 1 : 0.5, position: 'relative' }}>
           {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis" />}
 
-          {BLOOM_CATEGORIES.map(cat => (
-            <CategorySection
-              key={cat.id}
-              category={cat}
-              mode={categoryModes[cat.id] || 'aucune'}
-              onModeChange={handleCategoryModeChange}
-              permissions={permissions}
-              precisions={precisions}
-              onPermissionChange={handlePermissionChange}
-              onPrecisionsChange={handlePrecisionsChange}
-              onStateChange={handleCatStateChange}
-              showErrors={showErrors}
-            />
-          ))}
+          {BLOOM_CATEGORIES.map(cat => {
+            const catState = catStates[cat.id] || {};
+            return (
+              <CategorySection
+                key={`${cat.id}-${loadKey}`}
+                category={cat}
+                mode={categoryModes[cat.id] || 'aucune'}
+                onModeChange={handleCategoryModeChange}
+                permissions={permissions}
+                precisions={precisions}
+                onPermissionChange={handlePermissionChange}
+                onPrecisionsChange={handlePrecisionsChange}
+                onStateChange={handleCatStateChange}
+                showErrors={showErrors}
+                initialColumnOrder={catState.columnOrder}
+                initialRemovedIds={catState.removedIds}
+                initialCustomActions={catState.customActions}
+              />
+            );
+          })}
 
           {/* Exigences de déclaration section */}
           <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>

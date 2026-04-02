@@ -51,6 +51,7 @@ export default function Directives() {
   const [sectionState, setSectionState] = useState({});
   const [sectionMode, setSectionMode] = useState('aucune');
   const [sectionPrecisions, setSectionPrecisions] = useState('');
+  const [loadKey, setLoadKey] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -286,6 +287,7 @@ export default function Directives() {
         setExigences(newExigences);
         setSubmitted(false);
         setSubmitStatus(null);
+        setLoadKey(k => k + 1);
       } catch { setSaveError("Erreur lors de la lecture du fichier."); }
       e.target.value = '';
     };
@@ -369,12 +371,16 @@ export default function Directives() {
           {!identFilled && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs requis" />}
 
           <DirectivesSection
+            key={loadKey}
             permissions={permissions}
             onPermissionChange={handlePermissionChange}
             onStateChange={(state) => setSectionState(state)}
             showErrors={showErrors}
             initialMode={sectionMode}
             initialPrecisions={sectionPrecisions}
+            initialColumnOrder={sectionState.columnOrder}
+            initialRemovedIds={sectionState.removedIds}
+            initialCustomActions={sectionState.customActions}
           />
 
           {/* Exigences de déclaration */}

@@ -160,19 +160,20 @@ export default function CategorySection({
   onPrecisionsChange,
   onStateChange,
   showErrors,
+  initialColumnOrder,
+  initialRemovedIds,
+  initialCustomActions,
 }) {
-  // columnOrder[colId] = array of action ids in display order
   const buildInitialOrder = useCallback(() => {
+    if (initialColumnOrder && Object.keys(initialColumnOrder).length > 0) return initialColumnOrder;
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
-    // All base actions start in the "suggested" pool (all removed by default)
     return order;
-  }, [category]);
+  }, []);
 
   const [columnOrder, setColumnOrder] = useState(buildInitialOrder);
-  // All base actions start in the suggested pool
-  const [removedIds, setRemovedIds] = useState(() => category.actions.map(a => a.id));
-  const [customActions, setCustomActions] = useState({}); // id -> { id, libelle, colId }
+  const [removedIds, setRemovedIds] = useState(() => initialRemovedIds ?? category.actions.map(a => a.id));
+  const [customActions, setCustomActions] = useState(initialCustomActions || {});
   const [pendingModal, setPendingModal] = useState(null); // { colId } when modal is open for new action
   const [showInfoModal, setShowInfoModal] = useState(false);
 
