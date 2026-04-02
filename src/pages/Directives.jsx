@@ -296,6 +296,9 @@ export default function Directives() {
           .btn-secondary:hover { background-color: #545b62; }
           .synthese-section { margin-top: 28px; padding: 16px; border: 1px solid #ffc103; border-radius: 8px; background: #fdfdff; }
           .copy-ok { color: green; font-weight: bold; margin-left: 10px; }
+          .synthese-apercu ul { list-style-type: disc !important; padding-left: 22px !important; }
+          .synthese-apercu ul ul { list-style-type: disc !important; padding-left: 18px !important; }
+          .synthese-apercu li { display: list-item !important; }
         `}</style>
 
         <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives d'utilisation des SIA pour une évaluation</h1>
@@ -437,7 +440,7 @@ export default function Directives() {
                 <AccordionItem value="texte-continu">
                   <AccordionTrigger className="text-base font-semibold">Synthèse en texte continu</AccordionTrigger>
                   <AccordionContent>
-                    <div style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }} dangerouslySetInnerHTML={{ __html: buildTextHTML() }} />
+                    <div className="synthese-apercu" style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6 }} dangerouslySetInnerHTML={{ __html: buildTextHTML() }} />
                     <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
                       <button type="button" className="btn-primary" onClick={() => copyRichText(buildTextHTML(), 'text-brio')}>Copier pour coller en ligne (Brio)</button>
                       {copyMsgs['text-brio'] && <span className="copy-ok">Copié !</span>}
@@ -448,7 +451,7 @@ export default function Directives() {
                 <AccordionItem value="tableau">
                   <AccordionTrigger className="text-base font-semibold">Tableau synthèse</AccordionTrigger>
                   <AccordionContent>
-                    <div dangerouslySetInnerHTML={{ __html: buildTableHTML() }} />
+                    <div className="synthese-apercu" dangerouslySetInnerHTML={{ __html: buildTableHTML() }} />
                     <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 4 }}>
                       <button type="button" className="btn-primary" onClick={() => copyRichText(buildTableHTML(), 'table-brio')}>Copier pour coller en ligne (Brio)</button>
                       {copyMsgs['table-brio'] && <span className="copy-ok">Copié !</span>}
