@@ -2,12 +2,14 @@ import React, { useState, useRef } from 'react';
 import PHASES, { PERMISSION_LEVELS } from '@/components/directives/directivesData';
 import DirectivesSection from '@/components/directives/DirectivesSection';
 import DirectivesGabarit from '@/components/directives/DirectivesGabarit';
+import BrioSectionDirectives from '@/components/directives/BrioSectionDirectives';
 import ExigenceEditModal from '@/components/restrictions/ExigenceEditModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import PageRightNav from '@/components/guide/PageRightNav';
 
 const DIRECTIVES_NAV_ITEMS = [
   { id: 'evaluation-ciblee-d', label: 'Évaluation ciblée', conditional: false },
+  { id: 'brio-d', label: 'Suggestion Brio', conditional: true },
   { id: 'synthese-container-d', label: 'Synthèses', conditional: true },
   { id: 'declaration-d', label: 'Déclaration étudiante', conditional: true },
   { id: 'sauvegarde-d', label: 'Sauvegarde', conditional: false },
@@ -432,7 +434,9 @@ export default function Directives() {
 
         {/* SYNTHESIS SECTIONS */}
         {submitted && (
-          <div id="synthese-container-d" key={submitKey}>
+          <div key={submitKey}>
+            <BrioSectionDirectives permissions={activePermissions} />
+          <div id="synthese-container-d">
             <div className="synthese-section">
               <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
               <div style={{ marginBottom: 12 }}>Deux options de mise en forme sont disponibles. Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> ou téléchargez une version Word.</div>
@@ -475,6 +479,7 @@ export default function Directives() {
                 isGenerated={submitted}
               />
             </div>
+          </div>
           </div>
         )}
 
