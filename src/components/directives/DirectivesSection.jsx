@@ -389,7 +389,7 @@ export default function DirectivesSection({
           <textarea
             value=""
             readOnly
-            placeholder="Les précisions sont gérées dans la section synthèse…"
+            placeholder="Ajoutez ici des précisions sur l'utilisation des SIA pour cette évaluation…"
             rows={2}
             style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical', color: '#aaa' }}
           />
