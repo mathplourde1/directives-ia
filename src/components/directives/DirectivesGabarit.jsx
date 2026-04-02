@@ -5,7 +5,7 @@ function escHtml(str) {
   return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildGabaritHTML(identification, permissions, exigences = []) {
+function buildGabaritHTML(identification, permissions, precisions = '', exigences = []) {
   const cours = escHtml(identification.cours || '[cours]');
   const evaluation = escHtml(identification.evaluation || '[évaluation]');
   const session = escHtml(identification.session || '[session]');
@@ -49,6 +49,7 @@ function buildGabaritHTML(identification, permissions, exigences = []) {
     }
   }
   body += '</tbody></table>';
+  if (precisions) body += `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#444;margin:0 0 10pt 0;"><em>Précisions :</em> ${escHtml(precisions)}</p>`;
 
   // Exigences
   let exigencesBlock = '';
@@ -94,10 +95,10 @@ function downloadWord(htmlContent, filename) {
   a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
 }
 
-export default function DirectivesGabarit({ identification, permissions, exigences, isGenerated }) {
+export default function DirectivesGabarit({ identification, permissions, precisions = '', exigences, isGenerated }) {
   const [showApercu, setShowApercu] = useState(false);
 
-  const html = buildGabaritHTML(identification, permissions, exigences);
+  const html = buildGabaritHTML(identification, permissions, precisions, exigences);
   const slugify = s => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
   const filename = `gabarit-directives-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 

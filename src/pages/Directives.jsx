@@ -45,7 +45,7 @@ export default function Directives() {
   const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '' });
   const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false, enseignants: false });
   const [permissions, setPermissions] = useState(initPermissions());
-  const [precisions, setPrecisions] = useState('');
+
   const [sectionState, setSectionState] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
@@ -121,7 +121,8 @@ export default function Directives() {
       }
     }
     html += '</tbody></table>';
-    if (precisions) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:0 0 8px 0;"><em>Précisions :</em> ${precisions}</p>`;
+    const prec = sectionState.precisions || '';
+    if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
     if (exigencesMode === 'inclure' && exigences.length > 0) {
       html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
       exigences.forEach(exig => {
@@ -151,7 +152,8 @@ export default function Directives() {
       if (!hasContent) html += `<p style="font-family:Arial,sans-serif;font-style:italic;margin:0 0 6px 0;">Aucune action spécifiée pour cette phase.</p>`;
       html += '<hr style="margin:10px 0;" />';
     }
-    if (precisions) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:4px 0 0 0;"><em>Précisions :</em> ${precisions}</p>`;
+    const prec = sectionState.precisions || '';
+    if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:4px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
     if (exigencesMode === 'inclure' && exigences.length > 0) {
       html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
       exigences.forEach(exig => {
@@ -196,7 +198,7 @@ export default function Directives() {
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<directives-ia version="1.0">\n`;
     xml += `  <identification>\n    <cours>${escXml(identification.cours)}</cours>\n    <session>${escXml(identification.session)}</session>\n    <enseignants>${escXml(identification.enseignants)}</enseignants>\n    <evaluation>${escXml(identification.evaluation)}</evaluation>\n  </identification>\n`;
-    xml += `  <precisions>${escXml(precisions)}</precisions>\n`;
+    xml += `  <precisions>${escXml(sectionState.precisions || '')}</precisions>\n`;
     xml += `  <colonnes>\n`;
     Object.entries(columnOrder).forEach(([colId, ids]) => { xml += `    <colonne id="${colId}">${escXml((ids || []).join(','))}</colonne>\n`; });
     xml += `  </colonnes>\n`;
@@ -362,18 +364,6 @@ export default function Directives() {
             showErrors={showErrors}
           />
 
-          {/* Précisions globales */}
-          <div style={{ background: 'white', borderRadius: 8, border: '1px solid #ccc', padding: '12px 16px', marginBottom: 20 }}>
-            <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions générales</label>
-            <textarea
-              value={precisions}
-              onChange={e => setPrecisions(e.target.value)}
-              placeholder="Ajoutez ici des précisions générales sur l'utilisation des SIA pour cette évaluation…"
-              rows={2}
-              style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical' }}
-            />
-          </div>
-
           {/* Exigences de déclaration */}
           <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>
             <div style={{ background: '#444444', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -477,6 +467,7 @@ export default function Directives() {
               <DirectivesGabarit
                 identification={identification}
                 permissions={activePermissions}
+                precisions={sectionState.precisions || ''}
                 exigences={exigencesMode === 'inclure' ? exigences : []}
                 isGenerated={submitted}
               />

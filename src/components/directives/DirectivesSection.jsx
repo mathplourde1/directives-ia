@@ -109,6 +109,7 @@ export default function DirectivesSection({
   showErrors,
 }) {
   const [mode, setMode] = useState('aucune'); // 'aucune' | 'restreindre'
+  const [precisions, setPrecisions] = useState('');
   const buildInitialOrder = useCallback(() => {
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
@@ -142,8 +143,8 @@ export default function DirectivesSection({
   const hasNoActionInColumns = totalInColumns === 0;
 
   useEffect(() => {
-    if (onStateChange) onStateChange({ columnOrder, removedIds, customActions, hasEmptyCustom: emptyCustomIds.length > 0, hasNoActionInColumns });
-  }, [columnOrder, removedIds, customActions]);
+    if (onStateChange) onStateChange({ columnOrder, removedIds, customActions, hasEmptyCustom: emptyCustomIds.length > 0, hasNoActionInColumns, precisions, mode });
+  }, [columnOrder, removedIds, customActions, precisions, mode]);
 
   function handleMove(actionId, newColId) {
     setColumnOrder(prev => {
@@ -401,15 +402,15 @@ export default function DirectivesSection({
           <CustomActionModal isOpen={true} onClose={() => setPendingModal(null)} initialValue="" onSave={handlePendingModalSave} categoryColor="#1895FD" />
         )}
 
-        {/* Précisions globales */}
+        {/* Précisions */}
         <div style={{ marginTop: 10 }}>
           <label style={{ fontWeight: 'bold', fontSize: '0.85em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions</label>
           <textarea
-            value=""
-            readOnly
+            value={precisions}
+            onChange={e => setPrecisions(e.target.value)}
             placeholder="Ajoutez ici des précisions sur l'utilisation des SIA pour cette évaluation…"
             rows={2}
-            style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical', color: '#aaa' }}
+            style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical' }}
           />
         </div>
       </div>
