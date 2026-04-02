@@ -49,6 +49,8 @@ export default function Directives() {
   const [permissions, setPermissions] = useState(initPermissions());
 
   const [sectionState, setSectionState] = useState({});
+  const [sectionMode, setSectionMode] = useState('aucune');
+  const [sectionPrecisions, setSectionPrecisions] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitKey, setSubmitKey] = useState(0);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -200,6 +202,7 @@ export default function Directives() {
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<directives-ia version="1.0">\n`;
     xml += `  <identification>\n    <cours>${escXml(identification.cours)}</cours>\n    <session>${escXml(identification.session)}</session>\n    <enseignants>${escXml(identification.enseignants)}</enseignants>\n    <evaluation>${escXml(identification.evaluation)}</evaluation>\n  </identification>\n`;
+    xml += `  <mode>${escXml(sectionState.mode || 'aucune')}</mode>\n`;
     xml += `  <precisions>${escXml(sectionState.precisions || '')}</precisions>\n`;
     xml += `  <colonnes>\n`;
     Object.entries(columnOrder).forEach(([colId, ids]) => { xml += `    <colonne id="${colId}">${escXml((ids || []).join(','))}</colonne>\n`; });
@@ -274,8 +277,11 @@ export default function Directives() {
           if (id && type) newExigences.push({ id, type, description });
         });
 
+        const loadedMode = root.querySelector('mode')?.textContent || 'aucune';
         setPermissions(newPermissions);
         setSectionState({ columnOrder, removedIds, customActions, hasEmptyCustom: false, precisions: loadedPrecisions });
+        setSectionMode(loadedMode);
+        setSectionPrecisions(loadedPrecisions);
         setExigencesMode(newExigencesMode);
         setExigences(newExigences);
         setSubmitted(false);
@@ -367,6 +373,8 @@ export default function Directives() {
             onPermissionChange={handlePermissionChange}
             onStateChange={(state) => setSectionState(state)}
             showErrors={showErrors}
+            initialMode={sectionMode}
+            initialPrecisions={sectionPrecisions}
           />
 
           {/* Exigences de déclaration */}

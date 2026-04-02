@@ -107,9 +107,11 @@ export default function DirectivesSection({
   onPermissionChange,
   onStateChange,
   showErrors,
+  initialMode,
+  initialPrecisions,
 }) {
-  const [mode, setMode] = useState('aucune'); // 'aucune' | 'restreindre'
-  const [precisions, setPrecisions] = useState('');
+  const [mode, setMode] = useState(initialMode || 'aucune'); // 'aucune' | 'restreindre'
+  const [precisions, setPrecisions] = useState(initialPrecisions || '');
   const buildInitialOrder = useCallback(() => {
     const order = {};
     COLUMN_STYLES.forEach(col => { order[col.id] = []; });
@@ -118,6 +120,15 @@ export default function DirectivesSection({
 
   const [columnOrder, setColumnOrder] = useState(buildInitialOrder);
   const [removedIds, setRemovedIds] = useState(() => ALL_ACTIONS.map(a => a.id));
+
+  // Sync mode and precisions when parent passes new initial values (e.g. after XML import)
+  useEffect(() => {
+    if (initialMode !== undefined) setMode(initialMode);
+  }, [initialMode]);
+
+  useEffect(() => {
+    if (initialPrecisions !== undefined) setPrecisions(initialPrecisions);
+  }, [initialPrecisions]);
   const [customActions, setCustomActions] = useState({});
   const [pendingModal, setPendingModal] = useState(null);
 
