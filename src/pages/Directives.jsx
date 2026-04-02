@@ -242,7 +242,7 @@ export default function Directives() {
           const getI = (tag) => identNode.querySelector(tag)?.textContent ?? '';
           setIdentification({ cours: getI('cours'), session: getI('session'), enseignants: getI('enseignants'), evaluation: getI('evaluation') });
         }
-        setPrecisions(root.querySelector('precisions')?.textContent || '');
+        const loadedPrecisions = root.querySelector('precisions')?.textContent || '';
 
         const columnOrder = {};
         doc.querySelectorAll('colonnes colonne').forEach(col => {
@@ -273,7 +273,7 @@ export default function Directives() {
         });
 
         setPermissions(newPermissions);
-        setSectionState({ columnOrder, removedIds, customActions, hasEmptyCustom: false });
+        setSectionState({ columnOrder, removedIds, customActions, hasEmptyCustom: false, precisions: loadedPrecisions });
         setExigencesMode(newExigencesMode);
         setExigences(newExigences);
         setSubmitted(false);

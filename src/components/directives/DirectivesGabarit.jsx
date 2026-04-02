@@ -28,14 +28,15 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   for (const phase of PHASES) {
     let firstRowInPhase = true;
     let phaseRowCount = 0;
-    // count rows for this phase
+    // count rows for this phase — only include actions explicitly in permissions
     for (const level of PERMISSION_LEVELS) {
-      const levelActions = phase.actions.filter(a => (permissions[a.id] || 'non') === level.id);
+      const levelActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
       if (levelActions.length > 0) phaseRowCount++;
     }
+    if (phaseRowCount === 0) continue;
 
     for (const level of PERMISSION_LEVELS) {
-      const levelActions = phase.actions.filter(a => (permissions[a.id] || 'non') === level.id);
+      const levelActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
       if (levelActions.length === 0) continue;
       const items = levelActions.map(a => `<li style="margin:1pt 0;">${escHtml(a.libelle)}</li>`).join('');
       body += `<tr>`;
