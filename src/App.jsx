@@ -9,6 +9,7 @@ import DeclarationOutil from './pages/Declaration-outil';
 import Restrictions from './pages/Restrictions';
 import Directives from './pages/Directives';
 import DeclarationGuidee from './pages/Declaration-guidee';
+import DeclarationLibreService from './pages/Declaration-libre-service';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
 
@@ -67,6 +68,7 @@ const AuthenticatedApp = () => {
       <Route path="/Restrictions" element={<LayoutWrapper currentPageName="Restrictions"><Restrictions /></LayoutWrapper>} />
       <Route path="/Directives" element={<LayoutWrapper currentPageName="Directives"><Directives /></LayoutWrapper>} />
       <Route path="/Declaration-guidee" element={<LayoutWrapper currentPageName="Declaration-guidee"><DeclarationGuidee /></LayoutWrapper>} />
+      <Route path="/Declaration-libre-service" element={<LayoutWrapper currentPageName="Declaration-libre-service"><DeclarationLibreService /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
