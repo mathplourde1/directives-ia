@@ -584,7 +584,7 @@ export default function DeclarationGuidee() {
                     </p>
 
                     {outilEntries.map((entry, i) => {
-                      const grouped = groupByPhase(data.activeActions);
+                      const grouped = groupByPhase([...data.activeActions, ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr' }))]);
                       return (
                         <div key={i} className="entry-card">
                           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
@@ -652,20 +652,6 @@ export default function DeclarationGuidee() {
                                     </div>
                                   </div>
                                 ))}
-                                {(entry.customActions || []).length > 0 && (
-                                  <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fffdf0' }}>
-                                    <div style={{ fontSize: '0.78em', fontWeight: 'bold', color: '#888', marginBottom: 6 }}>Actions personnalisées</div>
-                                    {entry.customActions.map(ca => (
-                                      <div key={ca.id} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, fontSize: '0.88em' }}>
-                                        <input type="checkbox" checked={entry.actionIds.includes(ca.id)} onChange={() => toggleAction(i, ca.id)}
-                                          style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: '#888' }} />
-                                        <span style={{ flex: 1, fontStyle: 'italic', color: '#555' }}>{ca.libelle}</span>
-                                        <button type="button" onClick={() => removeCustomAction(i, ca.id)}
-                                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', flexShrink: 0 }} title="Retirer">×</button>
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
                                 <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fafafa' }}>
                                   <button type="button" onClick={() => setAutreActionModal({ entryIdx: i })}
                                     style={{ background: 'none', border: '1px dashed #1895FD', color: '#1895FD', borderRadius: 5, padding: '4px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em', width: '100%', textAlign: 'left' }}>
