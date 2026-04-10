@@ -55,7 +55,7 @@ export default function DeclarationLibreService() {
   const [copyOk, setCopyOk] = useState(false);
   const apercuRef = useRef();
 
-  const identOk = !!(session.trim() && studentNom.trim());
+  const identOk = !!(session.trim() && studentNom.trim() && cours.trim() && evaluation.trim() && enseignant.trim());
 
   // Build ALL_PHASES actions flat map
   const ALL_PHASE_ACTIONS = [];
@@ -322,7 +322,7 @@ ${directivesSection}
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 24px', marginBottom: 14 }}>
             <div>
-              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Cours</label>
+              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Cours <span style={{ color: '#E41E25' }}>*</span></label>
               <input type="text" value={cours} onChange={e => setCours(e.target.value)} placeholder="ex. GEL-1001"
                 style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
             </div>
@@ -335,12 +335,12 @@ ${directivesSection}
               {sessionError && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Requis</span>}
             </div>
             <div>
-              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Évaluation</label>
+              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Évaluation <span style={{ color: '#E41E25' }}>*</span></label>
               <input type="text" value={evaluation} onChange={e => setEvaluation(e.target.value)} placeholder="ex. Travail final"
                 style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
             </div>
             <div>
-              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s)</label>
+              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne(s) enseignante(s) <span style={{ color: '#E41E25' }}>*</span></label>
               <input type="text" value={enseignant} onChange={e => setEnseignant(e.target.value)} placeholder="ex. Prof. Tremblay"
                 style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
             </div>
@@ -402,7 +402,9 @@ ${directivesSection}
         </div>
 
         {/* === SECTION 2 : DIRECTIVES ENSEIGNANT === */}
-        <div className="section-box">
+        <div style={{ position: 'relative' }}>
+          {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
+        <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
           <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>Directives de la personne enseignante</h2>
           <div className="pill-toggle" style={{ marginBottom: 14, flexWrap: 'wrap' }}>
             {[
@@ -426,6 +428,7 @@ ${directivesSection}
               {directivesTexteError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
             </div>
           )}
+        </div>
         </div>
 
         {/* === SECTION 3 : DÉCLARATION === */}
