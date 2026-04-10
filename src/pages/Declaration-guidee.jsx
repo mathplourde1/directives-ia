@@ -110,7 +110,7 @@ export default function DeclarationGuidee() {
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
   const [exigencesResponses, setExigencesResponses] = useState({});
   const [exigencesErrors, setExigencesErrors] = useState({});
-  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx }
+  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx, editId? }
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
@@ -144,13 +144,20 @@ export default function DeclarationGuidee() {
     setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
   }
 
-  function addCustomAction(entryIdx, { libelle, phaseLibelle, phaseColor }) {
+  function addCustomAction(entryIdx, { libelle, phaseLibelle, phaseColor, phaseId }) {
     const id = makeCustomActionId();
     setOutilEntries(prev => prev.map((e, idx) => {
       if (idx !== entryIdx) return e;
-      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseLibelle, phaseColor }], actionIds: [...e.actionIds, id] };
+      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseLibelle, phaseColor, phaseId }], actionIds: [...e.actionIds, id] };
     }));
     setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
+  }
+
+  function editCustomAction(entryIdx, id, { libelle, phaseLibelle, phaseColor, phaseId }) {
+    setOutilEntries(prev => prev.map((e, idx) => {
+      if (idx !== entryIdx) return e;
+      return { ...e, customActions: e.customActions.map(a => a.id === id ? { ...a, libelle, phaseLibelle, phaseColor, phaseId } : a) };
+    }));
   }
 
   function removeCustomAction(entryIdx, id) {
@@ -640,12 +647,23 @@ export default function DeclarationGuidee() {
                                       {phaseActions.map(action => {
                                         const ps = PERM_STYLES[action.perm] || {};
                                         const checked = entry.actionIds.includes(action.id);
+                                        const isCustom = !!(entry.customActions || []).find(ca => ca.id === action.id);
                                         return (
                                           <label key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88em' }}>
                                             <input type="checkbox" checked={checked} onChange={() => toggleAction(i, action.id)}
-                                              style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: ps.color }} />
+                                              style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: isCustom ? '#888' : ps.color }} />
                                             <span style={{ flex: 1 }}>{action.libelle}</span>
-                                            <span style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}`, borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap', flexShrink: 0 }}>{ps.label}</span>
+                                            {isCustom ? (
+                                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                                                <span style={{ background: '#f0f0f0', color: '#666', border: '1px solid #ccc', borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap' }}>Action personnalisée</span>
+                                                <button type="button" onClick={e => { e.preventDefault(); setAutreActionModal({ entryIdx: i, editId: action.id }); }}
+                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">✏️</button>
+                                                <button type="button" onClick={e => { e.preventDefault(); removeCustomAction(i, action.id); }}
+                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">×</button>
+                                              </span>
+                                            ) : (
+                                              <span style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}`, borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap', flexShrink: 0 }}>{ps.label}</span>
+                                            )}
                                           </label>
                                         );
                                       })}
@@ -780,7 +798,17 @@ export default function DeclarationGuidee() {
                 <AutreActionModal
                 isOpen={!!autreActionModal}
                 onClose={() => setAutreActionModal(null)}
-                onSave={action => { if (autreActionModal) addCustomAction(autreActionModal.entryIdx, action); }}
+                initialValues={autreActionModal?.editId
+                  ? outilEntries[autreActionModal.entryIdx]?.customActions?.find(a => a.id === autreActionModal.editId)
+                  : null}
+                onSave={action => {
+                  if (!autreActionModal) return;
+                  if (autreActionModal.editId) {
+                    editCustomAction(autreActionModal.entryIdx, autreActionModal.editId, action);
+                  } else {
+                    addCustomAction(autreActionModal.entryIdx, action);
+                  }
+                }}
                 />
 
                 {/* Aperçu */}
