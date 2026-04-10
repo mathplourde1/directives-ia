@@ -406,7 +406,7 @@ ${directivesSection}
           <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>Directives de la personne enseignante</h2>
           <div className="pill-toggle" style={{ marginBottom: 14, flexWrap: 'wrap' }}>
             {[
-              { val: 'aucune', label: "La personne enseignante n'a pas spécifié de restrictions d'utilisation des SIA" },
+              { val: 'aucune', label: "Aucune restrictions d'utilisation des SIA spécifiée" },
               { val: 'fournies', label: "La personne enseignante a indiqué les directives suivantes" },
             ].map(opt => (
               <button key={opt.val} type="button" className="pill-opt" onClick={() => { setDirectivesMode(opt.val); setDirectivesTexteError(false); }}
