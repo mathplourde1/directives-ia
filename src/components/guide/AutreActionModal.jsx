@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import PHASES from '@/components/directives/directivesData';
 
-export default function AutreActionModal({ isOpen, onClose, onSave, initialValues }) {
+export default function AutreActionModal({ isOpen, onClose, onSave, initialValues, prePhaseId }) {
   const [selectedPhaseId, setSelectedPhaseId] = useState(PHASES[0]?.id || '');
   const [label, setLabel] = useState('');
 
   useEffect(() => {
     if (isOpen) {
-      setSelectedPhaseId(initialValues?.phaseId || PHASES[0]?.id || '');
+      setSelectedPhaseId(initialValues?.phaseId || prePhaseId || PHASES[0]?.id || '');
       setLabel(initialValues?.libelle || '');
     }
-  }, [isOpen, initialValues]);
+  }, [isOpen, initialValues, prePhaseId]);
 
   if (!isOpen) return null;
 

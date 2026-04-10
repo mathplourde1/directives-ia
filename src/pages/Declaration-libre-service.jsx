@@ -459,7 +459,6 @@ ${directivesSection}
                 </p>
 
                 {outilEntries.map((entry, i) => {
-                  const grouped = getGroupedActionsForEntry(entry);
                   return (
                     <div key={i} className="entry-card">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
@@ -498,48 +497,47 @@ ${directivesSection}
                         <div>
                           <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 8 }}>
                             Actions réalisées <span style={{ color: '#E41E25' }}>*</span>
-                            <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — cochez toutes celles qui s'appliquent</span>
+                            <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — ajoutez les actions par phase</span>
                           </label>
-                          {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Sélectionnez au moins une action</span>}
+                          {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Ajoutez au moins une action</span>}
                           {!entry.outil ? (
                             <div style={{ padding: '12px 14px', background: '#f8f9fa', border: '1px dashed #bbb', borderRadius: 6, color: '#888', fontSize: '0.87em', fontStyle: 'italic' }}>
                               Sélectionnez d'abord un outil ci-contre pour accéder aux actions possibles.
                             </div>
                           ) : (
                             <div style={{ border: '1px solid #ddd', borderRadius: 6, overflow: 'hidden' }}>
-                              {Object.entries(grouped).map(([phaseLibelle, { color, actions: phaseActions }], gi, arr) => (
-                                <div key={gi} style={{ borderBottom: gi < arr.length - 1 ? '1px solid #eee' : 'none' }}>
-                                  <div style={{ background: '#f5f5f5', padding: '5px 10px', fontSize: '0.78em', fontWeight: 'bold', color, borderBottom: '1px solid #eee' }}>{phaseLibelle}</div>
-                                  <div style={{ padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 5 }}>
-                                    {phaseActions.map(action => {
-                                      const checked = entry.actionIds.includes(action.id);
-                                      const isCustom = action.isCustom;
-                                      return (
+                              {PHASES.map((phase, gi) => {
+                                const phaseCustoms = (entry.customActions || []).filter(a => a.phaseId === phase.id);
+                                return (
+                                  <div key={phase.id} style={{ borderBottom: gi < PHASES.length - 1 ? '1px solid #eee' : 'none' }}>
+                                    <div style={{ background: '#f5f5f5', padding: '5px 10px', fontSize: '0.78em', fontWeight: 'bold', color: phase.color, borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                      <span>{phase.libelle}</span>
+                                      <button type="button" onClick={() => setAutreActionModal({ entryIdx: i, prePhaseId: phase.id })}
+                                        style={{ background: 'none', border: `1px dashed ${phase.color}`, color: phase.color, borderRadius: 4, padding: '2px 10px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em' }}>
+                                        + Ajouter une action
+                                      </button>
+                                    </div>
+                                    <div style={{ padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 5, minHeight: 36 }}>
+                                      {phaseCustoms.length === 0 && (
+                                        <span style={{ color: '#bbb', fontSize: '0.83em', fontStyle: 'italic' }}>Aucune action déclarée pour cette phase.</span>
+                                      )}
+                                      {phaseCustoms.map(action => (
                                         <label key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88em' }}>
-                                          <input type="checkbox" checked={checked} onChange={() => toggleAction(i, action.id)}
-                                            style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: isCustom ? '#888' : color }} />
+                                          <input type="checkbox" checked={entry.actionIds.includes(action.id)} onChange={() => toggleAction(i, action.id)}
+                                            style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: phase.color }} />
                                           <span style={{ flex: 1 }}>{action.libelle}</span>
-                                          {isCustom && (
-                                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                                              <span style={{ background: '#f0f0f0', color: '#666', border: '1px solid #ccc', borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap' }}>Action personnalisée</span>
-                                              <button type="button" onClick={e => { e.preventDefault(); setAutreActionModal({ entryIdx: i, editId: action.id }); }}
-                                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">✏️</button>
-                                              <button type="button" onClick={e => { e.preventDefault(); removeCustomAction(i, action.id); }}
-                                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">×</button>
-                                            </span>
-                                          )}
+                                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
+                                            <button type="button" onClick={e => { e.preventDefault(); setAutreActionModal({ entryIdx: i, editId: action.id }); }}
+                                              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">✏️</button>
+                                            <button type="button" onClick={e => { e.preventDefault(); removeCustomAction(i, action.id); }}
+                                              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">×</button>
+                                          </span>
                                         </label>
-                                      );
-                                    })}
+                                      ))}
+                                    </div>
                                   </div>
-                                </div>
-                              ))}
-                              <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fafafa' }}>
-                                <button type="button" onClick={() => setAutreActionModal({ entryIdx: i })}
-                                  style={{ background: 'none', border: '1px dashed #1895FD', color: '#1895FD', borderRadius: 5, padding: '4px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em', width: '100%', textAlign: 'left' }}>
-                                  + Ajouter une action non listée
-                                </button>
-                              </div>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
@@ -591,6 +589,7 @@ ${directivesSection}
         <AutreActionModal
           isOpen={!!autreActionModal}
           onClose={() => setAutreActionModal(null)}
+          prePhaseId={autreActionModal?.prePhaseId}
           initialValues={autreActionModal?.editId
             ? outilEntries[autreActionModal.entryIdx]?.customActions?.find(a => a.id === autreActionModal.editId)
             : null}
