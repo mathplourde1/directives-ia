@@ -783,6 +783,7 @@ export default function DeclarationGuidee() {
                  )}
                 </div>
                 </div>
+                </div>
 
                 {/* Autre action modal */}
                 <AutreActionModal
