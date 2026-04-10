@@ -3,6 +3,26 @@ import AutreActionModal from '@/components/guide/AutreActionModal';
 import PHASES from '@/components/directives/directivesData';
 import SIA_LIST_RAW from '@/components/listeSIA';
 
+function AProposButton() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div>
+      <button type="button" onClick={() => setOpen(v => !v)}
+        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: '0.8em', color: '#888', display: 'inline-block', transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
+        🧠 À propos…
+      </button>
+      {open && (
+        <div style={{ textAlign: 'left', paddingTop: 6, fontSize: '0.93em', lineHeight: 1.6 }}>
+          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>Service de soutien à l'enseignement</a> de l'Université Laval.<br /><br />
+          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/ce0c154f6_20240824_AIA_FR_EN.png" alt="Aidée de l'intelligence artificielle" style={{ float: 'right', width: 80, marginLeft: 12, marginBottom: 4 }} />
+          <b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b><br />Tous les textes présentés ont été validés par l'équipe de développement. Développée et maintenue par Mathieu Plourde, CC-BY 4.0 2026 (version alpha 7).
+        </div>
+      )}
+    </div>
+  );
+}
+
 const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr')).concat(['Autre']);
 
 let customActionCounter = 0;
@@ -312,9 +332,24 @@ ${directivesSection}
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
           Déclaration d'utilisation des SIA — Version libre service
         </h1>
-        
 
-        
+        {/* Instructions */}
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ textAlign: 'left' }}>
+            <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20', textTransform: 'uppercase' }}>❓ Comment ça fonctionne?</h2>
+            <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8, marginBottom: 8 }}>
+              <li>Remplissez la section d'identification.</li>
+              <li>Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
+              <li>Déclarez les outils SIA utilisés et les actions réalisées, phase par phase.</li>
+              <li>Répondez à au moins une question de réflexion, puis générez votre déclaration.</li>
+            </ol>
+            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
+            🔒 Vos données ne sont pas conservées automatiquement.
+          </div>
+          <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
+            <AProposButton />
+          </div>
+        </div>
 
         {/* === SECTION 1 : IDENTIFICATION === */}
         <div className="section-box">
