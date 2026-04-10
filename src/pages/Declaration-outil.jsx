@@ -360,11 +360,13 @@ export default function DeclarationOutil() {
 
     const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:16pt;font-weight:bold;margin:12pt 0 6pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
     const affirmList = [
-      `Les informations fournies sont complètes et fidèles à ${ap.isEquipe ? 'notre' : 'mon'} utilisation réelle.`,
-      `${ap.isEquipe ? 'Notre' : 'Mon'} utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.`,
-      `${ap.isEquipe ? 'Nous avons' : 'J\'ai'} exercé ${ap.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA.`,
-      `Le travail soumis reflète ${ap.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.`,
-      `${ap.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.`
+      `Les informations fournies sont complètes et fidèles à votre utilisation réelle.`,
+      `Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.`,
+      `Vous avez fait un usage responsable des SIA et avez respecté le droit d'auteur lors des requêtes et référencement.`,
+      `Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.`,
+      `Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.`,
+      `Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.`,
+      `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf">Règlement disciplinaire</a> de l'Université Laval.`,
     ];
     const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt">${a}</li>`).join('')}</ul>`;
     const timestampHtml = `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#666;font-style:italic;margin:16pt 0 0 0;">Générée le ${ap.timestamp}</p>`;
@@ -1084,11 +1086,13 @@ export default function DeclarationOutil() {
                 {/* Final affirmations */}
                 <h2 style={{ fontFamily: 'Georgia, serif', fontSize: '20px', fontWeight: 'bold', margin: '16pt 0 6pt 0', color: '#000' }}>La soumission de cette déclaration confirme que :</h2>
                 <ul style={{ margin: '0 0 0 20px', paddingLeft: 0, lineHeight: 1.7, listStyleType: 'disc', fontSize: '0.92em' }}>
-                  <li style={{ marginBottom: '4pt' }}>Les informations fournies sont complètes et fidèles à {apercu.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
-                  <li style={{ marginBottom: '4pt' }}>{apercu.isEquipe ? 'Notre' : 'Mon'} utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
-                  <li style={{ marginBottom: '4pt' }}>{apercu.isEquipe ? 'Nous avons' : 'J\'ai'} exercé {apercu.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA.</li>
-                  <li style={{ marginBottom: '4pt' }}>Le travail soumis reflète {apercu.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
-                  <li>{apercu.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
+                  <li style={{ marginBottom: '4pt' }}>Les informations fournies sont complètes et fidèles à votre utilisation réelle.</li>
+                    <li style={{ marginBottom: '4pt' }}>Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
+                    <li style={{ marginBottom: '4pt' }}>Vous avez fait un usage responsable des SIA et avez respecté le droit d'auteur lors des requêtes et référencement.</li>
+                    <li style={{ marginBottom: '4pt' }}>Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.</li>
+                    <li style={{ marginBottom: '4pt' }}>Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+                    <li style={{ marginBottom: '4pt' }}>Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.</li>
+                    <li>Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf">Règlement disciplinaire</a> de l'Université Laval.</li>
                 </ul>
 
                 <p style={{ marginTop: '16pt', fontSize: '0.82em', color: '#666', fontStyle: 'italic', margin: '16pt 0 0 0' }}>
