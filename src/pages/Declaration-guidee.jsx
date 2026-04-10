@@ -165,6 +165,11 @@ export default function DeclarationGuidee() {
     setEntryErrors(prev => prev.filter((_, idx) => idx !== i));
   }
 
+  function addEntry() {
+    setOutilEntries(prev => [...prev, defaultOutilEntry()]);
+    setEntryErrors(prev => [...prev, {}]);
+  }
+
   const effectiveSession = data?.identification?.session && !sessionEditMode ? data.identification.session : sessionOverride.trim();
   const identOk = !!(effectiveSession && studentNom.trim());
 
