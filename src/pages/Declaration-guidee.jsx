@@ -541,7 +541,7 @@ export default function DeclarationGuidee() {
               {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
               <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
                 <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>
-                  {isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation
+                  {isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation
                 </h2>
 
                 {/* Toggle SIA */}
