@@ -259,10 +259,11 @@ export default function DeclarationGuidee() {
         ap.exigences.forEach(exig => {
           const resp = ap.exigencesResponses?.[exig.id] || {};
           const label = typeLabels[exig.type] || exig.type;
+          declHtml += `<p style="margin:6pt 0 2pt 0;"><strong>${label} :</strong>${exig.description ? ` <span style="font-weight:normal;">${exig.description}</span>` : ''}</p>`;
           if (resp.ailleurs) {
-            declHtml += `<p><strong>${label} :</strong> <em>Déjà répondu dans le travail soumis ou dans cette déclaration.</em></p>`;
+            declHtml += `<p style="margin:0 0 6pt 0;"><em>Déjà répondu dans le travail soumis ou dans cette déclaration.</em></p>`;
           } else if (resp.value?.trim()) {
-            declHtml += `<p><strong>${label} :</strong><br>${resp.value}</p>`;
+            declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;">${resp.value}</p>`;
           }
         });
       }
@@ -275,10 +276,10 @@ export default function DeclarationGuidee() {
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette déclaration confirme que :</h2>
 <ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;">
-<li>Les informations fournies sont complètes et fidèles à ${ap.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
-<li>${ap.isEquipe ? 'Notre' : 'Mon'} utilisation des SIA est conforme aux règles établies par la personne enseignante.</li>
-<li>${ap.isEquipe ? 'Nous avons' : "J'ai"} exercé ${ap.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA.</li>
-<li>Le travail soumis reflète ${ap.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+<li style="margin-bottom:4pt">Les informations fournies sont complètes et fidèles à ${ap.isEquipe ? 'notre' : 'mon'} utilisation réelle.</li>
+<li style="margin-bottom:4pt">${ap.isEquipe ? 'Notre' : 'Mon'} utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
+<li style="margin-bottom:4pt">${ap.isEquipe ? 'Nous avons' : "J'ai"} exercé ${ap.isEquipe ? 'notre' : 'mon'} jugement critique sur les contenus générés par les SIA.</li>
+<li style="margin-bottom:4pt">Le travail soumis reflète ${ap.isEquipe ? 'notre' : 'ma'} propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
 <li>${ap.isEquipe ? 'Nous comprenons' : 'Je comprends'} que l'omission ou une fausse déclaration constitue une infraction au Règlement disciplinaire.</li>
 </ul>
 <p style="font-family:Arial,sans-serif;font-size:9pt;color:#666;font-style:italic;margin-top:16pt;">Générée le ${ap.timestamp}</p>`;
