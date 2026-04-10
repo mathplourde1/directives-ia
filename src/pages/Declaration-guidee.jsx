@@ -287,7 +287,8 @@ export default function DeclarationGuidee() {
       declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;"><thead><tr><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions déclarées</th></tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
         const allActionsForEntry = [...(ap.activeActions || []), ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr' }))];
-        const actions = entry.actionIds.map(id => { const a = allActionsForEntry.find(x => x.id === id); return a ? `${a.libelle}${PERM_STYLES[a.perm] ? ` <em>(${PERM_STYLES[a.perm].label})</em>` : ' <em>(personnalisée)</em>'}` : id; });
+        const customIds = new Set((entry.customActions || []).map(a => a.id));
+        const actions = entry.actionIds.map(id => { const a = allActionsForEntry.find(x => x.id === id); if (!a) return id; return customIds.has(id) ? `${a.libelle} <em style="color:#666">(Action personnalisée)</em>` : `${a.libelle}${PERM_STYLES[a.perm] ? ` <em>(${PERM_STYLES[a.perm].label})</em>` : ''}`; });
         declHtml += `<tr><td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${getOutilLabel(entry)}</strong></td><td style="border:1px solid #ccc;padding:6px;vertical-align:top">${actions.join('<br>')}</td></tr>`;
       });
       declHtml += `</tbody></table>`;
@@ -319,7 +320,7 @@ export default function DeclarationGuidee() {
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette déclaration confirme que :</h2>
-<ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;">
+<ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
 <li style="margin-bottom:4pt">Les informations fournies sont complètes et fidèles à votre utilisation réelle.</li>
 <li style="margin-bottom:4pt">Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
 <li style="margin-bottom:4pt">Vous avez fait un usage responsable des SIA et avez respecté le droit d'auteur lors des requêtes et référencement.</li>
