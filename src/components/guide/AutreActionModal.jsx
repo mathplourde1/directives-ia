@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PHASES from '@/components/directives/directivesData';
 
-export default function AutreActionModal({ isOpen, onClose, onSave, initialData }) {
+export default function AutreActionModal({ isOpen, onClose, onSave }) {
   const [selectedPhaseId, setSelectedPhaseId] = useState(PHASES[0]?.id || '');
   const [label, setLabel] = useState('');
 
   useEffect(() => {
-    if (isOpen) {
-      setSelectedPhaseId(initialData?.phaseId || PHASES[0]?.id || '');
-      setLabel(initialData?.libelle || '');
-    }
-  }, [isOpen, initialData]);
+    if (isOpen) { setSelectedPhaseId(PHASES[0]?.id || ''); setLabel(''); }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -27,7 +24,7 @@ export default function AutreActionModal({ isOpen, onClose, onSave, initialData 
       <div style={{ background: 'white', borderRadius: 10, width: '100%', maxWidth: 700, maxHeight: '90vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
         {/* Header */}
         <div style={{ background: '#1895FD', color: 'white', padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{ fontWeight: 'bold', fontSize: '1em' }}>{initialData ? 'Modifier l\'action personnalisée' : 'Ajouter une action personnalisée'}</span>
+          <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Ajouter une action personnalisée</span>
           <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.3em', cursor: 'pointer', lineHeight: 1 }}>×</button>
         </div>
 
@@ -93,7 +90,7 @@ export default function AutreActionModal({ isOpen, onClose, onSave, initialData 
           </button>
           <button type="button" onClick={handleSave} disabled={!label.trim()}
             style={{ padding: '7px 18px', borderRadius: 5, border: 'none', background: label.trim() ? '#1895FD' : '#aaa', color: 'white', cursor: label.trim() ? 'pointer' : 'default', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: 'bold' }}>
-            {initialData ? 'Enregistrer' : "Ajouter l'action"}
+            Ajouter l'action
           </button>
         </div>
       </div>
