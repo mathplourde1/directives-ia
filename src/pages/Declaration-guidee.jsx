@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import AutreActionModal from '@/components/guide/AutreActionModal';
 import PHASES, { PERMISSION_LEVELS } from '@/components/directives/directivesData';
 import SIA_LIST_RAW from '@/components/listeSIA';
 
@@ -76,8 +77,11 @@ function parseDirectivesXML(xmlText) {
   } catch { return { error: 'structure', raw: xmlText }; }
 }
 
+let customActionCounter = 0;
+function makeCustomActionId() { return `custom-student-${++customActionCounter}-${Date.now()}`; }
+
 function defaultOutilEntry() {
-  return { outil: '', outilLibre: '', actionIds: [], autreAction: '' };
+  return { outil: '', outilLibre: '', actionIds: [], customActions: [] };
 }
 
 export default function DeclarationGuidee() {
@@ -106,6 +110,7 @@ export default function DeclarationGuidee() {
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
   const [exigencesResponses, setExigencesResponses] = useState({});
   const [exigencesErrors, setExigencesErrors] = useState({});
+  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx }
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
@@ -139,9 +144,20 @@ export default function DeclarationGuidee() {
     setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
   }
 
-  function addEntry() {
-    setOutilEntries(prev => [...prev, defaultOutilEntry()]);
-    setEntryErrors(prev => [...prev, {}]);
+  function addCustomAction(entryIdx, { libelle, phaseLibelle, phaseColor }) {
+    const id = makeCustomActionId();
+    setOutilEntries(prev => prev.map((e, idx) => {
+      if (idx !== entryIdx) return e;
+      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseLibelle, phaseColor }], actionIds: [...e.actionIds, id] };
+    }));
+    setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
+  }
+
+  function removeCustomAction(entryIdx, id) {
+    setOutilEntries(prev => prev.map((e, idx) => {
+      if (idx !== entryIdx) return e;
+      return { ...e, customActions: e.customActions.filter(a => a.id !== id), actionIds: e.actionIds.filter(aid => aid !== id) };
+    }));
   }
 
   function removeEntry(i) {
@@ -152,10 +168,26 @@ export default function DeclarationGuidee() {
   const effectiveSession = data?.identification?.session && !sessionEditMode ? data.identification.session : sessionOverride.trim();
   const identOk = !!(effectiveSession && studentNom.trim());
 
+  // Build merged active actions including per-entry custom actions for lookups
+  function getAllActionsForEntry(entry) {
+    return [...(data?.activeActions || []), ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr', isCustom: true }))];
+  }
+
   const allSelectedActionIds = aucunSIA ? [] : [...new Set(outilEntries.flatMap(e => e.actionIds))];
   const obligActions = data?.activeActions?.filter(a => a.perm === 'obl') ?? [];
   const obligNonCouvertes = obligActions.filter(a => !allSelectedActionIds.includes(a.id));
   const nonAutoriseeSelectionnees = (data?.activeActions ?? []).filter(a => a.perm === 'non' && allSelectedActionIds.includes(a.id));
+
+  // Also check custom actions per-entry for apercu label lookup
+  function findActionLabel(ap, id) {
+    const found = ap.activeActions?.find(x => x.id === id);
+    if (found) return found;
+    for (const entry of (ap.outilEntries || [])) {
+      const c = (entry.customActions || []).find(a => a.id === id);
+      if (c) return c;
+    }
+    return null;
+  }
 
   function handleSoumettre() {
     let hasErrors = false;
@@ -186,7 +218,7 @@ export default function DeclarationGuidee() {
         const err = {};
         if (!e.outil) err.outil = true;
         if (e.outil === 'Autre' && !e.outilLibre.trim()) err.outilLibre = true;
-        if (e.actionIds.length === 0 && !e.autreAction.trim()) err.actionIds = true;
+        if (e.actionIds.length === 0) err.actionIds = true;
         return err;
       });
       setEntryErrors(newEntryErrors);
@@ -242,8 +274,8 @@ export default function DeclarationGuidee() {
     } else {
       declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;"><thead><tr><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions déclarées</th></tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
-        const actions = entry.actionIds.map(id => { const a = ap.activeActions?.find(x => x.id === id); return a ? `${a.libelle} <em>(${PERM_STYLES[a.perm]?.label || a.perm})</em>` : id; });
-        if (entry.autreAction?.trim()) actions.push(`<em>${entry.autreAction}</em> (action non listée)`);
+        const allActionsForEntry = [...(ap.activeActions || []), ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr' }))];
+        const actions = entry.actionIds.map(id => { const a = allActionsForEntry.find(x => x.id === id); return a ? `${a.libelle}${PERM_STYLES[a.perm] ? ` <em>(${PERM_STYLES[a.perm].label})</em>` : ' <em>(personnalisée)</em>'}` : id; });
         declHtml += `<tr><td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${getOutilLabel(entry)}</strong></td><td style="border:1px solid #ccc;padding:6px;vertical-align:top">${actions.join('<br>')}</td></tr>`;
       });
       declHtml += `</tbody></table>`;
@@ -588,7 +620,13 @@ export default function DeclarationGuidee() {
                                 Actions réalisées <span style={{ color: '#E41E25' }}>*</span>
                                 <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — cochez toutes celles qui s'appliquent</span>
                               </label>
-                              {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Sélectionnez au moins une action ou précisez une action non listée</span>}
+                              {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Sélectionnez au moins une action</span>}
+                              {!(entry.outil) && (
+                                <div style={{ padding: '12px 14px', background: '#f8f9fa', border: '1px dashed #bbb', borderRadius: 6, color: '#888', fontSize: '0.87em', fontStyle: 'italic' }}>
+                                  Sélectionnez d'abord un outil ci-contre pour accéder aux actions possibles.
+                                </div>
+                              )}
+                              {entry.outil && (
                               <div style={{ border: '1px solid #ddd', borderRadius: 6, overflow: 'hidden' }}>
                                 {Object.entries(grouped).map(([phaseLibelle, { color, actions: phaseActions }], gi) => (
                                   <div key={gi} style={{ borderBottom: gi < Object.keys(grouped).length - 1 ? '1px solid #eee' : 'none' }}>
@@ -609,25 +647,37 @@ export default function DeclarationGuidee() {
                                     </div>
                                   </div>
                                 ))}
-                                {/* Autre action */}
-                                <div style={{ borderTop: '1px solid #eee', padding: '10px 10px', background: '#fafafa' }}>
-                                  <label style={{ fontWeight: 'bold', fontSize: '0.82em', display: 'block', marginBottom: 4, color: '#555' }}>
-                                    Autre action non listée <span style={{ fontWeight: 'normal' }}>(facultatif)</span>
-                                  </label>
-                                  <input type="text" value={entry.autreAction} onChange={e => updateEntry(i, 'autreAction', e.target.value)}
-                                    placeholder="Décrivez brièvement l'action effectuée avec le SIA…"
-                                    style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', fontSize: '0.88em', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
+                                {(entry.customActions || []).length > 0 && (
+                                  <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fffdf0' }}>
+                                    <div style={{ fontSize: '0.78em', fontWeight: 'bold', color: '#888', marginBottom: 6 }}>Actions personnalisées</div>
+                                    {entry.customActions.map(ca => (
+                                      <div key={ca.id} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 5, fontSize: '0.88em' }}>
+                                        <input type="checkbox" checked={entry.actionIds.includes(ca.id)} onChange={() => toggleAction(i, ca.id)}
+                                          style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: '#888' }} />
+                                        <span style={{ flex: 1, fontStyle: 'italic', color: '#555' }}>{ca.libelle}</span>
+                                        <button type="button" onClick={() => removeCustomAction(i, ca.id)}
+                                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', flexShrink: 0 }} title="Retirer">×</button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                                <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fafafa' }}>
+                                  <button type="button" onClick={() => setAutreActionModal({ entryIdx: i })}
+                                    style={{ background: 'none', border: '1px dashed #1895FD', color: '#1895FD', borderRadius: 5, padding: '4px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em', width: '100%', textAlign: 'left' }}>
+                                    + Ajouter une action non listée
+                                  </button>
                                 </div>
                               </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
+                              )}
+                              </div>
+                              </div>
+                              </div>
+                              );
+                              })}
 
-                    <button type="button" onClick={addEntry}
-                      style={{ background: '#1895FD', color: 'white', border: 'none', borderRadius: 5, padding: '10px 24px', cursor: 'pointer', fontSize: '0.95em', fontFamily: 'inherit', fontWeight: 'bold', display: 'block', width: '100%', marginBottom: 20 }}>
-                      + Ajouter un autre outil
+                              <button type="button" onClick={addEntry}
+                     style={{ background: '#1895FD', color: 'white', border: 'none', borderRadius: 5, padding: '10px 24px', cursor: 'pointer', fontSize: '0.95em', fontFamily: 'inherit', fontWeight: 'bold', display: 'block', width: '100%', marginBottom: 20 }}>
+                     + Ajouter un autre outil
                     </button>
 
                     {/* Exigences dynamiques */}
@@ -724,18 +774,24 @@ export default function DeclarationGuidee() {
 
                 {/* Submit */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                  <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
-                    Générer la déclaration
-                  </button>
-                  {submitStatus && (submitStatus.ok
-                    ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès.</span>
-                    : <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis.</span>
-                  )}
+                 <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
+                   Générer la déclaration
+                 </button>
+                 {submitStatus && (submitStatus.ok
+                   ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès.</span>
+                   : <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis.</span>
+                 )}
                 </div>
-              </div>
-            </div>
+                </div>
 
-            {/* Aperçu */}
+                {/* Autre action modal */}
+                <AutreActionModal
+                isOpen={!!autreActionModal}
+                onClose={() => setAutreActionModal(null)}
+                onSave={action => { if (autreActionModal) addCustomAction(autreActionModal.entryIdx, action); }}
+                />
+
+                {/* Aperçu */}
             {apercu && (
               <>
                 <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '16px', lineHeight: 1.5 }}>
