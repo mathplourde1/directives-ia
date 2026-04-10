@@ -61,7 +61,18 @@ function parseDirectivesXML(xmlText) {
       });
     });
 
-    return { ok: true, identification, mode, precisions, colonnes, activeActions };
+    // exigences
+    const exigencesNode = root.querySelector('exigences');
+    const exigencesMode = exigencesNode?.getAttribute('mode') || 'aucune';
+    const exigences = [];
+    exigencesNode?.querySelectorAll('exigence').forEach(exigNode => {
+      const id = exigNode.getAttribute('id');
+      const type = exigNode.getAttribute('type');
+      const description = exigNode.querySelector('description')?.textContent || '';
+      if (id && type) exigences.push({ id, type, description });
+    });
+
+    return { ok: true, identification, mode, precisions, colonnes, activeActions, exigencesMode, exigences };
   } catch { return { error: 'structure', raw: xmlText }; }
 }
 
@@ -71,7 +82,7 @@ function defaultOutilEntry() {
 
 export default function DeclarationGuidee() {
   const [data, setData] = useState(null);
-  const [aucunSIA, setAucunSIA] = useState(false);
+  const [aucunSIA, setAucunSIA] = useState(true);
   const [aucunSIAJustif, setAucunSIAJustif] = useState('');
   const [aucunSIAJustifError, setAucunSIAJustifError] = useState(false);
   const [aucunSIACommentaire, setAucunSIACommentaire] = useState('');
@@ -93,6 +104,8 @@ export default function DeclarationGuidee() {
   const [nonAutoriseeJustifs, setNonAutoriseeJustifs] = useState({});
   const [nonAutoriseeJustifErrors, setNonAutoriseeJustifErrors] = useState({});
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
+  const [exigencesResponses, setExigencesResponses] = useState({});
+  const [exigencesErrors, setExigencesErrors] = useState({});
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
@@ -160,6 +173,15 @@ export default function DeclarationGuidee() {
       const newNonAutoriseeErrors = {};
       nonAutoriseeSelectionnees.forEach(a => { if (!nonAutoriseeJustifs[a.id]?.trim()) { newNonAutoriseeErrors[a.id] = true; hasErrors = true; } });
       setNonAutoriseeJustifErrors(newNonAutoriseeErrors);
+      // Validate exigences
+      if (data.exigencesMode === 'inclure' && data.exigences?.length > 0) {
+        const newExigErrors = {};
+        data.exigences.forEach(exig => {
+          const resp = exigencesResponses[exig.id] || {};
+          if (!resp.value?.trim() && !resp.ailleurs) { newExigErrors[exig.id] = true; hasErrors = true; }
+        });
+        setExigencesErrors(newExigErrors);
+      }
       const newEntryErrors = outilEntries.map(e => {
         const err = {};
         if (!e.outil) err.outil = true;
@@ -186,6 +208,7 @@ export default function DeclarationGuidee() {
       aucunSIA, aucunSIAJustif, aucunSIACommentaire,
       outilEntries, activeActions: data.activeActions, precisions: data.precisions,
       obligNonCouvJustif, nonAutoriseeJustifs, commentaireGlobal,
+      exigencesMode: data.exigencesMode, exigences: data.exigences, exigencesResponses,
       timestamp,
     });
     setSubmitStatus({ ok: true, time: new Date() });
@@ -230,6 +253,19 @@ export default function DeclarationGuidee() {
         const a = ap.activeActions?.find(x => x.id === id);
         declHtml += `<p><strong>Justification — action non autorisée « ${a?.libelle || id} » :</strong><br>${justif}</p>`;
       });
+      if (ap.exigencesMode === 'inclure' && ap.exigences?.length > 0) {
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Exigences de déclaration</h3>`;
+        ap.exigences.forEach(exig => {
+          const resp = ap.exigencesResponses?.[exig.id] || {};
+          const label = typeLabels[exig.type] || exig.type;
+          if (resp.ailleurs) {
+            declHtml += `<p><strong>${label} :</strong> <em>Déjà répondu dans le travail soumis ou dans cette déclaration.</em></p>`;
+          } else if (resp.value?.trim()) {
+            declHtml += `<p><strong>${label} :</strong><br>${resp.value}</p>`;
+          }
+        });
+      }
       if (ap.commentaireGlobal?.trim()) declHtml += `<p><strong>Commentaires :</strong><br>${ap.commentaireGlobal}</p>`;
     }
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>
@@ -633,6 +669,43 @@ export default function DeclarationGuidee() {
                         })}
                       </div>
                     )}
+
+                    {/* Exigences de déclaration */}
+                    {data.exigencesMode === 'inclure' && data.exigences?.length > 0 && (() => {
+                      const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+                      return (
+                        <div style={{ background: '#f0f8ff', border: '1px solid #1895FD', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
+                          <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 12px', fontSize: '0.95em' }}>📋 Exigences de déclaration</p>
+                          {data.exigences.map(exig => {
+                            const resp = exigencesResponses[exig.id] || {};
+                            const setResp = (field, val) => {
+                              setExigencesResponses(prev => ({ ...prev, [exig.id]: { ...(prev[exig.id] || {}), [field]: val } }));
+                              setExigencesErrors(prev => { const n = { ...prev }; delete n[exig.id]; return n; });
+                            };
+                            const label = typeLabels[exig.type] || exig.type;
+                            const hasError = exigencesErrors[exig.id];
+                            return (
+                              <div key={exig.id} style={{ marginBottom: 16 }}>
+                                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                                  {label} <span style={{ color: '#E41E25' }}>*</span>
+                                </label>
+                                {exig.description && (
+                                  <div style={{ fontSize: '0.85em', color: '#555', marginBottom: 6, padding: '6px 10px', background: '#e8f4fd', borderRadius: 4 }} dangerouslySetInnerHTML={{ __html: exig.description }} />
+                                )}
+                                <textarea value={resp.value || ''} onChange={e => setResp('value', e.target.value)} rows={2} disabled={resp.ailleurs}
+                                  placeholder={`Répondez à l'exigence « ${label} »…`}
+                                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.ailleurs ? '#eee' : (hasError ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
+                                <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
+                                  <input type="checkbox" checked={!!resp.ailleurs} onChange={e => setResp('ailleurs', e.target.checked)} />
+                                  Cette exigence a déjà été traitée ailleurs dans le travail soumis ou dans cette déclaration.
+                                </label>
+                                {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })()}
 
                     {/* Commentaires globaux */}
                     <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
