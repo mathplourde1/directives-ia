@@ -346,9 +346,10 @@ ${directivesSection}
               <li>Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
               <li>Déclarez les outils SIA utilisés et les actions réalisées, phase par phase.</li>
               <li>Répondez à au moins une question de réflexion, puis générez votre déclaration.</li>
+              <li>Copiez et collez le contenu généré en annexe de votre travail ou téléchargez une version Word à soumettre.</li>
             </ol>
-            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
-            🔒 Vos données ne sont pas conservées automatiquement.
+            💡 Un doute sur la démarche? Contactez la personne enseignante du cours.<br />
+            🔒 Vos données ne sont pas conservées par cette application.
           </div>
           <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
             <AProposButton />
