@@ -110,7 +110,7 @@ export default function DeclarationGuidee() {
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
   const [exigencesResponses, setExigencesResponses] = useState({});
   const [exigencesErrors, setExigencesErrors] = useState({});
-  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx, editId?, initialLabel?, initialPhaseId? }
+  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx }
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
@@ -144,20 +144,13 @@ export default function DeclarationGuidee() {
     setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
   }
 
-  function addCustomAction(entryIdx, { libelle, phaseId, phaseLibelle, phaseColor }) {
+  function addCustomAction(entryIdx, { libelle, phaseLibelle, phaseColor }) {
     const id = makeCustomActionId();
     setOutilEntries(prev => prev.map((e, idx) => {
       if (idx !== entryIdx) return e;
-      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseId, phaseLibelle, phaseColor }], actionIds: [...e.actionIds, id] };
+      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseLibelle, phaseColor }], actionIds: [...e.actionIds, id] };
     }));
     setEntryErrors(prev => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
-  }
-
-  function editCustomAction(entryIdx, id, { libelle, phaseId, phaseLibelle, phaseColor }) {
-    setOutilEntries(prev => prev.map((e, idx) => {
-      if (idx !== entryIdx) return e;
-      return { ...e, customActions: e.customActions.map(a => a.id === id ? { ...a, libelle, phaseId, phaseLibelle, phaseColor } : a) };
-    }));
   }
 
   function removeCustomAction(entryIdx, id) {
@@ -645,23 +638,15 @@ export default function DeclarationGuidee() {
                                     <div style={{ background: '#f5f5f5', padding: '5px 10px', fontSize: '0.78em', fontWeight: 'bold', color, borderBottom: '1px solid #eee' }}>{phaseLibelle}</div>
                                     <div style={{ padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 6 }}>
                                       {phaseActions.map(action => {
-                                        const ps = action.isCustom ? { bg: '#f5f5f5', color: '#888', border: '#ccc', label: 'Action personnalisée' } : (PERM_STYLES[action.perm] || {});
+                                        const ps = PERM_STYLES[action.perm] || {};
                                         const checked = entry.actionIds.includes(action.id);
                                         return (
-                                          <div key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.88em' }}>
+                                          <label key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88em' }}>
                                             <input type="checkbox" checked={checked} onChange={() => toggleAction(i, action.id)}
                                               style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: ps.color }} />
-                                            <span style={{ flex: 1, fontStyle: action.isCustom ? 'italic' : 'normal', color: action.isCustom ? '#555' : 'inherit' }}>{action.libelle}</span>
+                                            <span style={{ flex: 1 }}>{action.libelle}</span>
                                             <span style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}`, borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap', flexShrink: 0 }}>{ps.label}</span>
-                                            {action.isCustom && (
-                                              <>
-                                                <button type="button" title="Modifier" onClick={() => setAutreActionModal({ entryIdx: i, editId: action.id, initialLabel: action.libelle, initialPhaseId: action.phaseId })}
-                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.9em', padding: '0 2px', flexShrink: 0, lineHeight: 1 }}>✏️</button>
-                                                <button type="button" title="Retirer" onClick={() => removeCustomAction(i, action.id)}
-                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', flexShrink: 0, lineHeight: 1 }}>×</button>
-                                              </>
-                                            )}
-                                          </div>
+                                          </label>
                                         );
                                       })}
                                     </div>
@@ -795,16 +780,7 @@ export default function DeclarationGuidee() {
                 <AutreActionModal
                 isOpen={!!autreActionModal}
                 onClose={() => setAutreActionModal(null)}
-                initialLabel={autreActionModal?.initialLabel || ''}
-                initialPhaseId={autreActionModal?.initialPhaseId || ''}
-                onSave={action => {
-                  if (!autreActionModal) return;
-                  if (autreActionModal.editId) {
-                    editCustomAction(autreActionModal.entryIdx, autreActionModal.editId, action);
-                  } else {
-                    addCustomAction(autreActionModal.entryIdx, action);
-                  }
-                }}
+                onSave={action => { if (autreActionModal) addCustomAction(autreActionModal.entryIdx, action); }}
                 />
 
                 {/* Aperçu */}
