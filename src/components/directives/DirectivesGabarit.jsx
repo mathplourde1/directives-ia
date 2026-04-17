@@ -79,7 +79,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
 
   const declarationSupp = ``;
 
-  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
+  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, vous confirmez que :</h2>`;
   const affirmList = [
     "Les informations fournies sont complètes et fidèles à votre utilisation réelle.",
     "Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
