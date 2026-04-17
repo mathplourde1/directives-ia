@@ -12,15 +12,15 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   const enseignants = escHtml(identification.enseignants || '[personne enseignante]');
 
   const title = `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;margin:0 0 14pt 0;padding-bottom:8pt;border-bottom:1px solid black;color:#000;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>`;
-  const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">Je, <strong>[NOM]</strong> (groupe <strong>[GROUPE]</strong>), soumets cette déclaration dans le cadre de l'évaluation nommée <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 16pt 0;">Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ma démarche.</p>`;
+  const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">Je, <strong>[NOM]</strong> (groupe <strong>[GROUPE]</strong>), soumets cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>.</p>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 16pt 0;">Conformément aux exigences de la personne enseignante <strong>${enseignants}</strong>, les renseignements suivants présentent ma démarche.</p>`;
 
   // Group all actions by phase, then by permission level
   let body = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Directives à l'intention des personnes étudiantes</h2>`;
 
   body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:6pt;">
     <thead><tr>
-      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:25%">Phase</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:25%">Phases</th>
       <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:30%">Permissions SIA</th>
       <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:45%">Actions SIA</th>
     </tr></thead><tbody>`;
