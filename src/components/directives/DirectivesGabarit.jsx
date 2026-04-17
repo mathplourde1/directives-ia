@@ -65,8 +65,15 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
       const label = typeLabels[exig.type] || exig.type;
       exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:10pt 0 2pt 0;">${escHtml(label)}</p>`;
       if (exig.description) exigencesBlock += `<div style="font-family:Arial,sans-serif;font-size:10pt;color:#444;margin:0 0 6pt 0;">${exig.description}</div>`;
-      exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:10pt;margin:2pt 0 0 0;color:#555;font-style:italic;">Réponse :</p>`;
-      exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+      if (exig.type === 'iagraphie') {
+        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:6pt 0 4pt 0;">Avez-vous respecté les exigences de référencement et d'IAgraphie ci-dessus ?</p>`;
+        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>`;
+        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur le référencement et l'IAgraphie.</p>`;
+        exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+      } else {
+        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:10pt;margin:2pt 0 0 0;color:#555;font-style:italic;">Réponse :</p>`;
+        exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+      }
     });
   }
 
