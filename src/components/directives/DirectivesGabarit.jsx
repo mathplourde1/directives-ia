@@ -139,11 +139,8 @@ export default function DirectivesGabarit({ identification, permissions, precisi
         </button>
       </div>
       {showApercu && isGenerated && (
-        <style>{`
-          .gabarit-apercu a { color: #0056b3 !important; text-decoration: underline !important; }
-        `}</style>
-        <div className="gabarit-apercu" style={{ marginTop: 16, border: '1px solid #ccc', borderRadius: 6, background: 'white', padding: '24px 28px', fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5, maxHeight: 520, overflowY: 'auto' }}
-          dangerouslySetInnerHTML={{ __html: html }} />
+        <div style={{ marginTop: 16, border: '1px solid #ccc', borderRadius: 6, background: 'white', padding: '24px 28px', fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5, maxHeight: 520, overflowY: 'auto' }}
+          dangerouslySetInnerHTML={{ __html: `<style>.gabarit-apercu a{color:#0056b3!important;text-decoration:underline!important;}</style><div class="gabarit-apercu">${html}</div>` }} />
       )}
     </div>
   );
