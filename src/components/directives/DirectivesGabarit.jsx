@@ -56,7 +56,11 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   let exigencesBlock = '';
   if (exigences && exigences.length > 0) {
     const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
-    exigencesBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Exigences de déclaration</h2>`;
+    exigencesBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Déclaration</h2>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin:8pt 0 4pt 0;">Votre utilisation des SIA pour cette évaluation est-elle conforme aux directives ci-dessus ?</p>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 12pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur votre utilisation des SIA pour cette évaluation.</p>
+<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
     exigences.forEach(exig => {
       const label = typeLabels[exig.type] || exig.type;
       exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:10pt 0 2pt 0;">${escHtml(label)}</p>`;
@@ -66,8 +70,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
     });
   }
 
-  const declarationSupp = `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:14pt 0 2pt 0;">Déclaration supplémentaire ou commentaires sur l'utilisation des SIA pour cette évaluation :</p>
-<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 16pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+  const declarationSupp = ``;
 
   const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">La soumission de cette déclaration confirme que :</h2>`;
   const affirmList = [
