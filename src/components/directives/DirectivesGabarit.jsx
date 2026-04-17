@@ -87,7 +87,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
     "Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.",
     "Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
     "Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
-    `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;">Règlement disciplinaire</a> de l'Université Laval.`
+    `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;text-decoration:underline;">Règlement disciplinaire</a> de l'Université Laval.`
   ];
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;list-style-type:disc;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map(a => `<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
@@ -139,7 +139,10 @@ export default function DirectivesGabarit({ identification, permissions, precisi
         </button>
       </div>
       {showApercu && isGenerated && (
-        <div style={{ marginTop: 16, border: '1px solid #ccc', borderRadius: 6, background: 'white', padding: '24px 28px', fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5, maxHeight: 520, overflowY: 'auto' }}
+        <style>{`
+          .gabarit-apercu a { color: #0056b3 !important; text-decoration: underline !important; }
+        `}</style>
+        <div className="gabarit-apercu" style={{ marginTop: 16, border: '1px solid #ccc', borderRadius: 6, background: 'white', padding: '24px 28px', fontFamily: 'Arial, sans-serif', fontSize: '13px', lineHeight: 1.5, maxHeight: 520, overflowY: 'auto' }}
           dangerouslySetInnerHTML={{ __html: html }} />
       )}
     </div>
