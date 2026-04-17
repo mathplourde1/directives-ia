@@ -506,7 +506,7 @@ export default function Directives() {
                 {[{ type: 'iagraphie', label: 'Références et IAgraphie' }, { type: 'traces', label: 'Conserver les traces' }, { type: 'logique', label: "Expliquer la logique d'utilisation" }].map(req => (
                   <button key={req.type} type="button" onClick={() => {
                     const id = `exig-${Date.now()}-${Math.random()}`;
-                    const defaultDesc = req.type === 'iagraphie' ? '<a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank">Comment citer ses sources ?</a> (Bibliothèque de l\'Université Laval)' : '';
+                    const defaultDesc = req.type === 'iagraphie' ? 'Veuillez respecter les <a href="https://www.bibl.ulaval.ca/services/soutien-a-lapprentissage/citation-de-sources/comment-citer-des-sources" target="_blank" style="color:#0056b3;text-decoration:underline;">règles de citation de l\'IA</a> proposées par la Bibliothèque de l\'Université Laval.' : '';
                     setExigences(prev => [...prev, { id, type: req.type, description: defaultDesc }]);
                     setExigenceEditModal({ exigenceId: id, type: req.type });
                     setExigenceTypeModal(false);
