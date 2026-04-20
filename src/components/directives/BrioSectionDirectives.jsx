@@ -53,7 +53,7 @@ export default function BrioSectionDirectives({ permissions }) {
           <p style={{ marginLeft: 20 }}>
             <strong className="text-base font-bold">{niveau.libelle}</strong>
           </p>
-          <p style={{ marginTop: 12 }} className="mb-1">Pourquoi cette option ?</p>
+          <p style={{ marginTop: 12 }} className="mb-1">Pourquoi ?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
           <p style={{ marginTop: 12 }} className="mb-1">La section suivante vous présente les synthèses de vos directives.</p>
         </div>
