@@ -94,7 +94,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   const affirmList = [
     "Les informations fournies sont complètes et fidèles à votre utilisation réelle.",
     "Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
-    "Vous avez fait un usage responsable des SIA et avez respecté le Droit d'auteur lors des requêtes et référencement.",
+    `Vous avez fait un usage responsable des SIA et avez respecté le <a href="https://www.bda.ulaval.ca/intelligence-artificielle/" target="_blank" style="color:#0056b3;text-decoration:underline;">Droit d'auteur</a> lors des requêtes et référencement.`,
     "Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.",
     "Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
     "Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
