@@ -325,8 +325,8 @@ export default function Directives() {
               <li>Cliquez sur <strong>Générer les directives</strong> pour visualiser et réviser la synthèse des directives.</li>
               <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
             </ol>
-            💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
-            🔒 Vos données ne sont pas conservées. Créez un <a href="#sauvegarde-d" className="text-blue-800 underline">fichier de sauvegarde</a> pour reprendre votre travail plus tard.
+            Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
+            Vos données ne sont pas conservées. Créez un <a href="#sauvegarde-d" className="text-blue-800 underline">fichier de sauvegarde</a> pour reprendre votre travail plus tard.
           </div>
           <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
             <AProposButton />
