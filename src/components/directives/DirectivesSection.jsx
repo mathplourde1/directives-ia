@@ -23,10 +23,11 @@ function getPhaseForAction(actionId) {
   return null;
 }
 
-function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange, hasError }) {
+function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleProps, isDragging, isCustom, onLabelChange, onPhaseChange, hasError }) {
   const col = COLUMN_STYLES.find(c => c.id === levelId) || COLUMN_STYLES[0];
-  const phase = getPhaseForAction(action.id);
-  const chipColor = isCustom ? '#888' : (phase?.color || '#888');
+  // For custom actions, use phaseId from the action itself; for standard, look up from PHASES
+  const phase = isCustom ? (action.phaseId ? PHASE_MAP[action.phaseId] : null) : getPhaseForAction(action.id);
+  const chipColor = phase?.color || '#888';
   const [hoverZone, setHoverZone] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -67,7 +68,7 @@ function ActionChip({ action, levelId, colIndex, onMoveTo, onRemove, dragHandleP
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 3, minWidth: 0 }}>
             <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3, fontStyle: 'italic', color: '#555' }}>{action.libelle}</span>
             <button type="button" onClick={e => { e.stopPropagation(); setModalOpen(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#aaa', fontSize: '0.85em', padding: '0 2px', flexShrink: 0 }}>✎</button>
-            <CustomActionModal isOpen={modalOpen} onClose={() => setModalOpen(false)} initialValue={action.libelle} onSave={newLabel => onLabelChange(action.id, newLabel)} categoryColor="#888" />
+            <CustomActionModal isOpen={modalOpen} onClose={() => setModalOpen(false)} initialValue={action.libelle} initialPhaseId={action.phaseId || ''} phases={PHASES} onSave={(newLabel, newPhaseId) => { onLabelChange(action.id, newLabel); if (onPhaseChange) onPhaseChange(action.id, newPhaseId); }} categoryColor="#888" />
           </div>
         ) : (
           <span style={{ flex: 1, wordBreak: 'break-word', whiteSpace: 'normal', lineHeight: 1.3 }}>{action.libelle}</span>
@@ -176,6 +177,10 @@ export default function DirectivesSection({
 
   function handleCustomLabelChange(actionId, newLabel) {
     setCustomActions(prev => ({ ...prev, [actionId]: { ...prev[actionId], libelle: newLabel } }));
+  }
+
+  function handleCustomPhaseChange(actionId, newPhaseId) {
+    setCustomActions(prev => ({ ...prev, [actionId]: { ...prev[actionId], phaseId: newPhaseId || null } }));
   }
 
   const REMOVED_ZONE = '__removed__';
@@ -386,8 +391,8 @@ export default function DirectivesSection({
                                 {(dragProvided, dragSnapshot) => (
                                   <div ref={dragProvided.innerRef} {...dragProvided.draggableProps}>
                                     <ActionChip action={action} levelId={col.id} colIndex={colIndex} onMoveTo={handleMove} onRemove={handleRemove}
-                                      dragHandleProps={dragProvided.dragHandleProps} isDragging={dragSnapshot.isDragging} isCustom={!!action.isCustom}
-                                      onLabelChange={handleCustomLabelChange} hasError={showErrors && !!action.isCustom && emptyCustomIds.includes(action.id)} />
+                                     dragHandleProps={dragProvided.dragHandleProps} isDragging={dragSnapshot.isDragging} isCustom={!!action.isCustom}
+                                     onLabelChange={handleCustomLabelChange} onPhaseChange={handleCustomPhaseChange} hasError={showErrors && !!action.isCustom && emptyCustomIds.includes(action.id)} />
                                   </div>
                                 )}
                               </Draggable>

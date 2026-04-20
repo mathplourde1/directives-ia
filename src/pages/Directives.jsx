@@ -85,14 +85,19 @@ export default function Directives() {
     setTimeout(() => { document.getElementById('synthese-container-d')?.scrollIntoView({ behavior: 'smooth' }); }, 100);
   }
 
-  // Build active permissions (only placed actions)
+  // Build active permissions (only placed actions, including custom)
   const activePermissions = {};
+  const _columnOrder = sectionState.columnOrder || {};
+  const _removedIds = sectionState.removedIds || [];
   ALL_ACTIONS.forEach(a => {
-    const state = sectionState;
-    const columnOrder = state.columnOrder || {};
-    const removedIds = state.removedIds || [];
-    const inAColumn = Object.values(columnOrder).some(ids => (ids || []).includes(a.id));
-    if (inAColumn && !removedIds.includes(a.id)) {
+    const inAColumn = Object.values(_columnOrder).some(ids => (ids || []).includes(a.id));
+    if (inAColumn && !_removedIds.includes(a.id)) {
+      activePermissions[a.id] = permissions[a.id] || 'non';
+    }
+  });
+  Object.values(sectionState.customActions || {}).forEach(a => {
+    const inAColumn = Object.values(_columnOrder).some(ids => (ids || []).includes(a.id));
+    if (inAColumn && !_removedIds.includes(a.id)) {
       activePermissions[a.id] = permissions[a.id] || 'non';
     }
   });
@@ -234,7 +239,7 @@ export default function Directives() {
     xml += `  </colonnes>\n`;
     xml += `  <retires>${escXml(removedIds.join(','))}</retires>\n`;
     xml += `  <actions_custom>\n`;
-    Object.values(customActions).forEach(a => { xml += `    <action id="${escXml(a.id)}" libelle="${escXml(a.libelle)}" colId="${escXml(a.colId)}" />\n`; });
+    Object.values(customActions).forEach(a => { xml += `    <action id="${escXml(a.id)}" libelle="${escXml(a.libelle)}" colId="${escXml(a.colId)}" phaseId="${escXml(a.phaseId || '')}" />\n`; });
     xml += `  </actions_custom>\n`;
     xml += `  <permissions>\n`;
     ALL_ACTIONS.forEach(a => { if (permissions[a.id]) xml += `    <perm actionId="${escXml(a.id)}">${escXml(permissions[a.id])}</perm>\n`; });
@@ -284,8 +289,8 @@ export default function Directives() {
         const removedIds = retiresText.split(',').map(s => s.trim()).filter(Boolean);
         const customActions = {};
         doc.querySelectorAll('actions_custom action').forEach(a => {
-          const id = a.getAttribute('id'); const libelle = a.getAttribute('libelle') || ''; const colId = a.getAttribute('colId') || 'non';
-          if (id) customActions[id] = { id, libelle, colId };
+          const id = a.getAttribute('id'); const libelle = a.getAttribute('libelle') || ''; const colId = a.getAttribute('colId') || 'non'; const phaseId = a.getAttribute('phaseId') || null;
+          if (id) customActions[id] = { id, libelle, colId, phaseId: phaseId || null };
         });
 
         const newPermissions = { ...initPermissions() };
