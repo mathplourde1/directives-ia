@@ -68,11 +68,28 @@ export default function ExigenceEditModal({
     }
     const selection = quill.getSelection(true);
     const index = selection ? selection.index : quill.getLength() - 1;
-    quill.insertText(index, text, 'user');
-    quill.setSelection(index + text.length);
-    quill.formatText(index, text.length, 'background', '#ffe066', 'api');
+    const totalLength = quill.getLength();
+
+    const charBefore = index > 0 ? quill.getText(index - 1, 1) : '\n';
+    const charAfter = index < totalLength - 1 ? quill.getText(index, 1) : '\n';
+
+    const needsBefore = charBefore !== '\n';
+    const needsAfter = charAfter !== '\n';
+
+    let insertIndex = index;
+    if (needsBefore) {
+      quill.insertText(insertIndex, '\n', 'user');
+      insertIndex += 1;
+    }
+    quill.insertText(insertIndex, text, 'user');
+    if (needsAfter) {
+      quill.insertText(insertIndex + text.length, '\n', 'user');
+    }
+    quill.setSelection(insertIndex + text.length + (needsAfter ? 1 : 0));
+
+    quill.formatText(insertIndex, text.length, 'background', '#ffe066', 'api');
     setTimeout(() => {
-      quill.formatText(index, text.length, 'background', false, 'api');
+      quill.formatText(insertIndex, text.length, 'background', false, 'api');
     }, 500);
   }
 

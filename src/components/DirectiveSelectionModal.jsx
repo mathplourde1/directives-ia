@@ -99,13 +99,30 @@ export default function DirectiveSelectionModal({
     }
     const selection = quill.getSelection(true);
     const index = selection ? selection.index : quill.getLength() - 1;
-    quill.insertText(index, text, 'user');
-    quill.setSelection(index + text.length);
+    const totalLength = quill.getLength();
 
-    // Highlight the inserted range with yellow, then fade out
-    quill.formatText(index, text.length, 'background', '#ffe066', 'api');
+    // Check character before and after cursor
+    const charBefore = index > 0 ? quill.getText(index - 1, 1) : '\n';
+    const charAfter = index < totalLength - 1 ? quill.getText(index, 1) : '\n';
+
+    const needsBefore = charBefore !== '\n';
+    const needsAfter = charAfter !== '\n';
+
+    let insertIndex = index;
+    if (needsBefore) {
+      quill.insertText(insertIndex, '\n', 'user');
+      insertIndex += 1;
+    }
+    quill.insertText(insertIndex, text, 'user');
+    if (needsAfter) {
+      quill.insertText(insertIndex + text.length, '\n', 'user');
+    }
+    quill.setSelection(insertIndex + text.length + (needsAfter ? 1 : 0));
+
+    // Highlight the inserted text with yellow, then fade out
+    quill.formatText(insertIndex, text.length, 'background', '#ffe066', 'api');
     setTimeout(() => {
-      quill.formatText(index, text.length, 'background', false, 'api');
+      quill.formatText(insertIndex, text.length, 'background', false, 'api');
     }, 500);
   }
 
