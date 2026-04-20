@@ -20,36 +20,36 @@ const exemplesDeclarations = [
   {
     code: "logique",
     sequence: 1,
-    court: "Expliquer pourquoi le SIA a été utilisé",
-    exemple: "Rédigez un paragraphe expliquant pourquoi vous avez choisi d'utiliser un SIA pour cette étape, quelles étaient vos attentes et comment cela s'inscrit dans votre démarche de travail."
-  },
-  {
-    code: "logique",
-    sequence: 1,
     court: "Où insérer l'explication",
     exemple: "Dans votre soumission, après l'IAgraphie, "
   },
   {
     code: "logique",
     sequence: 2,
+    court: "Expliquer pourquoi le SIA a été utilisé",
+    exemple: "Rédigez un paragraphe expliquant pourquoi vous avez choisi d'utiliser un SIA pour cette étape, quelles étaient vos attentes et comment cela s'inscrit dans votre démarche de travail."
+  },
+  {
+    code: "logique",
+    sequence: 3,
     court: "Décrire la démarche de validation",
     exemple: "Décrivez comment vous avez validé les informations fournies par le SIA. Quelles sources avez-vous consultées pour vérifier l'exactitude et la pertinence des contenus générés ?"
   },
   {
     code: "logique",
-    sequence: 3,
+    sequence: 4,
     court: "Identifier les forces et limites observées",
     exemple: "Identifiez au moins deux forces et deux limites du SIA que vous avez observées dans le cadre de ce travail. Appuyez vos observations sur des exemples concrets tirés de vos échanges."
   },
   {
     code: "logique",
-    sequence: 4,
+    sequence: 5,
     court: "Expliquer les modifications apportées aux résultats",
     exemple: "Expliquez quelles modifications vous avez apportées aux résultats générés par le SIA et pourquoi. Précisez la part de contribution humaine dans le produit final remis."
   },
   {
     code: "logique",
-    sequence: 5,
+    sequence: 6,
     court: "Réflexion sur l'impact sur votre apprentissage",
     exemple: "Rédigez une courte réflexion (10 à 15 lignes) sur l'impact de l'utilisation du SIA sur votre processus d'apprentissage : qu'avez-vous appris, qu'est-ce qui a été facilité, et quelles compétences n'ont pas pu être développées ?"
   },
