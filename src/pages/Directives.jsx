@@ -312,7 +312,7 @@ export default function Directives() {
         `}</style>
 
         <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Rédaction de directives d'utilisation des SIA pour une évaluation</h1>
-        <div className="mb-2">Ce formulaire interactif s’adresse aux personnes enseignantes de l’Université Laval. Il vous permet de rédiger les directives, à l’intention des personnes étudiantes, d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA), selon trois phases de réalisation d’une évaluation.</div>
+        <div className="mb-2">Ce formulaire interactif s’adresse aux personnes enseignantes de l’Université Laval. Il vous permet de rédiger les directives d'autorisation d'utilisation des systèmes d'intelligence artificielle (SIA) selon trois phases de réalisation d’une évaluation (à l’intention des personnes étudiantes).</div>
 
         {/* Instructions */}
         <div style={{ marginBottom: 20 }}>
