@@ -413,7 +413,7 @@ export default function DirectivesSection({
 
           <div style={{ marginTop: 10 }}>
             <label style={{ fontWeight: 'bold', fontSize: '0.85em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions</label>
-            <textarea value={precisions} onChange={e => setPrecisions(e.target.value)} placeholder="Ajouter ici des précisions sur l'utilisation des SIA et justifier la plus-value pédagogique de leur usage ou de leur interdiction dans le cadre de cette évaluation."
+            <textarea value={precisions} onChange={e => setPrecisions(e.target.value)}
               placeholder="Ajoutez ici des précisions sur l'utilisation des SIA pour cette évaluation…" rows={2}
               style={{ width: '100%', padding: '6px 8px', border: '1px solid #ccc', borderRadius: 4, fontFamily: 'inherit', fontSize: '0.88em', boxSizing: 'border-box', resize: 'vertical' }} />
           </div>
