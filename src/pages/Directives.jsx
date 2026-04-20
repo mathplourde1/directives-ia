@@ -321,7 +321,8 @@ export default function Directives() {
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
               <li>Remplissez la section d'identification.</li>
               <li>À partir de la zone d'actions suggérées, faites glisser les actions qu'un SIA est ou n'est pas autorisé à faire vers la colonne correspondante. Les actions non déplacées seront exclues des directives. 	Au besoin, ajoutez des actions personnalisées ou des précisions pédagogiques dans les espaces prévus à cet effet.</li>
-              <li>Cliquez sur <strong>Générer les directives</strong> pour obtenir les synthèses mises en forme à copier et coller.</li>
+              <li>Inscrivez, s’il y a lieu, les exigences de référencement et d’IAgraphie ou l'un des autres types d'exigences de déclaration (conserver des traces ou expliquer la logique d'utilisation).</li>
+              <li>Cliquez sur <strong>Générer les directives</strong> pour visualiser et réviser la synthèse des directives.</li>
               <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
             </ol>
             💡 Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" className="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br />
