@@ -5,7 +5,6 @@ import exemplesDirectives from './exemplesDirectives.json';
 import ETAPES from './etapesData';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const NIVEAU_MAP = {
@@ -73,6 +72,7 @@ export default function DirectiveSelectionModal({
   const quillRef = useRef();
 
   const currentEtape = ETAPES.find(e => e.id === currentEtapeId);
+  const [hoveredKey, setHoveredKey] = useState(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -153,24 +153,30 @@ export default function DirectiveSelectionModal({
           {(currentEtape || currentNiveau) && (
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 6 }}>
               {currentEtape && (
-                <TooltipProvider delayDuration={200}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span style={{
-                        fontSize: '0.78em', padding: '3px 10px', borderRadius: 20,
-                        background: '#f0f0f0', color: '#444', border: '1px solid #ddd', fontWeight: 'bold',
-                        cursor: 'default'
-                      }}>
-                        📋 {currentEtape.libelle}
-                      </span>
-                    </TooltipTrigger>
-                    {currentEtape.parenthese && (
-                      <TooltipContent side="bottom" style={{ maxWidth: 340, fontSize: '0.85em', lineHeight: 1.6, whiteSpace: 'normal' }}>
-                        <p>{currentEtape.parenthese}</p>
-                      </TooltipContent>
-                    )}
-                  </Tooltip>
-                </TooltipProvider>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <span
+                    style={{
+                      fontSize: '0.78em', padding: '3px 10px', borderRadius: 20,
+                      background: '#f0f0f0', color: '#444', border: '1px solid #ddd', fontWeight: 'bold',
+                      cursor: currentEtape.parenthese ? 'help' : 'default'
+                    }}
+                    onMouseEnter={() => currentEtape.parenthese && setHoveredKey('etape-badge')}
+                    onMouseLeave={() => setHoveredKey(null)}
+                  >
+                    📋 {currentEtape.libelle}
+                  </span>
+                  {hoveredKey === 'etape-badge' && currentEtape.parenthese && (
+                    <div style={{
+                      position: 'absolute', top: '110%', left: 0, zIndex: 10000,
+                      background: '#1a1a1a', color: 'white', borderRadius: 6,
+                      padding: '8px 12px', fontSize: '0.82em', lineHeight: 1.6,
+                      maxWidth: 340, whiteSpace: 'normal', wordBreak: 'break-word',
+                      boxShadow: '0 4px 16px rgba(0,0,0,0.3)', pointerEvents: 'none',
+                    }}>
+                      {currentEtape.parenthese}
+                    </div>
+                  )}
+                </div>
               )}
               {currentNiveau && niveauColor && (
                 <span style={{
@@ -257,46 +263,46 @@ export default function DirectiveSelectionModal({
                       </AccordionTrigger>
                       <AccordionContent style={{ padding: '4px 0 8px 0' }}>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                          <TooltipProvider delayDuration={200}>
-                            {getDirectives(n).map((d, i) => (
-                              <Tooltip key={i}>
-                                <TooltipTrigger asChild>
-                                  <button
-                                    type="button"
-                                    className="example-btn"
-                                    onClick={() => insertExample(d.exemple)}
-                                    style={{
-                                      textAlign: 'left',
-                                      padding: '7px 10px',
-                                      border: '1px solid #ddd',
-                                      borderRadius: 5,
-                                      cursor: 'pointer',
-                                      background: 'white',
-                                      fontFamily: 'inherit',
-                                      fontSize: '0.82em',
-                                      lineHeight: 1.4,
-                                      color: '#231F20',
-                                      width: '100%',
-                                    }}
-                                  >
-                                    {d.court}…
-                                  </button>
-                                </TooltipTrigger>
-                                <TooltipContent
-                                  side="left"
+                          {getDirectives(n).map((d, i) => {
+                            const key = `${n}-${i}`;
+                            return (
+                              <div key={i} style={{ position: 'relative' }}>
+                                <button
+                                  type="button"
+                                  className="example-btn"
+                                  onClick={() => insertExample(d.exemple)}
+                                  onMouseEnter={() => setHoveredKey(key)}
+                                  onMouseLeave={() => setHoveredKey(null)}
                                   style={{
-                                    maxWidth: 360,
-                                    fontSize: '0.85em',
-                                    lineHeight: 1.6,
-                                    whiteSpace: 'normal',
-                                    wordBreak: 'break-word',
+                                    textAlign: 'left',
+                                    padding: '7px 10px',
+                                    border: '1px solid #ddd',
+                                    borderRadius: 5,
+                                    cursor: 'pointer',
+                                    background: 'white',
+                                    fontFamily: 'inherit',
+                                    fontSize: '0.82em',
+                                    lineHeight: 1.4,
+                                    color: '#231F20',
+                                    width: '100%',
                                   }}
                                 >
-                                  <p>{d.exemple}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            ))}
-                          </TooltipProvider>
+                                  {d.court}…
+                                </button>
+                                {hoveredKey === key && (
+                                  <div style={{
+                                    position: 'absolute', right: '105%', top: 0, zIndex: 10000,
+                                    background: '#1a1a1a', color: 'white', borderRadius: 6,
+                                    padding: '8px 12px', fontSize: '0.82em', lineHeight: 1.6,
+                                    maxWidth: 360, whiteSpace: 'normal', wordBreak: 'break-word',
+                                    boxShadow: '0 4px 16px rgba(0,0,0,0.3)', pointerEvents: 'none',
+                                  }}
+                                    dangerouslySetInnerHTML={{ __html: d.exemple }}
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
