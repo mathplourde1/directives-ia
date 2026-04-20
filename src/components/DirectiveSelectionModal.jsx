@@ -73,6 +73,7 @@ export default function DirectiveSelectionModal({
 
   const currentEtape = ETAPES.find(e => e.id === currentEtapeId);
   const [hoveredKey, setHoveredKey] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
     if (isOpen) {
@@ -266,12 +267,16 @@ export default function DirectiveSelectionModal({
                           {getDirectives(n).map((d, i) => {
                             const key = `${n}-${i}`;
                             return (
-                              <div key={i} style={{ position: 'relative' }}>
+                              <div key={i}>
                                 <button
                                   type="button"
                                   className="example-btn"
                                   onClick={() => insertExample(d.exemple)}
-                                  onMouseEnter={() => setHoveredKey(key)}
+                                  onMouseEnter={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    setTooltipPos({ top: rect.top, right: window.innerWidth - rect.left + 8 });
+                                    setHoveredKey(key);
+                                  }}
                                   onMouseLeave={() => setHoveredKey(null)}
                                   style={{
                                     textAlign: 'left',
@@ -291,7 +296,7 @@ export default function DirectiveSelectionModal({
                                 </button>
                                 {hoveredKey === key && (
                                   <div style={{
-                                    position: 'absolute', right: '105%', top: 0, zIndex: 10000,
+                                    position: 'fixed', right: tooltipPos.right, top: tooltipPos.top, zIndex: 99999,
                                     background: '#1a1a1a', color: 'white', borderRadius: 6,
                                     padding: '8px 12px', fontSize: '0.82em', lineHeight: 1.6,
                                     maxWidth: 360, whiteSpace: 'normal', wordBreak: 'break-word',

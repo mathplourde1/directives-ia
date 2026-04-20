@@ -47,6 +47,7 @@ export default function ExigenceEditModal({
 }) {
   const [value, setValue] = useState(initialValue || '');
   const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [tooltipPos, setTooltipPos] = useState({ top: 0, right: 0 });
   const quillRef = useRef();
 
   useEffect(() => {
@@ -166,12 +167,16 @@ export default function ExigenceEditModal({
               <ScrollArea style={{ flex: 1 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
                   {exemples.map((ex, idx) => (
-                    <div key={idx} style={{ position: 'relative' }}>
+                    <div key={idx}>
                       <button
                         type="button"
                         className="decl-example-btn"
                         onClick={() => insertExample(ex.exemple)}
-                        onMouseEnter={() => setHoveredIdx(idx)}
+                        onMouseEnter={(e) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          setTooltipPos({ top: rect.top, right: window.innerWidth - rect.left + 8 });
+                          setHoveredIdx(idx);
+                        }}
                         onMouseLeave={() => setHoveredIdx(null)}
                         style={{
                           textAlign: 'left', padding: '7px 10px', border: '1px solid #ddd',
@@ -184,7 +189,7 @@ export default function ExigenceEditModal({
                       </button>
                       {hoveredIdx === idx && (
                         <div style={{
-                          position: 'absolute', right: '105%', top: 0, zIndex: 10000,
+                          position: 'fixed', right: tooltipPos.right, top: tooltipPos.top, zIndex: 99999,
                           background: '#1a1a1a', color: 'white', borderRadius: 6,
                           padding: '8px 12px', fontSize: '0.82em', lineHeight: 1.6,
                           maxWidth: 340, whiteSpace: 'normal', wordBreak: 'break-word',
