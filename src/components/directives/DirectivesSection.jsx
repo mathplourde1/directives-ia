@@ -163,11 +163,11 @@ export default function DirectivesSection({
 
   function handleAddCustom(colId) { setPendingModal({ colId }); }
 
-  function handlePendingModalSave(label) {
+  function handlePendingModalSave(label, phaseId) {
     if (!label.trim()) { setPendingModal(null); return; }
     const colId = pendingModal.colId;
     const id = makeCustomId();
-    const newAction = { id, libelle: label.trim(), colId, phaseId: null };
+    const newAction = { id, libelle: label.trim(), colId, phaseId: phaseId || null };
     setCustomActions(prev => ({ ...prev, [id]: newAction }));
     setColumnOrder(prev => { const next = { ...prev }; next[colId] = [...(next[colId] || []), id]; return next; });
     onPermissionChange(id, colId);
@@ -409,7 +409,7 @@ export default function DirectivesSection({
             </div>
           </DragDropContext>
 
-          {pendingModal && <CustomActionModal isOpen={true} onClose={() => setPendingModal(null)} initialValue="" onSave={handlePendingModalSave} categoryColor="#1895FD" />}
+          {pendingModal && <CustomActionModal isOpen={true} onClose={() => setPendingModal(null)} initialValue="" onSave={handlePendingModalSave} categoryColor="#1895FD" phases={PHASES} />}
 
           <div style={{ marginTop: 10 }}>
             <label style={{ fontWeight: 'bold', fontSize: '0.85em', display: 'block', marginBottom: 4, color: '#444' }}>Précisions</label>
