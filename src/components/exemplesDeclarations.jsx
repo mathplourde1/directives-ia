@@ -3,13 +3,13 @@ const exemplesDeclarations = [
     code: "iagraphie",
     sequence: 1,
     court: "Citer l'utilisation du SIA",
-    exemple: "<p>Vous devez déclarer l'utilisation d'un SIA selon le modèle de citation retenu pour ce cours.</p>"
+    exemple: "Vous devez déclarer l'utilisation d'un SIA selon le modèle de citation retenu pour ce cours."
   },
   {
     code: "iagraphie",
     sequence: 2,
     court: "Inclure une IAgraphie complète",
-    exemple: "<p>Vous devez inclure une IAgraphie complète à la fin de votre travail, précisant le nom du SIA utilisé, la date d'utilisation, les requêtes soumises et les réponses obtenues.</p>"
+    exemple: "Vous devez inclure une IAgraphie complète à la fin de votre travail, précisant le nom du SIA utilisé, la date d'utilisation, les requêtes soumises et les réponses obtenues."
   },
   {
     code: "iagraphie",
@@ -25,31 +25,31 @@ const exemplesDeclarations = [
   },
   {
     code: "logique",
-    sequence: 2,
+    sequence: 1,
     court: "Où insérer l'explication",
-    exemple: "<p>Dans votre soumission, après l'IAgraphie, </p>"
+    exemple: "Dans votre soumission, après l'IAgraphie, "
   },
   {
     code: "logique",
-    sequence: 3,
+    sequence: 2,
     court: "Décrire la démarche de validation",
     exemple: "Décrivez comment vous avez validé les informations fournies par le SIA. Quelles sources avez-vous consultées pour vérifier l'exactitude et la pertinence des contenus générés ?"
   },
   {
     code: "logique",
-    sequence: 4,
+    sequence: 3,
     court: "Identifier les forces et limites observées",
     exemple: "Identifiez au moins deux forces et deux limites du SIA que vous avez observées dans le cadre de ce travail. Appuyez vos observations sur des exemples concrets tirés de vos échanges."
   },
   {
     code: "logique",
-    sequence: 5,
+    sequence: 4,
     court: "Expliquer les modifications apportées aux résultats",
     exemple: "Expliquez quelles modifications vous avez apportées aux résultats générés par le SIA et pourquoi. Précisez la part de contribution humaine dans le produit final remis."
   },
   {
     code: "logique",
-    sequence: 6,
+    sequence: 5,
     court: "Réflexion sur l'impact sur votre apprentissage",
     exemple: "Rédigez une courte réflexion (10 à 15 lignes) sur l'impact de l'utilisation du SIA sur votre processus d'apprentissage : qu'avez-vous appris, qu'est-ce qui a été facilité, et quelles compétences n'ont pas pu être développées ?"
   },
