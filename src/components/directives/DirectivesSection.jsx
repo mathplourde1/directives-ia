@@ -242,7 +242,7 @@ export default function DirectivesSection({
 
   const visiblePoolByPhase = PHASES.map(p => ({
     phase: p,
-    actions: p.actions.filter(a => removedIds.includes(a.id) && !hiddenIds.includes(a.id)),
+    actions: p.actions.filter(a => removedIds.includes(a.id) && !hiddenIds.includes(a.id)).sort((a, b) => a.libelle.localeCompare(b.libelle, 'fr')),
   }));
   const visiblePoolCustomNoPhase = Object.values(customActions).filter(a => removedIds.includes(a.id) && !hiddenIds.includes(a.id) && !a.phaseId);
   const allPoolActions = [
