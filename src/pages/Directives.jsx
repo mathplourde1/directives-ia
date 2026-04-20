@@ -107,7 +107,7 @@ export default function Directives() {
     html += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;margin-bottom:12px;">
       <thead><tr>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Phases</th>
-        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Permissions SIA</th>
+        <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Autorisations SIA</th>
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Actions SIA</th>
       </tr></thead><tbody>`;
 

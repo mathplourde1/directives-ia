@@ -21,7 +21,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:6pt;">
     <thead><tr>
       <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:25%">Phases</th>
-      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:30%">Permissions SIA</th>
+      <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:30%">Autorisations SIA</th>
       <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:45%">Actions SIA</th>
     </tr></thead><tbody>`;
 
