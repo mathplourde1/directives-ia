@@ -257,7 +257,7 @@ export default function DirectivesSection({
   return (
     <div style={{ background: 'white', borderRadius: 8, border: '2px solid #1895FD', marginBottom: 20, overflow: 'hidden' }}>
       <div style={{ background: '#1895FD', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-        <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Directives à l'intention des personnes étudiantes</span>
+        <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Directives d'utilisation des SIA</span>
         <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
           <button type="button" onClick={() => setMode('aucune')}
             style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: mode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: mode === 'aucune' ? 'rgba(255,255,255,0.9)' : 'transparent', color: mode === 'aucune' ? '#1895FD' : 'white', transition: 'background 0.15s', borderRadius: '999px 0 0 999px' }}>
