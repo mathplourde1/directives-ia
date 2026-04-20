@@ -320,7 +320,7 @@ export default function Directives() {
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
               <li>Remplissez la section d'identification.</li>
-              <li>Dans la zone d'actions suggérées, faites glisser chaque action qu'un SIA est ou n'est pas autorisé à faire vers la colonne de permission souhaitée. Les actions non déplacées ne seront pas incluses dans les directives.</li>
+              <li>2.	À partir de la zone d'actions suggérées, faites glisser les actions qu'un SIA est ou n'est pas autorisé à faire vers la colonne correspondante. Les actions non déplacées seront exclues des directives.</li>
               <li>Cliquez sur <strong>Générer les directives</strong> pour obtenir les synthèses mises en forme à copier et coller.</li>
               <li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li>
             </ol>
