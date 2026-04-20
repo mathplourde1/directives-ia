@@ -37,7 +37,7 @@ export default function BrioSectionDirectives({ permissions }) {
   return (
     <div id="brio-d" className="synthese-section" style={{ borderColor: '#1895FD', background: 'white' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-        <h2 className="my-2 text-lg font-semibold">Utilisation de l'intelligence artificielle dans Brio</h2>
+        <h2 className="my-2 text-lg font-semibold">Cette évaluation fait-elle partie d’un cours disponible sur Brio ?</h2>
         <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/119270fd2_logo-brio.png" alt="Logo Brio" style={{ height: 30 }} />
       </div>
       {niveau && (
