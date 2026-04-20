@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import exemplesDeclarations from '@/components/exemplesDeclarations';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const QUILL_MODULES = {
@@ -47,6 +46,7 @@ export default function ExigenceEditModal({
   isOpen, onClose, onSave, initialValue, exigenceType
 }) {
   const [value, setValue] = useState(initialValue || '');
+  const [hoveredIdx, setHoveredIdx] = useState(null);
   const quillRef = useRef();
 
   useEffect(() => {
@@ -165,30 +165,36 @@ export default function ExigenceEditModal({
             ) : (
               <ScrollArea style={{ flex: 1 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-                  <TooltipProvider delayDuration={200}>
-                    {exemples.map((ex, idx) => (
-                      <Tooltip key={idx}>
-                        <TooltipTrigger asChild>
-                          <button
-                            type="button"
-                            className="decl-example-btn"
-                            onClick={() => insertExample(ex.exemple)}
-                            style={{
-                              textAlign: 'left', padding: '7px 10px', border: '1px solid #ddd',
-                              borderRadius: 5, cursor: 'pointer', background: 'white',
-                              fontFamily: 'inherit', fontSize: '0.82em', lineHeight: 1.4,
-                              color: '#231F20', width: '100%',
-                            }}
-                          >
-                            {ex.court}…
-                          </button>
-                        </TooltipTrigger>
-                        <TooltipContent side="left" style={{ maxWidth: 360, fontSize: '0.85em', lineHeight: 1.6, whiteSpace: 'normal', wordBreak: 'break-word' }}>
-                          <p>{ex.exemple}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    ))}
-                  </TooltipProvider>
+                  {exemples.map((ex, idx) => (
+                    <div key={idx} style={{ position: 'relative' }}>
+                      <button
+                        type="button"
+                        className="decl-example-btn"
+                        onClick={() => insertExample(ex.exemple)}
+                        onMouseEnter={() => setHoveredIdx(idx)}
+                        onMouseLeave={() => setHoveredIdx(null)}
+                        style={{
+                          textAlign: 'left', padding: '7px 10px', border: '1px solid #ddd',
+                          borderRadius: 5, cursor: 'pointer', background: 'white',
+                          fontFamily: 'inherit', fontSize: '0.82em', lineHeight: 1.4,
+                          color: '#231F20', width: '100%',
+                        }}
+                      >
+                        {ex.court}…
+                      </button>
+                      {hoveredIdx === idx && (
+                        <div style={{
+                          position: 'absolute', right: '105%', top: 0, zIndex: 10000,
+                          background: '#1a1a1a', color: 'white', borderRadius: 6,
+                          padding: '8px 12px', fontSize: '0.82em', lineHeight: 1.6,
+                          maxWidth: 340, whiteSpace: 'normal', wordBreak: 'break-word',
+                          boxShadow: '0 4px 16px rgba(0,0,0,0.3)', pointerEvents: 'none',
+                        }}
+                          dangerouslySetInnerHTML={{ __html: ex.exemple }}
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
               </ScrollArea>
             )}
