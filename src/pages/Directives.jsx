@@ -511,7 +511,7 @@ export default function Directives() {
             </div>
 
             <div id="declaration-d" style={{ marginTop: 20, padding: '16px 20px', border: '1px solid #1895FD', borderRadius: 8, background: 'white' }}>
-              <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.3em', fontWeight: 'bold', color: '#231F20' }}>Formulaire de déclaration pour personnes étudiantes</h2>
+              <h2 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.3em', fontWeight: 'bold', color: '#231F20' }}>Formulaire de déclaration pour les personnes étudiantes</h2>
               <div style={{ marginBottom: 16, fontSize: '0.93em', color: '#444', lineHeight: 1.6 }}>
                 Téléchargez un gabarit Word pré-rempli avec vos directives, que vous pouvez transmettre aux personnes étudiantes.
               </div>
