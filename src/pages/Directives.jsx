@@ -22,7 +22,7 @@ function AProposButton() {
       <button type="button" onClick={() => setOpen(v => !v)}
         style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
         <span style={{ fontSize: '0.8em', color: '#888', display: 'inline-block', transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
-        🧠 À propos…
+        À propos…
       </button>
       {open && (
         <div style={{ textAlign: 'left', paddingTop: 6 }}>
