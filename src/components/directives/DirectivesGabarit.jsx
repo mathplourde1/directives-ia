@@ -5,7 +5,7 @@ function escHtml(str) {
   return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildGabaritHTML(identification, permissions, precisions = '', exigences = []) {
+function buildGabaritHTML(identification, permissions, precisions = '', exigences = [], customActions = {}) {
   const cours = escHtml(identification.cours || '[cours]');
   const evaluation = escHtml(identification.evaluation || '[évaluation]');
   const session = escHtml(identification.session || '[session]');
@@ -15,7 +15,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   const intro = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">Je, <strong>[NOM]</strong> (groupe <strong>[GROUPE]</strong>), soumets cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>.</p>
 <p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 16pt 0;">Conformément aux exigences de la personne enseignante <strong>${enseignants}</strong>, les renseignements suivants présentent ma démarche.</p>`;
 
-  // Group all actions by phase, then by permission level
+  // Group all actions by phase, then by permission level (including custom actions)
   let body = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Directives à l'intention des personnes étudiantes</h2>`;
 
   body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:6pt;">
@@ -25,18 +25,29 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
       <th style="border:1px solid #ccc;padding:6px;background:#f2f2f2;font-weight:bold;width:45%">Actions SIA</th>
     </tr></thead><tbody>`;
 
+  const customByPhase = {};
+  Object.values(customActions).forEach(a => {
+    if (a.phaseId && a.id in permissions) {
+      if (!customByPhase[a.phaseId]) customByPhase[a.phaseId] = [];
+      customByPhase[a.phaseId].push(a);
+    }
+  });
+
   for (const phase of PHASES) {
     let firstRowInPhase = true;
     let phaseRowCount = 0;
-    // count rows for this phase — only include actions explicitly in permissions
+    const phaseCustom = customByPhase[phase.id] || [];
     for (const level of PERMISSION_LEVELS) {
-      const levelActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
-      if (levelActions.length > 0) phaseRowCount++;
+      const baseActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
+      const custActions = phaseCustom.filter(a => permissions[a.id] === level.id);
+      if (baseActions.length + custActions.length > 0) phaseRowCount++;
     }
     if (phaseRowCount === 0) continue;
 
     for (const level of PERMISSION_LEVELS) {
-      const levelActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
+      const baseActions = phase.actions.filter(a => a.id in permissions && permissions[a.id] === level.id);
+      const custActions = phaseCustom.filter(a => permissions[a.id] === level.id);
+      const levelActions = [...baseActions, ...custActions];
       if (levelActions.length === 0) continue;
       const items = levelActions.map(a => `<li style="margin:1pt 0;display:list-item;list-style-type:disc;">${escHtml(a.libelle)}</li>`).join('');
       body += `<tr>`;
@@ -106,10 +117,10 @@ function downloadWord(htmlContent, filename) {
   a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
 }
 
-export default function DirectivesGabarit({ identification, permissions, precisions = '', exigences, isGenerated }) {
+export default function DirectivesGabarit({ identification, permissions, precisions = '', exigences, isGenerated, customActions = {} }) {
   const [showApercu, setShowApercu] = useState(false);
 
-  const html = buildGabaritHTML(identification, permissions, precisions, exigences);
+  const html = buildGabaritHTML(identification, permissions, precisions, exigences, customActions);
   const slugify = s => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
   const filename = `gabarit-directives-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 

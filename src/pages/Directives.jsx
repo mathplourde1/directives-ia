@@ -106,16 +106,28 @@ export default function Directives() {
         <th style="border:1px solid #ccc;padding:8px;background:#f2f2f2;font-weight:bold;">Actions SIA</th>
       </tr></thead><tbody>`;
 
+    const customByPhase = {};
+    Object.values(sectionState.customActions || {}).forEach(a => {
+      if (a.phaseId && activePermissions[a.id]) {
+        if (!customByPhase[a.phaseId]) customByPhase[a.phaseId] = [];
+        customByPhase[a.phaseId].push(a);
+      }
+    });
+
     for (const phase of PHASES) {
       let firstRow = true;
       let rowCount = 0;
+      const phaseCustom = customByPhase[phase.id] || [];
       for (const level of PERMISSION_LEVELS) {
-        const actions = phase.actions.filter(a => activePermissions[a.id] === level.id);
-        if (actions.length > 0) rowCount++;
+        const base = phase.actions.filter(a => activePermissions[a.id] === level.id);
+        const cust = phaseCustom.filter(a => activePermissions[a.id] === level.id);
+        if (base.length + cust.length > 0) rowCount++;
       }
       if (rowCount === 0) continue;
       for (const level of PERMISSION_LEVELS) {
-        const actions = phase.actions.filter(a => activePermissions[a.id] === level.id);
+        const base = phase.actions.filter(a => activePermissions[a.id] === level.id);
+        const cust = phaseCustom.filter(a => activePermissions[a.id] === level.id);
+        const actions = [...base, ...cust];
         if (actions.length === 0) continue;
         const items = actions.map(a => `<li style="display:list-item;list-style-type:disc;">${a.libelle}</li>`).join('');
         html += `<tr>`;
@@ -141,11 +153,23 @@ export default function Directives() {
 
   function buildTextHTML(withHeading = false) {
     let html = withHeading ? `<h2 style="font-family:Arial,sans-serif;">Synthèse en texte continu — Directives d'utilisation des SIA</h2>` : '';
+
+    const customByPhase = {};
+    Object.values(sectionState.customActions || {}).forEach(a => {
+      if (a.phaseId && activePermissions[a.id]) {
+        if (!customByPhase[a.phaseId]) customByPhase[a.phaseId] = [];
+        customByPhase[a.phaseId].push(a);
+      }
+    });
+
     for (const phase of PHASES) {
       html += `<strong style="font-family:Arial,sans-serif;">${phase.libelle.toUpperCase()}</strong><br>`;
       let hasContent = false;
+      const phaseCustom = customByPhase[phase.id] || [];
       for (const level of PERMISSION_LEVELS) {
-        const actions = phase.actions.filter(a => activePermissions[a.id] === level.id);
+        const base = phase.actions.filter(a => activePermissions[a.id] === level.id);
+        const cust = phaseCustom.filter(a => activePermissions[a.id] === level.id);
+        const actions = [...base, ...cust];
         if (actions.length === 0) continue;
         hasContent = true;
         html += `<ul style="font-family:Arial,sans-serif;margin:0 0 6px 0;padding-left:22px;list-style-type:disc;">`;
@@ -492,6 +516,7 @@ export default function Directives() {
                 precisions={sectionState.precisions || ''}
                 exigences={exigencesMode === 'inclure' ? exigences : []}
                 isGenerated={submitted}
+                customActions={sectionState.customActions || {}}
               />
             </div>
           </div>
