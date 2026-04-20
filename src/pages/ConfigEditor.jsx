@@ -5,11 +5,18 @@ import exemplesDeclarationsDefault from '@/components/exemplesDeclarations';
 import SIA_LIST_DEFAULT from '@/components/listeSIA';
 import ItemEditorModal from '@/components/ItemEditorModal';
 import BLOOM_CATEGORIES_DEFAULT from '@/components/restrictions/restrictionsData';
+import DIRECTIVES_PHASES_DEFAULT from '@/components/directives/directivesData';
 
-// Flatten categories and actions for editing
+// Flatten categories and actions for editing (Restrictions/Bloom)
 const CATEGORIES_DEFAULT = BLOOM_CATEGORIES_DEFAULT.map(({ actions, ...cat }) => cat);
 const ACTIONS_DEFAULT = BLOOM_CATEGORIES_DEFAULT.flatMap(cat =>
   cat.actions.map(a => ({ ...a, categorie: cat.id }))
+);
+
+// Flatten phases and actions for editing (Directives)
+const DIR_PHASES_DEFAULT = DIRECTIVES_PHASES_DEFAULT.map(({ actions, ...p }) => p);
+const DIR_ACTIONS_DEFAULT = DIRECTIVES_PHASES_DEFAULT.flatMap(p =>
+  p.actions.map(a => ({ ...a, phase: p.id }))
 );
 
 const ORIGINAL_DATA = {
@@ -19,6 +26,8 @@ const ORIGINAL_DATA = {
   sia: JSON.parse(JSON.stringify(SIA_LIST_DEFAULT)),
   categories: JSON.parse(JSON.stringify(CATEGORIES_DEFAULT)),
   actions: JSON.parse(JSON.stringify(ACTIONS_DEFAULT)),
+  dirPhases: JSON.parse(JSON.stringify(DIR_PHASES_DEFAULT)),
+  dirActions: JSON.parse(JSON.stringify(DIR_ACTIONS_DEFAULT)),
 };
 
 const CONTENT_OPTIONS = [
@@ -28,6 +37,8 @@ const CONTENT_OPTIONS = [
   { value: 'sia', label: 'Liste SIA' },
   { value: 'categories', label: 'Catégories Bloom (Restrictions)' },
   { value: 'actions', label: 'Actions Bloom (Restrictions)' },
+  { value: 'dirPhases', label: 'Phases (Directives)' },
+  { value: 'dirActions', label: 'Actions (Directives)' },
 ];
 
 const NIVEAU_LABELS = {
@@ -49,19 +60,26 @@ const getItemKey = (item, type) => {
   if (type === 'sia') return typeof item === 'string' ? item : item.value || '';
   if (type === 'etapes') return item.id || '';
   if (type === 'directives') return `${item.parent}|${item.niveau}|${item.sequence}|${item.court}`;
-  if (type === 'categories') return item.id || '';
-  if (type === 'actions') return item.id || '';
+  if (type === 'categories' || type === 'dirPhases') return item.id || '';
+  if (type === 'actions' || type === 'dirActions') return item.id || '';
   return `${item.code}|${item.sequence}|${item.court}`;
 };
 
 const CATEGORY_IDS = CATEGORIES_DEFAULT.map(c => c.id);
+const DIR_PHASE_IDS = DIR_PHASES_DEFAULT.map(p => p.id);
 
 const sortNaturally = (items, type) => {
   if (type === 'etapes') return [...items].sort((a, b) => (a.sequence || 0) - (b.sequence || 0));
   if (type === 'categories') return [...items].sort((a, b) => CATEGORY_IDS.indexOf(a.id) - CATEGORY_IDS.indexOf(b.id));
+  if (type === 'dirPhases') return [...items].sort((a, b) => DIR_PHASE_IDS.indexOf(a.id) - DIR_PHASE_IDS.indexOf(b.id));
   if (type === 'actions') return [...items].sort((a, b) => {
     const ci = CATEGORY_IDS.indexOf(a.categorie) - CATEGORY_IDS.indexOf(b.categorie);
     if (ci !== 0) return ci;
+    return String(a.libelle).localeCompare(String(b.libelle), 'fr');
+  });
+  if (type === 'dirActions') return [...items].sort((a, b) => {
+    const pi = DIR_PHASE_IDS.indexOf(a.phase) - DIR_PHASE_IDS.indexOf(b.phase);
+    if (pi !== 0) return pi;
     return String(a.libelle).localeCompare(String(b.libelle), 'fr');
   });
   if (type === 'directives') return [...items].sort((a, b) => {
@@ -86,10 +104,12 @@ export default function ConfigEditor() {
     sia: [...SIA_LIST_DEFAULT],
     categories: [...CATEGORIES_DEFAULT],
     actions: [...ACTIONS_DEFAULT],
+    dirPhases: [...DIR_PHASES_DEFAULT],
+    dirActions: [...DIR_ACTIONS_DEFAULT],
   });
   const [jsonText, setJsonText] = useState(JSON.stringify(ETAPES_DEFAULT, null, 2));
   const [jsonError, setJsonError] = useState(null);
-  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set(), sia: new Set(), categories: new Set(), actions: new Set() });
+  const [modifiedKeys, setModifiedKeys] = useState({ etapes: new Set(), directives: new Set(), declarations: new Set(), sia: new Set(), categories: new Set(), actions: new Set(), dirPhases: new Set(), dirActions: new Set() });
 
   // Modal
   const [modalOpen, setModalOpen] = useState(false);
@@ -279,7 +299,7 @@ export default function ConfigEditor() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : contentType === 'sia' ? 'listeSIA.json' : contentType === 'categories' ? 'bloomCategories.json' : contentType === 'actions' ? 'bloomActions.json' : 'exemplesDeclarations.json';
+    a.download = contentType === 'etapes' ? 'etapesData.json' : contentType === 'directives' ? 'exemplesDirectives.json' : contentType === 'sia' ? 'listeSIA.json' : contentType === 'categories' ? 'bloomCategories.json' : contentType === 'actions' ? 'bloomActions.json' : contentType === 'dirPhases' ? 'directivesPhases.json' : contentType === 'dirActions' ? 'directivesActions.json' : 'exemplesDeclarations.json';
     a.click(); URL.revokeObjectURL(url);
   };
 
@@ -303,6 +323,12 @@ export default function ConfigEditor() {
     } else if (contentType === 'actions') {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">ID</th><th style="padding:8px">Catégorie</th><th style="padding:8px">Libellé</th></tr>';
       rows = items.map(a => `<tr><td style="padding:8px">${a.id}</td><td style="padding:8px">${a.categorie}</td><td style="padding:8px">${a.libelle}</td></tr>`).join('');
+    } else if (contentType === 'dirPhases') {
+      headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">ID</th><th style="padding:8px">Libellé</th><th style="padding:8px">Couleur</th></tr>';
+      rows = items.map(p => `<tr><td style="padding:8px">${p.id}</td><td style="padding:8px">${p.libelle}</td><td style="padding:8px">${p.color}</td></tr>`).join('');
+    } else if (contentType === 'dirActions') {
+      headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">ID</th><th style="padding:8px">Phase</th><th style="padding:8px">Libellé</th></tr>';
+      rows = items.map(a => `<tr><td style="padding:8px">${a.id}</td><td style="padding:8px">${a.phase}</td><td style="padding:8px">${a.libelle}</td></tr>`).join('');
     } else {
       headers = '<tr style="background:#f2f2f2;"><th style="padding:8px">Code</th><th style="padding:8px">Séq.</th><th style="padding:8px">Court</th><th style="padding:8px">Exemple</th></tr>';
       rows = items.map(d => `<tr><td style="padding:8px">${d.code}</td><td style="padding:8px">${d.sequence}</td><td style="padding:8px">${d.court}</td><td style="padding:8px">${d.exemple}</td></tr>`).join('');
@@ -348,6 +374,9 @@ export default function ConfigEditor() {
     }
     if (contentType === 'actions') {
       if (filterParent) items = items.filter(i => i.categorie === filterParent);
+    }
+    if (contentType === 'dirActions') {
+      if (filterParent) items = items.filter(i => i.phase === filterParent);
     }
     if (sortCol) {
       items = [...items].sort((a, b) => {
@@ -491,6 +520,68 @@ export default function ConfigEditor() {
                 <td style={tdS}>
                   <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 10, fontSize: '0.82em', fontWeight: 'bold', background: cat?.color || '#eee', color: 'white' }}>
                     {item.categorie}
+                  </span>
+                </td>
+                <td style={tdS}>{item.libelle}</td>
+                <td style={tdS}>
+                  <ResetBtn item={item} />
+                  <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
+                  <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
+
+    if (contentType === 'dirPhases') return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead><tr>
+          <th style={thFixed}>ID <span style={{ color: '#bbb', fontWeight: 'normal' }}>(fixe)</span></th>
+          {thSort('libelle', 'Libellé')}
+          {thSort('color', 'Couleur')}
+          <th style={thFixed}>Actions</th>
+        </tr></thead>
+        <tbody>
+          {filteredItems.map((item, i) => (
+            <tr key={item._origIndex} style={{ background: rowBg(item, i) }}>
+              <td style={tdS}><Star item={item} /><span style={idBadge}>{item.id}</span></td>
+              <td style={tdS}><strong>{item.libelle}</strong></td>
+              <td style={tdS}>
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  <span style={{ width: 16, height: 16, borderRadius: 3, background: item.color, display: 'inline-block', border: '1px solid #ccc' }} />
+                  <code style={{ fontSize: '0.85em' }}>{item.color}</code>
+                </span>
+              </td>
+              <td style={tdS}>
+                <ResetBtn item={item} />
+                <button onClick={() => handleEdit(item._origIndex)} style={btnE}>✎</button>
+                <button onClick={() => handleDelete(item._origIndex)} style={btnD}>✕</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+
+    if (contentType === 'dirActions') return (
+      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+        <thead><tr>
+          <th style={thFixed}>ID <span style={{ color: '#bbb', fontWeight: 'normal' }}>(fixe)</span></th>
+          {thSort('phase', 'Phase')}
+          {thSort('libelle', 'Libellé')}
+          <th style={thFixed}>Actions</th>
+        </tr></thead>
+        <tbody>
+          {filteredItems.map((item, i) => {
+            const phase = DIR_PHASES_DEFAULT.find(p => p.id === item.phase);
+            return (
+              <tr key={item._origIndex} style={{ background: rowBg(item, i) }}>
+                <td style={tdS}><Star item={item} /><span style={idBadge}>{item.id}</span></td>
+                <td style={tdS}>
+                  <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: 10, fontSize: '0.82em', fontWeight: 'bold', background: phase?.color || '#eee', color: 'white' }}>
+                    {item.phase}
                   </span>
                 </td>
                 <td style={tdS}>{item.libelle}</td>
@@ -652,6 +743,12 @@ export default function ConfigEditor() {
               <select value={filterParent} onChange={e => setFilterParent(e.target.value)} style={selFil}>
                 <option value="">Toutes catégories</option>
                 {CATEGORIES_DEFAULT.map(c => <option key={c.id} value={c.id}>{c.libelle}</option>)}
+              </select>
+            )}
+            {contentType === 'dirActions' && (
+              <select value={filterParent} onChange={e => setFilterParent(e.target.value)} style={selFil}>
+                <option value="">Toutes phases</option>
+                {DIR_PHASES_DEFAULT.map(p => <option key={p.id} value={p.id}>{p.libelle}</option>)}
               </select>
             )}
             {hasFilters && <button className="btn-clr" onClick={clearFilters}>✕ Retirer les filtres</button>}
