@@ -77,7 +77,7 @@ export default function Directives() {
     setIdentErrors(newIdentErrors);
     if (newIdentErrors.cours || newIdentErrors.evaluation || newIdentErrors.enseignants) { setSubmitStatus({ ok: false }); return; }
     if (sectionState.hasEmptyCustom) { setShowErrors(true); setSubmitStatus({ ok: false, emptyCustom: true }); return; }
-    if (sectionState.hasNoActionInColumns) { setSubmitStatus({ ok: false, noActionInColumns: true }); return; }
+    if (sectionState.mode !== 'aucune' && sectionState.hasNoActionInColumns) { setSubmitStatus({ ok: false, noActionInColumns: true }); return; }
     setShowErrors(false);
     setSubmitted(true);
     setSubmitKey(k => k + 1);
