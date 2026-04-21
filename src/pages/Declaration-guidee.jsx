@@ -378,7 +378,7 @@ export default function DeclarationGuidee() {
           Déclaration d'utilisation des SIA
         </h1>
         <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
-          Formulaire basé sur les directives de votre personne enseignante
+          Formulaire à l'intention des personnes étudiantes.
         </p>
 
         {/* Upload zone */}
