@@ -375,7 +375,7 @@ export default function DeclarationGuidee() {
         `}</style>
 
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
-          Déclaration d'utilisation des SIA — Version guidée
+          Déclaration d'utilisation des SIA
         </h1>
         <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
           Formulaire basé sur les directives de votre personne enseignante
