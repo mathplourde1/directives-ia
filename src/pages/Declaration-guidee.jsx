@@ -388,7 +388,7 @@ export default function DeclarationGuidee() {
               {/* Colonne A : import fichier */}
               <div style={{ textAlign: 'center' }}>
                 <p style={{ marginBottom: 16, fontSize: '1em' }}>
-                  Importez le fichier de sauvegarde des directives fourni par votre personne enseignante.
+                  Importez le fichier de sauvegarde des directives fourni par la personne enseignante.
                 </p>
                 <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
                   📂 Importer le fichier de sauvegarde
