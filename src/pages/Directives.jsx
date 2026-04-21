@@ -10,7 +10,7 @@ import PageRightNav from '@/components/guide/PageRightNav';
 const DIRECTIVES_NAV_ITEMS = [
   { id: 'evaluation-ciblee-d', label: 'Évaluation ciblée', conditional: false },
   { id: 'brio-d', label: 'Suggestion Brio', conditional: true },
-  { id: 'synthese-container-d', label: 'Synthèses', conditional: true },
+  { id: 'synthese-container-d', label: 'Synthèse', conditional: true },
   { id: 'declaration-d', label: 'Déclaration étudiante', conditional: true },
   { id: 'sauvegarde-d', label: 'Sauvegarde', conditional: false },
 ];
