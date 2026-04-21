@@ -127,7 +127,7 @@ export default function DirectivesGabarit({ identification, permissions, precisi
   return (
     <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
       <h3 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
-        📄 Option A : gabarit Word à compléter manuellement
+        📄 Option A : gabarit Word à partager aux personnes étudiantes
       </h3>
       
 
