@@ -375,10 +375,10 @@ export default function DeclarationGuidee() {
         `}</style>
 
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
-          Déclaration d'utilisation des SIA lors d'une évalaution
+          Déclaration d'utilisation des SIA lors d'une évaluation
         </h1>
         <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
-          Formulaire à l'intention des personnes étudiantes.
+          Outil destiné aux personnes étudiantes
         </p>
 
         {/* Upload zone */}
