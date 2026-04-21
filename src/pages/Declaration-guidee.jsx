@@ -379,8 +379,8 @@ export default function DeclarationGuidee() {
         </h1>
        
           <div className="mb-2">Cet outil permet de produire une déclaration d’utilisation des SIA pour une évaluation basée sur les directives déterminées par la personne enseignante.</div>
-<h2>Comment ça marche?</h2>
-<ol><li>Importe le fichier de directives  d'utilisation des SIA pour l’évaluation fourni par la personne enseignante.</li>
+<h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">❓ Comment ça fonctionne?</h2>
+            <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2"><li>Importe le fichier de directives  d'utilisation des SIA pour l’évaluation fourni par la personne enseignante.</li>
 <li>Remplis les sections du formulaire selon l’utilisation que tu as fait des SIA. </li>
 <li>Génère la déclaration et apporte des précisions au besoin. </li>
 <li>Télécharge et transmets cette déclaration à l’endroit indiqué par la personne enseignante </li></ol>
