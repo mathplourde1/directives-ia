@@ -4,19 +4,19 @@ import { PERMISSION_LEVELS } from './directivesData';
 const NIVEAUX_BRIO = {
   obl: {
     libelle: 'Obligatoire',
-    raison: "Au moins l'une de vos actions indique une utilisation obligatoire. Vos personnes étudiantes ont donc obligatoirement à utiliser au moins un SIA dans le cadre de cette évaluation."
+    raison: "Au moins l'une de vos actions indique une utilisation obligatoire. Les personnes étudiantes ont donc obligatoirement à utiliser au moins un SIA dans le cadre de cette évaluation."
   },
   asr: {
     libelle: 'Autorisée sans restriction',
-    raison: "Sans exception, toutes vos actions indiquent une autorisation sans restriction. Vos personnes étudiantes ont donc la liberté d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
+    raison: "Sans exception, toutes vos actions indiquent une autorisation sans restriction. Les personnes étudiantes ont donc la liberté d'utiliser un SIA dans le cadre de l'évaluation, mais pas une obligation."
   },
   aar: {
     libelle: 'Autorisée avec restrictions',
-    raison: "Au moins l'une de vos actions indique une autorisation avec restrictions. Vos personnes étudiantes ont donc une liberté balisée d'utiliser un SIA dans le cadre de l'évaluation."
+    raison: "Au moins l'une de vos actions indique une autorisation avec restrictions. Les personnes étudiantes ont donc une liberté balisée d'utiliser un SIA dans le cadre de l'évaluation."
   },
   non: {
     libelle: 'Non autorisée',
-    raison: "Sans exception, toutes vos actions indiquent que les SIA ne sont pas autorisés. Vos personnes étudiantes n'ont donc aucun droit d'utiliser un SIA dans le cadre de l'évaluation."
+    raison: "Sans exception, toutes vos actions indiquent que les SIA ne sont pas autorisés. Les personnes étudiantes n'ont donc aucun droit d'utiliser un SIA dans le cadre de l'évaluation."
   }
 };
 
