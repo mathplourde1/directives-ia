@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import AutreActionModal from '@/components/guide/AutreActionModal';
 import PHASES, { PERMISSION_LEVELS } from '@/components/directives/directivesData';
 import SIA_LIST_RAW from '@/components/listeSIA';
@@ -8,7 +8,7 @@ const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr')).conc
 const PERM_STYLES = {
   non: { label: 'Non autorisée', color: '#E41E25', bg: '#fff4f4', border: '#E41E25' },
   aar: { label: 'Autorisée avec restrictions', color: '#b45309', bg: '#fffbeb', border: '#f59e0b' },
-  asr: { label: 'Autorisée sans restriction', color: '#15803d', bg: '#f0fdf4', border: '#22c55e' },
+  asr: { label: 'Autorisée sans restrictions', color: '#15803d', bg: '#f0fdf4', border: '#22c55e' },
   obl: { label: 'Obligatoire', color: '#1d4ed8', bg: '#eff6ff', border: '#3b82f6' },
 };
 
@@ -34,7 +34,6 @@ function parseDirectivesXML(xmlText) {
     const mode = getT(root, 'mode') || 'aucune';
     const precisions = getT(root, 'precisions');
 
-    // colonnes: map of permId -> [actionIds]
     const colonnes = {};
     root.querySelectorAll('colonne').forEach(col => {
       const id = col.getAttribute('id');
@@ -42,16 +41,14 @@ function parseDirectivesXML(xmlText) {
       colonnes[id] = ids;
     });
 
-    // custom actions in colonnes
     const customActionsMap = {};
     root.querySelectorAll('action_custom').forEach(a => {
       const id = a.getAttribute('id');
       const perm = a.getAttribute('permission') || 'asr';
       if (id) customActionsMap[id] = { id, libelle: a.textContent.trim(), perm };
     });
-    // Also parse from permissions if custom action format differs
-    // Build active actions list (all that appear in a colonne)
-    const activeActions = []; // { id, libelle, perm, phaseLibelle, phaseColor, isCustom }
+
+    const activeActions = [];
     ['non', 'aar', 'asr', 'obl'].forEach(permId => {
       (colonnes[permId] || []).forEach(actionId => {
         if (ALL_ACTIONS_MAP[actionId]) {
@@ -62,7 +59,6 @@ function parseDirectivesXML(xmlText) {
       });
     });
 
-    // exigences
     const exigencesNode = root.querySelector('exigences');
     const exigencesMode = exigencesNode?.getAttribute('mode') || 'aucune';
     const exigences = [];
@@ -110,7 +106,7 @@ export default function DeclarationGuidee() {
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
   const [exigencesResponses, setExigencesResponses] = useState({});
   const [exigencesErrors, setExigencesErrors] = useState({});
-  const [autreActionModal, setAutreActionModal] = useState(null); // { entryIdx, editId? }
+  const [autreActionModal, setAutreActionModal] = useState(null);
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
   const [copyOk, setCopyOk] = useState(false);
@@ -180,7 +176,6 @@ export default function DeclarationGuidee() {
   const effectiveSession = data?.identification?.session && !sessionEditMode ? data.identification.session : sessionOverride.trim();
   const identOk = !!(effectiveSession && studentNom.trim());
 
-  // Build merged active actions including per-entry custom actions for lookups
   function getAllActionsForEntry(entry) {
     return [...(data?.activeActions || []), ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr', isCustom: true }))];
   }
@@ -189,17 +184,6 @@ export default function DeclarationGuidee() {
   const obligActions = data?.activeActions?.filter(a => a.perm === 'obl') ?? [];
   const obligNonCouvertes = obligActions.filter(a => !allSelectedActionIds.includes(a.id));
   const nonAutoriseeSelectionnees = (data?.activeActions ?? []).filter(a => a.perm === 'non' && allSelectedActionIds.includes(a.id));
-
-  // Also check custom actions per-entry for apercu label lookup
-  function findActionLabel(ap, id) {
-    const found = ap.activeActions?.find(x => x.id === id);
-    if (found) return found;
-    for (const entry of (ap.outilEntries || [])) {
-      const c = (entry.customActions || []).find(a => a.id === id);
-      if (c) return c;
-    }
-    return null;
-  }
 
   function handleSoumettre() {
     let hasErrors = false;
@@ -217,7 +201,6 @@ export default function DeclarationGuidee() {
       const newNonAutoriseeErrors = {};
       nonAutoriseeSelectionnees.forEach(a => { if (!nonAutoriseeJustifs[a.id]?.trim()) { newNonAutoriseeErrors[a.id] = true; hasErrors = true; } });
       setNonAutoriseeJustifErrors(newNonAutoriseeErrors);
-      // Validate exigences
       if (data.exigencesMode === 'inclure' && data.exigences?.length > 0) {
         const newExigErrors = {};
         data.exigences.forEach(exig => {
@@ -243,7 +226,7 @@ export default function DeclarationGuidee() {
     const userTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const offsetFallbacks = { '-300': 'HNE', '-360': 'HNC', '-420': 'HNR', '-480': 'HNP', '0': 'UTC', '60': 'HEC' };
     const tzCode = tzCodes[userTz] || offsetFallbacks[String(-now.getTimezoneOffset())] || 'UTC';
-    const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) + ' à ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h') + ' ' + tzCode;
+    const timestamp = now.toLocaleDateString('fr-CA', { day: 'numeric', month: 'long', year: 'numeric' }) + ' a\u0300 ' + now.toLocaleTimeString('fr-CA', { hour: '2-digit', minute: '2-digit' }).replace(':', 'h') + ' ' + tzCode;
 
     setApercu({
       identification: { ...data.identification, session: effectiveSession },
@@ -265,48 +248,48 @@ export default function DeclarationGuidee() {
 
   function buildApercuHTML(ap) {
     const cours = ap.identification.cours || '[cours]';
-    const evaluation = ap.identification.evaluation || '[évaluation]';
+    const evaluation = ap.identification.evaluation || '[evaluation]';
     const session = ap.identification.session || '[session]';
     const enseignants = ap.identification.enseignants || '[personne enseignante]';
     let intro;
     if (ap.isEquipe) {
       const noms = ap.equipiers.filter(n => n.trim()).join(', ');
-      const eq = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
+      const eq = ap.nomEquipe ? ` (equipe ${ap.nomEquipe})` : '';
       const gr = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
-      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.`;
+      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette declaration dans le cadre de l'evaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigne par <strong>${enseignants}</strong>.`;
     } else {
       const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
-      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigné par <strong>${enseignants}</strong>.`;
+      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette declaration dans le cadre de l'evaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigne par <strong>${enseignants}</strong>.`;
     }
     let declHtml;
     if (ap.aucunSIA) {
-      declHtml = `<p style="font-style:italic;color:#555;">Aucun système d'intelligence artificielle n'a été utilisé pour cette évaluation.</p>`;
+      declHtml = `<p style="font-style:italic;color:#555;">Aucun systeme d'intelligence artificielle n'a ete utilise pour cette evaluation.</p>`;
       if (ap.aucunSIAJustif) declHtml += `<p><strong>Justification (action(s) obligatoire(s)) :</strong><br>${ap.aucunSIAJustif}</p>`;
       if (ap.aucunSIACommentaire) declHtml += `<p><strong>Commentaires :</strong><br>${ap.aucunSIACommentaire}</p>`;
     } else {
-      declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;"><thead><tr><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions déclarées</th></tr></thead><tbody>`;
+      declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;"><thead><tr><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions declarees</th></tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
         const allActionsForEntry = [...(ap.activeActions || []), ...(entry.customActions || []).map(a => ({ ...a, perm: 'asr' }))];
         const customIds = new Set((entry.customActions || []).map(a => a.id));
-        const actions = entry.actionIds.map(id => { const a = allActionsForEntry.find(x => x.id === id); if (!a) return id; return customIds.has(id) ? `${a.libelle} <em style="color:#666">(Action personnalisée)</em>` : `${a.libelle}${PERM_STYLES[a.perm] ? ` <em>(${PERM_STYLES[a.perm].label})</em>` : ''}`; });
+        const actions = entry.actionIds.map(id => { const a = allActionsForEntry.find(x => x.id === id); if (!a) return id; return customIds.has(id) ? `${a.libelle} <em style="color:#666">(Action personnalisee)</em>` : `${a.libelle}${PERM_STYLES[a.perm] ? ` <em>(${PERM_STYLES[a.perm].label})</em>` : ''}`; });
         declHtml += `<tr><td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${getOutilLabel(entry)}</strong></td><td style="border:1px solid #ccc;padding:6px;vertical-align:top">${actions.join('<br>')}</td></tr>`;
       });
       declHtml += `</tbody></table>`;
-      if (ap.obligNonCouvJustif) declHtml += `<p><strong>Justification — action(s) obligatoire(s) non couvertes :</strong><br>${ap.obligNonCouvJustif}</p>`;
+      if (ap.obligNonCouvJustif) declHtml += `<p><strong>Justification - action(s) obligatoire(s) non couvertes :</strong><br>${ap.obligNonCouvJustif}</p>`;
       Object.entries(ap.nonAutoriseeJustifs || {}).forEach(([id, justif]) => {
         if (!justif?.trim()) return;
         const a = ap.activeActions?.find(x => x.id === id);
-        declHtml += `<p><strong>Justification — action non autorisée « ${a?.libelle || id} » :</strong><br>${justif}</p>`;
+        declHtml += `<p><strong>Justification - action non autorisee : ${a?.libelle || id} :</strong><br>${justif}</p>`;
       });
       if (ap.exigencesMode === 'inclure' && ap.exigences?.length > 0) {
-        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
-        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Exigences de déclaration</h3>`;
+        const typeLabels = { iagraphie: 'References et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Exigences de declaration</h3>`;
         ap.exigences.forEach(exig => {
           const resp = ap.exigencesResponses?.[exig.id] || {};
           const label = typeLabels[exig.type] || exig.type;
           declHtml += `<p style="margin:6pt 0 2pt 0;"><strong>${label} :</strong>${exig.description ? ` <span style="font-weight:normal;">${exig.description}</span>` : ''}</p>`;
           if (resp.ailleurs) {
-            declHtml += `<p style="margin:0 0 6pt 0;"><em>Déjà répondu dans le travail soumis ou dans cette déclaration.</em></p>`;
+            declHtml += `<p style="margin:0 0 6pt 0;"><em>Deja repondu dans le travail soumis ou dans cette declaration.</em></p>`;
           } else if (resp.value?.trim()) {
             declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;">${resp.value}</p>`;
           }
@@ -314,22 +297,22 @@ export default function DeclarationGuidee() {
       }
       if (ap.commentaireGlobal?.trim()) declHtml += `<p><strong>Commentaires :</strong><br>${ap.commentaireGlobal}</p>`;
     }
-    return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>
+    return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Declaration d'utilisation de systemes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin-bottom:12pt;">Conformément aux exigences de la personne enseignante, les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche d'utilisation des systèmes d'intelligence artificielle.</p>
-<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Mon'} déclaration d'utilisation</h2>
+<p style="font-family:Arial,sans-serif;font-size:11pt;margin-bottom:12pt;">Conformement aux exigences de la personne enseignante, les renseignements suivants presentent ${ap.isEquipe ? 'notre' : 'ma'} demarche d'utilisation des systemes d'intelligence artificielle.</p>
+<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Mon'} declaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
-<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette déclaration confirme que :</h2>
+<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette declaration confirme que :</h2>
 <ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
-<li style="margin-bottom:4pt">Les informations fournies sont complètes et fidèles à votre utilisation réelle.</li>
-<li style="margin-bottom:4pt">Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
-<li style="margin-bottom:4pt">Vous avez fait un usage responsable des SIA et avez respecté le droit d'auteur lors des requêtes et référencement.</li>
-<li style="margin-bottom:4pt">Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.</li>
-<li style="margin-bottom:4pt">Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
-<li style="margin-bottom:4pt">Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.</li>
-<li>Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf">Règlement disciplinaire</a> de l'Université Laval.</li>
+<li style="margin-bottom:4pt">Les informations fournies sont completes et fideles a votre utilisation reelle.</li>
+<li style="margin-bottom:4pt">Votre utilisation des SIA est conforme aux regles etablies par la personne enseignante pour ce travail.</li>
+<li style="margin-bottom:4pt">Vous avez fait un usage responsable des SIA et avez respecte le droit d'auteur lors des requetes et referencement.</li>
+<li style="margin-bottom:4pt">Vous avez exerce votre jugement critique et valide l'exactitude des contenus generes par les SIA.</li>
+<li style="margin-bottom:4pt">Le travail soumis reflete votre propre pensee, meme lorsqu'un SIA a ete utilise comme outil de soutien.</li>
+<li style="margin-bottom:4pt">Vous comprenez qu'une fausse declaration est une atteinte grave a l'ethique et risque de compromettre la credibilite du travail realise.</li>
+<li>Vous comprenez qu'un usage non autorise, des donnees fausses ou inventees ou copier-coller des reponses generees par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf">Reglement disciplinaire</a> de l'Universite Laval.</li>
 </ul>
-<p style="font-family:Arial,sans-serif;font-size:9pt;color:#666;font-style:italic;margin-top:16pt;">Générée le ${ap.timestamp}</p>`;
+<p style="font-family:Arial,sans-serif;font-size:9pt;color:#666;font-style:italic;margin-top:16pt;">Generee le ${ap.timestamp}</p>`;
   }
 
   function copyToClipboard(ap) {
@@ -346,14 +329,13 @@ export default function DeclarationGuidee() {
 
   function downloadWord(ap) {
     const content = buildApercuHTML(ap);
-    const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset="utf-8"><title>Déclaration SIA</title></head><body>${content}</body></html>`;
+    const fullHtml = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'><head><meta charset="utf-8"><title>Declaration SIA</title></head><body>${content}</body></html>`;
     const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a'); a.href = url; a.download = 'declaration-guidee-sia.doc'; a.click();
     URL.revokeObjectURL(url);
   }
 
-  // Group active actions by phase for display
   function groupByPhase(actions) {
     const groups = {};
     actions.forEach(a => {
@@ -375,11 +357,19 @@ export default function DeclarationGuidee() {
         `}</style>
 
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
-          Déclaration d'utilisation des SIA lors d'une évalaution
+          Declaration d'utilisation des SIA lors d'une evaluation
         </h1>
-        <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
-          Formulaire à l'intention des personnes étudiantes.
-        </p>
+
+        <div style={{ marginBottom: 20 }}>
+          <div className="mb-2">Cet outil permet de produire une declaration d'utilisation des SIA pour une evaluation basee sur les directives determinees par la personne enseignante.</div>
+          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">Comment ca fonctionne?</h2>
+          <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
+            <li>Importe le fichier de directives d'utilisation des SIA pour l'evaluation fourni par la personne enseignante.</li>
+            <li>Remplis les sections du formulaire selon l'utilisation que tu as fait des SIA.</li>
+            <li>Genere la declaration et apporte des precisions au besoin.</li>
+            <li>Telecharge et transmets cette declaration a l'endroit indique par la personne enseignante.</li>
+          </ol>
+        </div>
 
         {/* Upload zone */}
         {!data?.ok && (
@@ -391,22 +381,22 @@ export default function DeclarationGuidee() {
                   Importez le fichier de sauvegarde des directives fourni par la personne enseignante.
                 </p>
                 <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
-                  📂 Importer le fichier de sauvegarde
+                  Importer le fichier de sauvegarde
                 </button>
                 <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleFile} />
                 {data?.error && (
                   <div style={{ marginTop: 20, textAlign: 'left', color: '#E41E25', fontWeight: 'bold' }}>
-                    ⚠ Ce fichier n'est pas reconnu comme un fichier de directives valide.
+                    Ce fichier n'est pas reconnu comme un fichier de directives valide.
                   </div>
                 )}
               </div>
               {/* Colonne B : libre-service */}
               <div style={{ textAlign: 'center', borderLeft: '1px solid #e0e0e0', paddingLeft: 24 }}>
                 <p style={{ marginBottom: 16, fontSize: '1em', color: '#555' }}>
-                  La personne enseignante ne vous a pas partagé de fichier de sauvegarde avec des instructions précises ?
+                  La personne enseignante ne vous a pas partage de fichier de sauvegarde avec des instructions precises ?
                 </p>
                 <a href="/Declaration-libre-service" style={{ display: 'inline-block', padding: '10px 20px', background: '#f0f0f0', color: '#231F20', border: '1px solid #ccc', borderRadius: 5, fontWeight: 'bold', fontSize: '0.95em', textDecoration: 'none' }}>
-                  Accéder au formulaire de déclaration libre-service
+                  Acceder au formulaire de declaration libre-service
                 </a>
               </div>
             </div>
@@ -432,15 +422,15 @@ export default function DeclarationGuidee() {
                           style={{ padding: '3px 6px', fontFamily: 'inherit', fontSize: '0.95em', border: sessionError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, width: 160 }} />
                         {data.identification.session && <button type="button" onClick={() => { setSessionEditMode(false); setSessionOverride(''); }}
                           style={{ background: 'none', border: 'none', color: '#888', cursor: 'pointer', fontSize: '0.82em', textDecoration: 'underline', padding: 0 }}>Annuler</button>}
-                        {sessionError && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>⚠ Requis</span>}
+                        {sessionError && <span style={{ color: '#E41E25', fontSize: '0.82em' }}>Requis</span>}
                       </span>
                   }
                 </div>
-                {data.identification.evaluation && <div><strong>Évaluation :</strong> {data.identification.evaluation}</div>}
+                {data.identification.evaluation && <div><strong>Evaluation :</strong> {data.identification.evaluation}</div>}
                 {data.identification.enseignants && <div><strong>Personne(s) enseignante(s) :</strong> {data.identification.enseignants}</div>}
               </div>
 
-              {/* Équipe toggle */}
+              {/* Equipe toggle */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px 24px', marginBottom: 14, alignItems: 'center' }}>
                 <div>
                   <button type="button" onClick={() => setIsEquipe(v => !v)}
@@ -448,12 +438,12 @@ export default function DeclarationGuidee() {
                     <span style={{ width: 32, height: 18, borderRadius: 999, background: isEquipe ? 'rgba(255,255,255,0.4)' : '#bbb', display: 'inline-block', position: 'relative' }}>
                       <span style={{ position: 'absolute', top: 2, left: isEquipe ? 14 : 2, width: 14, height: 14, borderRadius: '50%', background: 'white', transition: 'left 0.2s' }} />
                     </span>
-                    Ceci est un travail en équipe
+                    Ceci est un travail en equipe
                   </button>
                 </div>
                 {isEquipe && <div>
-                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom ou numéro d'équipe</label>
-                  <input type="text" value={nomEquipe} onChange={e => setNomEquipe(e.target.value)} placeholder="ex. Équipe A"
+                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Nom ou numero d'equipe</label>
+                  <input type="text" value={nomEquipe} onChange={e => setNomEquipe(e.target.value)} placeholder="ex. Equipe A"
                     style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
                 </div>}
               </div>
@@ -462,33 +452,33 @@ export default function DeclarationGuidee() {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   <div>
                     <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>
-                      {isEquipe ? 'Personne équipière 1' : 'Nom complet'} <span style={{ color: '#E41E25' }}>*</span>
+                      {isEquipe ? 'Personne equipiere 1' : 'Nom complet'} <span style={{ color: '#E41E25' }}>*</span>
                     </label>
                     <input type="text" value={studentNom} onChange={e => { setStudentNom(e.target.value); setNomError(false); }} placeholder="ex. Marie Tremblay"
                       style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: nomError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: nomError ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
-                    {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
+                    {nomError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis</span>}
                   </div>
                   {isEquipe && equipiers.map((nom, idx) =>
                     <div key={idx} style={{ display: 'flex', gap: 6, alignItems: 'flex-end' }}>
                       <div style={{ flex: 1 }}>
-                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne équipière {idx + 2} <span style={{ color: '#E41E25' }}>*</span></label>
+                        <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Personne equipiere {idx + 2} <span style={{ color: '#E41E25' }}>*</span></label>
                         <input type="text" value={nom}
                           onChange={e => { setEquipiers(prev => prev.map((v, i) => i === idx ? e.target.value : v)); setEquipiersErrors(prev => prev.map((v, i) => i === idx ? false : v)); }}
                           placeholder="ex. Jean Dupont"
                           style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: equipiersErrors[idx] ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: equipiersErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
-                        {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
+                        {equipiersErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis</span>}
                       </div>
                       {equipiers.length > 1 && <button type="button" onClick={() => { setEquipiers(prev => prev.filter((_, i) => i !== idx)); setEquipiersErrors(prev => prev.filter((_, i) => i !== idx)); }}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em', marginBottom: equipiersErrors[idx] ? 22 : 2 }}>✕</button>}
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '1.1em', marginBottom: equipiersErrors[idx] ? 22 : 2 }}>X</button>}
                     </div>
                   )}
                   {isEquipe && <button type="button" onClick={() => setEquipiers(prev => [...prev, ''])}
                     style={{ background: 'none', border: '1px dashed #1895FD', color: '#1895FD', borderRadius: 5, padding: '5px 14px', cursor: 'pointer', fontSize: '0.88em', fontFamily: 'inherit', alignSelf: 'flex-start' }}>
-                    + Ajouter une personne équipière
+                    + Ajouter une personne equipiere
                   </button>}
                 </div>
                 <div>
-                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Numéro de groupe ou de section</label>
+                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Numero de groupe ou de section</label>
                   <input type="text" value={studentGroupe} onChange={e => setStudentGroupe(e.target.value)} placeholder="ex. 65100"
                     style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box' }} />
                 </div>
@@ -502,17 +492,17 @@ export default function DeclarationGuidee() {
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button type="button" onClick={() => setDirectivesVisible(v => !v)}
                     style={{ background: 'none', border: '1px solid #1895FD', color: '#1895FD', borderRadius: 5, padding: '4px 14px', cursor: 'pointer', fontSize: '0.85em', fontFamily: 'inherit' }}>
-                    {directivesVisible ? '▲ Masquer' : '▼ Révéler les directives'}
+                    {directivesVisible ? 'Masquer' : 'Reveler les directives'}
                   </button>
                   <button className="btn-primary" style={{ background: '#6c757d', margin: 0, fontSize: '0.85em', padding: '4px 12px' }} onClick={() => { setData(null); setApercu(null); setSubmitStatus(null); }}>
-                    🔄 Changer de fichier
+                    Changer de fichier
                   </button>
                 </div>
               </div>
               {directivesVisible && (
                 <div>
                   {data.mode === 'aucune'
-                    ? <p style={{ color: '#555', fontStyle: 'italic', fontSize: '0.9em', margin: '8px 0 0' }}>Aucune restriction — les SIA sont autorisés sans restriction pour toutes les actions.</p>
+                    ? <p style={{ color: '#555', fontStyle: 'italic', fontSize: '0.9em', margin: '8px 0 0' }}>Aucune restriction - les SIA sont autorises sans restrictions pour toutes les actions.</p>
                     : (
                       <>
                         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88em', marginBottom: data.precisions ? 10 : 0 }}>
@@ -540,7 +530,7 @@ export default function DeclarationGuidee() {
                         </table>
                         {data.precisions && (
                           <div style={{ background: '#f0f8ff', border: '1px solid #1895FD', borderRadius: 6, padding: '10px 14px', fontSize: '0.88em', color: '#333' }}>
-                            <strong>Précisions de la personne enseignante :</strong> {data.precisions}
+                            <strong>Precisions de la personne enseignante :</strong> {data.precisions}
                           </div>
                         )}
                       </>
@@ -555,14 +545,14 @@ export default function DeclarationGuidee() {
               {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
               <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
                 <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>
-                  {isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation
+                  {isEquipe ? 'Notre' : 'Ma'} declaration d'utilisation
                 </h2>
 
                 {/* Toggle SIA */}
                 <div style={{ display: 'flex', gap: 0, marginBottom: 20, background: '#f0f0f0', borderRadius: 999, padding: 3, width: 'fit-content' }}>
                   {[
-                    { val: true, label: "Je n'ai utilisé aucun SIA pour cette évaluation." },
-                    { val: false, label: "J'ai utilisé le(s) SIA suivant(s)." },
+                    { val: true, label: "Je n'ai utilise aucun SIA pour cette evaluation." },
+                    { val: false, label: "J'ai utilise le(s) SIA suivant(s)." },
                   ].map(opt => (
                     <button key={String(opt.val)} type="button" onClick={() => setAucunSIA(opt.val)}
                       style={{ padding: '7px 18px', borderRadius: 999, border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.9em', fontWeight: aucunSIA === opt.val ? 'bold' : 'normal', background: aucunSIA === opt.val ? (opt.val ? '#231F20' : '#1895FD') : 'transparent', color: aucunSIA === opt.val ? 'white' : '#555', transition: 'background 0.2s' }}>
@@ -576,18 +566,18 @@ export default function DeclarationGuidee() {
                     {obligActions.length > 0 && (
                       <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
                         <p style={{ fontWeight: 'bold', color: '#856404', margin: '0 0 8px', fontSize: '0.92em' }}>
-                          ⚠ L'utilisation d'un SIA est obligatoire pour au moins une action.
+                          L'utilisation d'un SIA est obligatoire pour au moins une action.
                         </p>
                         <ul style={{ margin: '0 0 10px 18px', fontSize: '0.9em' }}>
                           {obligActions.map((a, i) => <li key={i}><strong>{a.libelle}</strong></li>)}
                         </ul>
                         <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#856404' }}>
-                          Justifiez pourquoi vous n'avez pas utilisé de SIA pour cette action. <span style={{ color: '#E41E25' }}>*</span>
+                          Justifiez pourquoi vous n'avez pas utilise de SIA pour cette action. <span style={{ color: '#E41E25' }}>*</span>
                         </label>
                         <textarea value={aucunSIAJustif} onChange={e => { setAucunSIAJustif(e.target.value); setAucunSIAJustifError(false); }} rows={3}
-                          placeholder="Expliquez les raisons pour lesquelles vous n'avez pas utilisé de SIA…"
+                          placeholder="Expliquez les raisons pour lesquelles vous n'avez pas utilise de SIA..."
                           style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: aucunSIAJustifError ? '2px solid #E41E25' : '1px solid #ffc107', borderRadius: 4, background: aucunSIAJustifError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-                        {aucunSIAJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
+                        {aucunSIAJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis</span>}
                       </div>
                     )}
                     <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px' }}>
@@ -595,14 +585,14 @@ export default function DeclarationGuidee() {
                         Commentaires <span style={{ fontWeight: 'normal', color: '#888' }}>(facultatif)</span>
                       </label>
                       <textarea value={aucunSIACommentaire} onChange={e => setAucunSIACommentaire(e.target.value)} rows={3}
-                        placeholder="Ajoutez tout commentaire pertinent…"
+                        placeholder="Ajoutez tout commentaire pertinent..."
                         style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
                     </div>
                   </div>
                 ) : (
                   <>
                     <p style={{ margin: '0 0 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
-                      Pour chaque SIA utilisé, indiquez l'outil et les actions effectuées.
+                      Pour chaque SIA utilise, indiquez l'outil et les actions effectuees.
                     </p>
 
                     {outilEntries.map((entry, i) => {
@@ -614,7 +604,7 @@ export default function DeclarationGuidee() {
                             {outilEntries.length > 1 && (
                               <button type="button" onClick={() => removeEntry(i)}
                                 style={{ background: 'none', border: '1px solid #E41E25', color: '#E41E25', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontSize: '0.82em', fontFamily: 'inherit' }}>
-                                ✕ Retirer
+                                Retirer
                               </button>
                             )}
                           </div>
@@ -623,20 +613,20 @@ export default function DeclarationGuidee() {
                             {/* Outil selector */}
                             <div>
                               <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5 }}>
-                                Outil utilisé <span style={{ color: '#E41E25' }}>*</span>
+                                Outil utilise <span style={{ color: '#E41E25' }}>*</span>
                               </label>
                               <select value={entry.outil} onChange={e => updateEntry(i, 'outil', e.target.value)}
                                 style={{ padding: '6px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outil ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: entryErrors[i]?.outil ? '#fff4f4' : 'white', minWidth: 220 }}>
                                 <option value="">-- Choisir --</option>
                                 {SIA_LIST.map(s => <option key={s} value={s}>{s}</option>)}
                               </select>
-                              {entryErrors[i]?.outil && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Sélection requise</span>}
+                              {entryErrors[i]?.outil && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>Selection requise</span>}
                               {entry.outil === 'Autre' && (
                                 <div style={{ marginTop: 8 }}>
                                   <input type="text" value={entry.outilLibre} onChange={e => updateEntry(i, 'outilLibre', e.target.value)}
-                                    placeholder="Précisez le nom…"
+                                    placeholder="Precisez le nom..."
                                     style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', fontSize: '0.93em', border: entryErrors[i]?.outilLibre ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, boxSizing: 'border-box' }} />
-                                  {entryErrors[i]?.outilLibre && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
+                                  {entryErrors[i]?.outilLibre && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis</span>}
                                 </div>
                               )}
                             </div>
@@ -644,13 +634,13 @@ export default function DeclarationGuidee() {
                             {/* Actions checkboxes */}
                             <div>
                               <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 8 }}>
-                                Actions réalisées <span style={{ color: '#E41E25' }}>*</span>
-                                <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — cochez toutes celles qui s'appliquent</span>
+                                Actions realisees <span style={{ color: '#E41E25' }}>*</span>
+                                <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> - cochez toutes celles qui s'appliquent</span>
                               </label>
-                              {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Sélectionnez au moins une action</span>}
+                              {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>Selectionnez au moins une action</span>}
                               {!(entry.outil) && (
                                 <div style={{ padding: '12px 14px', background: '#f8f9fa', border: '1px dashed #bbb', borderRadius: 6, color: '#888', fontSize: '0.87em', fontStyle: 'italic' }}>
-                                  Sélectionnez d'abord un outil ci-contre pour accéder aux actions possibles.
+                                  Selectionnez d'abord un outil ci-contre pour acceder aux actions possibles.
                                 </div>
                               )}
                               {entry.outil && (
@@ -670,11 +660,11 @@ export default function DeclarationGuidee() {
                                             <span style={{ flex: 1 }}>{action.libelle}</span>
                                             {isCustom ? (
                                               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                                                <span style={{ background: '#f0f0f0', color: '#666', border: '1px solid #ccc', borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap' }}>Action personnalisée</span>
+                                                <span style={{ background: '#f0f0f0', color: '#666', border: '1px solid #ccc', borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap' }}>Action personnalisee</span>
                                                 <button type="button" onClick={e => { e.preventDefault(); setAutreActionModal({ entryIdx: i, editId: action.id }); }}
-                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">✏️</button>
+                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">edit</button>
                                                 <button type="button" onClick={e => { e.preventDefault(); removeCustomAction(i, action.id); }}
-                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">×</button>
+                                                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">x</button>
                                               </span>
                                             ) : (
                                               <span style={{ background: ps.bg, color: ps.color, border: `1px solid ${ps.border}`, borderRadius: 3, padding: '1px 6px', fontSize: '0.8em', whiteSpace: 'nowrap', flexShrink: 0 }}>{ps.label}</span>
@@ -688,42 +678,42 @@ export default function DeclarationGuidee() {
                                 <div style={{ borderTop: '1px solid #eee', padding: '8px 10px', background: '#fafafa' }}>
                                   <button type="button" onClick={() => setAutreActionModal({ entryIdx: i })}
                                     style={{ background: 'none', border: '1px dashed #1895FD', color: '#1895FD', borderRadius: 5, padding: '4px 12px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em', width: '100%', textAlign: 'left' }}>
-                                    + Ajouter une action non listée
+                                    + Ajouter une action non listee
                                   </button>
                                 </div>
                               </div>
                               )}
-                              </div>
-                              </div>
-                              </div>
-                              );
-                              })}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
 
-                              <button type="button" onClick={addEntry}
-                     style={{ background: '#1895FD', color: 'white', border: 'none', borderRadius: 5, padding: '10px 24px', cursor: 'pointer', fontSize: '0.95em', fontFamily: 'inherit', fontWeight: 'bold', display: 'block', width: '100%', marginBottom: 20 }}>
-                     + Ajouter un autre outil
+                    <button type="button" onClick={addEntry}
+                      style={{ background: '#1895FD', color: 'white', border: 'none', borderRadius: 5, padding: '10px 24px', cursor: 'pointer', fontSize: '0.95em', fontFamily: 'inherit', fontWeight: 'bold', display: 'block', width: '100%', marginBottom: 20 }}>
+                      + Ajouter un autre outil
                     </button>
 
                     {/* Exigences dynamiques */}
                     {(obligNonCouvertes.length > 0 || nonAutoriseeSelectionnees.length > 0) && (
                       <div style={{ marginBottom: 20 }}>
-                        <h3 style={{ fontWeight: 'bold', fontSize: '0.98em', marginBottom: 12 }}>Éléments à préciser avant de soumettre</h3>
+                        <h3 style={{ fontWeight: 'bold', fontSize: '0.98em', marginBottom: 12 }}>Elements a preciser avant de soumettre</h3>
 
                         {obligNonCouvertes.length > 0 && (
                           <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
                             <p style={{ fontWeight: 'bold', color: '#856404', margin: '0 0 8px', fontSize: '0.92em' }}>
-                              ⚠ Action(s) obligatoire(s) non déclarée(s)
+                              Action(s) obligatoire(s) non declaree(s)
                             </p>
                             <ul style={{ margin: '0 0 10px 18px', fontSize: '0.9em' }}>
                               {obligNonCouvertes.map((a, idx) => <li key={idx}><strong>{a.libelle}</strong></li>)}
                             </ul>
                             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#856404' }}>
-                              Justifiez pourquoi ces actions obligatoires ne figurent pas dans votre déclaration. <span style={{ color: '#E41E25' }}>*</span>
+                              Justifiez pourquoi ces actions obligatoires ne figurent pas dans votre declaration. <span style={{ color: '#E41E25' }}>*</span>
                             </label>
                             <textarea value={obligNonCouvJustif} onChange={e => { setObligNonCouvJustif(e.target.value); setObligNonCouvJustifError(false); }} rows={3}
-                              placeholder="Expliquez pourquoi vous n'avez pas utilisé de SIA pour ces actions malgré l'obligation…"
+                              placeholder="Expliquez pourquoi vous n'avez pas utilise de SIA pour ces actions malgre l'obligation..."
                               style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: obligNonCouvJustifError ? '2px solid #E41E25' : '1px solid #ffc107', borderRadius: 4, background: obligNonCouvJustifError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-                            {obligNonCouvJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                            {obligNonCouvJustifError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>Ce champ est requis</span>}
                           </div>
                         )}
 
@@ -732,27 +722,27 @@ export default function DeclarationGuidee() {
                           return (
                             <div key={action.id} style={{ background: '#fde8e8', border: '1px solid #E41E25', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
                               <p style={{ fontWeight: 'bold', color: '#7b1d1d', margin: '0 0 6px', fontSize: '0.92em' }}>
-                                🚫 Action non autorisée déclarée : <em>{action.libelle}</em>
+                                Action non autorisee declaree : <em>{action.libelle}</em>
                               </p>
                               <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#7b1d1d' }}>
-                                Justifiez l'utilisation d'un SIA pour cette action non autorisée. <span style={{ color: '#E41E25' }}>*</span>
+                                Justifiez l'utilisation d'un SIA pour cette action non autorisee. <span style={{ color: '#E41E25' }}>*</span>
                               </label>
                               <textarea value={nonAutoriseeJustifs[action.id] || ''} onChange={e => { setNonAutoriseeJustifs(prev => ({ ...prev, [action.id]: e.target.value })); setNonAutoriseeJustifErrors(prev => ({ ...prev, [action.id]: false })); }} rows={3}
-                                placeholder="Expliquez les circonstances ou raisons de cette utilisation…"
+                                placeholder="Expliquez les circonstances ou raisons de cette utilisation..."
                                 style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #E41E25', borderRadius: 4, background: hasError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-                              {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>⚠ Ce champ est requis</span>}
+                              {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 3 }}>Ce champ est requis</span>}
                             </div>
                           );
                         })}
                       </div>
                     )}
 
-                    {/* Exigences de déclaration */}
+                    {/* Exigences de declaration */}
                     {data.exigencesMode === 'inclure' && data.exigences?.length > 0 && (() => {
-                      const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+                      const typeLabels = { iagraphie: 'References et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
                       return (
                         <div style={{ background: '#f0f8ff', border: '1px solid #1895FD', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
-                          <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 12px', fontSize: '0.95em' }}>📋 Exigences de déclaration</p>
+                          <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 12px', fontSize: '0.95em' }}>Exigences de declaration</p>
                           {data.exigences.map(exig => {
                             const resp = exigencesResponses[exig.id] || {};
                             const setResp = (field, val) => {
@@ -770,13 +760,13 @@ export default function DeclarationGuidee() {
                                   <div style={{ fontSize: '0.85em', color: '#555', marginBottom: 6, padding: '6px 10px', background: '#e8f4fd', borderRadius: 4 }} dangerouslySetInnerHTML={{ __html: exig.description }} />
                                 )}
                                 <textarea value={resp.value || ''} onChange={e => setResp('value', e.target.value)} rows={2} disabled={resp.ailleurs}
-                                  placeholder={`Répondez à l'exigence « ${label} »…`}
+                                  placeholder={`Repondez a l'exigence : ${label}...`}
                                   style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.ailleurs ? '#eee' : (hasError ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
                                   <input type="checkbox" checked={!!resp.ailleurs} onChange={e => setResp('ailleurs', e.target.checked)} />
-                                  Cette exigence a déjà été traitée ailleurs dans le travail soumis ou dans cette déclaration.
+                                  Cette exigence a deja ete traitee ailleurs dans le travail soumis ou dans cette declaration.
                                 </label>
-                                {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis ou cochez la case</span>}
+                                {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis ou cochez la case</span>}
                               </div>
                             );
                           })}
@@ -790,7 +780,7 @@ export default function DeclarationGuidee() {
                         Commentaires <span style={{ fontWeight: 'normal', color: '#888' }}>(facultatif)</span>
                       </label>
                       <textarea value={commentaireGlobal} onChange={e => setCommentaireGlobal(e.target.value)} rows={3}
-                        placeholder="Ajoutez tout commentaire pertinent concernant votre utilisation des SIA…"
+                        placeholder="Ajoutez tout commentaire pertinent concernant votre utilisation des SIA..."
                         style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
                     </div>
                   </>
@@ -798,35 +788,35 @@ export default function DeclarationGuidee() {
 
                 {/* Submit */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                 <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
-                   Générer la déclaration
-                 </button>
-                 {submitStatus && (submitStatus.ok
-                   ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>✔️ Déclaration générée avec succès.</span>
-                   : <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis.</span>
-                 )}
+                  <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
+                    Generer la declaration
+                  </button>
+                  {submitStatus && (submitStatus.ok
+                    ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>Declaration generee avec succes.</span>
+                    : <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>Certains champs obligatoires ne sont pas remplis.</span>
+                  )}
                 </div>
-                </div>
-                </div>
+              </div>
+            </div>
 
-                {/* Autre action modal */}
-                <AutreActionModal
-                isOpen={!!autreActionModal}
-                onClose={() => setAutreActionModal(null)}
-                initialValues={autreActionModal?.editId
-                  ? outilEntries[autreActionModal.entryIdx]?.customActions?.find(a => a.id === autreActionModal.editId)
-                  : null}
-                onSave={action => {
-                  if (!autreActionModal) return;
-                  if (autreActionModal.editId) {
-                    editCustomAction(autreActionModal.entryIdx, autreActionModal.editId, action);
-                  } else {
-                    addCustomAction(autreActionModal.entryIdx, action);
-                  }
-                }}
-                />
+            {/* Autre action modal */}
+            <AutreActionModal
+              isOpen={!!autreActionModal}
+              onClose={() => setAutreActionModal(null)}
+              initialValues={autreActionModal?.editId
+                ? outilEntries[autreActionModal.entryIdx]?.customActions?.find(a => a.id === autreActionModal.editId)
+                : null}
+              onSave={action => {
+                if (!autreActionModal) return;
+                if (autreActionModal.editId) {
+                  editCustomAction(autreActionModal.entryIdx, autreActionModal.editId, action);
+                } else {
+                  addCustomAction(autreActionModal.entryIdx, action);
+                }
+              }}
+            />
 
-                {/* Aperçu */}
+            {/* Apercu */}
             {apercu && (
               <>
                 <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '16px', lineHeight: 1.5 }}>
@@ -834,14 +824,14 @@ export default function DeclarationGuidee() {
                 </div>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30, alignItems: 'center', justifyContent: 'center' }}>
                   <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setApercu(null); setSubmitStatus(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                    ✏️ Continuer à modifier
+                    Continuer a modifier
                   </button>
                   <button type="button" className="btn-primary" onClick={() => copyToClipboard(apercu)}>
-                    📋 Copier pour Word
+                    Copier pour Word
                   </button>
-                  {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copié !</span>}
+                  {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copie !</span>}
                   <button type="button" className="btn-primary" onClick={() => downloadWord(apercu)}>
-                    📄 Télécharger en Word (.doc)
+                    Telecharger en Word (.doc)
                   </button>
                 </div>
               </>
