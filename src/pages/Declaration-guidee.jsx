@@ -378,8 +378,13 @@ export default function DeclarationGuidee() {
           Déclaration d'utilisation des SIA lors d'une évaluation
         </h1>
         <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
-          Outil destiné aux personnes étudiantes
-        </p>
+          Cet outil permet de produire une déclaration d’utilisation des SIA pour une évaluation basée sur les directives déterminées par la personne enseignante.
+</p><h2>Comment ça marche?</h2>
+<ol><li>Importe le fichier de directives  d'utilisation des SIA pour l’évaluation fourni par la personne enseignante.</li>
+<li>Remplis les sections du formulaire selon l’utilisation que tu as fait des SIA. </li>
+<li>Génère la déclaration et apporte des précisions au besoin. </li>
+<li>Télécharge et transmets cette déclaration à l’endroit indiqué par la personne enseignante </li></ol>
+       
 
         {/* Upload zone */}
         {!data?.ok && (
