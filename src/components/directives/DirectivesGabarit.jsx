@@ -126,12 +126,12 @@ export default function DirectivesGabarit({ identification, permissions, precisi
 
   return (
     <div style={{ padding: '16px 20px', border: '1px solid #b3d9f7', borderRadius: 8, background: '#f7fbff' }}>
-      <h3 style={{ marginTop: 0, marginBottom: 6, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }} className=" hidden">
-        📄 Gabarit Word de déclaration étudiante
-      </h3>
-      <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 10px', lineHeight: 1.5 }} className=" hidden">
-        Gabarit listant chaque action avec le niveau d'autorisation correspondant, à transmettre aux personnes étudiantes.
-      </p>
+      
+
+      
+      
+
+      
       {!isGenerated &&
       <div style={{ padding: '10px 14px', background: '#fff8e1', border: '1px solid #ffc107', borderRadius: 6, fontSize: '0.88em', color: '#856404', marginBottom: 14 }}>
           ⚠ Générez d'abord vos directives pour activer le téléchargement du gabarit.
