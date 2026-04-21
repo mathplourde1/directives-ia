@@ -383,19 +383,33 @@ export default function DeclarationGuidee() {
 
         {/* Upload zone */}
         {!data?.ok && (
-          <div className="section-box" style={{ textAlign: 'center' }}>
-            <p style={{ marginBottom: 16, fontSize: '1em' }}>
-              Importez le fichier de sauvegarde des directives fourni par votre personne enseignante.
-            </p>
-            <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
-              📂 Importer le fichier de directives
-            </button>
-            <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleFile} />
-            {data?.error && (
-              <div style={{ marginTop: 20, textAlign: 'left', color: '#E41E25', fontWeight: 'bold' }}>
-                ⚠ Ce fichier n'est pas reconnu comme un fichier de directives valide.
+          <div className="section-box">
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, alignItems: 'center' }}>
+              {/* Colonne A : import fichier */}
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ marginBottom: 16, fontSize: '1em' }}>
+                  Importez le fichier de sauvegarde des directives fourni par votre personne enseignante.
+                </p>
+                <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
+                  📂 Importer le fichier de directives
+                </button>
+                <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleFile} />
+                {data?.error && (
+                  <div style={{ marginTop: 20, textAlign: 'left', color: '#E41E25', fontWeight: 'bold' }}>
+                    ⚠ Ce fichier n'est pas reconnu comme un fichier de directives valide.
+                  </div>
+                )}
               </div>
-            )}
+              {/* Colonne B : libre-service */}
+              <div style={{ textAlign: 'center', borderLeft: '1px solid #e0e0e0', paddingLeft: 24 }}>
+                <p style={{ marginBottom: 16, fontSize: '1em', color: '#555' }}>
+                  La personne enseignante ne vous a pas partagé de fichier ?
+                </p>
+                <a href="/Declaration-libre-service" style={{ display: 'inline-block', padding: '10px 20px', background: '#f0f0f0', color: '#231F20', border: '1px solid #ccc', borderRadius: 5, fontWeight: 'bold', fontSize: '0.95em', textDecoration: 'none' }}>
+                  Accéder au formulaire de déclaration libre-service
+                </a>
+              </div>
+            </div>
           </div>
         )}
 
