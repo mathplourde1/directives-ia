@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 const INSTRUCTIONS_PAR_ETAPE = '<p><strong>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section <i>Utilisation de l\'intelligence artificielle</i> (la suivante) avant de débuter votre travail !</strong></p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration : <a href="https://directives-ia.base44.app/Declaration" target="_blank">Déclaration d\'utilisation des SIA.</a></li><li>Importez le <strong>fichier de sauvegarde</strong> fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque étape concernée.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>';
 const INSTRUCTIONS_PAR_OUTIL = '<p><strong>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section <i>Utilisation de l\'intelligence artificielle</i> (la suivante) avant de débuter votre travail !</strong></p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration par outil : <a href="https://directives-ia.base44.app/Declaration-outil" target="_blank">Déclaration d\'utilisation des SIA (par outil).</a></li><li>Importez le <strong>fichier de sauvegarde</strong> fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque outil utilisé.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>';
 
-export default function BrioDeclarationInstructions() {
+export default function BrioDeclarationInstructions({ onSave }) {
   const [declarationTitle, setDeclarationTitle] = useState("Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)");
   const [instructorInstructions, setInstructorInstructions] = useState(INSTRUCTIONS_PAR_OUTIL);
   const [declarationFieldDescription, setDeclarationFieldDescription] = useState("Fichier à utiliser dans l'outil de déclaration.");
@@ -66,6 +66,15 @@ export default function BrioDeclarationInstructions() {
           <input type="text" value={declarationTitle} onChange={e => setDeclarationTitle(e.target.value)}
             style={{ width: '100%', padding: '8px 10px', fontFamily: 'inherit', fontSize: '0.9em', border: '1px solid #ccc', borderRadius: 4, boxSizing: 'border-box', backgroundColor: 'white' }} />
         </div>
+
+        {/* Bouton sauvegarde */}
+        {onSave && (
+          <div style={{ marginTop: 14 }}>
+            <button type="button" className="btn-primary" onClick={onSave}>
+              💾 Télécharger le fichier de sauvegarde
+            </button>
+          </div>
+        )}
 
         {/* Description */}
         <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>

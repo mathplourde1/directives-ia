@@ -529,7 +529,7 @@ export default function Directives() {
                 isGenerated={submitted}
                 customActions={sectionState.customActions || {}}
               />
-              <BrioDeclarationInstructions />
+              <BrioDeclarationInstructions onSave={handleSave} />
             </div>
           </div>
           </div>
