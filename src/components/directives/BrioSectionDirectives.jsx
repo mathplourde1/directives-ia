@@ -44,8 +44,8 @@ export default function BrioSectionDirectives({ permissions }) {
         <div style={{ fontFamily: 'Arial, sans-serif', fontSize: '0.95em', lineHeight: 1.7 }}>
           <p className="mb-1">
             Lors du paramétrage des évaluations dans Brio, vous devez <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/ajouter-des-instructions-sur-lutilisation-de-lintelligence-artificielle-ia-dans-une-evaluation/"
-              target="_blank" rel="noreferrer" style={{ color: '#0056b3', textDecoration: 'underline' }}>Ajouter des instructions sur l'utilisation de l'intelligence artificielle (IA) dans une évaluation</a>.<br /><br />
-          Considérant les niveaux d’autorisation attribués aux actions sélectionnées dans cet outil de rédaction, il vous est recommandé d’indiquer, à la section Utilisation de L’intelligence artificielle, le niveau d’autorisation suivant :
+              target="_blank" rel="noreferrer" style={{ color: '#0056b3', textDecoration: 'underline' }}>Ajouter des instructions sur l'utilisation de l'intelligence artificielle (IA) dans une évaluation</a>.<br />
+              Considérant les niveaux d’autorisation attribués aux actions sélectionnées dans cet outil de rédaction, il vous est recommandé d’indiquer, à la section Utilisation de L’intelligence artificielle, le niveau d’autorisation suivant :
           
           </p>
           <p style={{ marginLeft: 20 }}>
@@ -53,7 +53,7 @@ export default function BrioSectionDirectives({ permissions }) {
           </p>
           <p style={{ marginTop: 12 }} className="mb-1">Pourquoi ?</p>
           <p style={{ marginLeft: 20 }}>{niveau.raison}</p>
-          <p style={{ marginTop: 12 }} className="mb-1">La section suivante vous présente les synthèses de vos directives.</p>
+          <p style={{ marginTop: 12 }} className="mb-1">La section suivante vous présente la synthèse de vos directives.</p>
         </div>
       )}
     </div>
