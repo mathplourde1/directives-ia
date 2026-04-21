@@ -379,11 +379,9 @@ export default function DeclarationGuidee() {
         </h1>
         <p style={{ textAlign: 'center', color: '#555', marginBottom: 20, fontSize: '0.93em' }}>
           Cet outil permet de produire une déclaration d’utilisation des SIA pour une évaluation basée sur les directives déterminées par la personne enseignante.
-</p><h2>Comment ça marche?</h2>
-<ol><li>Importe le fichier de directives  d'utilisation des SIA pour l’évaluation fourni par la personne enseignante.</li>
-<li>Remplis les sections du formulaire selon l’utilisation que tu as fait des SIA. </li>
-<li>Génère la déclaration et apporte des précisions au besoin. </li>
-<li>Télécharge et transmets cette déclaration à l’endroit indiqué par la personne enseignante </li></ol>
+<div style="text-align: left;"><h2 class="text-lg font-bold uppercase" style="font-weight: bold; font-size: 1.05em; margin-bottom: 8px; color: rgb(35, 31, 32);">❓ Comment ça fonctionne?</h2><ol class="pb-2" style="list-style-type: decimal; padding-left: 20px; margin-top: 8px;"><li>Remplissez la section d'identification.</li><li>À partir de la zone d'actions suggérées, faites glisser les actions qu'un SIA est ou n'est pas autorisé à faire vers la colonne correspondante. Seules les actions classées parmi les quatre colonnes seront incluses aux directives. Au besoin, ajoutez des actions personnalisées ou des précisions pédagogiques dans les espaces prévus à cet effet.</li><li>Inscrivez, s’il y a lieu, les exigences de référencement et d’IAgraphie ou l'un des autres types d'exigences de déclaration (conserver des traces ou expliquer la logique d'utilisation).</li><li>Cliquez sur <strong>Générer les directives</strong> pour visualiser et réviser la synthèse des directives.</li><li>Partagez ces directives dans Brio ou intégrez-les aux consignes de l'évaluation.</li></ol>Un doute sur la démarche? Un <a href="https://www.enseigner.ulaval.ca/qui-peut-maider" target="_blank" class="text-blue-800 underline">conseiller ou une conseillère en faculté</a> peut vous accompagner.<br>Vos données ne sont pas conservées. Créez un <a href="#sauvegarde-d" class="text-blue-800 underline">fichier de sauvegarde</a> pour reprendre votre travail plus tard.</div>
+
+
        
 
         {/* Upload zone */}
