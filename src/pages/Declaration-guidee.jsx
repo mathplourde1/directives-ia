@@ -391,7 +391,7 @@ export default function DeclarationGuidee() {
                   Importez le fichier de sauvegarde des directives fourni par votre personne enseignante.
                 </p>
                 <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
-                  📂 Importer le fichier de directives
+                  📂 Importer le fichier de sauvegarde
                 </button>
                 <input ref={fileInputRef} type="file" accept=".xml,.txt" style={{ display: 'none' }} onChange={handleFile} />
                 {data?.error && (
