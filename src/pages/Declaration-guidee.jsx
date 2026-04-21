@@ -403,7 +403,7 @@ export default function DeclarationGuidee() {
               {/* Colonne B : libre-service */}
               <div style={{ textAlign: 'center', borderLeft: '1px solid #e0e0e0', paddingLeft: 24 }}>
                 <p style={{ marginBottom: 16, fontSize: '1em', color: '#555' }}>
-                  La personne enseignante ne vous a pas partagé de fichier ?
+                  La personne enseignante ne vous a pas partagé de fichier de sauvegarde avec des instructions précises ?
                 </p>
                 <a href="/Declaration-libre-service" style={{ display: 'inline-block', padding: '10px 20px', background: '#f0f0f0', color: '#231F20', border: '1px solid #ccc', borderRadius: 5, fontWeight: 'bold', fontSize: '0.95em', textDecoration: 'none' }}>
                   Accéder au formulaire de déclaration libre-service
