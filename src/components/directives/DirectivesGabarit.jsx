@@ -129,6 +129,9 @@ export default function DirectivesGabarit({ identification, permissions, precisi
       <h3 style={{ marginTop: 0, marginBottom: 10, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
         📄 Option A : gabarit Word à partager aux personnes étudiantes
       </h3>
+      <p style={{ marginTop: 0, marginBottom: 14, fontSize: '0.93em', color: '#444', lineHeight: 1.6 }}>
+        Téléchargez un gabarit Word pré-rempli avec vos directives, que vous pouvez transmettre aux personnes étudiantes.
+      </p>
       
 
       
