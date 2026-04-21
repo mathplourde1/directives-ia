@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import PHASES, { PERMISSION_LEVELS } from '@/components/directives/directivesData';
 import DirectivesSection from '@/components/directives/DirectivesSection';
 import DirectivesGabarit from '@/components/directives/DirectivesGabarit';
+import BrioDeclarationInstructions from '@/components/directives/BrioDeclarationInstructions';
 import BrioSectionDirectives from '@/components/directives/BrioSectionDirectives';
 import ExigenceEditModal from '@/components/restrictions/ExigenceEditModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -528,6 +529,7 @@ export default function Directives() {
                 isGenerated={submitted}
                 customActions={sectionState.customActions || {}}
               />
+              <BrioDeclarationInstructions />
             </div>
           </div>
           </div>
