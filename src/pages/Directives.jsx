@@ -78,6 +78,9 @@ export default function Directives() {
     if (newIdentErrors.cours || newIdentErrors.evaluation || newIdentErrors.enseignants) { setSubmitStatus({ ok: false }); return; }
     if (sectionState.hasEmptyCustom) { setShowErrors(true); setSubmitStatus({ ok: false, emptyCustom: true }); return; }
     if (sectionState.mode !== 'aucune' && sectionState.hasNoActionInColumns) { setSubmitStatus({ ok: false, noActionInColumns: true }); return; }
+    const hasRestrictions = Object.keys(activePermissions).length > 0;
+    const hasExigences = exigencesMode === 'inclure' && exigences.length > 0;
+    if (!hasRestrictions && !hasExigences) { setSubmitStatus({ ok: false, noContent: true }); return; }
     setShowErrors(false);
     setSubmitted(true);
     setSubmitKey(k => k + 1);
@@ -470,6 +473,8 @@ export default function Directives() {
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Au moins une action personnalisée est vide.</span>
             ) : submitStatus.noActionInColumns ? (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Placez au moins une action dans une colonne de permission.</span>
+            ) : submitStatus.noContent ? (
+              <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Impossible de générer des directives. Incluez au moins une restriction ou une exigence pour continuer.</span>
             ) : (
               <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>⚠ Certains champs obligatoires ne sont pas remplis.</span>
             ))}
