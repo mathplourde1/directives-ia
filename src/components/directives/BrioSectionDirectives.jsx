@@ -7,8 +7,8 @@ const NIVEAUX_BRIO = {
     raison: "Les personnes étudiantes doivent utiliser un SIA dans le cadre de cette évaluation, car au moins une action l'exige."
   },
   asr: {
-    libelle: 'Autorisée sans restriction',
-    raison: "Les personnes étudiantes sont libres d'utiliser un SIA pour cette évaluation, sans restriction ni obligation, puisque toutes les actions l'autorisent sans condition."
+    libelle: 'Autorisée sans restrictions',
+    raison: "Les personnes étudiantes sont libres d'utiliser un SIA pour cette évaluation, sans restrictions ni obligation, puisque toutes les actions l'autorisent sans condition."
   },
   aar: {
     libelle: 'Autorisée avec restrictions',

@@ -6,7 +6,7 @@ import CustomActionModal from '@/components/restrictions/CustomActionModal';
 const COLUMN_STYLES = [
   { id: 'non', libelle: 'Non autorisée', color: '#E41E25', bg: '#fff4f4', border: '#E41E25', headerBg: '#E41E25' },
   { id: 'aar', libelle: 'Autorisée avec restrictions', color: '#b45309', bg: '#fffbeb', border: '#f59e0b', headerBg: '#f59e0b' },
-  { id: 'asr', libelle: 'Autorisée sans restriction', color: '#15803d', bg: '#f0fdf4', border: '#22c55e', headerBg: '#22c55e' },
+  { id: 'asr', libelle: 'Autorisée sans restrictions', color: '#15803d', bg: '#f0fdf4', border: '#22c55e', headerBg: '#22c55e' },
   { id: 'obl', libelle: 'Obligatoire', color: '#1d4ed8', bg: '#eff6ff', border: '#3b82f6', headerBg: '#3b82f6' },
 ];
 
