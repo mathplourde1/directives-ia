@@ -6,9 +6,8 @@ const INSTRUCTIONS_PAR_ETAPE = '<p><strong>⚠️ Consultez les directives conce
 const INSTRUCTIONS_PAR_OUTIL = '<p><strong>⚠️ Consultez les directives concernant l\'utilisation autorisée des SIA dans la section <i>Utilisation de l\'intelligence artificielle</i> (la suivante) avant de débuter votre travail !</strong></p><p>Pour compléter votre déclaration d\'utilisation des SIA, suivez ces étapes :</p><ol><li>Accédez à l\'outil de déclaration par outil : <a href="https://directives-ia.base44.app/Declaration-outil" target="_blank">Déclaration d\'utilisation des SIA (par outil).</a></li><li>Importez le <strong>fichier de sauvegarde</strong> fourni par votre personne enseignante.</li><li>Remplissez les champs de déclaration pour chaque outil utilisé.</li><li>Générez votre déclaration et téléchargez-la en format Word ou PDF.</li><li>Transmettez le fichier généré à votre personne enseignante dans la boite de dépôt dédiée de cette évaluation.</li></ol>';
 
 export default function BrioDeclarationInstructions() {
-  const [declMode, setDeclMode] = useState('etape');
   const [declarationTitle, setDeclarationTitle] = useState("Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)");
-  const [instructorInstructions, setInstructorInstructions] = useState(INSTRUCTIONS_PAR_ETAPE);
+  const [instructorInstructions, setInstructorInstructions] = useState(INSTRUCTIONS_PAR_OUTIL);
   const [declarationFieldDescription, setDeclarationFieldDescription] = useState("Fichier à utiliser dans l'outil de déclaration.");
   const [copyTitleOk, setCopyTitleOk] = useState(false);
   const [copyDescriptionOk, setCopyDescriptionOk] = useState(false);
@@ -37,8 +36,8 @@ export default function BrioDeclarationInstructions() {
     } catch { alert('Erreur lors de la copie. Essayez manuellement.'); }
   }
 
-  const borderColor = declMode === 'outil' ? '#e6c000' : '#b3d9f7';
-  const bgColor = declMode === 'outil' ? '#fffde7' : '#f7fbff';
+  const borderColor = '#b3d9f7';
+  const bgColor = '#f7fbff';
 
   return (
     <div style={{ marginTop: 20, borderTop: '1px solid #e0e0e0', paddingTop: 20 }}>
@@ -51,22 +50,7 @@ export default function BrioDeclarationInstructions() {
           Nous vous encourageons à ajouter un item de type <a href="https://aide.brioeducation.ca/enseignant/evaluations/creer-parametrer-les-evaluations/gerer-la-description-dune-evaluation/" target="_blank" className="text-blue-800 underline">Fichier</a> juste au dessus de la section <i>Utilisation de l'intelligence artificielle</i> dans les instructions de votre évaluation. Téléchargez et partagez le fichier de sauvegarde de la section précédente.
         </p>
 
-        {/* Toggle type déclaration */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
-          <span style={{ fontSize: '0.9em', color: '#555', fontWeight: 'bold' }}>Type de déclaration :</span>
-          <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
-            <button type="button"
-              onClick={() => { setDeclMode('etape'); setInstructorInstructions(INSTRUCTIONS_PAR_ETAPE); }}
-              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'etape' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'etape' ? '#00A4E4' : 'transparent', color: declMode === 'etape' ? 'white' : '#555', transition: 'background 0.15s' }}>
-              Déclaration par étape
-            </button>
-            <button type="button"
-              onClick={() => { setDeclMode('outil'); setInstructorInstructions(INSTRUCTIONS_PAR_OUTIL); }}
-              style={{ padding: '7px 18px', fontSize: '0.9em', fontWeight: declMode === 'outil' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: declMode === 'outil' ? '#e6b800' : 'transparent', color: declMode === 'outil' ? '#231F20' : '#555', transition: 'background 0.15s' }}>
-              Déclaration par SIA
-            </button>
-          </div>
-        </div>
+
 
         {/* Titre */}
         <div style={{ marginTop: 14, padding: '14px 18px', background: '#fff', border: '1px solid #ccc', borderRadius: 6 }}>
