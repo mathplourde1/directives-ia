@@ -487,7 +487,7 @@ export default function Directives() {
             <BrioSectionDirectives permissions={activePermissions} />
           <div id="synthese-container-d">
             <div className="synthese-section">
-              <h2 className="my-2 text-lg font-semibold text-center">Synthèses</h2>
+              <h2 className="my-2 text-lg font-semibold text-center">Synthèse</h2>
               <div style={{ marginBottom: 12 }}>Deux options de mise en forme sont disponibles. Utilisez la fonction <strong>Copier pour coller en ligne (Brio)</strong> ou téléchargez une version Word.</div>
               <Accordion type="single" defaultValue="texte-continu" collapsible className="mt-4">
                 <AccordionItem value="texte-continu">
