@@ -725,7 +725,7 @@ export default function DeclarationGuidee() {
                                 Action non autorisee declaree : <em>{action.libelle}</em>
                               </p>
                               <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#7b1d1d' }}>
-                                Justifiez l'utilisation d'un SIA pour cette action non autorisee. <span style={{ color: '#E41E25' }}>*</span>
+                                Justifiez l'utilisation d'un SIA pour cette action non autorisee. Justifier l’utilisation non autorisée d’un SIA explique son usage mais ne vous décharge pas d'une possible infraction au Règlement disciplinaire de l’Université Laval.<span style={{ color: '#E41E25' }}>*</span>
                               </label>
                               <textarea value={nonAutoriseeJustifs[action.id] || ''} onChange={e => { setNonAutoriseeJustifs(prev => ({ ...prev, [action.id]: e.target.value })); setNonAutoriseeJustifErrors(prev => ({ ...prev, [action.id]: false })); }} rows={3}
                                 placeholder="Expliquez les circonstances ou raisons de cette utilisation..."
