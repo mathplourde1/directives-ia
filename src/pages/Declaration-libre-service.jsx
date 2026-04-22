@@ -216,11 +216,11 @@ export default function DeclarationLibreService() {
     if (ap.isEquipe) {
       const noms = ap.equipiers.filter((n) => n.trim()).join(', ');
       const eq = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
-      const gr = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
-      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette déclaration${ap.evaluation ? ` dans le cadre de l'évaluation <strong>${evalLabel}</strong>` : ''}${ap.cours ? ` du cours <strong>${coursLabel}</strong>` : ''}${ap.session ? `, session <strong>${sessionLabel}</strong>` : ''}${ap.enseignant ? `, enseigné par <strong>${enseignantLabel}</strong>` : ''}.`;
+      const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
+      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette déclaration dans le cadre de l'évaluation <strong>${evalLabel}</strong> du cours <strong>${coursLabel}</strong> de la session <strong>${sessionLabel}</strong>.<br><br>Conformément aux exigences de <strong>${enseignantLabel}</strong>, les renseignements suivants présentent notre démarche.`;
     } else {
       const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
-      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette déclaration${ap.evaluation ? ` dans le cadre de l'évaluation <strong>${evalLabel}</strong>` : ''}${ap.cours ? ` du cours <strong>${coursLabel}</strong>` : ''}${ap.session ? `, session <strong>${sessionLabel}</strong>` : ''}${ap.enseignant ? `, enseigné par <strong>${enseignantLabel}</strong>` : ''}.`;
+      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette déclaration dans le cadre de l'évaluation <strong>${evalLabel}</strong> du cours <strong>${coursLabel}</strong> de la session <strong>${sessionLabel}</strong>.<br><br>Conformément aux exigences de <strong>${enseignantLabel}</strong>, les renseignements suivants présentent ma démarche.`;
     }
 
     let directivesSection = '';
@@ -278,7 +278,6 @@ export default function DeclarationLibreService() {
 
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin-bottom:12pt;">Les renseignements suivants présentent ${ap.isEquipe ? 'notre' : 'ma'} démarche d'utilisation des systèmes d'intelligence artificielle.</p>
 ${directivesSection}
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
