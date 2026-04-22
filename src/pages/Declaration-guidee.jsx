@@ -205,7 +205,11 @@ export default function DeclarationGuidee() {
         const newExigErrors = {};
         data.exigences.forEach(exig => {
           const resp = exigencesResponses[exig.id] || {};
-          if (!resp.value?.trim() && !resp.ailleurs) { newExigErrors[exig.id] = true; hasErrors = true; }
+          if (exig.type === 'iagraphie') {
+            if (!resp.ouiNon) { newExigErrors[exig.id] = true; hasErrors = true; }
+          } else {
+            if (!resp.value?.trim() && !resp.ailleurs) { newExigErrors[exig.id] = true; hasErrors = true; }
+          }
         });
         setExigencesErrors(newExigErrors);
       }
@@ -288,7 +292,13 @@ export default function DeclarationGuidee() {
           const resp = ap.exigencesResponses?.[exig.id] || {};
           const label = typeLabels[exig.type] || exig.type;
           declHtml += `<p style="margin:6pt 0 2pt 0;"><strong>${label} :</strong>${exig.description ? ` <span style="font-weight:normal;">${exig.description}</span>` : ''}</p>`;
-          if (resp.ailleurs) {
+          if (exig.type === 'iagraphie') {
+            const ouiNonLabel = resp.ouiNon === 'oui' ? 'Oui' : resp.ouiNon === 'non' ? 'Non' : '(non répondu)';
+            declHtml += `<p style="margin:0 0 4pt 0;">Avez-vous respecté les exigences de référencement et d'IAgraphie ? <strong>${ouiNonLabel}</strong></p>`;
+            if (resp.value?.trim()) {
+              declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;"><em>Précisions :</em> ${resp.value}</p>`;
+            }
+          } else if (resp.ailleurs) {
             declHtml += `<p style="margin:0 0 6pt 0;"><em>Deja repondu dans le travail soumis ou dans cette declaration.</em></p>`;
           } else if (resp.value?.trim()) {
             declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;">${resp.value}</p>`;
@@ -751,6 +761,34 @@ export default function DeclarationGuidee() {
                             };
                             const label = typeLabels[exig.type] || exig.type;
                             const hasError = exigencesErrors[exig.id];
+                            if (exig.type === 'iagraphie') {
+                              return (
+                                <div key={exig.id} style={{ marginBottom: 16 }}>
+                                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
+                                    {label} <span style={{ color: '#E41E25' }}>*</span>
+                                  </label>
+                                  {exig.description && (
+                                    <div style={{ fontSize: '0.85em', color: '#555', marginBottom: 8, padding: '6px 10px', background: '#e8f4fd', borderRadius: 4 }} dangerouslySetInnerHTML={{ __html: exig.description }} />
+                                  )}
+                                  <p style={{ fontSize: '0.9em', marginBottom: 6 }}>Avez-vous respecté les exigences de référencement et d'IAgraphie ci-dessus ?</p>
+                                  <div style={{ display: 'flex', gap: 24, marginBottom: 10 }}>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
+                                      <input type="radio" name={`iagraphie-${exig.id}`} value="oui" checked={resp.ouiNon === 'oui'} onChange={() => { setResp('ouiNon', 'oui'); }} />
+                                      Oui
+                                    </label>
+                                    <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
+                                      <input type="radio" name={`iagraphie-${exig.id}`} value="non" checked={resp.ouiNon === 'non'} onChange={() => { setResp('ouiNon', 'non'); }} />
+                                      Non
+                                    </label>
+                                  </div>
+                                  {hasError && !resp.ouiNon && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>Veuillez répondre à cette question.</span>}
+                                  <p style={{ fontSize: '0.88em', color: '#555', marginBottom: 4 }}>Au besoin, ajoutez des précisions ou des commentaires sur le référencement et l'IAgraphie.</p>
+                                  <textarea value={resp.value || ''} onChange={e => setResp('value', e.target.value)} rows={2}
+                                    placeholder="Précisions ou commentaires (facultatif)..."
+                                    style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #aaa', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
+                                </div>
+                              );
+                            }
                             return (
                               <div key={exig.id} style={{ marginBottom: 16 }}>
                                 <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
