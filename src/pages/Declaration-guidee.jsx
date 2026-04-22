@@ -802,7 +802,7 @@ export default function DeclarationGuidee() {
                                   style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.ailleurs ? '#eee' : (hasError ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
                                 <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
                                   <input type="checkbox" checked={!!resp.ailleurs} onChange={e => setResp('ailleurs', e.target.checked)} />
-                                  Cette exigence a deja ete traitee ailleurs dans le travail soumis ou dans cette declaration.
+                                  Cette exigence est traitée dans le travail soumis ou ailleurs dans cette déclaration.
                                 </label>
                                 {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis ou cochez la case</span>}
                               </div>
