@@ -71,7 +71,7 @@ export default function AutreActionModal({ isOpen, onClose, onSave, initialValue
                 Idées — {selectedPhase?.libelle}
               </label>
               <div style={{ border: `1px solid ${selectedPhase?.color || '#ddd'}`, borderRadius: 6, overflow: 'hidden', maxHeight: 280, overflowY: 'auto' }}>
-                {selectedPhase?.actions.map(a => (
+                {[...(selectedPhase?.actions || [])].sort((a, b) => a.libelle.localeCompare(b.libelle, 'fr')).map(a => (
                   <button key={a.id} type="button" onClick={() => setLabel(a.libelle)}
                     style={{ width: '100%', textAlign: 'left', padding: '6px 10px', fontSize: '0.83em', background: 'white', border: 'none', borderBottom: '1px solid #f0f0f0', cursor: 'pointer', fontFamily: 'inherit', color: '#333', lineHeight: 1.4 }}
                     onMouseEnter={e => e.currentTarget.style.background = `${selectedPhase.color}12`}
