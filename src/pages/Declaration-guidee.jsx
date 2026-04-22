@@ -387,11 +387,11 @@ export default function DeclarationGuidee() {
         `}</style>
 
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
-          Declaration d'utilisation des SIA lors d'une evaluation
+          Déclaration d'utilisation des SIA lors d'une évaluation
         </h1>
 
         <div style={{ marginBottom: 20 }}>
-          <div className="mb-2">Cet outil permet de produire une declaration d'utilisation des systèmes d'intelligence artificielle (SIA) pour une evaluation basee sur les directives determinees par la personne enseignante.</div>
+          <div className="mb-2">Cet outil permet de produire une déclaration d'utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation basée sur les directives déterminées par la personne enseignante.</div>
           <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">Comment ca fonctionne?</h2>
           <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
             <li>Importe le fichier de directives d'utilisation des SIA (aussi nommé <i>fichier de sauvegarde</i>) pour l'evaluation fourni par la personne enseignante.</li>
