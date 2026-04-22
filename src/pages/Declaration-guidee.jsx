@@ -310,7 +310,7 @@ export default function DeclarationGuidee() {
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Declaration d'utilisation de systemes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
 <p style="font-family:Arial,sans-serif;font-size:11pt;margin-bottom:12pt;">Conformement aux exigences de la personne enseignante, les renseignements suivants presentent ${ap.isEquipe ? 'notre' : 'ma'} demarche d'utilisation des systemes d'intelligence artificielle.</p>
-<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Mon'} declaration d'utilisation</h2>
+<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette declaration confirme que :</h2>
 <ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
@@ -555,7 +555,7 @@ export default function DeclarationGuidee() {
               {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
               <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
                 <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>
-                  {isEquipe ? 'Notre' : 'Ma'} declaration d'utilisation
+                  {isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation
                 </h2>
 
                 {/* Toggle SIA */}
@@ -857,7 +857,7 @@ export default function DeclarationGuidee() {
             {/* Apercu */}
             {apercu && (
               <>
-                <div ref={apercuRef} style={{ background: 'white', padding: '40px 50px', borderRadius: 4, boxShadow: '0 2px 8px rgba(0,0,0,0.12)', marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '16px', lineHeight: 1.5 }}>
+                <div ref={apercuRef} style={{ border: '1px solid #aaa', background: '#fff', padding: 12, borderRadius: 6, marginBottom: 20, fontFamily: 'Arial, sans-serif', fontSize: '11pt', lineHeight: 1.5 }}>
                   <div dangerouslySetInnerHTML={{ __html: buildApercuHTML(apercu) }} />
                 </div>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30, alignItems: 'center', justifyContent: 'center' }}>
