@@ -235,8 +235,8 @@ export default function DeclarationLibreService() {
     } else {
       declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;">
 <thead><tr>
-  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th>
-  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Phase</th>
+  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outils</th>
+  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Phases</th>
   <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions déclarées</th>
 </tr></thead><tbody>`;
       ap.outilEntries.forEach((entry) => {
