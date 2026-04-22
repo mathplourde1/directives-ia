@@ -330,7 +330,7 @@ ${directivesSection}
         `}</style>
 
         <h1 style={{ color: '#1895FD', textAlign: 'center', fontSize: '1.5em', fontWeight: 'bold', marginBottom: 6 }}>
-          Declaration libre-service d'utilisation des SIA lors d'une evaluation
+          Déclaration libre-service d'utilisation des SIA lors d'une évaluation
         </h1>
 
         {/* Instructions */}
