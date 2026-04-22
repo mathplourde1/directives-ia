@@ -14,9 +14,9 @@ function AProposButton() {
       </button>
       {open && (
         <div style={{ textAlign: 'left', paddingTop: 6, fontSize: '0.93em', lineHeight: 1.6 }}>
-          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>Service de soutien à l'enseignement</a> de l'Université Laval.<br /><br />
-          <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69a839e74b536a607f6d9cc8/ce0c154f6_20240824_AIA_FR_EN.png" alt="Aidée de l'intelligence artificielle" style={{ float: 'right', width: 80, marginLeft: 12, marginBottom: 4 }} />
-          <b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b><br />Tous les textes présentés ont été validés par l'équipe de développement. Développée et maintenue par Mathieu Plourde, CC-BY 4.0 2026 (version alpha 7).
+          Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>Service de soutien à l'enseignement</a> de l'Université Laval, CC-BY 4.0 2026.<br /><br />
+          <em><b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b></em><br /><br />
+          Tous les textes présentés ont été validés par l'équipe de développement. Le code a été développé avec l'aide de ChatGPT et Claude, mais plus particulièrement par Base44 pour la version actuelle.
         </div>
       )}
     </div>
