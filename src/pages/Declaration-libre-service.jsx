@@ -338,7 +338,7 @@ ${directivesSection}
           <div style={{ textAlign: 'left' }}>
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 6, color: '#231F20', textTransform: 'uppercase' }}>Pourquoi remplir cette déclaration?</h2>
             <p style={{ fontSize: '0.93em', color: '#333', lineHeight: 1.6, marginBottom: 14 }}>
-              Déclarer votre utilisation des SIA, c'est présenter votre démarche d'utilisation des SIA et illustrer votre éthique de travail par le respect des autorisations indiquées pour cette évaluation par la personne enseignante du cours. Cette déclaration vise ainsi à vous soutenir dans la mise en valeur de votre intégrité intellectuelle.
+              Déclarer votre utilisation des systèmes d'intelligence artificielle (SIA), c'est présenter votre démarche d'utilisation des SIA et illustrer votre éthique de travail par le respect des autorisations indiquées pour cette évaluation par la personne enseignante du cours. Cette déclaration vise ainsi à vous soutenir dans la mise en valeur de votre intégrité intellectuelle.
             </p>
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20', textTransform: 'uppercase' }}>Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8, marginBottom: 8 }}>
