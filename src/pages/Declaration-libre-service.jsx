@@ -249,7 +249,7 @@ export default function DeclarationLibreService() {
           if (!action) return;
           const ph = action.phaseLibelle || 'Action personnalisée';
           if (!phaseMap[ph]) phaseMap[ph] = [];
-          const label = customIds.has(id) ? `${action.libelle} <em style="color:#666">(Action personnalisée)</em>` : action.libelle;
+          const label = action.libelle;
           phaseMap[ph].push(label);
         });
         const phases = Object.keys(phaseMap);
