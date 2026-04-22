@@ -258,12 +258,12 @@ export default function DeclarationGuidee() {
     let intro;
     if (ap.isEquipe) {
       const noms = ap.equipiers.filter(n => n.trim()).join(', ');
-      const eq = ap.nomEquipe ? ` (equipe ${ap.nomEquipe})` : '';
-      const gr = ap.studentGroupe ? `, groupe ${ap.studentGroupe}` : '';
-      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette declaration dans le cadre de l'evaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigne par <strong>${enseignants}</strong>.`;
+      const eq = ap.nomEquipe ? ` (équipe ${ap.nomEquipe})` : '';
+      const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
+      intro = `Nous, <strong>${noms}</strong>${eq}${gr}, soumettons cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>.<br><br>Conformément aux exigences de <strong>${enseignants}</strong>, les renseignements suivants présentent notre démarche.`;
     } else {
       const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
-      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette declaration dans le cadre de l'evaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong>, session <strong>${session}</strong>, enseigne par <strong>${enseignants}</strong>.`;
+      intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette déclaration dans le cadre de l'évaluation <strong>${evaluation}</strong> du cours <strong>${cours}</strong> de la session <strong>${session}</strong>.<br><br>Conformément aux exigences de <strong>${enseignants}</strong>, les renseignements suivants présentent ma démarche.`;
     }
     let declHtml;
     if (ap.aucunSIA) {
@@ -309,7 +309,7 @@ export default function DeclarationGuidee() {
     }
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Declaration d'utilisation de systemes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin-bottom:12pt;">Conformement aux exigences de la personne enseignante, les renseignements suivants presentent ${ap.isEquipe ? 'notre' : 'ma'} demarche d'utilisation des systemes d'intelligence artificielle.</p>
+
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette declaration confirme que :</h2>
