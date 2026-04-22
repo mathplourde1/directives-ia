@@ -312,15 +312,15 @@ export default function DeclarationGuidee() {
 
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
-<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">La soumission de cette declaration confirme que :</h2>
-<ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.7;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
-<li style="margin-bottom:4pt">Les informations fournies sont completes et fideles a votre utilisation reelle.</li>
-<li style="margin-bottom:4pt">Votre utilisation des SIA est conforme aux regles etablies par la personne enseignante pour ce travail.</li>
-<li style="margin-bottom:4pt">Vous avez fait un usage responsable des SIA et avez respecte le droit d'auteur lors des requetes et referencement.</li>
-<li style="margin-bottom:4pt">Vous avez exerce votre jugement critique et valide l'exactitude des contenus generes par les SIA.</li>
-<li style="margin-bottom:4pt">Le travail soumis reflete votre propre pensee, meme lorsqu'un SIA a ete utilise comme outil de soutien.</li>
-<li style="margin-bottom:4pt">Vous comprenez qu'une fausse declaration est une atteinte grave a l'ethique et risque de compromettre la credibilite du travail realise.</li>
-<li>Vous comprenez qu'un usage non autorise, des donnees fausses ou inventees ou copier-coller des reponses generees par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf">Reglement disciplinaire</a> de l'Universite Laval.</li>
+<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, vous confirmez que :</h2>
+<ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Les informations fournies sont complètes et fidèles à votre utilisation réelle.</li>
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.</li>
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Vous avez fait un usage responsable des SIA et avez respecté le <a href="https://www.bda.ulaval.ca/intelligence-artificielle/" target="_blank" style="color:#0056b3;text-decoration:underline;">Droit d'auteur</a> lors des requêtes et référencement.</li>
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.</li>
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.</li>
+<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.</li>
+<li style="display:list-item;list-style-type:disc;">Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" target="_blank" style="color:#0056b3;text-decoration:underline;">Règlement disciplinaire</a> de l'Université Laval.</li>
 </ul>
 <p style="font-family:Arial,sans-serif;font-size:9pt;color:#666;font-style:italic;margin-top:16pt;">Generee le ${ap.timestamp}</p>`;
   }
