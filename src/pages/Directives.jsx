@@ -419,8 +419,8 @@ export default function Directives() {
           />
 
           {/* Questions réflexives */}
-          <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>
-            <div style={{ background: '#444444', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444477', marginBottom: 20, overflow: 'hidden' }}>
+            <div style={{ background: '#444477', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Questions réflexives</span>
               <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
                 <button type="button" onClick={() => setQuestionsMode('aucune')}
