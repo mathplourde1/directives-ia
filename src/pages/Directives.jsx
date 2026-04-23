@@ -59,6 +59,7 @@ export default function Directives() {
   const [copyMsgs, setCopyMsgs] = useState({});
   const [showErrors, setShowErrors] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [questionsMode, setQuestionsMode] = useState('aucune');
   const [exigencesMode, setExigencesMode] = useState('aucune');
   const [exigences, setExigences] = useState([]);
   const [exigenceTypeModal, setExigenceTypeModal] = useState(false);
@@ -416,6 +417,28 @@ export default function Directives() {
             initialRemovedIds={sectionState.removedIds}
             initialCustomActions={sectionState.customActions}
           />
+
+          {/* Questions réflexives */}
+          <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>
+            <div style={{ background: '#444444', color: 'white', padding: '10px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontWeight: 'bold', fontSize: '1em' }}>Questions réflexives</span>
+              <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid rgba(255,255,255,0.4)', overflow: 'hidden', background: 'rgba(0,0,0,0.15)' }}>
+                <button type="button" onClick={() => setQuestionsMode('aucune')}
+                  style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: questionsMode === 'aucune' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: questionsMode === 'aucune' ? 'rgba(255,255,255,0.9)' : 'transparent', color: questionsMode === 'aucune' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '999px 0 0 999px' }}>
+                  Aucune question
+                </button>
+                <button type="button" onClick={() => setQuestionsMode('inclure')}
+                  style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: questionsMode === 'inclure' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: questionsMode === 'inclure' ? 'rgba(255,255,255,0.9)' : 'transparent', color: questionsMode === 'inclure' ? '#444444' : 'white', transition: 'background 0.15s', borderRadius: '0 999px 999px 0' }}>
+                  Inclure des questions
+                </button>
+              </div>
+            </div>
+            {questionsMode === 'inclure' && (
+              <div style={{ padding: '12px 14px' }}>
+                <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Fonctionnalité à venir.</p>
+              </div>
+            )}
+          </div>
 
           {/* Exigences de déclaration */}
           <div style={{ background: 'white', borderRadius: 8, border: '2px solid #444444', marginBottom: 20, overflow: 'hidden' }}>
