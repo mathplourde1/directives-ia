@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import ReactQuill from 'react-quill';
 import { ScrollArea } from '@/components/ui/scroll-area';
+
+const QUILL_MODULES = {
+  toolbar: [
+    ['bold', 'italic'],
+    [{ list: 'bullet' }, { list: 'ordered' }],
+    ['link'],
+    ['clean'],
+  ],
+};
+const QUILL_FORMATS = ['bold', 'italic', 'list', 'bullet', 'link'];
 
 const EXEMPLES = [
   {
@@ -51,12 +62,17 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initi
   }, [isOpen, initialValue]);
 
   function handleInsert(exemple) {
-    setTexte(prev => prev ? prev + '\n' + exemple : exemple);
+    setTexte(prev => {
+      const stripped = prev.replace(/<(.|\n)*?>/g, '').trim();
+      return stripped ? prev.replace(/<\/p>$/, '') + `<br/>${exemple}</p>` : `<p>${exemple}</p>`;
+    });
   }
 
+  const texteStripped = texte.replace(/<(.|\n)*?>/g, '').trim();
+
   function handleSave() {
-    if (!texte.trim()) return;
-    onAdd({ texte: texte.trim(), obligatoire });
+    if (!texteStripped) return;
+    onAdd({ texte, obligatoire });
     setTexte('');
     setObligatoire(false);
     onClose();
@@ -96,29 +112,30 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initi
         </div>
 
         <div style={{ display: 'flex', gap: 20, flex: 1, overflow: 'hidden', minHeight: 0 }}>
-          {/* Left: textarea */}
+          {/* Left: editor */}
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <p style={{ fontSize: '0.78em', color: '#666', marginBottom: 6, flexShrink: 0 }}>
               Rédigez une question réflexive ci-dessous. Cliquez un exemple à droite pour l'insérer.
             </p>
-            <textarea
-              value={texte}
-              onChange={e => setTexte(e.target.value)}
-              placeholder="ex. Comment avez-vous validé les réponses générées par le SIA?"
-              style={{
-                flex: 1, minHeight: 180, width: '100%', padding: '8px 10px',
-                fontFamily: 'inherit', fontSize: '0.9em', border: '1px solid #ccc',
-                borderRadius: 6, boxSizing: 'border-box', resize: 'none', lineHeight: 1.5
-              }}
-            />
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+              <ReactQuill
+                value={texte}
+                onChange={setTexte}
+                modules={QUILL_MODULES}
+                formats={QUILL_FORMATS}
+                placeholder="ex. Comment avez-vous validé les réponses générées par le SIA?"
+                style={{ flex: 1, display: 'flex', flexDirection: 'column', fontSize: '0.9em' }}
+                theme="snow"
+              />
+            </div>
             <div style={{ marginTop: 10, display: 'flex', gap: 8, flexShrink: 0 }}>
               <button
                 type="button"
                 onClick={handleSave}
-                disabled={!texte.trim()}
-                style={{ background: texte.trim() ? '#444477' : '#aaa', color: 'white', border: 'none', borderRadius: 5, padding: '8px 20px', cursor: texte.trim() ? 'pointer' : 'default', fontWeight: 'bold', fontSize: '0.9em', fontFamily: 'inherit' }}
-                onMouseEnter={e => { if (texte.trim()) e.currentTarget.style.background = '#333355'; }}
-                onMouseLeave={e => { if (texte.trim()) e.currentTarget.style.background = '#444477'; }}>
+                disabled={!texteStripped}
+                style={{ background: texteStripped ? '#444477' : '#aaa', color: 'white', border: 'none', borderRadius: 5, padding: '8px 20px', cursor: texteStripped ? 'pointer' : 'default', fontWeight: 'bold', fontSize: '0.9em', fontFamily: 'inherit' }}
+                onMouseEnter={e => { if (texteStripped) e.currentTarget.style.background = '#333355'; }}
+                onMouseLeave={e => { if (texteStripped) e.currentTarget.style.background = '#444477'; }}>
                 Enregistrer
               </button>
               <button

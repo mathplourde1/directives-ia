@@ -488,8 +488,8 @@ export default function Directives() {
                           <button type="button" onClick={() => { if (idx < questions.length-1) { const n = [...questions]; [n[idx],n[idx+1]]=[n[idx+1],n[idx]]; setQuestions(n); } }} disabled={idx===questions.length-1} style={{ background: 'none', border: 'none', cursor: idx===questions.length-1?'not-allowed':'pointer', color: idx===questions.length-1?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▼</button>
                         </div>
                         <div style={{ flex: 1, color: '#333' }}>
-                          {q.texte || q}
-                          {(q.obligatoire) && <span style={{ marginLeft: 8, fontSize: '0.78em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', verticalAlign: 'middle', fontWeight: 'bold' }}>obligatoire</span>}
+                          <div style={{ fontSize: '0.9em', lineHeight: 1.5 }} dangerouslySetInnerHTML={{ __html: q.texte || q }} />
+                          {(q.obligatoire) && <span style={{ marginTop: 4, display: 'inline-block', fontSize: '0.78em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', fontWeight: 'bold' }}>obligatoire</span>}
                         </div>
                         <div style={{ display: 'flex', gap: 4, flexShrink: 0, paddingTop: 2 }}>
                           <button type="button" onClick={() => { setQuestionEditIdx(idx); setQuestionsModal(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
