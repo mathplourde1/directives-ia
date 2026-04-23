@@ -81,18 +81,19 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initi
         <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
           {initialValue ? 'Modifier la question réflexive' : 'Ajouter une question réflexive'}
         </h3>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, cursor: 'pointer', userSelect: 'none', width: 'fit-content' }}>
-          <input
-            type="checkbox"
-            checked={obligatoire}
-            onChange={e => setObligatoire(e.target.checked)}
-            style={{ width: 16, height: 16, accentColor: '#444477', cursor: 'pointer', flexShrink: 0 }}
-          />
-          <span style={{ fontSize: '0.88em', color: '#333' }}>
-            Question <strong>{obligatoire ? 'obligatoire' : 'facultative'}</strong>
-            <span style={{ color: '#888', marginLeft: 6 }}>{obligatoire ? '— La personne étudiante doit y répondre.' : '— La personne étudiante peut y répondre librement.'}</span>
-          </span>
-        </label>
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+          <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0' }}>
+            <button type="button" onClick={() => setObligatoire(false)}
+              style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: !obligatoire ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: !obligatoire ? 'white' : 'transparent', color: !obligatoire ? '#333' : '#888', transition: 'background 0.15s', borderRadius: '999px 0 0 999px', boxShadow: !obligatoire ? '0 1px 3px rgba(0,0,0,0.12)' : 'none' }}>
+              Facultative
+            </button>
+            <button type="button" onClick={() => setObligatoire(true)}
+              style={{ padding: '4px 14px', fontSize: '0.82em', fontWeight: obligatoire ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: obligatoire ? '#E41E25' : 'transparent', color: obligatoire ? 'white' : '#888', transition: 'background 0.15s', borderRadius: '0 999px 999px 0', boxShadow: obligatoire ? '0 1px 3px rgba(0,0,0,0.12)' : 'none' }}>
+              Obligatoire
+            </button>
+          </div>
+          <span style={{ fontSize: '0.82em', color: '#888' }}>{obligatoire ? 'La personne étudiante doit y répondre.' : 'La personne étudiante peut y répondre librement.'}</span>
+        </div>
 
         <div style={{ display: 'flex', gap: 20, flex: 1, overflow: 'hidden', minHeight: 0 }}>
           {/* Left: textarea */}
