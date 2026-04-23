@@ -1,18 +1,19 @@
 ====================================
-Version 0.6 du code de l'application
+Version 0.9 du code de l'application
 ====================================
 
-||| Mathieu Plourde, 23 mars 2026 |||
+||| Mathieu Plourde, 23 avril 2026 |||
 
-Fonctionne comme standalone pour un enseignant à ce point. Deux versions étudiantes tolérables.
+Fonctionne comme standalone pour un enseignant à ce point. Deux versions étudiantes (une guidée et une libre service)
 
-ITEMS complétés :
-- Éditeur de texte riche avec exemples de directives
-- Exigences avec RTE et exemples
-- Export pour application étudiante
-- Page étudiante avec import (déclaration par étape)
-- Page étudiante avec import (déclaration par outil)
-- Outil d'édition des exemples de directives (fonctions admin) - configeditor
-ITEMS à venir :
-- Page étudiante libre service
-- Sauvegarde pour la page étudiante
+L'accueil, c'est Directives.jsx
+Les pages de déclaration
+- Guidée (Declaration-guidee.jsx)
+- Libre-service (Declaration-libre-service.jsx)
+
+Cette version contient toutes les versions legacy aussi 
+- Par étape (Guide.jsx)
+- déclaration par outil (Declaration-outil.jsx) 
+- Déclaration par étape (Declaration.jsx)
+
+Le ConfigEditor doit être revu un peu pour le nettoyer.
