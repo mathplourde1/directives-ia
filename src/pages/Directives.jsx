@@ -162,6 +162,16 @@ export default function Directives() {
         html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
       });
     }
+    if (questionsMode === 'inclure' && questions.length > 0) {
+      html += `<strong style="font-family:Arial,sans-serif;">QUESTIONS RÉFLEXIVES</strong><br>`;
+      html += `<ol style="font-family:Arial,sans-serif;margin:4px 0 8px 0;padding-left:20px;">`;
+      questions.forEach(q => {
+        const texte = typeof q === 'object' ? q.texte : q;
+        const obligatoire = typeof q === 'object' && q.obligatoire;
+        html += `<li style="margin:4px 0;">${texte}${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</li>`;
+      });
+      html += `</ol>`;
+    }
     return html;
   }
 
@@ -204,6 +214,16 @@ export default function Directives() {
         html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
         html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
       });
+    }
+    if (questionsMode === 'inclure' && questions.length > 0) {
+      html += `<strong style="font-family:Arial,sans-serif;">QUESTIONS RÉFLEXIVES</strong><br>`;
+      html += `<ol style="font-family:Arial,sans-serif;margin:4px 0 8px 0;padding-left:20px;">`;
+      questions.forEach(q => {
+        const texte = typeof q === 'object' ? q.texte : q;
+        const obligatoire = typeof q === 'object' && q.obligatoire;
+        html += `<li style="margin:4px 0;">${texte}${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</li>`;
+      });
+      html += `</ol>`;
     }
     return html;
   }
@@ -256,7 +276,14 @@ export default function Directives() {
     xml += `  </permissions>\n`;
     xml += `  <exigences mode="${escXml(exigencesMode)}">\n`;
     exigences.forEach(exig => { xml += `    <exigence id="${escXml(exig.id)}" type="${escXml(exig.type)}">\n      <description>${escXml(exig.description)}</description>\n    </exigence>\n`; });
-    xml += `  </exigences>\n</directives-ia>`;
+    xml += `  </exigences>\n`;
+    xml += `  <questions_reflexives mode="${escXml(questionsMode)}">\n`;
+    questions.forEach((q, i) => {
+      const texte = typeof q === 'object' ? q.texte : q;
+      const obligatoire = typeof q === 'object' ? (q.obligatoire ? 'true' : 'false') : 'false';
+      xml += `    <question obligatoire="${obligatoire}">${escXml(texte)}</question>\n`;
+    });
+    xml += `  </questions_reflexives>\n</directives-ia>`;
 
     const now = new Date();
     const dateStr = now.getFullYear().toString() + String(now.getMonth() + 1).padStart(2, '0') + String(now.getDate()).padStart(2, '0');
@@ -321,8 +348,19 @@ export default function Directives() {
         setSectionState({ columnOrder, removedIds, customActions, hasEmptyCustom: false, precisions: loadedPrecisions });
         setSectionMode(loadedMode);
         setSectionPrecisions(loadedPrecisions);
+        const questionsReflexivesNode = root.querySelector('questions_reflexives');
+        const newQuestionsMode = questionsReflexivesNode?.getAttribute('mode') || 'aucune';
+        const newQuestions = [];
+        questionsReflexivesNode?.querySelectorAll('question').forEach(qNode => {
+          const texte = qNode.textContent || '';
+          const obligatoire = qNode.getAttribute('obligatoire') === 'true';
+          if (texte) newQuestions.push({ texte, obligatoire });
+        });
+
         setExigencesMode(newExigencesMode);
         setExigences(newExigences);
+        setQuestionsMode(newQuestionsMode);
+        setQuestions(newQuestions);
         setSubmitted(false);
         setSubmitStatus(null);
         setLoadKey(k => k + 1);
@@ -449,7 +487,10 @@ export default function Directives() {
                           <button type="button" onClick={() => { if (idx > 0) { const n = [...questions]; [n[idx-1],n[idx]]=[n[idx],n[idx-1]]; setQuestions(n); } }} disabled={idx===0} style={{ background: 'none', border: 'none', cursor: idx===0?'not-allowed':'pointer', color: idx===0?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▲</button>
                           <button type="button" onClick={() => { if (idx < questions.length-1) { const n = [...questions]; [n[idx],n[idx+1]]=[n[idx+1],n[idx]]; setQuestions(n); } }} disabled={idx===questions.length-1} style={{ background: 'none', border: 'none', cursor: idx===questions.length-1?'not-allowed':'pointer', color: idx===questions.length-1?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▼</button>
                         </div>
-                        <div style={{ flex: 1, color: '#333' }}>{q}</div>
+                        <div style={{ flex: 1, color: '#333' }}>
+                          {q.texte || q}
+                          {(q.obligatoire) && <span style={{ marginLeft: 8, fontSize: '0.78em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', verticalAlign: 'middle', fontWeight: 'bold' }}>obligatoire</span>}
+                        </div>
                         <div style={{ display: 'flex', gap: 4, flexShrink: 0, paddingTop: 2 }}>
                           <button type="button" onClick={() => { setQuestionEditIdx(idx); setQuestionsModal(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
                           <button type="button" onClick={() => setQuestions(prev => prev.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
@@ -583,7 +624,7 @@ export default function Directives() {
         <QuestionsReflexivesModal
           isOpen={questionsModal}
           onClose={() => { setQuestionsModal(false); setQuestionEditIdx(null); }}
-          initialValue={questionEditIdx !== null ? questions[questionEditIdx] : ''}
+          initialValue={questionEditIdx !== null ? questions[questionEditIdx] : null}
           onAdd={(q) => {
             if (questionEditIdx !== null) {
               setQuestions(prev => prev.map((item, i) => i === questionEditIdx ? q : item));

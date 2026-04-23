@@ -32,13 +32,22 @@ const EXEMPLES = [
   },
 ];
 
-export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initialValue = '' }) {
+export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initialValue = null }) {
   const [texte, setTexte] = useState('');
+  const [obligatoire, setObligatoire] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
-    if (isOpen) setTexte(initialValue || '');
+    if (isOpen) {
+      if (initialValue && typeof initialValue === 'object') {
+        setTexte(initialValue.texte || '');
+        setObligatoire(initialValue.obligatoire || false);
+      } else {
+        setTexte('');
+        setObligatoire(false);
+      }
+    }
   }, [isOpen, initialValue]);
 
   function handleInsert(exemple) {
@@ -47,8 +56,9 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initi
 
   function handleSave() {
     if (!texte.trim()) return;
-    onAdd(texte.trim());
+    onAdd({ texte: texte.trim(), obligatoire });
     setTexte('');
+    setObligatoire(false);
     onClose();
   }
 
@@ -71,6 +81,18 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initi
         <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
           {initialValue ? 'Modifier la question réflexive' : 'Ajouter une question réflexive'}
         </h3>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, cursor: 'pointer', userSelect: 'none', width: 'fit-content' }}>
+          <input
+            type="checkbox"
+            checked={obligatoire}
+            onChange={e => setObligatoire(e.target.checked)}
+            style={{ width: 16, height: 16, accentColor: '#444477', cursor: 'pointer', flexShrink: 0 }}
+          />
+          <span style={{ fontSize: '0.88em', color: '#333' }}>
+            Question <strong>{obligatoire ? 'obligatoire' : 'facultative'}</strong>
+            <span style={{ color: '#888', marginLeft: 6 }}>{obligatoire ? '— La personne étudiante doit y répondre.' : '— La personne étudiante peut y répondre librement.'}</span>
+          </span>
+        </label>
 
         <div style={{ display: 'flex', gap: 20, flex: 1, overflow: 'hidden', minHeight: 0 }}>
           {/* Left: textarea */}
