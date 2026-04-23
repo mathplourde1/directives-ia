@@ -5,6 +5,7 @@ import DirectivesGabarit from '@/components/directives/DirectivesGabarit';
 import BrioDeclarationInstructions from '@/components/directives/BrioDeclarationInstructions';
 import BrioSectionDirectives from '@/components/directives/BrioSectionDirectives';
 import ExigenceEditModal from '@/components/restrictions/ExigenceEditModal';
+import QuestionsReflexivesModal from '@/components/directives/QuestionsReflexivesModal';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import PageRightNav from '@/components/guide/PageRightNav';
 
@@ -60,6 +61,8 @@ export default function Directives() {
   const [showErrors, setShowErrors] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [questionsMode, setQuestionsMode] = useState('aucune');
+  const [questions, setQuestions] = useState([]);
+  const [questionsModal, setQuestionsModal] = useState(false);
   const [exigencesMode, setExigencesMode] = useState('aucune');
   const [exigences, setExigences] = useState([]);
   const [exigenceTypeModal, setExigenceTypeModal] = useState(false);
@@ -435,7 +438,25 @@ export default function Directives() {
             </div>
             {questionsMode === 'inclure' && (
               <div style={{ padding: '12px 14px' }}>
-                <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Fonctionnalité à venir.</p>
+                {questions.length === 0 ? (
+                  <p style={{ fontSize: '0.85em', color: '#999', fontStyle: 'italic', margin: '8px 0' }}>Aucune question ajoutée.</p>
+                ) : (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    {questions.map((q, idx) => (
+                      <div key={idx} style={{ background: '#f9f9f9', border: '1px solid #ddd', borderRadius: 4, padding: '10px', display: 'flex', alignItems: 'flex-start', fontSize: '0.9em', gap: 10 }}>
+                        <div style={{ display: 'flex', gap: 2, flexShrink: 0, paddingTop: 2 }}>
+                          <button type="button" onClick={() => { if (idx > 0) { const n = [...questions]; [n[idx-1],n[idx]]=[n[idx],n[idx-1]]; setQuestions(n); } }} disabled={idx===0} style={{ background: 'none', border: 'none', cursor: idx===0?'not-allowed':'pointer', color: idx===0?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▲</button>
+                          <button type="button" onClick={() => { if (idx < questions.length-1) { const n = [...questions]; [n[idx],n[idx+1]]=[n[idx+1],n[idx]]; setQuestions(n); } }} disabled={idx===questions.length-1} style={{ background: 'none', border: 'none', cursor: idx===questions.length-1?'not-allowed':'pointer', color: idx===questions.length-1?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▼</button>
+                        </div>
+                        <div style={{ flex: 1, color: '#333' }}>{q}</div>
+                        <button type="button" onClick={() => setQuestions(prev => prev.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px', flexShrink: 0 }}>×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <button type="button" onClick={() => setQuestionsModal(true)} style={{ background: '#444477', color: 'white', border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold', marginTop: 8 }}>
+                  + Ajouter une question
+                </button>
               </div>
             )}
           </div>
@@ -554,6 +575,12 @@ export default function Directives() {
           </div>
           </div>
         )}
+
+        <QuestionsReflexivesModal
+          isOpen={questionsModal}
+          onClose={() => setQuestionsModal(false)}
+          onAdd={(q) => setQuestions(prev => [...prev, q])}
+        />
 
         {/* Exigence Type Modal */}
         {exigenceTypeModal && (
