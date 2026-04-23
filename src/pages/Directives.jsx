@@ -154,14 +154,6 @@ export default function Directives() {
     html += '</tbody></table>';
     const prec = sectionState.precisions || '';
     if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:0 0 8px 0;"><em>Précisions :</em> ${prec}</p>`;
-    if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
-      exigences.forEach(exig => {
-        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
-        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
-        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
-      });
-    }
     if (questionsMode === 'inclure' && questions.length > 0) {
       html += `<strong style="font-family:Arial,sans-serif;">QUESTIONS RÉFLEXIVES</strong><br>`;
       html += `<ol style="font-family:Arial,sans-serif;margin:4px 0 8px 0;padding-left:20px;">`;
@@ -171,6 +163,14 @@ export default function Directives() {
         html += `<li style="margin:4px 0;">${texte}${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</li>`;
       });
       html += `</ol>`;
+    }
+    if (exigencesMode === 'inclure' && exigences.length > 0) {
+      html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
+      exigences.forEach(exig => {
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
+        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
+        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
+      });
     }
     return html;
   }
@@ -207,14 +207,6 @@ export default function Directives() {
     }
     const prec = sectionState.precisions || '';
     if (prec) html += `<p style="font-family:Arial,sans-serif;font-size:0.92em;margin:4px 0 0 0;"><em>Précisions :</em> ${prec}</p>`;
-    if (exigencesMode === 'inclure' && exigences.length > 0) {
-      html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
-      exigences.forEach(exig => {
-        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
-        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
-        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
-      });
-    }
     if (questionsMode === 'inclure' && questions.length > 0) {
       html += `<strong style="font-family:Arial,sans-serif;">QUESTIONS RÉFLEXIVES</strong><br>`;
       html += `<ol style="font-family:Arial,sans-serif;margin:4px 0 8px 0;padding-left:20px;">`;
@@ -224,6 +216,14 @@ export default function Directives() {
         html += `<li style="margin:4px 0;">${texte}${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</li>`;
       });
       html += `</ol>`;
+    }
+    if (exigencesMode === 'inclure' && exigences.length > 0) {
+      html += `<strong style="font-family:Arial,sans-serif;">EXIGENCES DE DÉCLARATION</strong><br>`;
+      exigences.forEach(exig => {
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: 'Expliquer la logique' };
+        html += `<p style="font-family:Arial,sans-serif;font-weight:bold;margin:8px 0 2px 0;">${typeLabels[exig.type]}</p>`;
+        html += `<div style="font-family:Arial,sans-serif;margin:0 0 8px 0;">${exig.description || ''}</div>`;
+      });
     }
     return html;
   }
@@ -384,7 +384,10 @@ export default function Directives() {
           .copy-ok { color: green; font-weight: bold; margin-left: 10px; }
           .synthese-apercu ul { list-style-type: disc !important; padding-left: 22px !important; }
           .synthese-apercu ul ul { list-style-type: disc !important; padding-left: 18px !important; }
+          .synthese-apercu ol { list-style-type: decimal !important; padding-left: 22px !important; }
+          .synthese-apercu ol ul { list-style-type: disc !important; padding-left: 18px !important; }
           .synthese-apercu li { display: list-item !important; }
+          .synthese-apercu a { color: #0056b3; text-decoration: underline; }
         `}</style>
 
         <h1 className="mr-12 mb-4 ml-12 text-2xl font-semibold">Outil de rédaction de directives d'utilisation des SIA pour une évaluation</h1>
