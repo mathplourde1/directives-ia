@@ -63,6 +63,7 @@ export default function Directives() {
   const [questionsMode, setQuestionsMode] = useState('aucune');
   const [questions, setQuestions] = useState([]);
   const [questionsModal, setQuestionsModal] = useState(false);
+  const [questionEditIdx, setQuestionEditIdx] = useState(null);
   const [exigencesMode, setExigencesMode] = useState('aucune');
   const [exigences, setExigences] = useState([]);
   const [exigenceTypeModal, setExigenceTypeModal] = useState(false);
@@ -449,12 +450,15 @@ export default function Directives() {
                           <button type="button" onClick={() => { if (idx < questions.length-1) { const n = [...questions]; [n[idx],n[idx+1]]=[n[idx+1],n[idx]]; setQuestions(n); } }} disabled={idx===questions.length-1} style={{ background: 'none', border: 'none', cursor: idx===questions.length-1?'not-allowed':'pointer', color: idx===questions.length-1?'#ccc':'#444', fontSize: '1em', padding: '2px 4px' }}>▼</button>
                         </div>
                         <div style={{ flex: 1, color: '#333' }}>{q}</div>
-                        <button type="button" onClick={() => setQuestions(prev => prev.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px', flexShrink: 0 }}>×</button>
+                        <div style={{ display: 'flex', gap: 4, flexShrink: 0, paddingTop: 2 }}>
+                          <button type="button" onClick={() => { setQuestionEditIdx(idx); setQuestionsModal(true); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#0056b3', fontSize: '0.9em', padding: '2px 4px' }}>✎</button>
+                          <button type="button" onClick={() => setQuestions(prev => prev.filter((_, i) => i !== idx))} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#E41E25', fontSize: '0.9em', padding: '2px 4px' }}>×</button>
+                        </div>
                       </div>
                     ))}
                   </div>
                 )}
-                <button type="button" onClick={() => setQuestionsModal(true)} style={{ background: '#444477', color: 'white', border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold', marginTop: 8 }}>
+                <button type="button" onClick={() => { setQuestionEditIdx(null); setQuestionsModal(true); }} style={{ background: '#444477', color: 'white', border: 'none', padding: '6px 12px', borderRadius: 4, cursor: 'pointer', fontSize: '0.85em', fontWeight: 'bold', marginTop: 8 }}>
                   + Ajouter une question
                 </button>
               </div>
@@ -578,8 +582,15 @@ export default function Directives() {
 
         <QuestionsReflexivesModal
           isOpen={questionsModal}
-          onClose={() => setQuestionsModal(false)}
-          onAdd={(q) => setQuestions(prev => [...prev, q])}
+          onClose={() => { setQuestionsModal(false); setQuestionEditIdx(null); }}
+          initialValue={questionEditIdx !== null ? questions[questionEditIdx] : ''}
+          onAdd={(q) => {
+            if (questionEditIdx !== null) {
+              setQuestions(prev => prev.map((item, i) => i === questionEditIdx ? q : item));
+            } else {
+              setQuestions(prev => [...prev, q]);
+            }
+          }}
         />
 
         {/* Exigence Type Modal */}

@@ -32,14 +32,14 @@ const EXEMPLES = [
   },
 ];
 
-export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd }) {
+export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd, initialValue = '' }) {
   const [texte, setTexte] = useState('');
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [tooltipPos, setTooltipPos] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
-    if (isOpen) setTexte('');
-  }, [isOpen]);
+    if (isOpen) setTexte(initialValue || '');
+  }, [isOpen, initialValue]);
 
   function handleInsert(exemple) {
     setTexte(prev => prev ? prev + '\n' + exemple : exemple);
@@ -69,7 +69,7 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd }) {
         boxShadow: '0 8px 32px rgba(0,0,0,0.18)'
       }}>
         <h3 style={{ marginTop: 0, marginBottom: 16, fontSize: '1.05em', fontWeight: 'bold', color: '#231F20' }}>
-          Questions réflexives
+          {initialValue ? 'Modifier la question réflexive' : 'Ajouter une question réflexive'}
         </h3>
 
         <div style={{ display: 'flex', gap: 20, flex: 1, overflow: 'hidden', minHeight: 0 }}>
@@ -93,7 +93,7 @@ export default function QuestionsReflexivesModal({ isOpen, onClose, onAdd }) {
                 type="button"
                 onClick={handleSave}
                 disabled={!texte.trim()}
-                style={{ background: texte.trim() ? '#444477' : '#aaa', color: 'white', border: 'none', borderRadius: 5, padding: '8px 20px', cursor: texte.trim() ? 'pointer' : 'default', fontWeight: 'bold', fontSize: '0.9em' }}
+                style={{ background: texte.trim() ? '#444477' : '#aaa', color: 'white', border: 'none', borderRadius: 5, padding: '8px 20px', cursor: texte.trim() ? 'pointer' : 'default', fontWeight: 'bold', fontSize: '0.9em', fontFamily: 'inherit' }}
                 onMouseEnter={e => { if (texte.trim()) e.currentTarget.style.background = '#333355'; }}
                 onMouseLeave={e => { if (texte.trim()) e.currentTarget.style.background = '#444477'; }}>
                 Enregistrer
