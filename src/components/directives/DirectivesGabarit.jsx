@@ -86,7 +86,8 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
     questions.forEach((q, idx) => {
       const texte = typeof q === 'object' ? q.texte : q;
       const obligatoire = typeof q === 'object' && q.obligatoire;
-      questionsBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:10pt 0 2pt 0;"><strong>${idx + 1}.</strong> ${texte}${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
+      const obligatoireTag = obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : '';
+      questionsBlock += `<div style="font-family:Arial,sans-serif;font-size:11pt;margin:10pt 0 2pt 0;display:flex;gap:4px;align-items:baseline;"><strong style="white-space:nowrap;">${idx + 1}.</strong><div style="display:inline;">${texte}${obligatoireTag}</div></div>`;
       questionsBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 12pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
     });
   }
