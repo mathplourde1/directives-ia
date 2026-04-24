@@ -98,15 +98,27 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
 
   const declarationSupp = ``;
 
-  const affirmTitle = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, vous confirmez que :</h2>`;
-  const affirmList = [
-  "Les informations fournies sont complètes et fidèles à votre utilisation réelle.",
-  "Votre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
-  `Vous avez fait un usage responsable des SIA et avez respecté le <a href="https://www.bda.ulaval.ca/intelligence-artificielle/" target="_blank" style="color:#0056b3;text-decoration:underline;">Droit d'auteur</a> lors des requêtes et référencement.`,
-  "Vous avez exercé votre jugement critique et validé l'exactitude des contenus générés par les SIA.",
-  "Le travail soumis reflète votre propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
-  "Vous comprenez qu'une fausse déclaration est une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
-  `Vous comprenez qu'un usage non autorisé, des données fausses ou inventées ou copier-coller des réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;text-decoration:underline;">Règlement disciplinaire</a> de l'Université Laval.`];
+  const isEquipe = identification.contexte === 'equipe';
+  const affirmTitle = isEquipe
+    ? `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, nous confirmons que :</h2>`
+    : `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, je confirme que :</h2>`;
+  const affirmList = isEquipe ? [
+    "Nous avons utilisé les SIA de manière conforme et nous avons décrit leur utilisation de manière fidèle.",
+    "Notre utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    `Nous avons fait un usage responsable des SIA et nous avons respecté le <a href="https://www.bda.ulaval.ca/intelligence-artificielle/" target="_blank" style="color:#0056b3;text-decoration:underline;">droit d'auteur</a> lors des requêtes et du référencement.`,
+    "Nous avons exercé notre jugement critique et validé l'exactitude des contenus générés par les SIA.",
+    "Le travail soumis reflète notre propre pensée collective, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Nous comprenons qu'une fausse déclaration constitue une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
+    `Nous comprenons qu'un usage non autorisé, l'utilisation de données fausses ou inventées ou le copier-coller de réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;text-decoration:underline;">Règlement disciplinaire</a> de l'Université Laval.`
+  ] : [
+    "J'ai utilisé les SIA de manière conforme et j'ai décrit leur utilisation de manière fidèle.",
+    "Mon utilisation des SIA est conforme aux règles établies par la personne enseignante pour ce travail.",
+    `J'ai fait un usage responsable des SIA et j'ai respecté le <a href="https://www.bda.ulaval.ca/intelligence-artificielle/" target="_blank" style="color:#0056b3;text-decoration:underline;">droit d'auteur</a> lors des requêtes et du référencement.`,
+    "J'ai exercé mon jugement critique et validé l'exactitude des contenus générés par les SIA.",
+    "Le travail soumis reflète ma propre pensée, même lorsqu'un SIA a été utilisé comme outil de soutien.",
+    "Je comprends qu'une fausse déclaration constitue une atteinte grave à l'éthique et risque de compromettre la crédibilité du travail réalisé.",
+    `Je comprends qu'un usage non autorisé, l'utilisation de données fausses ou inventées ou le copier-coller de réponses générées par une SIA sans l'identifier constituent des infractions au <a href="https://www.ulaval.ca/sites/default/files/notre-universite/direction-gouv/Documents_officiels/Reglements/Reglement_disciplinaire_intention_etudiants.pdf" style="color:#0056b3;text-decoration:underline;">Règlement disciplinaire</a> de l'Université Laval.`
+  ];
 
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;list-style-type:disc;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map((a) => `<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;

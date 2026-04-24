@@ -46,7 +46,7 @@ function initPermissions() {
 }
 
 export default function Directives() {
-  const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '' });
+  const [identification, setIdentification] = useState({ cours: '', session: '', enseignants: '', evaluation: '', contexte: 'individuel' });
   const [identErrors, setIdentErrors] = useState({ cours: false, evaluation: false, enseignants: false });
   const [permissions, setPermissions] = useState(initPermissions());
 
@@ -260,7 +260,7 @@ export default function Directives() {
     const customActions = state.customActions || {};
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<directives-ia version="1.0">\n`;
-    xml += `  <identification>\n    <cours>${escXml(identification.cours)}</cours>\n    <session>${escXml(identification.session)}</session>\n    <enseignants>${escXml(identification.enseignants)}</enseignants>\n    <evaluation>${escXml(identification.evaluation)}</evaluation>\n  </identification>\n`;
+    xml += `  <identification>\n    <cours>${escXml(identification.cours)}</cours>\n    <session>${escXml(identification.session)}</session>\n    <enseignants>${escXml(identification.enseignants)}</enseignants>\n    <evaluation>${escXml(identification.evaluation)}</evaluation>\n    <contexte>${escXml(identification.contexte || 'individuel')}</contexte>\n  </identification>\n`;
     xml += `  <mode>${escXml(sectionState.mode || 'aucune')}</mode>\n`;
     xml += `  <precisions>${escXml(sectionState.precisions || '')}</precisions>\n`;
     xml += `  <colonnes>\n`;
@@ -311,7 +311,7 @@ export default function Directives() {
         const identNode = root.querySelector('identification');
         if (identNode) {
           const getI = (tag) => identNode.querySelector(tag)?.textContent ?? '';
-          setIdentification({ cours: getI('cours'), session: getI('session'), enseignants: getI('enseignants'), evaluation: getI('evaluation') });
+          setIdentification({ cours: getI('cours'), session: getI('session'), enseignants: getI('enseignants'), evaluation: getI('evaluation'), contexte: getI('contexte') || 'individuel' });
         }
         const loadedPrecisions = root.querySelector('precisions')?.textContent || '';
 
@@ -442,6 +442,19 @@ export default function Directives() {
                 placeholder="ex. Marie Tremblay"
                 style={{ width: '100%', padding: '5px 8px', fontFamily: 'inherit', border: identErrors.enseignants ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: identErrors.enseignants ? '#fff4f4' : 'white', boxSizing: 'border-box' }} />
               {identErrors.enseignants && <span style={errorStyle}>⚠ Ce champ est requis</span>}
+            </div>
+            <div>
+              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 3 }}>Contexte du travail</label>
+              <div style={{ display: 'inline-flex', borderRadius: 999, border: '1px solid #ccc', overflow: 'hidden', background: '#f0f0f0', marginTop: 2 }}>
+                <button type="button" onClick={() => setIdentification(p => ({ ...p, contexte: 'individuel' }))}
+                  style={{ padding: '5px 16px', fontSize: '0.88em', fontWeight: identification.contexte === 'individuel' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: identification.contexte === 'individuel' ? 'white' : 'transparent', color: identification.contexte === 'individuel' ? '#333' : '#888', borderRadius: '999px 0 0 999px', boxShadow: identification.contexte === 'individuel' ? '0 1px 3px rgba(0,0,0,0.12)' : 'none', transition: 'background 0.15s' }}>
+                  Individuel
+                </button>
+                <button type="button" onClick={() => setIdentification(p => ({ ...p, contexte: 'equipe' }))}
+                  style={{ padding: '5px 16px', fontSize: '0.88em', fontWeight: identification.contexte === 'equipe' ? 'bold' : 'normal', border: 'none', cursor: 'pointer', background: identification.contexte === 'equipe' ? 'white' : 'transparent', color: identification.contexte === 'equipe' ? '#333' : '#888', borderRadius: '0 999px 999px 0', boxShadow: identification.contexte === 'equipe' ? '0 1px 3px rgba(0,0,0,0.12)' : 'none', transition: 'background 0.15s' }}>
+                  Équipe
+                </button>
+              </div>
             </div>
           </div>
         </div>
