@@ -837,11 +837,10 @@ ${ap.isEquipe
                           const obligatoire = typeof q === 'object' && q.obligatoire;
                           return (
                             <div key={idx} style={{ marginBottom: 16 }}>
-                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 5, flexWrap: 'wrap' }}>
-                                <span style={{ whiteSpace: 'nowrap' }}>{idx + 1}.</span>
-                                <span dangerouslySetInnerHTML={{ __html: texte }} />
-                                {obligatoire && <span style={{ marginLeft: 4, fontSize: '0.8em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', fontWeight: 'bold', whiteSpace: 'nowrap' }}>obligatoire</span>}
-                              </label>
+                             <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'flex', gap: 4, marginBottom: 5 }}>
+                               <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{idx + 1}.</span>
+                               <span style={{ flex: 1 }}>{texte.replace(/<[^>]+>/g, '')}{obligatoire && <span style={{ marginLeft: 6, fontSize: '0.8em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', fontWeight: 'bold' }}> obligatoire</span>}</span>
+                             </label>
                               <textarea
                                 value={questionsReponses[idx] || ''}
                                 onChange={e => setQuestionsReponses(prev => ({ ...prev, [idx]: e.target.value }))}
