@@ -33,10 +33,14 @@ function defaultOutilEntry() {
 }
 
 const QUESTIONS_REFLEXION = [
-"En quoi l'utilisation d'un SIA a-t-elle soutenu ou limité votre réflexion personnelle dans cette évaluation?",
-"Comment avez-vous vérifié, critiqué ou adapté les contenus générés?",
-"Qu'avez-vous appris sur l'utilisation de ces SIA pour votre contexte disciplinaire?",
-"Quel effet l'utilisation de ces systèmes a-t-elle eu sur vos apprentissages?"];
+  "En quoi l'utilisation d'un SIA a-t-elle soutenu ou limité votre réflexion personnelle dans cette évaluation?",
+  "Comment avez-vous vérifié, critiqué ou adapté les contenus générés par le SIA? Donnez des exemples concrets.",
+  "Qu'avez-vous appris sur l'utilisation de ces SIA pour votre contexte disciplinaire? Qu'est-ce qui vous a surpris?",
+  "Quel effet l'utilisation de ces systèmes a-t-elle eu sur vos apprentissages? Quelles compétences ont été développées ou au contraire peu sollicitées?",
+  "Décrivez comment vous avez validé les informations fournies par le SIA. Quelles sources avez-vous consultées pour vérifier l'exactitude des contenus générés?",
+  "Identifiez au moins deux forces et deux limites du SIA que vous avez observées dans le cadre de ce travail. Appuyez vos observations sur des exemples concrets.",
+  "Expliquez quelles modifications vous avez apportées aux résultats générés par le SIA et pourquoi. Précisez la part de contribution humaine dans le produit final remis.",
+];
 
 
 export default function DeclarationLibreService() {
@@ -175,7 +179,7 @@ export default function DeclarationLibreService() {
       if (newEntryErrors.some((e) => Object.keys(e).length > 0)) hasErrors = true;
     }
 
-    if (!commentaire.trim()) {setCommentaireError(true);hasErrors = true;} else {setCommentaireError(false);}
+    setCommentaireError(false);
 
     if (hasErrors) {setSubmitStatus({ ok: false });return;}
 
@@ -548,23 +552,22 @@ export default function DeclarationLibreService() {
           </div>
         </div>
 
-        {/* === SECTION 4 : COMMENTAIRES (obligatoire) === */}
+        {/* === SECTION 4 : COMMENTAIRES (facultatif) === */}
         <div className="section-box">
           <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 6 }}>
-            Commentaires et réflexion <span style={{ color: '#E41E25' }}>*</span>
+            Commentaires et réflexion <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.88em' }}>(facultatif)</span>
           </h2>
           <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 12px', lineHeight: 1.6 }}>
-            Répondez à au moins l'une des questions suivantes :
+            Au besoin, répondez à l'une ou plusieurs des questions suivantes pour enrichir votre déclaration :
           </p>
-          <ul style={{ margin: '0 0 14px 0', padding: '10px 14px', background: '#f0f8ff', border: '1px solid #b3d9f7', borderRadius: 6, listStyleType: 'disc', paddingLeft: 28 }}>
+          <ul style={{ margin: '0 0 14px 0', padding: '10px 14px 10px 28px', background: '#f0f8ff', border: '1px solid #b3d9f7', borderRadius: 6, listStyleType: 'disc' }}>
             {QUESTIONS_REFLEXION.map((q, i) =>
             <li key={i} style={{ fontSize: '0.88em', color: '#1a4a6b', marginBottom: i < QUESTIONS_REFLEXION.length - 1 ? 8 : 0, lineHeight: 1.5 }}>{q}</li>
             )}
           </ul>
-          <textarea value={commentaire} onChange={(e) => {setCommentaire(e.target.value);setCommentaireError(false);}} rows={5}
-          placeholder="Répondez à au moins une des questions ci-dessus…"
-          style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: commentaireError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: commentaireError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-          {commentaireError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis — répondez à au moins une des questions ci-dessus</span>}
+          <textarea value={commentaire} onChange={(e) => setCommentaire(e.target.value)} rows={5}
+          placeholder="Vos commentaires ou réponses aux questions ci-dessus (facultatif)…"
+          style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
         </div>
 
         {/* === SUBMIT === */}
