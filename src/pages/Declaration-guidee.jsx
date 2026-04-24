@@ -306,8 +306,8 @@ export default function DeclarationGuidee() {
     let declHtml;
     if (ap.aucunSIA) {
       declHtml = `<p style="font-style:italic;color:#555;">Aucun systeme d'intelligence artificielle n'a ete utilise pour cette evaluation.</p>`;
-      if (ap.aucunSIAJustif) declHtml += `<p><strong>Justification (action(s) obligatoire(s)) :</strong><br>${ap.aucunSIAJustif}</p>`;
-      if (ap.aucunSIACommentaire) declHtml += `<p><strong>Commentaires :</strong><br>${ap.aucunSIACommentaire}</p>`;
+      if (ap.aucunSIAJustif) declHtml += `<p><strong>Justification (action(s) obligatoire(s)) :</strong><br><span style="display:block;padding-left:2em;white-space:pre-wrap;">${ap.aucunSIAJustif}</span></p>`;
+      if (ap.aucunSIACommentaire) declHtml += `<p><strong>Commentaires :</strong><br><span style="display:block;padding-left:2em;white-space:pre-wrap;">${ap.aucunSIACommentaire}</span></p>`;
     } else {
       declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;"><thead><tr><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th><th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions declarees</th></tr></thead><tbody>`;
       ap.outilEntries.forEach(entry => {
@@ -317,11 +317,11 @@ export default function DeclarationGuidee() {
         declHtml += `<tr><td style="border:1px solid #ccc;padding:6px;vertical-align:top"><strong>${getOutilLabel(entry)}</strong></td><td style="border:1px solid #ccc;padding:6px;vertical-align:top">${actions.join('<br>')}</td></tr>`;
       });
       declHtml += `</tbody></table>`;
-      if (ap.obligNonCouvJustif) declHtml += `<p><strong>Justification - action(s) obligatoire(s) non couvertes :</strong><br>${ap.obligNonCouvJustif}</p>`;
+      if (ap.obligNonCouvJustif) declHtml += `<p><strong>Justification - action(s) obligatoire(s) non couvertes :</strong><br><span style="display:block;padding-left:2em;white-space:pre-wrap;">${ap.obligNonCouvJustif}</span></p>`;
       Object.entries(ap.nonAutoriseeJustifs || {}).forEach(([id, justif]) => {
         if (!justif?.trim()) return;
         const a = ap.activeActions?.find(x => x.id === id);
-        declHtml += `<p><strong>Justification - action non autorisee : ${a?.libelle || id} :</strong><br>${justif}</p>`;
+        declHtml += `<p><strong>Justification - action non autorisee : ${a?.libelle || id} :</strong><br><span style="display:block;padding-left:2em;white-space:pre-wrap;">${justif}</span></p>`;
       });
       if (ap.exigencesMode === 'inclure' && ap.exigences?.length > 0) {
         const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
@@ -335,7 +335,7 @@ export default function DeclarationGuidee() {
         const ouiNonLabel = ap.exigencesOuiNon === 'oui' ? 'Oui' : ap.exigencesOuiNon === 'non' ? 'Non' : '(non répondu)';
         declHtml += `<p style="margin:6pt 0 2pt 0;">Avez-vous respecté les exigences ci-dessus ? <strong>${ouiNonLabel}</strong></p>`;
         if (ap.exigencesCommentaire?.trim()) {
-          declHtml += `<p style="margin:4pt 0 6pt 0;white-space:pre-wrap;"><em>Précisions :</em> ${ap.exigencesCommentaire}</p>`;
+          declHtml += `<p style="margin:4pt 0 6pt 0;"><em>Précisions :</em><span style="display:block;padding-left:2em;white-space:pre-wrap;">${ap.exigencesCommentaire}</span></p>`;
         }
       }
       if (ap.questionsMode === 'inclure' && ap.questions?.length > 0) {
@@ -346,10 +346,10 @@ export default function DeclarationGuidee() {
           const reponse = ap.questionsReponses?.[idx] || '';
           const texteInline = texte.replace(/<p[^>]*>/gi, '').replace(/<\/p>/gi, ' ').replace(/<div[^>]*>/gi, '').replace(/<\/div>/gi, ' ').replace(/<br\s*\/?>/gi, ' ').trim();
           declHtml += `<p style="margin:8pt 0 2pt 0;"><strong>${idx + 1}.</strong> ${texteInline}${obligatoire ? ' <em style="color:#c0392b;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
-          declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;color:#333;">${reponse || '<em style="color:#aaa;">(sans réponse)</em>'}</p>`;
+          declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;color:#333;padding-left:2em;">${reponse || '<em style="color:#aaa;">(sans réponse)</em>'}</p>`;
         });
       }
-      if (ap.commentaireGlobal?.trim()) declHtml += `<p><strong>Commentaires :</strong><br>${ap.commentaireGlobal}</p>`;
+      if (ap.commentaireGlobal?.trim()) declHtml += `<p><strong>Commentaires :</strong><br><span style="display:block;padding-left:2em;white-space:pre-wrap;">${ap.commentaireGlobal}</span></p>`;
     }
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Declaration d'utilisation de systemes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
