@@ -70,7 +70,16 @@ function parseDirectivesXML(xmlText) {
       if (id && type) exigences.push({ id, type, description });
     });
 
-    return { ok: true, identification, mode, precisions, colonnes, activeActions, exigencesMode, exigences };
+    const questionsReflexivesNode = root.querySelector('questions_reflexives');
+    const questionsMode = questionsReflexivesNode?.getAttribute('mode') || 'aucune';
+    const questions = [];
+    questionsReflexivesNode?.querySelectorAll('question').forEach(qNode => {
+      const texte = qNode.textContent || '';
+      const obligatoire = qNode.getAttribute('obligatoire') === 'true';
+      if (texte) questions.push({ texte, obligatoire });
+    });
+
+    return { ok: true, identification, mode, precisions, colonnes, activeActions, exigencesMode, exigences, questionsMode, questions };
   } catch { return { error: 'structure', raw: xmlText }; }
 }
 
@@ -125,8 +134,10 @@ export default function DeclarationGuidee() {
   const [nonAutoriseeJustifs, setNonAutoriseeJustifs] = useState({});
   const [nonAutoriseeJustifErrors, setNonAutoriseeJustifErrors] = useState({});
   const [commentaireGlobal, setCommentaireGlobal] = useState('');
-  const [exigencesResponses, setExigencesResponses] = useState({});
-  const [exigencesErrors, setExigencesErrors] = useState({});
+  const [exigencesOuiNon, setExigencesOuiNon] = useState('');
+  const [exigencesOuiNonError, setExigencesOuiNonError] = useState(false);
+  const [exigencesCommentaire, setExigencesCommentaire] = useState('');
+  const [questionsReponses, setQuestionsReponses] = useState({});
   const [autreActionModal, setAutreActionModal] = useState(null);
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -223,16 +234,7 @@ export default function DeclarationGuidee() {
       nonAutoriseeSelectionnees.forEach(a => { if (!nonAutoriseeJustifs[a.id]?.trim()) { newNonAutoriseeErrors[a.id] = true; hasErrors = true; } });
       setNonAutoriseeJustifErrors(newNonAutoriseeErrors);
       if (data.exigencesMode === 'inclure' && data.exigences?.length > 0) {
-        const newExigErrors = {};
-        data.exigences.forEach(exig => {
-          const resp = exigencesResponses[exig.id] || {};
-          if (exig.type === 'iagraphie') {
-            if (!resp.ouiNon) { newExigErrors[exig.id] = true; hasErrors = true; }
-          } else {
-            if (!resp.value?.trim() && !resp.ailleurs) { newExigErrors[exig.id] = true; hasErrors = true; }
-          }
-        });
-        setExigencesErrors(newExigErrors);
+        if (!exigencesOuiNon) { setExigencesOuiNonError(true); hasErrors = true; } else { setExigencesOuiNonError(false); }
       }
       const newEntryErrors = outilEntries.map(e => {
         const err = {};
@@ -260,7 +262,9 @@ export default function DeclarationGuidee() {
       aucunSIA, aucunSIAJustif, aucunSIACommentaire,
       outilEntries, activeActions: data.activeActions, precisions: data.precisions,
       obligNonCouvJustif, nonAutoriseeJustifs, commentaireGlobal,
-      exigencesMode: data.exigencesMode, exigences: data.exigences, exigencesResponses,
+      exigencesMode: data.exigencesMode, exigences: data.exigences,
+      exigencesOuiNon, exigencesCommentaire,
+      questionsMode: data.questionsMode, questions: data.questions, questionsReponses,
       timestamp,
     });
     setSubmitStatus({ ok: true, time: new Date() });
@@ -307,23 +311,28 @@ export default function DeclarationGuidee() {
         declHtml += `<p><strong>Justification - action non autorisee : ${a?.libelle || id} :</strong><br>${justif}</p>`;
       });
       if (ap.exigencesMode === 'inclure' && ap.exigences?.length > 0) {
-        const typeLabels = { iagraphie: 'References et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
-        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Exigences de declaration</h3>`;
+        const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Exigences de déclaration</h3>`;
+        declHtml += `<ul style="margin:0 0 6pt 18px;padding-left:0;list-style-type:disc;">`;
         ap.exigences.forEach(exig => {
-          const resp = ap.exigencesResponses?.[exig.id] || {};
           const label = typeLabels[exig.type] || exig.type;
-          declHtml += `<p style="margin:6pt 0 2pt 0;"><strong>${label} :</strong>${exig.description ? ` <span style="font-weight:normal;">${exig.description}</span>` : ''}</p>`;
-          if (exig.type === 'iagraphie') {
-            const ouiNonLabel = resp.ouiNon === 'oui' ? 'Oui' : resp.ouiNon === 'non' ? 'Non' : '(non répondu)';
-            declHtml += `<p style="margin:0 0 4pt 0;">Avez-vous respecté les exigences de référencement et d'IAgraphie ? <strong>${ouiNonLabel}</strong></p>`;
-            if (resp.value?.trim()) {
-              declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;"><em>Précisions :</em> ${resp.value}</p>`;
-            }
-          } else if (resp.ailleurs) {
-            declHtml += `<p style="margin:0 0 6pt 0;"><em>Deja repondu dans le travail soumis ou dans cette declaration.</em></p>`;
-          } else if (resp.value?.trim()) {
-            declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;">${resp.value}</p>`;
-          }
+          declHtml += `<li style="display:list-item;list-style-type:disc;margin-bottom:4pt;"><strong>${label}</strong>${exig.description ? ` : <span style="font-weight:normal;">${exig.description}</span>` : ''}</li>`;
+        });
+        declHtml += `</ul>`;
+        const ouiNonLabel = ap.exigencesOuiNon === 'oui' ? 'Oui' : ap.exigencesOuiNon === 'non' ? 'Non' : '(non répondu)';
+        declHtml += `<p style="margin:6pt 0 2pt 0;">Avez-vous respecté les exigences ci-dessus ? <strong>${ouiNonLabel}</strong></p>`;
+        if (ap.exigencesCommentaire?.trim()) {
+          declHtml += `<p style="margin:4pt 0 6pt 0;white-space:pre-wrap;"><em>Précisions :</em> ${ap.exigencesCommentaire}</p>`;
+        }
+      }
+      if (ap.questionsMode === 'inclure' && ap.questions?.length > 0) {
+        declHtml += `<h3 style="font-family:Georgia,serif;font-size:13pt;margin:10pt 0 4pt;">Questions réflexives</h3>`;
+        ap.questions.forEach((q, idx) => {
+          const texte = typeof q === 'object' ? q.texte : q;
+          const obligatoire = typeof q === 'object' && q.obligatoire;
+          const reponse = ap.questionsReponses?.[idx] || '';
+          declHtml += `<p style="margin:8pt 0 2pt 0;"><strong>${idx + 1}.</strong> ${texte}${obligatoire ? ' <em style="color:#c0392b;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
+          declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;color:#333;">${reponse || '<em style="color:#aaa;">(sans réponse)</em>'}</p>`;
         });
       }
       if (ap.commentaireGlobal?.trim()) declHtml += `<p><strong>Commentaires :</strong><br>${ap.commentaireGlobal}</p>`;
@@ -785,68 +794,65 @@ ${ap.isEquipe
 
                     {/* Exigences de declaration */}
                     {data.exigencesMode === 'inclure' && data.exigences?.length > 0 && (() => {
-                      const typeLabels = { iagraphie: 'References et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
+                      const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
                       return (
                         <div style={{ background: '#f0f8ff', border: '1px solid #1895FD', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
-                          <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 12px', fontSize: '0.95em' }}>Exigences de declaration</p>
-                          {data.exigences.map(exig => {
-                            const resp = exigencesResponses[exig.id] || {};
-                            const setResp = (field, val) => {
-                              setExigencesResponses(prev => ({ ...prev, [exig.id]: { ...(prev[exig.id] || {}), [field]: val } }));
-                              setExigencesErrors(prev => { const n = { ...prev }; delete n[exig.id]; return n; });
-                            };
-                            const label = typeLabels[exig.type] || exig.type;
-                            const hasError = exigencesErrors[exig.id];
-                            if (exig.type === 'iagraphie') {
-                              return (
-                                <div key={exig.id} style={{ marginBottom: 16 }}>
-                                  <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                                    {label} <span style={{ color: '#E41E25' }}>*</span>
-                                  </label>
-                                  {exig.description && (
-                                    <div style={{ fontSize: '0.85em', color: '#555', marginBottom: 8, padding: '6px 10px', background: '#e8f4fd', borderRadius: 4 }} dangerouslySetInnerHTML={{ __html: exig.description }} />
-                                  )}
-                                  <p style={{ fontSize: '0.9em', marginBottom: 6 }}>Avez-vous respecté les exigences de référencement et d'IAgraphie ci-dessus ?</p>
-                                  <div style={{ display: 'flex', gap: 24, marginBottom: 10 }}>
-                                    <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
-                                      <input type="radio" name={`iagraphie-${exig.id}`} value="oui" checked={resp.ouiNon === 'oui'} onChange={() => { setResp('ouiNon', 'oui'); }} />
-                                      Oui
-                                    </label>
-                                    <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
-                                      <input type="radio" name={`iagraphie-${exig.id}`} value="non" checked={resp.ouiNon === 'non'} onChange={() => { setResp('ouiNon', 'non'); }} />
-                                      Non
-                                    </label>
-                                  </div>
-                                  {hasError && !resp.ouiNon && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>Veuillez répondre à cette question.</span>}
-                                  <p style={{ fontSize: '0.88em', color: '#555', marginBottom: 4 }}>Au besoin, ajoutez des précisions ou des commentaires sur le référencement et l'IAgraphie.</p>
-                                  <textarea value={resp.value || ''} onChange={e => setResp('value', e.target.value)} rows={2}
-                                    placeholder="Précisions ou commentaires (facultatif)..."
-                                    style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #aaa', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-                                </div>
-                              );
-                            }
-                            return (
-                              <div key={exig.id} style={{ marginBottom: 16 }}>
-                                <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 4 }}>
-                                  {label} <span style={{ color: '#E41E25' }}>*</span>
-                                </label>
-                                {exig.description && (
-                                  <div style={{ fontSize: '0.85em', color: '#555', marginBottom: 6, padding: '6px 10px', background: '#e8f4fd', borderRadius: 4 }} dangerouslySetInnerHTML={{ __html: exig.description }} />
-                                )}
-                                <textarea value={resp.value || ''} onChange={e => setResp('value', e.target.value)} rows={2} disabled={resp.ailleurs}
-                                  placeholder={`Repondez a l'exigence : ${label}...`}
-                                  style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: hasError ? '2px solid #E41E25' : '1px solid #aaa', borderRadius: 4, background: resp.ailleurs ? '#eee' : (hasError ? '#fff4f4' : 'white'), boxSizing: 'border-box', resize: 'vertical' }} />
-                                <label style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5, fontSize: '0.88em', color: '#555', cursor: 'pointer' }}>
-                                  <input type="checkbox" checked={!!resp.ailleurs} onChange={e => setResp('ailleurs', e.target.checked)} />
-                                  Cette exigence est traitée dans le travail soumis ou ailleurs dans cette déclaration.
-                                </label>
-                                {hasError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>Ce champ est requis ou cochez la case</span>}
-                              </div>
-                            );
-                          })}
+                          <p style={{ fontWeight: 'bold', color: '#00527a', margin: '0 0 10px', fontSize: '0.95em' }}>Exigences de déclaration</p>
+                          <ul style={{ margin: '0 0 12px 18px', padding: 0, listStyleType: 'disc', fontSize: '0.9em' }}>
+                            {data.exigences.map(exig => (
+                              <li key={exig.id} style={{ display: 'list-item', listStyleType: 'disc', marginBottom: 4 }}>
+                                <strong>{typeLabels[exig.type] || exig.type}</strong>
+                                {exig.description && <span> : <span dangerouslySetInnerHTML={{ __html: exig.description }} /></span>}
+                              </li>
+                            ))}
+                          </ul>
+                          <p style={{ fontSize: '0.9em', fontWeight: 'bold', margin: '0 0 6px' }}>
+                            Avez-vous respecté les exigences ci-dessus ? <span style={{ color: '#E41E25' }}>*</span>
+                          </p>
+                          <div style={{ display: 'flex', gap: 24, marginBottom: 10 }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
+                              <input type="radio" name="exigences-ouinon" value="oui" checked={exigencesOuiNon === 'oui'} onChange={() => { setExigencesOuiNon('oui'); setExigencesOuiNonError(false); }} />
+                              Oui
+                            </label>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: '0.9em' }}>
+                              <input type="radio" name="exigences-ouinon" value="non" checked={exigencesOuiNon === 'non'} onChange={() => { setExigencesOuiNon('non'); setExigencesOuiNonError(false); }} />
+                              Non
+                            </label>
+                          </div>
+                          {exigencesOuiNonError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>Veuillez répondre à cette question.</span>}
+                          <p style={{ fontSize: '0.88em', color: '#555', margin: '4px 0 4px' }}>Au besoin, ajoutez des précisions ou des commentaires sur les exigences.</p>
+                          <textarea value={exigencesCommentaire} onChange={e => setExigencesCommentaire(e.target.value)} rows={2}
+                            placeholder="Précisions ou commentaires (facultatif)..."
+                            style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #aaa', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
                         </div>
                       );
                     })()}
+
+                    {/* Questions réflexives */}
+                    {data.questionsMode === 'inclure' && data.questions?.length > 0 && (
+                      <div style={{ background: '#f5f0ff', border: '1px solid #7c5cbf', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
+                        <p style={{ fontWeight: 'bold', color: '#4a3580', margin: '0 0 12px', fontSize: '0.95em' }}>Questions réflexives</p>
+                        {data.questions.map((q, idx) => {
+                          const texte = typeof q === 'object' ? q.texte : q;
+                          const obligatoire = typeof q === 'object' && q.obligatoire;
+                          return (
+                            <div key={idx} style={{ marginBottom: 16 }}>
+                              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5 }}>
+                                {idx + 1}. <span dangerouslySetInnerHTML={{ __html: texte }} />
+                                {obligatoire && <span style={{ marginLeft: 6, fontSize: '0.8em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', fontWeight: 'bold' }}>obligatoire</span>}
+                              </label>
+                              <textarea
+                                value={questionsReponses[idx] || ''}
+                                onChange={e => setQuestionsReponses(prev => ({ ...prev, [idx]: e.target.value }))}
+                                rows={3}
+                                placeholder="Votre réponse..."
+                                style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #9b83d4', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
 
                     {/* Commentaires globaux */}
                     <div style={{ background: '#f8f9fa', border: '1px solid #dee2e6', borderRadius: 8, padding: '14px 18px', marginBottom: 20 }}>
