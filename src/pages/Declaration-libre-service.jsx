@@ -560,7 +560,7 @@ export default function DeclarationLibreService() {
             Commentaires et réflexion <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.88em' }}>(facultatif)</span>
           </h2>
           <p style={{ fontSize: '0.88em', color: '#555', margin: '0 0 12px', lineHeight: 1.6 }}>
-            Nous vous proposons de répondre à l'une ou plusieurs des questions suivantes pour enrichir votre déclaration :
+            Si applicable, assurez-vous de répondre aux exigences partagées par la personne enseignante dans ce champ pour cette évalaution. Alternativement, nous vous suggérons de répondre à l'une ou plusieurs des questions suivantes pour enrichir votre déclaration :
           </p>
           <ul style={{ margin: '0 0 14px 0', padding: '10px 14px 10px 28px', background: '#f0f8ff', border: '1px solid #b3d9f7', borderRadius: 6, listStyleType: 'disc' }}>
             {QUESTIONS_REFLEXION.map((q, i) =>
