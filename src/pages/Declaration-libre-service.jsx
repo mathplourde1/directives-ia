@@ -54,11 +54,6 @@ export default function DeclarationLibreService() {
   const [equipiers, setEquipiers] = useState(['']);
   const [equipiersErrors, setEquipiersErrors] = useState([]);
 
-  // Directives enseignant
-  const [directivesMode, setDirectivesMode] = useState('aucune'); // 'aucune' | 'fournies'
-  const [directivesTexte, setDirectivesTexte] = useState('');
-  const [directivesTexteError, setDirectivesTexteError] = useState(false);
-
   // Déclaration SIA
   const [aucunSIA, setAucunSIA] = useState(true);
   const [outilEntries, setOutilEntries] = useState([defaultOutilEntry()]);
@@ -168,10 +163,6 @@ export default function DeclarationLibreService() {
       setEquipiersErrors(errs);
       if (errs.some(Boolean)) hasErrors = true;
     }
-    if (directivesMode === 'fournies' && !directivesTexte.trim()) {
-      setDirectivesTexteError(true);hasErrors = true;
-    } else {setDirectivesTexteError(false);}
-
     if (!aucunSIA) {
       const newEntryErrors = outilEntries.map((e) => {
         const err = {};
@@ -199,7 +190,6 @@ export default function DeclarationLibreService() {
       cours, evaluation, enseignant, session,
       studentNom, studentGroupe, isEquipe, nomEquipe,
       equipiers: isEquipe ? [studentNom, ...equipiers] : [studentNom],
-      directivesMode, directivesTexte,
       aucunSIA, outilEntries, commentaire, timestamp
     });
     setSubmitStatus({ ok: true });
@@ -221,12 +211,6 @@ export default function DeclarationLibreService() {
     } else {
       const gr = ap.studentGroupe ? ` (groupe ${ap.studentGroupe})` : '';
       intro = `Je, <strong>${ap.studentNom}</strong>${gr}, soumets cette déclaration dans le cadre de l'évaluation <strong>${evalLabel}</strong> du cours <strong>${coursLabel}</strong> de la session <strong>${sessionLabel}</strong>.<br><br>Conformément aux exigences de <strong>${enseignantLabel}</strong>, les renseignements suivants présentent ma démarche.`;
-    }
-
-    let directivesSection = '';
-    if (ap.directivesMode === 'fournies' && ap.directivesTexte) {
-      directivesSection = `<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">Directives de la personne enseignante</h2>
-<div style="font-family:Arial,sans-serif;font-size:11pt;white-space:pre-wrap;background:#f8f9fa;border:1px solid #dee2e6;border-radius:4px;padding:10px 14px;margin-bottom:12pt;">${ap.directivesTexte}</div>`;
     }
 
     let declHtml;
@@ -278,7 +262,6 @@ export default function DeclarationLibreService() {
 
     return `<h1 style="font-family:Georgia,serif;font-size:22px;font-weight:bold;text-align:center;border-bottom:1px solid black;padding-bottom:8pt;margin-bottom:8pt;">Déclaration d'utilisation de systèmes d'intelligence artificielle (SIA)</h1>
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
-${directivesSection}
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">Commentaires et réflexion</h2>
@@ -343,7 +326,7 @@ ${directivesSection}
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20', textTransform: 'uppercase' }}>Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8, marginBottom: 8 }}>
               <li>Remplissez la section d'identification.</li>
-              
+              <li className=" hidden">Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
               <li>Déclarez les outils SIA utilisés et les actions réalisées, phase par phase.</li>
               <li>Répondez à au moins une question de réflexion, puis générez votre déclaration.</li>
               <li>Copiez et collez le contenu généré en annexe de votre travail ou téléchargez une version Word à soumettre.</li>
@@ -441,37 +424,7 @@ ${directivesSection}
           </div>
         </div>
 
-        {/* === SECTION 2 : DIRECTIVES ENSEIGNANT === */}
-        <div style={{ position: 'relative' }}>
-          {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
-        <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
-          <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 14 }}>Directives de la personne enseignante</h2>
-          <div className="pill-toggle" style={{ marginBottom: 14, flexWrap: 'wrap', width: 'fit-content' }}>
-            {[
-              { val: 'aucune', label: "Aucune restrictions d'utilisation des SIA spécifiée" },
-              { val: 'fournies', label: "La personne enseignante a indiqué les directives suivantes" }].
-              map((opt) =>
-              <button key={opt.val} type="button" className="pill-opt" onClick={() => {setDirectivesMode(opt.val);setDirectivesTexteError(false);}}
-              style={{ fontWeight: directivesMode === opt.val ? 'bold' : 'normal', background: directivesMode === opt.val ? '#1895FD' : 'transparent', color: directivesMode === opt.val ? 'white' : '#555' }}>
-                {opt.label}
-              </button>
-              )}
-          </div>
-          {directivesMode === 'fournies' &&
-            <div>
-              <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5 }}>
-                Directives reçues <span style={{ color: '#E41E25' }}>*</span>
-              </label>
-              <textarea value={directivesTexte} onChange={(e) => {setDirectivesTexte(e.target.value);setDirectivesTexteError(false);}} rows={5}
-              placeholder="Copiez ou résumez ici les directives fournies par votre personne enseignante concernant l'utilisation des SIA pour cette évaluation…"
-              style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: directivesTexteError ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: directivesTexteError ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }} />
-              {directivesTexteError && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
-            </div>
-            }
-        </div>
-        </div>
-
-        {/* === SECTION 3 : DÉCLARATION === */}
+        {/* === SECTION 2 : DÉCLARATION === */}
         <div style={{ position: 'relative' }}>
           {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
           <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
