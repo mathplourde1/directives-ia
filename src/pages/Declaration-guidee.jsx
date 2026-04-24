@@ -344,7 +344,8 @@ export default function DeclarationGuidee() {
           const texte = typeof q === 'object' ? q.texte : q;
           const obligatoire = typeof q === 'object' && q.obligatoire;
           const reponse = ap.questionsReponses?.[idx] || '';
-          declHtml += `<p style="margin:8pt 0 2pt 0;"><strong>${idx + 1}.</strong> ${texte}${obligatoire ? ' <em style="color:#c0392b;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
+          const texteInline = texte.replace(/<p[^>]*>/gi, '').replace(/<\/p>/gi, ' ').replace(/<div[^>]*>/gi, '').replace(/<\/div>/gi, ' ').replace(/<br\s*\/?>/gi, ' ').trim();
+          declHtml += `<p style="margin:8pt 0 2pt 0;"><strong>${idx + 1}.</strong> ${texteInline}${obligatoire ? ' <em style="color:#c0392b;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
           declHtml += `<p style="margin:0 0 6pt 0;white-space:pre-wrap;color:#333;">${reponse || '<em style="color:#aaa;">(sans réponse)</em>'}</p>`;
         });
       }
