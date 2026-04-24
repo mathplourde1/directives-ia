@@ -5,7 +5,7 @@ function escHtml(str) {
   return String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-function buildGabaritHTML(identification, permissions, precisions = '', exigences = [], customActions = {}) {
+function buildGabaritHTML(identification, permissions, precisions = '', exigences = [], customActions = {}, questions = []) {
   const cours = escHtml(identification.cours || '[cours]');
   const evaluation = escHtml(identification.evaluation || '[évaluation]');
   const session = escHtml(identification.session || '[session]');
@@ -67,24 +67,27 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   let exigencesBlock = '';
   if (exigences && exigences.length > 0) {
     const typeLabels = { iagraphie: 'Références et IAgraphie', traces: 'Conserver les traces', logique: "Expliquer la logique d'utilisation" };
-    exigencesBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Déclaration</h2>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin:8pt 0 4pt 0;">Votre utilisation des SIA pour cette évaluation est-elle conforme aux directives ci-dessus ?</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 12pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>
-<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur votre utilisation des SIA pour cette évaluation.</p>
-<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+    exigencesBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Exigences de déclaration</h2>`;
     exigences.forEach((exig) => {
       const label = typeLabels[exig.type] || exig.type;
       exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:10pt 0 2pt 0;">${escHtml(label)}</p>`;
       if (exig.description) exigencesBlock += `<div style="font-family:Arial,sans-serif;font-size:10pt;color:#444;margin:0 0 6pt 0;">${exig.description}</div>`;
-      if (exig.type === 'iagraphie') {
-        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:6pt 0 4pt 0;">Avez-vous respecté les exigences de référencement et d'IAgraphie ci-dessus ?</p>`;
-        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 8pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>`;
-        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur le référencement et l'IAgraphie.</p>`;
-        exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
-      } else {
-        exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:10pt;margin:2pt 0 0 0;color:#555;font-style:italic;">Réponse :</p>`;
-        exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
-      }
+    });
+    exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:10pt 0 4pt 0;">Votre utilisation des SIA pour cette évaluation est-elle conforme aux exigences ci-dessus ?</p>`;
+    exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 12pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>`;
+    exigencesBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur la soumission des traces exigées pour cette évaluation.</p>`;
+    exigencesBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
+  }
+
+  // Questions réflexives
+  let questionsBlock = '';
+  if (questions && questions.length > 0) {
+    questionsBlock += `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Questions réflexives</h2>`;
+    questions.forEach((q, idx) => {
+      const texte = typeof q === 'object' ? q.texte : q;
+      const obligatoire = typeof q === 'object' && q.obligatoire;
+      questionsBlock += `<p style="font-family:Arial,sans-serif;font-size:11pt;font-weight:bold;margin:10pt 0 2pt 0;">${idx + 1}. <span style="font-weight:normal;">${texte}</span>${obligatoire ? ' <em style="color:#c0392b;font-style:normal;font-size:0.85em;">(obligatoire)</em>' : ''}</p>`;
+      questionsBlock += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 12pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
     });
   }
 
@@ -103,7 +106,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   const affirmHtml = `<ul style="margin:0 0 0 20px;padding-left:0;list-style-type:disc;font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;">${affirmList.map((a) => `<li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">${a}</li>`).join('')}</ul>`;
   const signatureBlock = `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:20pt 0 4pt 0;"><strong>Date :</strong> ___________________________</p>`;
 
-  return title + intro + body + exigencesBlock + declarationSupp + affirmTitle + affirmHtml + signatureBlock;
+  return title + intro + body + exigencesBlock + questionsBlock + declarationSupp + affirmTitle + affirmHtml + signatureBlock;
 }
 
 function downloadWord(htmlContent, filename) {
@@ -117,10 +120,10 @@ function downloadWord(htmlContent, filename) {
   a.href = url;a.download = filename;a.click();URL.revokeObjectURL(url);
 }
 
-export default function DirectivesGabarit({ identification, permissions, precisions = '', exigences, isGenerated, customActions = {} }) {
+export default function DirectivesGabarit({ identification, permissions, precisions = '', exigences, questions = [], isGenerated, customActions = {} }) {
   const [showApercu, setShowApercu] = useState(false);
 
-  const html = buildGabaritHTML(identification, permissions, precisions, exigences, customActions);
+  const html = buildGabaritHTML(identification, permissions, precisions, exigences, customActions, questions);
   const slugify = (s) => s.trim().toLowerCase().replace(/[^a-z0-9]+/gi, '-').replace(/^-+|-+$/g, '');
   const filename = `gabarit-directives-${slugify(identification.cours || 'cours')}-${slugify(identification.evaluation || 'evaluation')}.doc`;
 

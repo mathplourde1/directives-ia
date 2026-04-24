@@ -615,6 +615,7 @@ export default function Directives() {
                 permissions={activePermissions}
                 precisions={sectionState.precisions || ''}
                 exigences={exigencesMode === 'inclure' ? exigences : []}
+                questions={questionsMode === 'inclure' ? questions : []}
                 isGenerated={submitted}
                 customActions={sectionState.customActions || {}}
               />
