@@ -268,8 +268,7 @@ export default function DeclarationLibreService() {
 <p style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.5;margin-bottom:8pt;">${intro}</p>
 <h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">${ap.isEquipe ? 'Notre' : 'Ma'} déclaration d'utilisation</h2>
 <div style="font-family:Arial,sans-serif;font-size:11pt;">${declHtml}</div>
-<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">Commentaires et réflexion</h2>
-<p style="font-family:Arial,sans-serif;font-size:11pt;white-space:pre-wrap;">${ap.commentaire}</p>
+${ap.commentaire?.trim() ? `<h2 style="font-family:Georgia,serif;font-size:16pt;margin:12pt 0 6pt;">Commentaires et réflexion</h2><p style="font-family:Arial,sans-serif;font-size:11pt;white-space:pre-wrap;">${ap.commentaire}</p>` : ''}
 <h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:12pt 0 4pt 0;color:#000;">Par la soumission de cette déclaration, vous confirmez que :</h2>
 <ul style="font-family:Arial,sans-serif;font-size:11pt;line-height:1.6;margin:0 0 0 20px;list-style-type:disc;padding-left:0;">
 <li style="margin-bottom:4pt;display:list-item;list-style-type:disc;">Les informations fournies sont complètes et fidèles à votre utilisation réelle.</li>
