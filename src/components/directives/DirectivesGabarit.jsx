@@ -16,7 +16,7 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
 <p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 16pt 0;">Conformément aux exigences de <strong>${enseignants}</strong>, les renseignements suivants présentent ma démarche.</p>`;
 
   // Group all actions by phase, then by permission level (including custom actions)
-  let body = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Directives à l'intention des personnes étudiantes</h2>`;
+  let body = `<h2 style="font-family:Georgia,serif;font-size:14pt;font-weight:bold;margin:14pt 0 4pt 0;color:#000;border-bottom:2px solid #ddd;padding-bottom:4pt;">Directives pour cette évaluation</h2>`;
 
   body += `<table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:9pt;margin-bottom:6pt;">
     <thead><tr>
@@ -62,6 +62,10 @@ function buildGabaritHTML(identification, permissions, precisions = '', exigence
   }
   body += '</tbody></table>';
   if (precisions) body += `<p style="font-family:Arial,sans-serif;font-size:10pt;color:#444;margin:0 0 10pt 0;"><em>Précisions :</em> ${escHtml(precisions)}</p>`;
+  body += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:10pt 0 4pt 0;">Votre utilisation des SIA pour cette évaluation est-elle conforme aux directives ci-dessus ?</p>`;
+  body += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 12pt 0;">☐ Oui &nbsp;&nbsp;&nbsp; ☐ Non</p>`;
+  body += `<p style="font-family:Arial,sans-serif;font-size:11pt;margin:0 0 4pt 0;">Au besoin, ajoutez des précisions ou des commentaires sur votre utilisation des SIA pour cette évaluation.</p>`;
+  body += `<div style="border:1px solid #aaa;border-radius:4px;min-height:80px;margin:4pt 0 14pt 0;padding:6px;background:#fafafa;">&nbsp;</div>`;
 
   // Exigences
   let exigencesBlock = '';
