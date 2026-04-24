@@ -553,7 +553,9 @@ export default function DeclarationLibreService() {
         </div>
 
         {/* === SECTION 4 : COMMENTAIRES (facultatif) === */}
-        <div className="section-box">
+        <div style={{ position: 'relative' }}>
+          {!identOk && <div style={{ position: 'absolute', inset: 0, background: 'rgba(242,242,242,0.7)', zIndex: 10, borderRadius: 10, cursor: 'not-allowed' }} title="Remplissez d'abord les champs obligatoires" />}
+        <div className="section-box" style={{ opacity: identOk ? 1 : 0.5, pointerEvents: identOk ? 'auto' : 'none' }}>
           <h2 style={{ marginTop: 0, fontWeight: 'bold', fontSize: '1.05em', marginBottom: 6 }}>
             Commentaires et réflexion <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.88em' }}>(facultatif)</span>
           </h2>
@@ -568,6 +570,7 @@ export default function DeclarationLibreService() {
           <textarea value={commentaire} onChange={(e) => setCommentaire(e.target.value)} rows={5}
           placeholder="Vos commentaires ou réponses aux questions ci-dessus (facultatif)…"
           style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #ccc', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }} />
+        </div>
         </div>
 
         {/* === SUBMIT === */}
