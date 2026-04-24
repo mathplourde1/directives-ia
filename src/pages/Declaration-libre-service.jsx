@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PHASES from '@/components/directives/directivesData';
 import SIA_LIST_RAW from '@/components/listeSIA';
 
@@ -71,6 +71,14 @@ export default function DeclarationLibreService() {
   const apercuRef = useRef();
 
   const identOk = !!(session.trim() && studentNom.trim() && cours.trim() && evaluation.trim() && enseignant.trim());
+
+  // Réinitialiser l'aperçu si l'utilisateur modifie quoi que ce soit après génération
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
+    if (apercu) { setApercu(null); setSubmitStatus(null); }
+  }, [cours, evaluation, enseignant, session, studentNom, studentGroupe, isEquipe, nomEquipe,
+      JSON.stringify(equipiers), aucunSIA, JSON.stringify(outilEntries), commentaire]);
 
   function updateEntry(i, field, value) {
     setOutilEntries((prev) => prev.map((e, idx) => idx === i ? { ...e, [field]: value } : e));
