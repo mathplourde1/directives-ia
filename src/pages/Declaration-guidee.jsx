@@ -138,6 +138,7 @@ export default function DeclarationGuidee() {
   const [exigencesOuiNonError, setExigencesOuiNonError] = useState(false);
   const [exigencesCommentaire, setExigencesCommentaire] = useState('');
   const [questionsReponses, setQuestionsReponses] = useState({});
+  const [questionsErrors, setQuestionsErrors] = useState({});
   const [autreActionModal, setAutreActionModal] = useState(null);
   const [apercu, setApercu] = useState(null);
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -245,6 +246,18 @@ export default function DeclarationGuidee() {
       });
       setEntryErrors(newEntryErrors);
       if (newEntryErrors.some(e => Object.keys(e).length > 0)) hasErrors = true;
+      // Validation des questions réflexives obligatoires
+      if (data.questionsMode === 'inclure' && data.questions?.length > 0) {
+        const newQuestionsErrors = {};
+        data.questions.forEach((q, idx) => {
+          const obligatoire = typeof q === 'object' && q.obligatoire;
+          if (obligatoire && !questionsReponses[idx]?.trim()) {
+            newQuestionsErrors[idx] = true;
+            hasErrors = true;
+          }
+        });
+        setQuestionsErrors(newQuestionsErrors);
+      }
     }
     if (hasErrors) { setSubmitStatus({ ok: false }); return; }
 
@@ -842,12 +855,13 @@ ${ap.isEquipe
                                <span style={{ flex: 1 }}>{texte.replace(/<[^>]+>/g, '')}{obligatoire && <span style={{ marginLeft: 6, fontSize: '0.8em', background: '#E41E25', color: 'white', borderRadius: 3, padding: '1px 6px', fontWeight: 'bold' }}> obligatoire</span>}</span>
                              </label>
                               <textarea
-                                value={questionsReponses[idx] || ''}
-                                onChange={e => setQuestionsReponses(prev => ({ ...prev, [idx]: e.target.value }))}
-                                rows={3}
-                                placeholder="Votre réponse..."
-                                style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: '1px solid #9b83d4', borderRadius: 4, background: 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                               value={questionsReponses[idx] || ''}
+                               onChange={e => { setQuestionsReponses(prev => ({ ...prev, [idx]: e.target.value })); setQuestionsErrors(prev => ({ ...prev, [idx]: false })); }}
+                               rows={3}
+                               placeholder="Votre réponse..."
+                               style={{ width: '100%', padding: '6px 9px', fontFamily: 'inherit', fontSize: '0.93em', border: questionsErrors[idx] ? '2px solid #E41E25' : '1px solid #9b83d4', borderRadius: 4, background: questionsErrors[idx] ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }}
                               />
+                              {questionsErrors[idx] && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginTop: 2 }}>⚠ Ce champ est requis</span>}
                             </div>
                           );
                         })}
