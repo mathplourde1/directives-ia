@@ -392,12 +392,12 @@ export default function DeclarationGuidee() {
 
         <div style={{ marginBottom: 20 }}>
           <div className="mb-2">Cet outil permet de produire une déclaration d'utilisation des systèmes d'intelligence artificielle (SIA) pour une évaluation basée sur les directives déterminées par la personne enseignante.</div>
-          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">Comment ca fonctionne?</h2>
+          <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20' }} className="text-lg font-bold uppercase">Comment ça fonctionne?</h2>
           <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8 }} className="pb-2">
-            <li>Importe le fichier de directives d'utilisation des SIA (aussi nommé <i>fichier de sauvegarde</i>) pour l'evaluation fourni par la personne enseignante.</li>
-            <li>Remplis les sections du formulaire selon l'utilisation que tu as fait des SIA.</li>
-            <li>Genere la declaration et apporte des precisions au besoin.</li>
-            <li>Telecharge et transmets cette declaration a l'endroit indique par la personne enseignante.</li>
+            <li>Importe le fichier de directives d'utilisation des SIA (aussi nommé <i>fichier de sauvegarde</i>) pour l'évaluation fourni par la personne enseignante.</li>
+            <li>Remplis les sections du formulaire selon l'utilisation que tu as faite des SIA.</li>
+            <li>Génère la déclaration et apporte des précisions au besoin.</li>
+            <li>Télécharge et transmets cette déclaration à l'endroit indiqué par la personne enseignante.</li>
           </ol>
           <div style={{ marginTop: 10, borderTop: '1px solid #ddd', paddingTop: 4 }}>
             <AProposButton />
