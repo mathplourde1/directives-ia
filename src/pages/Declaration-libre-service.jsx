@@ -7,20 +7,20 @@ function AProposButton() {
   const [open, setOpen] = useState(false);
   return (
     <div>
-      <button type="button" onClick={() => setOpen(v => !v)}
-        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
+      <button type="button" onClick={() => setOpen((v) => !v)}
+      style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', padding: '6px 0', fontFamily: 'inherit', fontSize: '1.0em', fontWeight: 'bold', color: '#231F20', textTransform: 'uppercase' }}>
         <span style={{ fontSize: '0.8em', color: '#888', display: 'inline-block', transform: open ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>▶</span>
         À propos…
       </button>
-      {open && (
-        <div style={{ textAlign: 'left', paddingTop: 6, fontSize: '0.93em', lineHeight: 1.6 }}>
+      {open &&
+      <div style={{ textAlign: 'left', paddingTop: 6, fontSize: '0.93em', lineHeight: 1.6 }}>
           Cette application vous est offerte gratuitement par le <a href="https://www.enseigner.ulaval.ca/a-propos" target="_blank" style={{ color: '#1e40af', textDecoration: 'underline' }}>Service de soutien à l'enseignement</a> de l'Université Laval, CC-BY 4.0 2026.<br /><br />
           <em><b>Déclaration d'utilisation de SIA: Aidée de l'IA.</b></em><br />
           Tous les textes présentés ont été validés par l'équipe de développement. Le code a été développé avec l'aide de ChatGPT et Claude, mais plus particulièrement par Base44 pour la version actuelle.
         </div>
-      )}
-    </div>
-  );
+      }
+    </div>);
+
 }
 
 const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr')).concat(['Autre']);
@@ -343,7 +343,7 @@ ${directivesSection}
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20', textTransform: 'uppercase' }}>Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8, marginBottom: 8 }}>
               <li>Remplissez la section d'identification.</li>
-              <li>Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
+              <li className=" hidden">Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
               <li>Déclarez les outils SIA utilisés et les actions réalisées, phase par phase.</li>
               <li>Répondez à au moins une question de réflexion, puis générez votre déclaration.</li>
               <li>Copiez et collez le contenu généré en annexe de votre travail ou téléchargez une version Word à soumettre.</li>
