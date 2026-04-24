@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import AutreActionModal from '@/components/guide/AutreActionModal';
 import PHASES from '@/components/directives/directivesData';
 import SIA_LIST_RAW from '@/components/listeSIA';
 
@@ -25,11 +24,8 @@ function AProposButton() {
 
 const SIA_LIST = [...SIA_LIST_RAW].sort((a, b) => a.localeCompare(b, 'fr')).concat(['Autre']);
 
-let customActionCounter = 0;
-function makeCustomActionId() {return `ls-custom-${++customActionCounter}-${Date.now()}`;}
-
 function defaultOutilEntry() {
-  return { outil: '', outilLibre: '', actionIds: [], customActions: [] };
+  return { outil: '', outilLibre: '', descriptionActions: '' };
 }
 
 const QUESTIONS_REFLEXION = [
@@ -62,7 +58,7 @@ export default function DeclarationLibreService() {
   const [aucunSIA, setAucunSIA] = useState(true);
   const [outilEntries, setOutilEntries] = useState([defaultOutilEntry()]);
   const [entryErrors, setEntryErrors] = useState([{}]);
-  const [autreActionModal, setAutreActionModal] = useState(null);
+  const [showAide, setShowAide] = useState([false]);
 
   // Commentaires (obligatoire)
   const [commentaire, setCommentaire] = useState('');
@@ -76,86 +72,35 @@ export default function DeclarationLibreService() {
 
   const identOk = !!(session.trim() && studentNom.trim() && cours.trim() && evaluation.trim() && enseignant.trim());
 
-  // Build ALL_PHASES actions flat map
-  const ALL_PHASE_ACTIONS = [];
-  PHASES.forEach((p) => p.actions.forEach((a) => {
-    ALL_PHASE_ACTIONS.push({ ...a, phaseId: p.id, phaseLibelle: p.libelle, phaseColor: p.color });
-  }));
-
   function updateEntry(i, field, value) {
     setOutilEntries((prev) => prev.map((e, idx) => idx === i ? { ...e, [field]: value } : e));
     setEntryErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, [field]: false } : e));
   }
 
-  function toggleAction(entryIdx, actionId) {
+  function insertActionInEntry(i, libelle) {
     setOutilEntries((prev) => prev.map((e, idx) => {
-      if (idx !== entryIdx) return e;
-      const has = e.actionIds.includes(actionId);
-      return { ...e, actionIds: has ? e.actionIds.filter((id) => id !== actionId) : [...e.actionIds, actionId] };
+      if (idx !== i) return e;
+      const current = e.descriptionActions.trim();
+      const newVal = current ? current + '\n- ' + libelle : '- ' + libelle;
+      return { ...e, descriptionActions: newVal };
     }));
-    setEntryErrors((prev) => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
-  }
-
-  function addCustomAction(entryIdx, { libelle, phaseLibelle, phaseColor, phaseId }) {
-    const id = makeCustomActionId();
-    setOutilEntries((prev) => prev.map((e, idx) => {
-      if (idx !== entryIdx) return e;
-      return { ...e, customActions: [...(e.customActions || []), { id, libelle, phaseLibelle, phaseColor, phaseId }], actionIds: [...e.actionIds, id] };
-    }));
-    setEntryErrors((prev) => prev.map((e, idx) => idx === entryIdx ? { ...e, actionIds: false } : e));
-  }
-
-  function editCustomAction(entryIdx, id, { libelle, phaseLibelle, phaseColor, phaseId }) {
-    setOutilEntries((prev) => prev.map((e, idx) => {
-      if (idx !== entryIdx) return e;
-      return { ...e, customActions: e.customActions.map((a) => a.id === id ? { ...a, libelle, phaseLibelle, phaseColor, phaseId } : a) };
-    }));
-  }
-
-  function removeCustomAction(entryIdx, id) {
-    setOutilEntries((prev) => prev.map((e, idx) => {
-      if (idx !== entryIdx) return e;
-      return { ...e, customActions: e.customActions.filter((a) => a.id !== id), actionIds: e.actionIds.filter((aid) => aid !== id) };
-    }));
+    setEntryErrors((prev) => prev.map((e, idx) => idx === i ? { ...e, descriptionActions: false } : e));
   }
 
   function removeEntry(i) {
     setOutilEntries((prev) => prev.filter((_, idx) => idx !== i));
     setEntryErrors((prev) => prev.filter((_, idx) => idx !== i));
+    setShowAide((prev) => prev.filter((_, idx) => idx !== i));
   }
 
   function addEntry() {
     setOutilEntries((prev) => [...prev, defaultOutilEntry()]);
     setEntryErrors((prev) => [...prev, {}]);
+    setShowAide((prev) => [...prev, false]);
   }
 
   function getOutilLabel(entry) {
     return entry.outil === 'Autre' && entry.outilLibre.trim() ? entry.outilLibre.trim() : entry.outil;
-  }
-
-  // Group actions by phase for display in entry card
-  function getGroupedActionsForEntry(entry) {
-    const customIds = new Set((entry.customActions || []).map((a) => a.id));
-    const groups = {};
-    // Phase-standard actions
-    PHASES.forEach((p) => {
-      groups[p.libelle] = { color: p.color, actions: p.actions.map((a) => ({ ...a, phaseLibelle: p.libelle, phaseColor: p.color, isCustom: false })) };
-    });
-    // Custom actions
-    if ((entry.customActions || []).length > 0) {
-      const customPhaseGroups = {};
-      entry.customActions.forEach((a) => {
-        const ph = a.phaseLibelle || 'Action personnalisée';
-        if (!customPhaseGroups[ph]) customPhaseGroups[ph] = { color: a.phaseColor || '#888', customs: [] };
-        customPhaseGroups[ph].customs.push(a);
-      });
-      // merge custom into their phase groups
-      Object.entries(customPhaseGroups).forEach(([ph, { color, customs }]) => {
-        if (!groups[ph]) groups[ph] = { color, actions: [] };
-        customs.forEach((c) => groups[ph].actions.push({ ...c, isCustom: true }));
-      });
-    }
-    return groups;
   }
 
   function handleSoumettre() {
@@ -172,7 +117,7 @@ export default function DeclarationLibreService() {
         const err = {};
         if (!e.outil) err.outil = true;
         if (e.outil === 'Autre' && !e.outilLibre.trim()) err.outilLibre = true;
-        if (e.actionIds.length === 0) err.actionIds = true;
+        if (!e.descriptionActions.trim()) err.descriptionActions = true;
         return err;
       });
       setEntryErrors(newEntryErrors);
@@ -223,43 +168,16 @@ export default function DeclarationLibreService() {
     } else {
       declHtml = `<table style="width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10pt;">
 <thead><tr>
-  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outils</th>
-  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Phases</th>
+  <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Outil</th>
   <th style="border:1px solid #ccc;padding:6px;background:#edfbf0;">Actions déclarées</th>
 </tr></thead><tbody>`;
       ap.outilEntries.forEach((entry) => {
-        const customIds = new Set((entry.customActions || []).map((a) => a.id));
-        // Build rows grouped by phase
-        const phaseMap = {};
-        entry.actionIds.forEach((id) => {
-          let action = ALL_PHASE_ACTIONS.find((a) => a.id === id);
-          if (!action) action = (entry.customActions || []).find((a) => a.id === id);
-          if (!action) return;
-          const ph = action.phaseLibelle || 'Action personnalisée';
-          if (!phaseMap[ph]) phaseMap[ph] = [];
-          const label = action.libelle;
-          phaseMap[ph].push(label);
-        });
-        const phases = Object.keys(phaseMap);
-        if (phases.length === 0) return;
-        let firstRow = true;
-        const totalActions = Object.values(phaseMap).reduce((s, arr) => s + arr.length, 0);
-        phases.forEach((ph) => {
-          const acts = phaseMap[ph];
-          if (firstRow) {
-            declHtml += `<tr>
-  <td style="border:1px solid #ccc;padding:6px;vertical-align:top" rowspan="${phases.length}"><strong>${getOutilLabel(entry)}</strong></td>
-  <td style="border:1px solid #ccc;padding:6px;vertical-align:top;font-size:0.9em;color:#555;">${ph}</td>
-  <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${acts.join('<br>')}</td>
+        if (!entry.descriptionActions.trim()) return;
+        const actionsHtml = entry.descriptionActions.trim().replace(/\n/g, '<br>');
+        declHtml += `<tr>
+  <td style="border:1px solid #ccc;padding:6px;vertical-align:top;white-space:nowrap;"><strong>${getOutilLabel(entry)}</strong></td>
+  <td style="border:1px solid #ccc;padding:6px;vertical-align:top;">${actionsHtml}</td>
 </tr>`;
-            firstRow = false;
-          } else {
-            declHtml += `<tr>
-  <td style="border:1px solid #ccc;padding:6px;vertical-align:top;font-size:0.9em;color:#555;">${ph}</td>
-  <td style="border:1px solid #ccc;padding:6px;vertical-align:top">${acts.join('<br>')}</td>
-</tr>`;
-          }
-        });
       });
       declHtml += `</tbody></table>`;
     }
@@ -463,7 +381,7 @@ ${ap.isEquipe
             {!aucunSIA &&
             <>
                 <p style={{ margin: '0 0 16px', fontSize: '0.88em', color: '#555', fontStyle: 'italic' }}>
-                  Pour chaque SIA utilisé, indiquez l'outil et les actions réalisées, organisées par phase.
+                  Pour chaque SIA utilisé, indiquez l'outil et décrivez librement les actions réalisées. Utilisez l'aide à la rédaction pour vous inspirer des actions disponibles.
                 </p>
 
                 {outilEntries.map((entry, i) => {
@@ -501,53 +419,49 @@ ${ap.isEquipe
                         }
                         </div>
 
-                        {/* Actions par phase */}
+                        {/* Actions réalisées (texte libre + aide) */}
                         <div>
-                          <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 8 }}>
-                            Actions réalisées <span style={{ color: '#E41E25' }}>*</span>
-                            <span style={{ fontWeight: 'normal', color: '#888', fontSize: '0.9em' }}> — ajoutez les actions par phase</span>
-                          </label>
-                          {entryErrors[i]?.actionIds && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Ajoutez au moins une action</span>}
-                          {!entry.outil ?
-                        <div style={{ padding: '12px 14px', background: '#f8f9fa', border: '1px dashed #bbb', borderRadius: 6, color: '#888', fontSize: '0.87em', fontStyle: 'italic' }}>
-                              Sélectionnez d'abord un outil ci-contre pour accéder aux actions possibles.
-                            </div> :
-
-                        <div style={{ border: '1px solid #ddd', borderRadius: 6, overflow: 'hidden' }}>
-                              {PHASES.map((phase, gi) => {
-                            const phaseCustoms = (entry.customActions || []).filter((a) => a.phaseId === phase.id);
-                            return (
-                              <div key={phase.id} style={{ borderBottom: gi < PHASES.length - 1 ? '1px solid #eee' : 'none' }}>
-                                    <div style={{ background: '#f5f5f5', padding: '5px 10px', fontSize: '0.78em', fontWeight: 'bold', color: phase.color, borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                      <span>{phase.libelle}</span>
-                                      <button type="button" onClick={() => setAutreActionModal({ entryIdx: i, prePhaseId: phase.id })}
-                                  style={{ background: 'none', border: `1px dashed ${phase.color}`, color: phase.color, borderRadius: 4, padding: '2px 10px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em' }}>
-                                        + Ajouter une action
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                            <label style={{ fontWeight: 'bold', fontSize: '0.9em' }}>
+                              Actions réalisées <span style={{ color: '#E41E25' }}>*</span>
+                            </label>
+                            <button type="button"
+                              onClick={() => setShowAide((prev) => prev.map((v, idx) => idx === i ? !v : v))}
+                              style={{ background: showAide[i] ? '#e8f4ff' : 'none', border: '1px solid #1895FD', color: '#1895FD', borderRadius: 4, padding: '3px 10px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em' }}>
+                              💡 {showAide[i] ? 'Masquer l\'aide' : 'Aide à la rédaction'}
+                            </button>
+                          </div>
+                          {entryErrors[i]?.descriptionActions && <span style={{ color: '#E41E25', fontSize: '0.82em', display: 'block', marginBottom: 6 }}>⚠ Décrivez au moins une action</span>}
+                          <textarea
+                            value={entry.descriptionActions}
+                            onChange={(e) => updateEntry(i, 'descriptionActions', e.target.value)}
+                            rows={4}
+                            placeholder="Décrivez librement les actions réalisées avec cet outil…"
+                            style={{ width: '100%', padding: '7px 10px', fontFamily: 'inherit', fontSize: '0.9em', border: entryErrors[i]?.descriptionActions ? '2px solid #E41E25' : '1px solid #ccc', borderRadius: 4, background: entryErrors[i]?.descriptionActions ? '#fff4f4' : 'white', boxSizing: 'border-box', resize: 'vertical' }}
+                          />
+                          {showAide[i] && (
+                            <div style={{ marginTop: 8, border: '1px solid #b3d9f7', borderRadius: 6, overflow: 'hidden' }}>
+                              <div style={{ background: '#e8f4ff', padding: '6px 12px', fontSize: '0.8em', color: '#1a4a6b', fontStyle: 'italic' }}>
+                                Cliquez sur une action pour l'insérer dans le champ de texte ci-dessus.
+                              </div>
+                              {PHASES.map((phase, gi) => (
+                                <div key={phase.id} style={{ borderTop: gi > 0 ? '1px solid #dde' : 'none' }}>
+                                  <div style={{ background: '#f5f5f5', padding: '4px 10px', fontSize: '0.77em', fontWeight: 'bold', color: phase.color }}>
+                                    {phase.libelle}
+                                  </div>
+                                  <div style={{ padding: '6px 10px', display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                                    {phase.actions.map((action) => (
+                                      <button key={action.id} type="button"
+                                        onClick={() => insertActionInEntry(i, action.libelle)}
+                                        style={{ background: 'white', border: `1px solid ${phase.color}`, color: '#333', borderRadius: 4, padding: '3px 8px', cursor: 'pointer', fontFamily: 'inherit', fontSize: '0.82em', textAlign: 'left' }}>
+                                        {action.libelle}
                                       </button>
-                                    </div>
-                                    <div style={{ padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: 5, minHeight: 36 }}>
-                                      {phaseCustoms.length === 0 &&
-                                  <span style={{ color: '#bbb', fontSize: '0.83em', fontStyle: 'italic' }}>Aucune action déclarée pour cette phase.</span>
-                                  }
-                                      {phaseCustoms.map((action) =>
-                                  <label key={action.id} style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: '0.88em' }}>
-                                          <input type="checkbox" checked={entry.actionIds.includes(action.id)} onChange={() => toggleAction(i, action.id)}
-                                    style={{ width: 15, height: 15, flexShrink: 0, cursor: 'pointer', accentColor: phase.color }} />
-                                          <span style={{ flex: 1 }}>{action.libelle}</span>
-                                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, flexShrink: 0 }}>
-                                            <button type="button" onClick={(e) => {e.preventDefault();setAutreActionModal({ entryIdx: i, editId: action.id });}}
-                                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#1895FD', fontSize: '0.85em', padding: '0 2px', lineHeight: 1 }} title="Modifier">✏️</button>
-                                            <button type="button" onClick={(e) => {e.preventDefault();removeCustomAction(i, action.id);}}
-                                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#bbb', fontSize: '1em', padding: '0 2px', lineHeight: 1 }} title="Retirer">×</button>
-                                          </span>
-                                        </label>
-                                  )}
-                                    </div>
-                                  </div>);
-
-                          })}
+                                    ))}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                        }
+                          )}
                         </div>
                       </div>
                     </div>);
@@ -595,22 +509,6 @@ ${ap.isEquipe
           }
         </div>
 
-        {/* === MODAL CUSTOM ACTION === */}
-        <AutreActionModal
-          isOpen={!!autreActionModal}
-          onClose={() => setAutreActionModal(null)}
-          prePhaseId={autreActionModal?.prePhaseId}
-          initialValues={autreActionModal?.editId ?
-          outilEntries[autreActionModal.entryIdx]?.customActions?.find((a) => a.id === autreActionModal.editId) :
-          null}
-          onSave={(action) => {
-            if (!autreActionModal) return;
-            if (autreActionModal.editId) {
-              editCustomAction(autreActionModal.entryIdx, autreActionModal.editId, action);
-            } else {
-              addCustomAction(autreActionModal.entryIdx, action);
-            }
-          }} />
         
 
         {/* === APERÇU === */}
