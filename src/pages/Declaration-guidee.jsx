@@ -777,10 +777,10 @@ ${ap.isEquipe
                           return (
                             <div key={action.id} style={{ background: '#fde8e8', border: '1px solid #E41E25', borderRadius: 8, padding: '14px 18px', marginBottom: 14 }}>
                               <p style={{ fontWeight: 'bold', color: '#7b1d1d', margin: '0 0 6px', fontSize: '0.92em' }}>
-                                Action non autorisee declaree : <em>{action.libelle}</em>
+                                Action non autorisée déclarée : <em>{action.libelle}</em>
                               </p>
                               <label style={{ fontWeight: 'bold', fontSize: '0.9em', display: 'block', marginBottom: 5, color: '#7b1d1d' }}>
-                                Justifiez l'utilisation d'un SIA pour cette action non autorisee. Note : décrire l’utilisation non autorisée d’un SIA explique son usage mais ne vous décharge pas d'une possible infraction au Règlement disciplinaire de l’Université Laval.<span style={{ color: '#E41E25' }}>*</span>
+                                Justifiez l'utilisation d'un SIA pour cette action non autorisée. Note : décrire l’utilisation non autorisée d’un SIA explique son usage mais ne vous décharge pas d'une possible infraction au Règlement disciplinaire de l’Université Laval.<span style={{ color: '#E41E25' }}>*</span>
                               </label>
                               <textarea value={nonAutoriseeJustifs[action.id] || ''} onChange={e => { setNonAutoriseeJustifs(prev => ({ ...prev, [action.id]: e.target.value })); setNonAutoriseeJustifErrors(prev => ({ ...prev, [action.id]: false })); }} rows={3}
                                 placeholder="Expliquez les circonstances ou raisons de cette utilisation..."
@@ -869,10 +869,10 @@ ${ap.isEquipe
                 {/* Submit */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                   <button className="btn-primary" style={{ fontSize: '1em', padding: '11px 28px' }} onClick={handleSoumettre}>
-                    Generer la declaration
+                    Générer la déclaration
                   </button>
                   {submitStatus && (submitStatus.ok
-                    ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>Declaration generee avec succes.</span>
+                    ? <span style={{ background: '#d4edda', color: '#155724', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>Déclaration générée avec succès.</span>
                     : <span style={{ background: '#fde8e8', color: '#7b1d1d', padding: '6px 14px', borderRadius: 5, fontSize: '0.9em' }}>Certains champs obligatoires ne sont pas remplis.</span>
                   )}
                 </div>
@@ -904,14 +904,14 @@ ${ap.isEquipe
                 </div>
                 <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30, alignItems: 'center', justifyContent: 'center' }}>
                   <button type="button" className="btn-primary" style={{ background: '#6c757d' }} onClick={() => { setApercu(null); setSubmitStatus(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-                    Continuer a modifier
+                    Continuer à modifier
                   </button>
                   <button type="button" className="btn-primary" onClick={() => copyToClipboard(apercu)}>
                     Copier pour Word
                   </button>
                   {copyOk && <span style={{ color: 'green', fontWeight: 'bold', fontSize: '0.9em' }}>Copie !</span>}
                   <button type="button" className="btn-primary" onClick={() => downloadWord(apercu)}>
-                    Telecharger en Word (.doc)
+                    Télécharger en Word (.doc)
                   </button>
                 </div>
               </>
