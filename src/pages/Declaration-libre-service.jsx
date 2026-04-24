@@ -343,7 +343,7 @@ ${directivesSection}
             <h2 style={{ fontWeight: 'bold', fontSize: '1.05em', marginBottom: 8, color: '#231F20', textTransform: 'uppercase' }}>Comment ça fonctionne?</h2>
             <ol style={{ listStyleType: 'decimal', paddingLeft: 20, marginTop: 8, marginBottom: 8 }}>
               <li>Remplissez la section d'identification.</li>
-              <li className=" hidden">Si votre personne enseignante vous a fourni des directives, indiquez-les dans la section correspondante.</li>
+              
               <li>Déclarez les outils SIA utilisés et les actions réalisées, phase par phase.</li>
               <li>Répondez à au moins une question de réflexion, puis générez votre déclaration.</li>
               <li>Copiez et collez le contenu généré en annexe de votre travail ou téléchargez une version Word à soumettre.</li>
